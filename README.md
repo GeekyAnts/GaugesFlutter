@@ -38,11 +38,29 @@ dependencies:
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+Import it inside your main.dart
+
+```
+import 'package:gauges/gauges.dart';
+
+```
+
+Use it as below
 
 ```dart
-const like = 'sample';
+class _MyGaugeExampleState extends State<MyGaugeExample> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: const LinearGauge(),
+        ),
+      ),
+    );
+  }
+}
 ```
 
 ## Additional information
