@@ -1,27 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:gauges/gauges.dart';
+import 'linear_gauge_painter.dart';
 
 class LinearGauge extends StatefulWidget {
-  final double start;
-  final double end;
-  final double steps;
-  final Color rulerColor;
-  final GaugeOrientation gaugeOrientation;
-
-  /// if steps is not provided in constructor the default value will be given as  [ double step 5.0 ]
-  /// Default ruler color is [Colors.black]
-  /// Default [GaugeOrientation] is [GaugeOrientation.horizontal]
   const LinearGauge(
       {Key? key,
-      required this.start,
-      required this.end,
-      rulerColor,
-      steps,
-      gaugeOrientation})
-      : steps = steps ?? 5,
-        rulerColor = rulerColor ?? Colors.black,
-        gaugeOrientation = gaugeOrientation ?? GaugeOrientation.horizontal,
-        super(key: key);
+      this.color = Colors.grey,
+      this.start = 0,
+      this.end = 100,
+      this.steps = 10,
+      this.height = 4,
+      this.showLinearGaugeContainer = true,
+      this.gaugeOrientation = GaugeOrientation.horizontal,
+      this.rulerPadding = const Padding(padding: EdgeInsets.all(0)),
+      this.textStyle = const TextStyle(
+        fontSize: 12.0,
+        color: Colors.grey,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.normal,
+      ),
+      this.primaryRulersWidth = 1.0,
+      this.primaryRulersHeight = 10.0,
+      this.secondaryRulersHeight = 1.0,
+      this.secondaryRulersWidth = 1.0,
+      this.labelTopMargin = 0.0,
+      this.primaryRulerColor = Colors.grey,
+      this.secondaryRulerColor = Colors.grey})
+      : super(key: key);
+
+  final Color? color;
+  final double? start;
+  final double? end;
+  final double? steps;
+  final double? height;
+  final bool? showLinearGaugeContainer;
+  final GaugeOrientation? gaugeOrientation;
+  final Padding? rulerPadding;
+  final TextStyle? textStyle;
+  final double? primaryRulersWidth;
+  final double? primaryRulersHeight;
+  final double? secondaryRulersHeight;
+  final double? secondaryRulersWidth;
+  final double? labelTopMargin;
+  final Color? primaryRulerColor;
+  final Color? secondaryRulerColor;
 
   @override
   State<LinearGauge> createState() => _LinearGaugeState();
@@ -30,109 +52,25 @@ class LinearGauge extends StatefulWidget {
 class _LinearGaugeState extends State<LinearGauge> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: CustomPaint(
-        painter: GaugePainter(
-            end: widget.end,
-            start: widget.start,
-            steps: widget.steps,
-            rulerColor: widget.rulerColor,
-            gaugeOrientation: widget.gaugeOrientation),
+    return CustomPaint(
+      painter: LinearGaugePainter(
+        color: widget.color!,
+        start: widget.start!,
+        end: widget.end!,
+        height: widget.height!,
+        steps: widget.steps!,
+        showLinearGaugeContainer: widget.showLinearGaugeContainer!,
+        gaugeOrientation: widget.gaugeOrientation!,
+        rulerPadding: widget.rulerPadding!,
+        textStyle: widget.textStyle!,
+        primaryRulersWidth: widget.primaryRulersWidth!,
+        primaryRulersHeight: widget.primaryRulersHeight!,
+        secondaryRulersHeight: widget.secondaryRulersHeight!,
+        secondaryRulerWidth: widget.secondaryRulersWidth!,
+        labelTopMargin: widget.labelTopMargin!,
+        primaryRulerColor: widget.primaryRulerColor!,
+        secondaryRulerColor: widget.secondaryRulerColor!,
       ),
     );
-  }
-}
-
-class GaugePainter extends CustomPainter {
-  final double start;
-  final double end;
-  final double steps;
-  final Color rulerColor;
-  final GaugeOrientation gaugeOrientation;
-
-  // Using to know till which offset the drawGaugeContainer should be drawn
-  late Offset lastOffset;
-
-  GaugePainter(
-      {required this.start,
-      required this.end,
-      required this.steps,
-      required this.rulerColor,
-      required this.gaugeOrientation});
-
-  void drawGuageRuler(
-    Canvas canvas,
-    Paint paint,
-  ) {
-    // Initail points
-    double x = 20;
-    double y = 20;
-    Offset point1;
-    Offset point2;
-    paint.color = rulerColor;
-    paint.strokeWidth = 1;
-
-    for (int i = 1; i <= end; i++) {
-      if (i % steps == 0 || i == 1 || i == end) {
-        point1 = Offset(x, 20);
-        point2 = Offset(y, 40);
-        paint.color = rulerColor;
-        drawRulerPoints(canvas, paint, i.toString(), x - 5);
-      } else {
-        point1 = Offset(x, 20);
-        point2 = Offset(y, 30);
-        paint.color = Colors.grey;
-      }
-
-      if (i == end) {
-        lastOffset = point1;
-      }
-      canvas.drawLine(point1, point2, paint);
-
-      x += 10;
-      y += 10;
-    }
-  }
-
-  void drawRulerPoints(
-      Canvas canvas, Paint paint, String point, double pointAxis) {
-    TextSpan span = TextSpan(style: TextStyle(color: rulerColor), text: point);
-    TextPainter tp = TextPainter(
-        text: span,
-        textAlign: TextAlign.left,
-        textDirection: TextDirection.ltr);
-    tp.layout();
-
-    Offset point2 = Offset(pointAxis, 40);
-    tp.paint(canvas, point2);
-  }
-
-  void drawGaugeContainer(Canvas canvas, Offset lastOffset, Paint paint) {
-    Rect rect =
-        Rect.fromPoints(const Offset(20, 12), Offset(lastOffset.dx, 18));
-    canvas.drawRect(rect, paint);
-  }
-
-  void horizontalLinearGauge(Canvas canvas, Size size) {
-    Paint rulerPaint = Paint();
-    drawGuageRuler(canvas, rulerPaint);
-    rulerPaint.color = Colors.grey;
-    drawGaugeContainer(canvas, lastOffset, rulerPaint);
-  }
-
-  void verticalLinerGauge(Canvas canvas) {
-    Paint rulerPaint = Paint();
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (gaugeOrientation == GaugeOrientation.horizontal) {
-      horizontalLinearGauge(canvas, size);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant GaugePainter oldDelegate) {
-    return false;
   }
 }
