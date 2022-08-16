@@ -66,4 +66,14 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 ```
 
 
+## Mac App
+
+![Linear Gauge](https://github.com/hasnentai/GaugesFlutter/blob/main/example/screens/screen-one.png)
+
+## IOS App
+
+![Linear Gauge](https://github.com/hasnentai/GaugesFlutter/blob/main/example/screens/screen-two.png)
+
+
+
 
