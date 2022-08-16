@@ -1,12 +1,16 @@
-steps:
-- uses: actions/checkout@v3
-- uses: actions/setup-java@v2
-  with:
-    distribution: 'zulu'
-    java-version: '11'
-- uses: subosito/flutter-action@v2
-  with:
-    flutter-version: '3.0.5'
-- run: flutter pub get
-- run: flutter test
-- run: flutter pub publish --dry-run
+name: GitHub Actions Demo
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.0.5'
+    - run: flutter pub get
+    - run: flutter test
+    - run: flutter pub publish --dry-run
