@@ -19,7 +19,15 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: const LinearGauge(),
+          child: const LinearGauge(
+            color: Colors.amber,
+            height: 5,
+            primaryRulerColor: Colors.red,
+            primaryRulersHeight: 30.0,
+            primaryRulersWidth: 2,
+            steps: 3,
+            end: 60,
+          ),
         ),
       ),
     );

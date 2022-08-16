@@ -4,7 +4,7 @@ import 'linear_gauge_painter.dart';
 
 class LinearGauge extends StatefulWidget {
   ///
-  /// [LinearGauge] is a visualization of measurement widget with a linear scale values. Linear 
+  /// [LinearGauge] is a visualization of measurement widget with a linear scale values. Linear
   /// Gauge as rich sets of config parameters which can be modified as per requirement
   ///
   /// `start` and `end` is responsible to paint the values as a label.
