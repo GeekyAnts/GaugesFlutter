@@ -11,12 +11,11 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Linear Gauge is a visualization of measurement tools with a linear scale such as thermometers, tanks, color indicators (LED), and so on. Data values are displayed on the gauge axis with the help of one or multiple pointers: markers, ranges, etc.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Liner Gauge
 
 ## Getting started
 
