@@ -20,12 +20,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: 300,
-          child: const LinearGauge(
-            primaryRulersHeight: 30,
-            steps: 2,
-            start: 0,
-            end: 10000,
-          ),
+          child: const LinearGauge(),
         ),
       ),
     );
