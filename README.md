@@ -15,12 +15,26 @@ Linear Gauge is a visualization of measurement tools with a linear scale such as
 
 ## Features
 
-Liner Gauge
+LinerGauge 
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Run this command 
+
+```
+
+$flutter pub add gauges
+
+```
+
+This will add a line like this to your package's pubspec.yaml (and run an implicit flutter pub get):
+
+```
+dependencies:
+  gauges: ^0.0.1
+```
+
+
 
 ## Usage
 
