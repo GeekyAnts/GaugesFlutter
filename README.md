@@ -10,8 +10,9 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
+# Gauges
 
-Linear Gauge is a visualization of measurement tools with a linear scale such as thermometers, tanks, color indicators (LED), and so on. Data values are displayed on the gauge axis with the help of one or multiple pointers: markers, ranges, etc.
+A gauge, in science and engineering, is a device used to make measurements or in order to display certain dimensional information. A wide variety of tools exist which serve such functions, ranging from simple pieces of material against which sizes can be measured to complex pieces of machinery.
 
 ## Features
 
@@ -68,4 +69,4 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 TODO: Tell users more about the package: where to find more information, how to 
 contribute to the package, how to file issues, what response they can expect 
 from the package authors, and more.
-# GaugesFlutter
+
