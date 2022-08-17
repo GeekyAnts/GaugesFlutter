@@ -23,13 +23,16 @@ class LinearGaugeLabel {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
-      _linearGaugeLabel.add(LinearGaugeLabel(text: i.toString(), value: i));
+      _linearGaugeLabel
+          .add(LinearGaugeLabel(text: i.toInt().toString(), value: i));
     }
-    final LinearGaugeLabel lastLabel =
-        _linearGaugeLabel[_linearGaugeLabel.length - 1];
-    if (lastLabel.value != start && lastLabel.value! < end) {
-      _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
-    }
+
+    // TODO::// BUG Alert
+    // final LinearGaugeLabel lastLabel =
+    //     _linearGaugeLabel[_linearGaugeLabel.length - 1];
+    // if (lastLabel.value != start && lastLabel.value! < end) {
+    //   _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
+    // }
   }
 
   void addLabelsToMap() {

@@ -17,17 +17,10 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SizedBox(
+        child: Container(
           width: MediaQuery.of(context).size.width,
-          child: const LinearGauge(
-            color: Colors.amber,
-            height: 5,
-            primaryRulerColor: Colors.red,
-            primaryRulersHeight: 30.0,
-            primaryRulersWidth: 2,
-            steps: 3,
-            end: 60,
-          ),
+          height: 200,
+          child: const LinearGauge(),
         ),
       ),
     );

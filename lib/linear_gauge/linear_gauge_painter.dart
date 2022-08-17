@@ -23,7 +23,7 @@ class LinearGaugePainter extends CustomPainter {
     required this.labelTopMargin,
     required this.primaryRulerColor,
     required this.secondaryRulerColor,
-  });
+  }) : assert(start <= end, "Start should be grater then end");
 
   Color color;
   double start;
@@ -104,9 +104,13 @@ class LinearGaugePainter extends CustomPainter {
 
   double getLabelSizePadding(double value) {
     if (gaugeOrientation == GaugeOrientation.horizontal) {
-      return value == start ? _startLabelSize.width / 2 : _endLabelSize.width;
+      return value == start
+          ? _startLabelSize.width / 2
+          : _endLabelSize.width / 2;
     } else {
-      return value == start ? _startLabelSize.height / 2 : _endLabelSize.height;
+      return value == start
+          ? _startLabelSize.height / 2
+          : _endLabelSize.height / 2;
     }
   }
 
@@ -115,7 +119,7 @@ class LinearGaugePainter extends CustomPainter {
     if (gaugeOrientation == GaugeOrientation.horizontal) {
       distanceInHundred = math.max((3 * _size.width) / 100, 1.0);
     } else {
-      distanceInHundred = math.max((3 * _size.height) / 100, 1.0);
+      distanceInHundred = math.max((_size.height) / 100, 1.0);
     }
     return distanceInHundred;
   }
@@ -162,6 +166,7 @@ class LinearGaugePainter extends CustomPainter {
       value = start;
     }
 
+    // ignore: todo
     // TODO:: What if value is in negative
     double valueInPercent = (value - start) / (end - start);
 
@@ -197,12 +202,14 @@ class LinearGaugePainter extends CustomPainter {
   void _drawLabels(Canvas canvas, int majorTickIndex,
       double majorTickLeftPosition, double top) {
     final ui.ParagraphStyle paragraphStyle = ui.ParagraphStyle(
-        textDirection: TextDirection.ltr, textAlign: TextAlign.left);
+      textDirection: TextDirection.ltr,
+    );
     final String labelText = _linearGaugeLabel.getMappedLabel[
         _linearGaugeLabel.getListOfLabel[majorTickIndex].value]!;
     final double? value =
         _linearGaugeLabel.getListOfLabel[majorTickIndex].value;
-    final ui.TextStyle labelTextStyle = ui.TextStyle(color: Colors.black);
+    final ui.TextStyle labelTextStyle =
+        ui.TextStyle(color: Colors.black, fontSize: 11.0);
     final ui.ParagraphBuilder paragraphBuilder =
         ui.ParagraphBuilder(paragraphStyle)
           ..pushStyle(labelTextStyle)
@@ -210,7 +217,9 @@ class LinearGaugePainter extends CustomPainter {
     final ui.Paragraph paragraph = paragraphBuilder.build();
     final Size labelSize =
         _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: value);
-    paragraph.layout(ui.ParagraphConstraints(width: labelSize.width + 10));
+
+    /// TODO:: Hardcoded value
+    paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
     Offset labelOffset;
 
@@ -295,7 +304,7 @@ class LinearGaugePainter extends CustomPainter {
     late Rect gaugeContainer;
     if (gaugeOrientation == GaugeOrientation.horizontal) {
       gaugeContainer = Rect.fromLTWH((offset.dx + startLabelPadding), offset.dy,
-          size.width - (startLabelPadding + endLabelPadding), height);
+          (size.width - (startLabelPadding + endLabelPadding)), height);
     }
 
     canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);

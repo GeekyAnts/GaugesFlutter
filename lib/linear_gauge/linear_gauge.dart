@@ -21,26 +21,26 @@ class LinearGauge extends StatefulWidget {
   ///
   const LinearGauge(
       {Key? key,
-      this.color = Colors.grey,
+      this.color = const Color.fromARGB(255, 207, 207, 207),
       this.start = 0,
       this.end = 100,
-      this.steps = 10,
+      this.steps = 1,
       this.height = 4,
       this.showLinearGaugeContainer = true,
       this.gaugeOrientation = GaugeOrientation.horizontal,
       this.rulerPadding = const Padding(padding: EdgeInsets.all(0)),
       this.textStyle = const TextStyle(
         fontSize: 12.0,
-        color: Colors.grey,
+        color: Color.fromARGB(255, 86, 86, 86),
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.normal,
       ),
       this.primaryRulersWidth = 1.0,
-      this.primaryRulersHeight = 10.0,
+      this.primaryRulersHeight = 15.0,
       this.secondaryRulersHeight = 1.0,
       this.secondaryRulersWidth = 1.0,
       this.labelTopMargin = 0.0,
-      this.primaryRulerColor = Colors.grey,
+      this.primaryRulerColor = Colors.black54,
       this.secondaryRulerColor = Colors.grey})
       : super(key: key);
 
