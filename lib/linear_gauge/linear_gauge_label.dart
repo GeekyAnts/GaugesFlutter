@@ -27,6 +27,7 @@ class LinearGaugeLabel {
           .add(LinearGaugeLabel(text: i.toInt().toString(), value: i));
     }
 
+    // ignore: todo
     // TODO::// BUG Alert
     // final LinearGaugeLabel lastLabel =
     //     _linearGaugeLabel[_linearGaugeLabel.length - 1];

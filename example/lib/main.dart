@@ -17,7 +17,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: 200,
           child: const LinearGauge(),

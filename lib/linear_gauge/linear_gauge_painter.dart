@@ -144,8 +144,6 @@ class LinearGaugePainter extends CustomPainter {
       distanceValueInRangeOfHundred = currentDivision;
     }
 
-    print(distanceValueInRangeOfHundred);
-
     _linearGaugeLabel.addLabels(
         distanceValueInRangeOfHundred: distanceValueInRangeOfHundred,
         start: start,
@@ -173,10 +171,10 @@ class LinearGaugePainter extends CustomPainter {
     return valueInPercent;
   }
 
-  double _convertPercentageToValue(double percentage) {
-    // TODO:: What if value is in negative
-    return (percentage * (end - start)) + start;
-  }
+  // double _convertPercentageToValue(double percentage) {
+  //   // TODO:: What if value is in negative
+  //   return (percentage * (end - start)) + start;
+  // }
 
   double _convertValueToPixel(double? value) {
     final double percentage = _convertValueToPercentage(value);
@@ -218,6 +216,7 @@ class LinearGaugePainter extends CustomPainter {
     final Size labelSize =
         _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: value);
 
+    // ignore: todo
     /// TODO:: Hardcoded value
     paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
@@ -322,6 +321,7 @@ class LinearGaugePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    // ignore: todo
     // TODO: implement shouldRepaint
     return true;
   }
