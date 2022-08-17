@@ -66,12 +66,10 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 ```
 
 
-## Mac App
-
-<img src="https://github.com/hasnentai/GaugesFlutter/blob/main/example/screens/screen-one.png" width="550" alt="accessibility text">
 
 
-## IOS App
+
+## Screens
 
 <img src="https://github.com/hasnentai/GaugesFlutter/blob/main/example/screens/screen-two.png" width="250" alt="accessibility text">
 
