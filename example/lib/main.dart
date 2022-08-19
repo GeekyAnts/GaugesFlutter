@@ -20,11 +20,10 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
         child: Center(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 200,
+            height: 500,
             child: const LinearGauge(
               start: 0,
               end: 100,
-              steps: 10,
             ),
           ),
         ),
