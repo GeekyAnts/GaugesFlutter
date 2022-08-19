@@ -12,28 +12,44 @@ class LinearGaugeLabel {
 
   final List<LinearGaugeLabel> _linearGaugeLabel = [];
   late final Map<double, String> _map = {};
+  late final Map<String, List<Offset>> primaryRulers = {};
   final TextPainter _textPainter =
       TextPainter(textDirection: TextDirection.ltr);
 
-  void addLabels({
-    required double distanceValueInRangeOfHundred,
-    required double start,
-    required double end,
-  }) {
+  void addLabels(
+      {required double distanceValueInRangeOfHundred,
+      required double start,
+      required double end}) {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
       _linearGaugeLabel
           .add(LinearGaugeLabel(text: i.toInt().toString(), value: i));
     }
+  }
 
-    // ignore: todo
-    // TODO::// BUG Alert
-    // final LinearGaugeLabel lastLabel =
-    //     _linearGaugeLabel[_linearGaugeLabel.length - 1];
-    // if (lastLabel.value != start && lastLabel.value! < end) {
-    //   _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
-    // }
+  void generateOffSetsForLabel(
+      Size startLabel,
+      Size endLabel,
+      Size size,
+      double end,
+      double primaryRulersHeight,
+      double linearGaugeBoxContainerHeight) {
+    primaryRulers.clear();
+    Offset a = Offset(startLabel.width / 2, linearGaugeBoxContainerHeight);
+    Offset b = Offset(
+        size.width - ((endLabel.width / 2) + (startLabel.width / 2)),
+        linearGaugeBoxContainerHeight);
+    for (int i = 0; i < _linearGaugeLabel.length; i++) {
+      double x = a.dx * (1 - (_linearGaugeLabel[i].value! / end)) +
+          b.dx * (_linearGaugeLabel[i].value! / end);
+      double y = a.dy * (1 - (_linearGaugeLabel[i].value! / end)) +
+          b.dy * (_linearGaugeLabel[i].value! / end);
+      primaryRulers[_linearGaugeLabel[i].text!] = [
+        Offset(x, y),
+        Offset(x, primaryRulersHeight)
+      ];
+    }
   }
 
   void addLabelsToMap() {
@@ -44,10 +60,11 @@ class LinearGaugeLabel {
   }
 
   Size getLabelSize({required TextStyle textStyle, required double? value}) {
-    final String? label = getMappedLabel[value];
-    final TextSpan textSpan = TextSpan(text: label, style: textStyle);
+    final TextSpan textSpan =
+        TextSpan(text: value!.toInt().toString(), style: textStyle);
     _textPainter.text = textSpan;
     _textPainter.layout();
+
     return Size(_textPainter.width, _textPainter.height);
   }
 
@@ -73,4 +90,5 @@ class LinearGaugeLabel {
 
   List<LinearGaugeLabel> get getListOfLabel => _linearGaugeLabel;
   get getMappedLabel => _map;
+  Map<String, List<Offset>> get getPrimaryRulersOffset => primaryRulers;
 }

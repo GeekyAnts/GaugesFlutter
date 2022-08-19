@@ -16,11 +16,17 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: 200,
-          child: const LinearGauge(),
+      body: Container(
+        child: Center(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+            child: const LinearGauge(
+              start: 0,
+              end: 100,
+              steps: 10,
+            ),
+          ),
         ),
       ),
     );

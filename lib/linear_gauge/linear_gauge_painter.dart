@@ -6,30 +6,27 @@ import 'dart:ui' as ui;
 import 'package:gauges/linear_gauge/linear_gauge_label.dart';
 
 class LinearGaugePainter extends CustomPainter {
-  LinearGaugePainter({
-    required this.color,
-    required this.start,
-    required this.end,
-    required this.steps,
-    required this.height,
-    required this.showLinearGaugeContainer,
-    required this.gaugeOrientation,
-    required this.rulerPadding,
-    required this.textStyle,
-    required this.primaryRulersWidth,
-    required this.primaryRulersHeight,
-    required this.secondaryRulersHeight,
-    required this.secondaryRulerWidth,
-    required this.labelTopMargin,
-    required this.primaryRulerColor,
-    required this.secondaryRulerColor,
-  }) : assert(start <= end, "Start should be grater then end");
+  LinearGaugePainter(
+      {required this.start,
+      required this.end,
+      required this.steps,
+      required this.showLinearGaugeContainer,
+      required this.gaugeOrientation,
+      required this.rulerPadding,
+      required this.textStyle,
+      required this.primaryRulersWidth,
+      required this.primaryRulersHeight,
+      required this.secondaryRulersHeight,
+      required this.secondaryRulerWidth,
+      required this.labelTopMargin,
+      required this.primaryRulerColor,
+      required this.secondaryRulerColor,
+      required this.linearGaugeBoxDecoration})
+      : assert(start <= end, "Start should be grater then end");
 
-  Color color;
   double start;
   double end;
   double steps;
-  double height;
   bool showLinearGaugeContainer;
   GaugeOrientation gaugeOrientation;
   Padding rulerPadding;
@@ -41,6 +38,7 @@ class LinearGaugePainter extends CustomPainter {
   double labelTopMargin;
   Color primaryRulerColor;
   Color secondaryRulerColor;
+  LinearGaugeBoxDecoration linearGaugeBoxDecoration;
 
   final Paint _linearGaugeContainerPaint = Paint();
   final Paint _primaryRulerPaint = Paint();
@@ -59,17 +57,19 @@ class LinearGaugePainter extends CustomPainter {
     } else {
       _finalRulerSize = Size(linearGaugeHeight, linearGaugeHeight);
     }
-    _startLabelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: start);
-    _endLabelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: end);
+    // _startLabelSize = _linearGaugeLabel.getLabelSize(
+    //     textStyle: textStyle, value: int.parse(start.toString()).toString());
+    // _endLabelSize = _linearGaugeLabel.getLabelSize(
+    //     textStyle: textStyle, value: int.parse(end.toString()).toString());
 
     _size = size;
   }
 
-  void _setGaugeContainerPaint() {
-    _linearGaugeContainerPaint.color = color;
-    _linearGaugeContainerPaint.strokeWidth = height;
+  void _setGaugeContainerPaint(Rect rect) {
+    _linearGaugeContainerPaint.color = linearGaugeBoxDecoration.color;
+    _linearGaugeContainerPaint.strokeWidth = linearGaugeBoxDecoration.height;
+    _linearGaugeContainerPaint.shader =
+        linearGaugeBoxDecoration.linearGradient?.createShader(rect);
   }
 
   void _setPrimaryRulerPaint() {
@@ -92,7 +92,8 @@ class LinearGaugePainter extends CustomPainter {
         textStyle: textStyle,
         gaugeOrientation: gaugeOrientation,
         labelTopMargin: labelTopMargin);
-    final double rulerSize = showLinearGaugeContainer ? height : 0;
+    final double rulerSize =
+        showLinearGaugeContainer ? linearGaugeBoxDecoration.height : 0;
     rulerHeight = rulerSize + singleRulerHeight + labelSize;
 
     if (rulerPadding > labelSize) {
@@ -125,36 +126,41 @@ class LinearGaugePainter extends CustomPainter {
   }
 
   void _calculateRulerPoints() {
-    // distance between point a and b irrespective of the sign
-    final double distance = (end - start).abs();
-
-    double distanceValueInRangeOfHundred = distance / _getDistanceByHundred();
-    final num minDistance = math.pow(
-      10,
-      (math.log(distanceValueInRangeOfHundred) / math.log(10)).floor(),
-    );
-
-    final List<double> labelsInterval = [10, 5, 2, 1];
-
-    for (final division in labelsInterval) {
-      final double currentDivision = minDistance * division;
-      if (_getDistanceByHundred() < (distance / currentDivision)) {
+    late double interval = (end - start) / ((3 * _size.width) / 100);
+    final List<double> intervalDivisions = <double>[10, 5, 2, 1];
+    late double currentInterval;
+    for (final double intervalDivision in intervalDivisions) {
+      currentInterval = (_size.width > 400 ? 1 : 10) * intervalDivision;
+      if ((3 * _size.width / 100) < ((end - start) / currentInterval)) {
         break;
       }
-      distanceValueInRangeOfHundred = currentDivision;
+
+      interval = currentInterval;
     }
 
-    _linearGaugeLabel.addLabels(
-        distanceValueInRangeOfHundred: distanceValueInRangeOfHundred,
-        start: start,
-        end: end);
+    print(_size.width); // 20.97
 
-    _linearGaugeLabel.addLabelsToMap();
+    _linearGaugeLabel.addLabels(
+      distanceValueInRangeOfHundred: steps == 0 ? interval : steps,
+      start: start,
+      end: end,
+    );
 
     _startLabelSize =
         _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: start);
+
     _endLabelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: end);
+        _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: start);
+
+    _linearGaugeLabel.generateOffSetsForLabel(_startLabelSize, _endLabelSize,
+        _size, end, primaryRulersHeight, linearGaugeBoxDecoration.height);
+
+    // _linearGaugeLabel.addLabelsToMap();
+
+    // _startLabelSize =
+    //     _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: start);
+    // _endLabelSize =
+    //     _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: end);
   }
 
   double _convertValueToPercentage(double? value) {
@@ -197,17 +203,16 @@ class LinearGaugePainter extends CustomPainter {
             (totalPaddingAroundLabel));
   }
 
-  void _drawLabels(Canvas canvas, int majorTickIndex,
-      double majorTickLeftPosition, double top) {
+  void _drawLabels(Canvas canvas, String text, List<Offset> list) {
     final ui.ParagraphStyle paragraphStyle = ui.ParagraphStyle(
       textDirection: TextDirection.ltr,
     );
-    final String labelText = _linearGaugeLabel.getMappedLabel[
-        _linearGaugeLabel.getListOfLabel[majorTickIndex].value]!;
-    final double? value =
-        _linearGaugeLabel.getListOfLabel[majorTickIndex].value;
-    final ui.TextStyle labelTextStyle =
-        ui.TextStyle(color: Colors.black, fontSize: 11.0);
+    final String labelText = text;
+    final double? value = double.tryParse(text);
+    final ui.TextStyle labelTextStyle = ui.TextStyle(
+      color: Colors.black,
+      fontSize: 11.0,
+    );
     final ui.ParagraphBuilder paragraphBuilder =
         ui.ParagraphBuilder(paragraphStyle)
           ..pushStyle(labelTextStyle)
@@ -220,14 +225,16 @@ class LinearGaugePainter extends CustomPainter {
     /// TODO:: Hardcoded value
     paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
-    Offset labelOffset;
-
     // This needs to be changed when its vertical
-    final double labelLeftPosition =
-        majorTickLeftPosition - (labelSize.width / 2);
-    labelOffset = Offset(labelLeftPosition, primaryRulersHeight);
+    //final double labelLeftPosition =
+    //     majorTickLeftPosition - (labelSize.width / 2);
+    // labelOffset = Offset(labelLeftPosition,
+    //     primaryRulersHeight + linearGaugeBoxDecoration.height);
 
-    canvas.drawParagraph(paragraph, labelOffset);
+    canvas.drawParagraph(
+        paragraph,
+        Offset(
+            list[0].dx - (labelSize.width / 2), list[0].dy + labelTopMargin));
   }
 
   void _paintPrimaryRulers(Canvas canvas) {
@@ -240,9 +247,10 @@ class LinearGaugePainter extends CustomPainter {
       final double pixelValue =
           _convertValueToPixel(_linearGaugeLabel.getListOfLabel[index].value) +
               startRulerPosition;
-      Offset startPoint =
-          Offset(pixelValue, height + rulerPadding.padding.vertical);
-      Offset endPoint = Offset(pixelValue, primaryRulersHeight);
+      Offset startPoint = Offset(pixelValue,
+          linearGaugeBoxDecoration.height + rulerPadding.padding.vertical);
+      Offset endPoint = Offset(
+          pixelValue, primaryRulersHeight + linearGaugeBoxDecoration.height);
 
       if (gaugeOrientation == GaugeOrientation.vertical) {
         startPoint = Offset(startPoint.dy, startPoint.dx);
@@ -251,7 +259,7 @@ class LinearGaugePainter extends CustomPainter {
 
       canvas.drawLine(startPoint, endPoint, _primaryRulerPaint);
       _paintSecondaryRulers(startPoint, index, canvas);
-      _drawLabels(canvas, index, startPoint.dx, startPoint.dy);
+      //_drawLabels(canvas, index, startPoint.dx, startPoint.dy);
     }
   }
 
@@ -279,7 +287,11 @@ class LinearGaugePainter extends CustomPainter {
         secondaryRulerStartPoint += length;
         canvas.drawLine(
             Offset(secondaryRulerStartPoint, 0),
-            Offset(secondaryRulerStartPoint, secondaryRulersHeight + 10),
+            Offset(
+                secondaryRulerStartPoint,
+                secondaryRulersHeight +
+                    linearGaugeBoxDecoration.height +
+                    labelTopMargin),
             _secondaryRulerPaint);
       }
     }
@@ -300,22 +312,41 @@ class LinearGaugePainter extends CustomPainter {
       endLabelPadding = 0;
     }
     Offset offset = const Offset(0, 0);
+
     late Rect gaugeContainer;
     if (gaugeOrientation == GaugeOrientation.horizontal) {
-      gaugeContainer = Rect.fromLTWH((offset.dx + startLabelPadding), offset.dy,
-          (size.width - (startLabelPadding + endLabelPadding)), height);
+      gaugeContainer = Rect.fromLTWH(
+          (offset.dx + _startLabelSize.width / 2),
+          offset.dy,
+          size.width - (_startLabelSize.width + _endLabelSize.width / 2),
+          linearGaugeBoxDecoration.height);
     }
+    //_setGaugeContainerPaint(gaugeContainer);
+    if (linearGaugeBoxDecoration.borderRadius != null) {
+      canvas.drawRRect(
+          RRect.fromRectAndRadius(gaugeContainer,
+              Radius.circular(linearGaugeBoxDecoration.borderRadius!)),
+          _linearGaugeContainerPaint);
+    } else {
+      canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
+    }
+  }
 
-    canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
+  void _drawPrimaryRulers(Canvas canvas) {
+    _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
+      _linearGaugeContainerPaint.color = Colors.blueAccent;
+      canvas.drawLine(value[0], value[1], _linearGaugeContainerPaint);
+      _drawLabels(canvas, key, value);
+    });
   }
 
   @override
   void paint(Canvas canvas, Size size) {
     _setUp(size);
-    _setGaugeContainerPaint();
     _calculateRulerPoints();
-    _setPrimaryRulerPaint();
-    _paintPrimaryRulers(canvas);
+    _drawPrimaryRulers(canvas);
+    // _setPrimaryRulerPaint();
+    // _paintPrimaryRulers(canvas);
     if (showLinearGaugeContainer) _paintGaugeContainer(canvas, size);
   }
 

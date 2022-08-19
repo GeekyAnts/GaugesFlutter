@@ -19,40 +19,29 @@ class LinearGauge extends StatefulWidget {
   ///),
   /// ```
   ///
-  const LinearGauge(
-      {Key? key,
-      this.color = const Color.fromARGB(255, 207, 207, 207),
-      this.start = 0,
-      this.end = 100,
-      this.steps = 1,
-      this.height = 4,
-      this.showLinearGaugeContainer = true,
-      this.gaugeOrientation = GaugeOrientation.horizontal,
-      this.rulerPadding = const Padding(padding: EdgeInsets.all(0)),
-      this.textStyle = const TextStyle(
-        fontSize: 12.0,
-        color: Color.fromARGB(255, 86, 86, 86),
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.normal,
-      ),
-      this.primaryRulersWidth = 1.0,
-      this.primaryRulersHeight = 15.0,
-      this.secondaryRulersHeight = 1.0,
-      this.secondaryRulersWidth = 1.0,
-      this.labelTopMargin = 0.0,
-      this.primaryRulerColor = Colors.black54,
-      this.secondaryRulerColor = Colors.grey})
-      : super(key: key);
-
-  ///
-  /// `color` Set the Color of the [LinearGauge] Container
-  ///
-  /// ```dart
-  /// const LinearGauge(
-  ///   color: Colors.red,
-  /// ),
-  /// ```
-  final Color? color;
+  const LinearGauge({
+    Key? key,
+    this.start = 0,
+    this.end = 100,
+    this.steps = 0,
+    this.showLinearGaugeContainer = true,
+    this.gaugeOrientation = GaugeOrientation.horizontal,
+    this.rulerPadding = const Padding(padding: EdgeInsets.all(0)),
+    this.textStyle = const TextStyle(
+      fontSize: 12.0,
+      color: Color.fromARGB(255, 86, 86, 86),
+      fontStyle: FontStyle.normal,
+      fontWeight: FontWeight.normal,
+    ),
+    this.primaryRulersWidth = 1.0,
+    this.primaryRulersHeight = 15.0,
+    this.secondaryRulersHeight = 1.0,
+    this.secondaryRulersWidth = 1.0,
+    this.labelTopMargin = 10.0,
+    this.primaryRulerColor = Colors.black54,
+    this.secondaryRulerColor = Colors.grey,
+    this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
+  }) : super(key: key);
 
   ///
   /// `start` Sets the starting label of the [LinearGauge] Container
@@ -85,17 +74,6 @@ class LinearGauge extends StatefulWidget {
   /// ```
   ///
   final double? steps;
-
-  ///
-  /// `height` Sets the height of the [LinearGauge] Container
-  ///
-  /// ```dart
-  /// const LinearGauge(
-  ///   steps : 5.5
-  /// ),
-  /// ```
-  ///
-  final double? height;
 
   ///
   /// `showLinearGaugeContainer`  controls the  [LinearGauge] Container render
@@ -277,6 +255,24 @@ class LinearGauge extends StatefulWidget {
   ///
   final Color? secondaryRulerColor;
 
+  ///
+  ///
+  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
+  ///
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// const LinearGauge(
+  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+  ///               color: Colors.green,
+  ///               height: 30.0,
+  ///            ),
+  ///        ),
+  /// ```
+  ///
+  final LinearGaugeBoxDecoration? linearGaugeBoxDecoration;
+
   @override
   State<LinearGauge> createState() => _LinearGaugeState();
 }
@@ -286,23 +282,21 @@ class _LinearGaugeState extends State<LinearGauge> {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: LinearGaugePainter(
-        color: widget.color!,
-        start: widget.start!,
-        end: widget.end!,
-        height: widget.height!,
-        steps: widget.steps!,
-        showLinearGaugeContainer: widget.showLinearGaugeContainer!,
-        gaugeOrientation: widget.gaugeOrientation!,
-        rulerPadding: widget.rulerPadding!,
-        textStyle: widget.textStyle!,
-        primaryRulersWidth: widget.primaryRulersWidth!,
-        primaryRulersHeight: widget.primaryRulersHeight!,
-        secondaryRulersHeight: widget.secondaryRulersHeight!,
-        secondaryRulerWidth: widget.secondaryRulersWidth!,
-        labelTopMargin: widget.labelTopMargin!,
-        primaryRulerColor: widget.primaryRulerColor!,
-        secondaryRulerColor: widget.secondaryRulerColor!,
-      ),
+          start: widget.start!,
+          end: widget.end!,
+          steps: widget.steps!,
+          showLinearGaugeContainer: widget.showLinearGaugeContainer!,
+          gaugeOrientation: widget.gaugeOrientation!,
+          rulerPadding: widget.rulerPadding!,
+          textStyle: widget.textStyle!,
+          primaryRulersWidth: widget.primaryRulersWidth!,
+          primaryRulersHeight: widget.primaryRulersHeight!,
+          secondaryRulersHeight: widget.secondaryRulersHeight!,
+          secondaryRulerWidth: widget.secondaryRulersWidth!,
+          labelTopMargin: widget.labelTopMargin!,
+          primaryRulerColor: widget.primaryRulerColor!,
+          secondaryRulerColor: widget.secondaryRulerColor!,
+          linearGaugeBoxDecoration: widget.linearGaugeBoxDecoration!),
     );
   }
 }
