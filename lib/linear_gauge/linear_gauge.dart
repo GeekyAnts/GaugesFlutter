@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gauges/gauges.dart';
 import 'linear_gauge_painter.dart';
 
-class LinearGauge extends StatefulWidget {
+class LinearGauge extends LeafRenderObjectWidget {
   ///
   /// [LinearGauge] is a visualization of measurement widget with a linear scale values. Linear
   /// Gauge as rich sets of config parameters which can be modified as per requirement
@@ -274,29 +274,44 @@ class LinearGauge extends StatefulWidget {
   final LinearGaugeBoxDecoration? linearGaugeBoxDecoration;
 
   @override
-  State<LinearGauge> createState() => _LinearGaugeState();
-}
-
-class _LinearGaugeState extends State<LinearGauge> {
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: LinearGaugePainter(
-          start: widget.start!,
-          end: widget.end!,
-          steps: widget.steps!,
-          showLinearGaugeContainer: widget.showLinearGaugeContainer!,
-          gaugeOrientation: widget.gaugeOrientation!,
-          rulerPadding: widget.rulerPadding!,
-          textStyle: widget.textStyle!,
-          primaryRulersWidth: widget.primaryRulersWidth!,
-          primaryRulersHeight: widget.primaryRulersHeight!,
-          secondaryRulersHeight: widget.secondaryRulersHeight!,
-          secondaryRulerWidth: widget.secondaryRulersWidth!,
-          labelTopMargin: widget.labelTopMargin!,
-          primaryRulerColor: widget.primaryRulerColor!,
-          secondaryRulerColor: widget.secondaryRulerColor!,
-          linearGaugeBoxDecoration: widget.linearGaugeBoxDecoration!),
+  RenderLinearGauge createRenderObject(BuildContext context) {
+    return RenderLinearGauge(
+      start: start!,
+      end: end!,
+      steps: steps!,
+      showLinearGaugeContainer: showLinearGaugeContainer!,
+      gaugeOrientation: gaugeOrientation!,
+      rulerPadding: rulerPadding!,
+      textStyle: textStyle!,
+      primaryRulersWidth: primaryRulersWidth!,
+      primaryRulersHeight: primaryRulersHeight!,
+      secondaryRulersHeight: secondaryRulersHeight!,
+      secondaryRulersWidth: secondaryRulersWidth!,
+      labelTopMargin: labelTopMargin!,
+      primaryRulerColor: primaryRulerColor!,
+      secondaryRulerColor: secondaryRulerColor!,
+      linearGaugeBoxDecoration: linearGaugeBoxDecoration!,
     );
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, RenderLinearGauge renderObject) {
+    renderObject
+      ..end = end!
+      ..gaugeOrientation = gaugeOrientation!
+      ..labelTopMargin = labelTopMargin!
+      ..linearGaugeBoxDecoration = linearGaugeBoxDecoration!
+      ..primaryRulerColor = primaryRulerColor!
+      ..primaryRulersHeight = primaryRulersHeight!
+      ..primaryRulersWidth = primaryRulersWidth!
+      ..secondaryRulerColor = secondaryRulerColor!
+      ..secondaryRulersHeight = secondaryRulersHeight!
+      ..secondaryRulersWidth = secondaryRulersWidth!
+      ..rulerPadding = rulerPadding!
+      ..showLinearGaugeContainer = showLinearGaugeContainer!
+      ..start = start!
+      ..steps = steps!
+      ..textStyle = textStyle!;
   }
 }

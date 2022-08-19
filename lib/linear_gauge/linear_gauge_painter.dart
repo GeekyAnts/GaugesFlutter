@@ -5,8 +5,8 @@ import 'dart:ui' as ui;
 
 import 'package:gauges/linear_gauge/linear_gauge_label.dart';
 
-class LinearGaugePainter extends CustomPainter {
-  LinearGaugePainter(
+class RenderLinearGauge extends RenderBox {
+  RenderLinearGauge(
       {required this.start,
       required this.end,
       required this.steps,
@@ -17,7 +17,7 @@ class LinearGaugePainter extends CustomPainter {
       required this.primaryRulersWidth,
       required this.primaryRulersHeight,
       required this.secondaryRulersHeight,
-      required this.secondaryRulerWidth,
+      required this.secondaryRulersWidth,
       required this.labelTopMargin,
       required this.primaryRulerColor,
       required this.secondaryRulerColor,
@@ -34,7 +34,7 @@ class LinearGaugePainter extends CustomPainter {
   double primaryRulersWidth;
   double primaryRulersHeight;
   double secondaryRulersHeight;
-  double secondaryRulerWidth;
+  double secondaryRulersWidth;
   double labelTopMargin;
   Color primaryRulerColor;
   Color secondaryRulerColor;
@@ -79,7 +79,7 @@ class LinearGaugePainter extends CustomPainter {
 
   void _setSecondaryRulerPaint() {
     _secondaryRulerPaint.color = secondaryRulerColor;
-    _secondaryRulerPaint.strokeWidth = secondaryRulerWidth;
+    _secondaryRulerPaint.strokeWidth = secondaryRulersWidth;
   }
 
   double getRulerHeight() {
@@ -341,7 +341,8 @@ class LinearGaugePainter extends CustomPainter {
   }
 
   @override
-  void paint(Canvas canvas, Size size) {
+  void paint(PaintingContext context, Offset offset) {
+    Canvas canvas = context.canvas;
     _setUp(size);
     _calculateRulerPoints();
     _drawPrimaryRulers(canvas);
