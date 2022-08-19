@@ -390,7 +390,7 @@ class RenderLinearGauge extends RenderBox {
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     final desiredWidth = constraints.maxWidth;
-    final desiredHeight = constraints.maxHeight;
+    final desiredHeight = constraints.minHeight;
     final desiredSize = Size(desiredWidth, desiredHeight);
     return constraints.constrain(desiredSize);
   }
@@ -398,6 +398,8 @@ class RenderLinearGauge extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
+    canvas.save();
+    canvas.translate(offset.dx, (offset.dy));
     _calculateRulerPoints();
     _drawPrimaryRulers(canvas);
     // _setPrimaryRulerPaint();
