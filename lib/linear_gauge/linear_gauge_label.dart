@@ -28,6 +28,9 @@ class LinearGaugeLabel {
     }
   }
 
+  ///
+  /// The formula is from the below source
+  /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
       Size startLabel,
       Size endLabel,
