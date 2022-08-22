@@ -19,29 +19,30 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///),
   /// ```
   ///
-  const LinearGauge({
-    Key? key,
-    this.start = 0,
-    this.end = 100,
-    this.steps = 0,
-    this.showLinearGaugeContainer = true,
-    this.gaugeOrientation = GaugeOrientation.horizontal,
-    this.rulerPadding = const Padding(padding: EdgeInsets.all(0)),
-    this.textStyle = const TextStyle(
-      fontSize: 12.0,
-      color: Color.fromARGB(255, 86, 86, 86),
-      fontStyle: FontStyle.normal,
-      fontWeight: FontWeight.normal,
-    ),
-    this.primaryRulersWidth = 1.0,
-    this.primaryRulersHeight = 15.0,
-    this.secondaryRulersHeight = 1.0,
-    this.secondaryRulersWidth = 1.0,
-    this.labelTopMargin = 10.0,
-    this.primaryRulerColor = Colors.black54,
-    this.secondaryRulerColor = Colors.grey,
-    this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
-  }) : super(key: key);
+  const LinearGauge(
+      {Key? key,
+      this.start = 0,
+      this.end = 100,
+      this.steps = 0,
+      this.showLinearGaugeContainer = true,
+      this.gaugeOrientation = GaugeOrientation.horizontal,
+      this.rulerPadding = const Padding(padding: EdgeInsets.all(0)),
+      this.textStyle = const TextStyle(
+        fontSize: 12.0,
+        color: Color.fromARGB(255, 86, 86, 86),
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.normal,
+      ),
+      this.primaryRulersWidth = 1.0,
+      this.primaryRulersHeight = 15.0,
+      this.secondaryRulersHeight = 1.0,
+      this.secondaryRulersWidth = 1.0,
+      this.labelTopMargin = 10.0,
+      this.primaryRulerColor = Colors.black54,
+      this.secondaryRulerColor = Colors.grey,
+      this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
+      this.secondaryRulerPerInterval = 1.0})
+      : super(key: key);
 
   ///
   /// `start` Sets the starting label of the [LinearGauge] Container
@@ -257,6 +258,22 @@ class LinearGauge extends LeafRenderObjectWidget {
 
   ///
   ///
+  /// `secondaryRulerPerInterval` draw the ruler between primary rulers as per interval provided
+  ///
+  /// default is to `secondaryRulerPerInterval =1
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   secondaryRulerPerInterval:1,
+  /// ),
+  /// ```
+  ///
+  final double? secondaryRulerPerInterval;
+
+  ///
+  ///
   /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
   ///
   ///
@@ -291,6 +308,8 @@ class LinearGauge extends LeafRenderObjectWidget {
       primaryRulerColor: primaryRulerColor!,
       secondaryRulerColor: secondaryRulerColor!,
       linearGaugeBoxDecoration: linearGaugeBoxDecoration!,
+      secondaryRulerPerInterval: secondaryRulerPerInterval!,
+      linearGaugeContainerBgColor: linearGaugeBoxDecoration!.color,
     );
   }
 
@@ -298,20 +317,21 @@ class LinearGauge extends LeafRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, RenderLinearGauge renderObject) {
     renderObject
-      ..end = end!
-      ..gaugeOrientation = gaugeOrientation!
-      ..labelTopMargin = labelTopMargin!
-      ..linearGaugeBoxDecoration = linearGaugeBoxDecoration!
-      ..primaryRulerColor = primaryRulerColor!
-      ..primaryRulersHeight = primaryRulersHeight!
-      ..primaryRulersWidth = primaryRulersWidth!
-      ..secondaryRulerColor = secondaryRulerColor!
-      ..secondaryRulersHeight = secondaryRulersHeight!
-      ..secondaryRulersWidth = secondaryRulersWidth!
-      ..rulerPadding = rulerPadding!
-      ..showLinearGaugeContainer = showLinearGaugeContainer!
-      ..start = start!
-      ..steps = steps!
-      ..textStyle = textStyle!;
+      ..setEnd = end!
+      ..setGaugeOrientation = gaugeOrientation!
+      ..setLabelTopMargin = labelTopMargin!
+      ..setPrimaryRulerColor = primaryRulerColor!
+      ..setPrimaryRulersHeight = primaryRulersHeight!
+      ..setPrimaryRulersWidth = primaryRulersWidth!
+      ..setSecondaryRulerColor = secondaryRulerColor!
+      ..setSecondaryRulersHeight = secondaryRulersHeight!
+      ..setSecondaryRulersWidth = secondaryRulersWidth!
+      ..setRulerPadding = rulerPadding!
+      ..setShowLinearGaugeContainer = showLinearGaugeContainer!
+      ..setStart = start!
+      ..setSteps = steps!
+      ..setTextStyle = textStyle!
+      ..setSecondaryRulerPerInterval = secondaryRulerPerInterval!
+      ..setLinearGaugeContainerBgColor = linearGaugeBoxDecoration!.color;
   }
 }

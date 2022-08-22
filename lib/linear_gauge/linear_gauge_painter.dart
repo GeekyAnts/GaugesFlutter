@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:gauges/gauges.dart';
-import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:gauges/linear_gauge/linear_gauge_label.dart';
 
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge(
-      {required this.start,
-      required this.end,
-      required this.steps,
-      required this.showLinearGaugeContainer,
-      required this.gaugeOrientation,
-      required this.rulerPadding,
-      required this.textStyle,
-      required this.primaryRulersWidth,
-      required this.primaryRulersHeight,
-      required this.secondaryRulersHeight,
-      required this.secondaryRulersWidth,
-      required this.labelTopMargin,
-      required this.primaryRulerColor,
-      required this.secondaryRulerColor,
-      required this.linearGaugeBoxDecoration})
+      {required double start,
+      required double end,
+      required double steps,
+      required bool showLinearGaugeContainer,
+      required GaugeOrientation gaugeOrientation,
+      required Padding rulerPadding,
+      required TextStyle textStyle,
+      required double primaryRulersWidth,
+      required double primaryRulersHeight,
+      required double secondaryRulersHeight,
+      required double secondaryRulersWidth,
+      required double labelTopMargin,
+      required Color primaryRulerColor,
+      required Color secondaryRulerColor,
+      required LinearGaugeBoxDecoration linearGaugeBoxDecoration,
+      required double secondaryRulerPerInterval,
+      required Color linearGaugeContainerBgColor})
       : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -37,52 +38,36 @@ class RenderLinearGauge extends RenderBox {
         _secondaryRulersHeight = secondaryRulersHeight,
         _secondaryRulersWidth = secondaryRulersWidth,
         _labelTopMargin = labelTopMargin,
-        _linearGaugeBoxDecoration = linearGaugeBoxDecoration;
-
-  double start;
-  double end;
-  double steps;
-  bool showLinearGaugeContainer;
-  GaugeOrientation gaugeOrientation;
-  Padding rulerPadding;
-  TextStyle textStyle;
-  double primaryRulersWidth;
-  double primaryRulersHeight;
-  double secondaryRulersHeight;
-  double secondaryRulersWidth;
-  double labelTopMargin;
-  Color primaryRulerColor;
-  Color secondaryRulerColor;
-  LinearGaugeBoxDecoration linearGaugeBoxDecoration;
+        _linearGaugeBoxDecoration = linearGaugeBoxDecoration,
+        _secondaryRulerPerInterval = secondaryRulerPerInterval,
+        _linearGaugeContainerBgColor = linearGaugeBoxDecoration.color;
 
   ///
-  /// Getter and Setter for the [start] parameter.
+  /// Getter and Setter for the [_start] parameter.
   ///
   double get getStart => _start;
   double _start;
   set setStart(double start) {
     if (_start == start) return;
-
     _start = start;
     markNeedsPaint();
   }
 
   ///
-  /// Getter and Setter for the [end] parameter.
+  /// Getter and Setter for the [_end] parameter.
   ///
   get getEnd => _end;
   double _end;
   set setEnd(end) {
     if (_end == end) return;
-
     _end = end;
     markNeedsPaint();
   }
 
   ///
-  /// Getter and Setter for the [steps] parameter.
+  /// Getter and Setter for the [_steps] parameter.
   ///
-  get getSteps => steps;
+  get getSteps => _steps;
   double _steps;
   set setSteps(steps) {
     if (_steps == steps) return;
@@ -92,9 +77,9 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [showLinearGaugeContainer] parameter.
+  /// Getter and Setter for the [_showLinearGaugeContainer] parameter.
   ///
-  get getShowLinearGaugeContainer => showLinearGaugeContainer;
+  get getShowLinearGaugeContainer => _showLinearGaugeContainer;
   bool _showLinearGaugeContainer;
   set setShowLinearGaugeContainer(showLinearGaugeContainer) {
     if (_showLinearGaugeContainer == showLinearGaugeContainer) return;
@@ -106,7 +91,7 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [gaugeOrientation] parameter.
   ///
-  get getGaugeOrientation => gaugeOrientation;
+  get getGaugeOrientation => _gaugeOrientation;
   GaugeOrientation _gaugeOrientation;
 
   set setGaugeOrientation(gaugeOrientation) {
@@ -119,7 +104,7 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [rulerPadding] parameter.
   ///
-  get getRulerPadding => rulerPadding;
+  get getRulerPadding => _rulerPadding;
   Padding _rulerPadding;
 
   set setRulerPadding(rulerPadding) {
@@ -132,7 +117,7 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [textStyle] parameter.
   ///
-  get getTextStyle => textStyle;
+  get getTextStyle => _textStyle;
   TextStyle _textStyle;
   set setTextStyle(textStyle) {
     if (_textStyle == textStyle) return;
@@ -144,7 +129,7 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [primaryRulersWidth] parameter.
   ///
-  get getPrimaryRulersWidth => primaryRulersWidth;
+  get getPrimaryRulersWidth => _primaryRulersWidth;
   double _primaryRulersWidth;
   set setPrimaryRulersWidth(primaryRulersWidth) {
     if (_primaryRulersWidth == primaryRulersWidth) return;
@@ -156,7 +141,7 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [primaryRulersHeight] parameter.
   ///
-  get getPrimaryRulersHeight => primaryRulersHeight;
+  get getPrimaryRulersHeight => _primaryRulersHeight;
 
   double _primaryRulersHeight;
 
@@ -170,7 +155,7 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [secondaryRulersHeight] parameter.
   ///
-  get getSecondaryRulersHeight => secondaryRulersHeight;
+  get getSecondaryRulersHeight => _secondaryRulersHeight;
 
   double _secondaryRulersHeight;
 
@@ -185,7 +170,7 @@ class RenderLinearGauge extends RenderBox {
   /// Getter and Setter for the [secondaryRulersWidth] parameter.
   ///
 
-  get getSecondaryRulersWidth => secondaryRulersWidth;
+  get getSecondaryRulersWidth => _secondaryRulersWidth;
   double _secondaryRulersWidth;
   set setSecondaryRulersWidth(secondaryRulersWidth) {
     if (_secondaryRulersWidth == secondaryRulersWidth) return;
@@ -197,7 +182,7 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [labelTopMargin] parameter.
   ///
-  get getLabelTopMargin => labelTopMargin;
+  get getLabelTopMargin => _labelTopMargin;
   double _labelTopMargin;
 
   set setLabelTopMargin(labelTopMargin) {
@@ -210,7 +195,7 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [primaryRulerColor] parameter.
   ///
-  get getPrimaryRulerColor => primaryRulerColor;
+  Color get getPrimaryRulerColor => _primaryRulerColor;
   Color _primaryRulerColor;
 
   set setPrimaryRulerColor(primaryRulerColor) {
@@ -222,7 +207,7 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [secondaryRulerColor] parameter.
   ///
-  get getSecondaryRulerColor => secondaryRulerColor;
+  Color get getSecondaryRulerColor => _secondaryRulerColor;
   Color _secondaryRulerColor;
 
   set setSecondaryRulerColor(secondaryRulerColor) {
@@ -234,7 +219,8 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [linearGaugeBoxDecoration] parameter.
   ///
-  get getLinearGaugeBoxDecoration => linearGaugeBoxDecoration;
+  LinearGaugeBoxDecoration get getLinearGaugeBoxDecoration =>
+      _linearGaugeBoxDecoration;
 
   LinearGaugeBoxDecoration _linearGaugeBoxDecoration;
   set setLinearGaugeBoxDecoration(linearGaugeBoxDecoration) {
@@ -243,52 +229,48 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  ///
+  ///
+  ///
+  double get getSecondaryRulerPerInterval => _secondaryRulerPerInterval;
+  double _secondaryRulerPerInterval;
+
+  set setSecondaryRulerPerInterval(secondaryRulerPerInterval) {
+    if (_secondaryRulerPerInterval == secondaryRulerPerInterval) {
+      return;
+    }
+    _secondaryRulerPerInterval = secondaryRulerPerInterval;
+    markNeedsPaint();
+  }
+
+  ///
+  ///
+  ///
+  Color get getLinearGaugeContainerBgColor => _linearGaugeContainerBgColor;
+  Color _linearGaugeContainerBgColor;
+  set setLinearGaugeContainerBgColor(Color linearGaugeContainerBgColor) {
+    if (_linearGaugeContainerBgColor == linearGaugeContainerBgColor) {
+      return;
+    }
+    _linearGaugeContainerBgColor = linearGaugeContainerBgColor;
+    markNeedsPaint();
+  }
+
   final Paint _linearGaugeContainerPaint = Paint();
+  final Paint _primaryRulersPaint = Paint();
+  final Paint _secondaryRulersPaint = Paint();
 
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _startLabelSize, _endLabelSize;
 
-  double getRulerHeight() {
-    late double rulerHeight;
-    final double rulerPadding = this.rulerPadding.padding.vertical;
-    final double singleRulerHeight =
-        math.max(primaryRulersHeight, secondaryRulersHeight) +
-            this.rulerPadding.padding.vertical;
-    final double labelSize = _linearGaugeLabel.getMaxLabelSize(
-        textStyle: textStyle,
-        gaugeOrientation: gaugeOrientation,
-        labelTopMargin: labelTopMargin);
-    final double rulerSize =
-        showLinearGaugeContainer ? linearGaugeBoxDecoration.height : 0;
-    rulerHeight = rulerSize + singleRulerHeight + labelSize;
-
-    if (rulerPadding > labelSize) {
-      rulerHeight += rulerPadding - labelSize;
-    }
-
-    return rulerHeight;
-  }
-
-  double getLabelSizePadding(double value) {
-    if (gaugeOrientation == GaugeOrientation.horizontal) {
-      return value == start
-          ? _startLabelSize.width / 2
-          : _endLabelSize.width / 2;
-    } else {
-      return value == start
-          ? _startLabelSize.height / 2
-          : _endLabelSize.height / 2;
-    }
-  }
-
   void _calculateRulerPoints() {
-    late double interval = (end - start) / ((3 * size.width) / 100);
+    late double interval = (getEnd - getStart) / ((3 * size.width) / 100);
     final List<double> intervalDivisions = <double>[10, 5, 2, 1];
     late double currentInterval;
     for (final double intervalDivision in intervalDivisions) {
       currentInterval = (size.width > 400 ? 1 : 10) * intervalDivision;
-      if ((3 * size.width / 100) < ((end - start) / currentInterval)) {
+      if ((3 * size.width / 100) < ((getEnd - getStart) / currentInterval)) {
         break;
       }
 
@@ -296,19 +278,24 @@ class RenderLinearGauge extends RenderBox {
     }
 
     _linearGaugeLabel.addLabels(
-      distanceValueInRangeOfHundred: steps == 0 ? interval : steps,
-      start: start,
-      end: end,
+      distanceValueInRangeOfHundred: getSteps == 0 ? interval : getSteps,
+      start: getStart,
+      end: getEnd,
     );
 
-    _startLabelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: start);
+    _startLabelSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle, value: getStart);
 
     _endLabelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: start);
+        _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: getEnd);
 
-    _linearGaugeLabel.generateOffSetsForLabel(_startLabelSize, _endLabelSize,
-        size, end, primaryRulersHeight, linearGaugeBoxDecoration.height);
+    _linearGaugeLabel.generateOffSetsForLabel(
+        _startLabelSize,
+        _endLabelSize,
+        size,
+        getEnd,
+        getPrimaryRulersHeight,
+        getLinearGaugeBoxDecoration.height);
   }
 
   void _drawLabels(Canvas canvas, String text, List<Offset> list) {
@@ -327,7 +314,7 @@ class RenderLinearGauge extends RenderBox {
           ..addText(labelText);
     final ui.Paragraph paragraph = paragraphBuilder.build();
     final Size labelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: textStyle, value: value);
+        _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: value);
 
     // ignore: todo
     /// TODO:: Hardcoded value
@@ -335,51 +322,54 @@ class RenderLinearGauge extends RenderBox {
 
     canvas.drawParagraph(
         paragraph,
-        Offset(
-            list[0].dx - (labelSize.width / 2), list[0].dy + labelTopMargin));
+        Offset(list[0].dx - (labelSize.width / 2),
+            list[0].dy + getLabelTopMargin));
   }
 
   void _paintGaugeContainer(Canvas canvas, Size size) {
-    double startLabelPadding = getLabelSizePadding(start);
-    double endLabelPadding = getLabelSizePadding(end);
-    if (startLabelPadding > rulerPadding.padding.horizontal) {
-      startLabelPadding = startLabelPadding - rulerPadding.padding.horizontal;
-    } else {
-      startLabelPadding = 0;
-    }
-
-    if (endLabelPadding > rulerPadding.padding.horizontal) {
-      endLabelPadding = endLabelPadding - rulerPadding.padding.horizontal;
-    } else {
-      endLabelPadding = 0;
-    }
     Offset offset = const Offset(0, 0);
 
     late Rect gaugeContainer;
-    if (gaugeOrientation == GaugeOrientation.horizontal) {
+    if (getGaugeOrientation == GaugeOrientation.horizontal) {
       gaugeContainer = Rect.fromLTWH(
           (offset.dx + _startLabelSize.width / 2),
           offset.dy,
-          size.width - (_startLabelSize.width + _endLabelSize.width / 2),
-          linearGaugeBoxDecoration.height);
+          size.width - ((_endLabelSize.width / 2)),
+          getLinearGaugeBoxDecoration.height);
     }
 
-    if (linearGaugeBoxDecoration.borderRadius != null) {
+    if (getLinearGaugeBoxDecoration.borderRadius != null) {
       canvas.drawRRect(
           RRect.fromRectAndRadius(gaugeContainer,
-              Radius.circular(linearGaugeBoxDecoration.borderRadius!)),
+              Radius.circular(getLinearGaugeBoxDecoration.borderRadius!)),
           _linearGaugeContainerPaint);
     } else {
-      canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
+      canvas.drawRect(gaugeContainer, _primaryRulersPaint);
     }
   }
 
   void _drawPrimaryRulers(Canvas canvas) {
+    _setPrimaryRulersPaint();
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
-      _linearGaugeContainerPaint.color = Colors.blueAccent;
-      canvas.drawLine(value[0], value[1], _linearGaugeContainerPaint);
+      canvas.drawLine(value[0], value[1], _primaryRulersPaint);
       _drawLabels(canvas, key, value);
     });
+  }
+
+  void _drawSecondaryRulers(Canvas canvas) {
+    _linearGaugeLabel.generateSecondaryRulers(
+      getSecondaryRulerPerInterval,
+      canvas,
+      _secondaryRulersPaint,
+    );
+  }
+
+  void _setPrimaryRulersPaint() {
+    _primaryRulersPaint.color = getPrimaryRulerColor;
+  }
+
+  void _setLinearGaugeContainerPaint() {
+    _linearGaugeContainerPaint.color = getLinearGaugeContainerBgColor;
   }
 
   @override
@@ -390,20 +380,25 @@ class RenderLinearGauge extends RenderBox {
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     final desiredWidth = constraints.maxWidth;
-    final desiredHeight = constraints.minHeight;
-    final desiredSize = Size(desiredWidth, desiredHeight);
+    final desiredHeight = constraints.maxHeight;
+    final desiredSize = Size(desiredWidth, 50);
     return constraints.constrain(desiredSize);
   }
+
+  @override
+  bool get isRepaintBoundary => true;
 
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
     canvas.save();
-    canvas.translate(offset.dx, (offset.dy));
+    canvas.translate(offset.dx, offset.dy);
+    _setLinearGaugeContainerPaint();
+    print("object");
     _calculateRulerPoints();
     _drawPrimaryRulers(canvas);
-    // _setPrimaryRulerPaint();
-    // _paintPrimaryRulers(canvas);
-    if (showLinearGaugeContainer) _paintGaugeContainer(canvas, size);
+    _drawSecondaryRulers(canvas);
+    if (getShowLinearGaugeContainer) _paintGaugeContainer(canvas, size);
+    canvas.restore();
   }
 }

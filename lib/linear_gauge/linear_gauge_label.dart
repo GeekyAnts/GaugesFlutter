@@ -16,10 +16,11 @@ class LinearGaugeLabel {
   final TextPainter _textPainter =
       TextPainter(textDirection: TextDirection.ltr);
 
-  void addLabels(
-      {required double distanceValueInRangeOfHundred,
-      required double start,
-      required double end}) {
+  void addLabels({
+    required double distanceValueInRangeOfHundred,
+    required double start,
+    required double end,
+  }) {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
@@ -41,7 +42,7 @@ class LinearGaugeLabel {
     primaryRulers.clear();
     Offset a = Offset(startLabel.width / 2, linearGaugeBoxContainerHeight);
     Offset b = Offset(
-        size.width - ((endLabel.width / 2) + (startLabel.width / 2)),
+        size.width - ((endLabel.width / 2) - (startLabel.width / 2)),
         linearGaugeBoxContainerHeight);
     for (int i = 0; i < _linearGaugeLabel.length; i++) {
       double x = a.dx * (1 - (_linearGaugeLabel[i].value! / end)) +
@@ -55,10 +56,29 @@ class LinearGaugeLabel {
     }
   }
 
-  void addLabelsToMap() {
-    _map.clear();
-    for (final LinearGaugeLabel element in _linearGaugeLabel) {
-      _map[element.value!] = element.text!;
+  ///
+  /// The formula is from the below source
+  /// (!)[https://stackoverflow.com/a/3542512/4565953]
+  void generateSecondaryRulers(
+      double totalRulers, Canvas canvas, Paint secondaryRulersPaint) {
+    Iterable<List<Offset>> offset = primaryRulers.values;
+    int i = 0;
+    for (var element in offset) {
+      if (i != offset.length - 1) {
+        Offset a = element[0];
+        Offset b = offset.elementAt(i + 1)[0];
+
+        for (int i = 0; i < totalRulers + 1; i++) {
+          double x = a.dx * (1 - ((i) / (totalRulers + 1))) +
+              b.dx * (i / (totalRulers + 1));
+          double y = a.dy * (1 - ((i) / (totalRulers + 1))) +
+              b.dy * (i / (totalRulers + 1));
+          if (Offset(x, y) != a) {
+            canvas.drawLine(Offset(x, y), Offset(x, 10), secondaryRulersPaint);
+          }
+        }
+        i = i + 1;
+      }
     }
   }
 
@@ -71,27 +91,7 @@ class LinearGaugeLabel {
     return Size(_textPainter.width, _textPainter.height);
   }
 
-  double getMaxLabelSize({
-    required TextStyle textStyle,
-    required GaugeOrientation gaugeOrientation,
-    required double labelTopMargin,
-  }) {
-    double labelHeight = 0;
-    double labelWidth = 0;
-
-    // should only calculate when there is label needs to be displayed
-    for (final LinearGaugeLabel label in _linearGaugeLabel) {
-      final Size size = getLabelSize(textStyle: textStyle, value: label.value);
-      labelWidth = math.max(labelWidth, size.width);
-      labelHeight = math.max(labelHeight, size.height);
-    }
-    return (gaugeOrientation == GaugeOrientation.horizontal
-            ? labelHeight
-            : labelWidth) +
-        labelTopMargin;
-  }
-
   List<LinearGaugeLabel> get getListOfLabel => _linearGaugeLabel;
-  get getMappedLabel => _map;
+
   Map<String, List<Offset>> get getPrimaryRulersOffset => primaryRulers;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gauges/gauges.dart';
+import 'dart:math' as math;
 
 void main() {
   runApp(const MaterialApp(home: MyGaugeExample()));
@@ -13,16 +14,36 @@ class MyGaugeExample extends StatefulWidget {
 }
 
 class _MyGaugeExampleState extends State<MyGaugeExample> {
+  Color c = Colors.red;
+
+  void changeState() {
+    setState(() {
+      c = Colors.green;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          color: Colors.red,
-          child: const LinearGauge(
-            start: 0,
-            end: 100,
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: LinearGauge(
+                start: 0,
+                end: 900,
+                secondaryRulerPerInterval: 1,
+                linearGaugeBoxDecoration:
+                    LinearGaugeBoxDecoration(color: c, borderRadius: 0),
+              ),
+            ),
+            OutlinedButton(
+                onPressed: () {
+                  changeState();
+                },
+                child: const Text("Update Color"))
+          ],
         ),
       ),
     );
