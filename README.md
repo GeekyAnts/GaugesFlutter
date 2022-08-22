@@ -71,7 +71,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 
 ## Screens
 
-<img src="https://github.com/hasnentai/GaugesFlutter/blob/main/example/screens/screen-two.png" width="250" alt="accessibility text">
+<img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/screen-two.png" width="250" alt="accessibility text">
 
 
 
