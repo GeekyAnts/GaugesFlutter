@@ -27,28 +27,37 @@ class LinearGaugeLabel {
       _linearGaugeLabel
           .add(LinearGaugeLabel(text: i.toInt().toString(), value: i));
     }
+
+    final LinearGaugeLabel localLabel =
+        _linearGaugeLabel[_linearGaugeLabel.length - 1];
+    if (localLabel.value != end && localLabel.value! < end) {
+      _linearGaugeLabel
+          .add(LinearGaugeLabel(text: end.toInt().toString(), value: end));
+    }
   }
 
   ///
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
-      Size startLabel,
-      Size endLabel,
-      Size size,
-      double end,
-      double primaryRulersHeight,
-      double linearGaugeBoxContainerHeight) {
+    Size startLabel,
+    Size endLabel,
+    Size size,
+    double end,
+    double primaryRulersHeight,
+    double linearGaugeBoxContainerHeight,
+  ) {
     primaryRulers.clear();
+    print((endLabel.width / 2) - (startLabel.width / 2));
+
     Offset a = Offset(startLabel.width / 2, linearGaugeBoxContainerHeight);
     Offset b = Offset(
-        size.width - ((endLabel.width / 2) - (startLabel.width / 2)),
-        linearGaugeBoxContainerHeight);
+        size.width - (endLabel.width / 2), linearGaugeBoxContainerHeight);
     for (int i = 0; i < _linearGaugeLabel.length; i++) {
-      double x = a.dx * (1 - (_linearGaugeLabel[i].value! / end)) +
-          b.dx * (_linearGaugeLabel[i].value! / end);
-      double y = a.dy * (1 - (_linearGaugeLabel[i].value! / end)) +
-          b.dy * (_linearGaugeLabel[i].value! / end);
+      double x = a.dx * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
+          b.dx * (i / (_linearGaugeLabel.length - 1));
+      double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
+          b.dy * (i / (_linearGaugeLabel.length - 1));
       primaryRulers[_linearGaugeLabel[i].text!] = [
         Offset(x, y),
         Offset(x, primaryRulersHeight)
@@ -59,8 +68,8 @@ class LinearGaugeLabel {
   ///
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
-  void generateSecondaryRulers(
-      double totalRulers, Canvas canvas, Paint secondaryRulersPaint) {
+  void generateSecondaryRulers(double totalRulers, Canvas canvas,
+      Paint secondaryRulersPaint, double height) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     int i = 0;
     for (var element in offset) {
@@ -74,7 +83,8 @@ class LinearGaugeLabel {
           double y = a.dy * (1 - ((i) / (totalRulers + 1))) +
               b.dy * (i / (totalRulers + 1));
           if (Offset(x, y) != a) {
-            canvas.drawLine(Offset(x, y), Offset(x, 10), secondaryRulersPaint);
+            canvas.drawLine(
+                Offset(x, y), Offset(x, 5 + height), secondaryRulersPaint);
           }
         }
         i = i + 1;

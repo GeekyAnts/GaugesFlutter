@@ -6,11 +6,13 @@ class LinearGaugeBoxDecoration {
   /// An immutable description of how to paint a box of [LinearGauge].
   ///
   /// [LinearGaugeBoxDecoration] allows to customize the style of [LinearGauge] container.
-  const LinearGaugeBoxDecoration(
-      {this.color = const Color.fromARGB(255, 207, 207, 207),
-      this.height = 4.0,
-      this.linearGradient,
-      this.borderRadius});
+  const LinearGaugeBoxDecoration({
+    this.color = const Color.fromARGB(255, 207, 207, 207),
+    this.height = 4.0,
+    this.linearGradient,
+    this.borderRadius,
+    this.linearGaugeValueColor = Colors.blue,
+  });
 
   ///
   /// `color` Set the Color of the [LinearGauge] Container
@@ -66,4 +68,19 @@ class LinearGaugeBoxDecoration {
   ///          ),
   /// ```
   final double? borderRadius;
+
+  ///
+  /// `borderRadius` Set corners to soft edges/rounded  of the [LinearGauge] Container
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+  ///              linearGradient: LinearGradient(
+  ///                colors: [Colors.blue, Colors.pink],
+  ///                borderRadius: 10.0,
+  ///              ),
+  ///            ),
+  ///          ),
+  /// ```
+  final Color? linearGaugeValueColor;
 }

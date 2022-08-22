@@ -41,7 +41,8 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.primaryRulerColor = Colors.black54,
       this.secondaryRulerColor = Colors.grey,
       this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
-      this.secondaryRulerPerInterval = 1.0})
+      this.secondaryRulerPerInterval = 1.0,
+      this.value = 0})
       : super(key: key);
 
   ///
@@ -290,27 +291,47 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///
   final LinearGaugeBoxDecoration? linearGaugeBoxDecoration;
 
+  ///
+  ///
+  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
+  ///
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// const LinearGauge(
+  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+  ///               color: Colors.green,
+  ///               height: 30.0,
+  ///            ),
+  ///        ),
+  /// ```
+  ///
+  final double? value;
+
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
-      start: start!,
-      end: end!,
-      steps: steps!,
-      showLinearGaugeContainer: showLinearGaugeContainer!,
-      gaugeOrientation: gaugeOrientation!,
-      rulerPadding: rulerPadding!,
-      textStyle: textStyle!,
-      primaryRulersWidth: primaryRulersWidth!,
-      primaryRulersHeight: primaryRulersHeight!,
-      secondaryRulersHeight: secondaryRulersHeight!,
-      secondaryRulersWidth: secondaryRulersWidth!,
-      labelTopMargin: labelTopMargin!,
-      primaryRulerColor: primaryRulerColor!,
-      secondaryRulerColor: secondaryRulerColor!,
-      linearGaugeBoxDecoration: linearGaugeBoxDecoration!,
-      secondaryRulerPerInterval: secondaryRulerPerInterval!,
-      linearGaugeContainerBgColor: linearGaugeBoxDecoration!.color,
-    );
+        start: start!,
+        end: end!,
+        steps: steps!,
+        showLinearGaugeContainer: showLinearGaugeContainer!,
+        gaugeOrientation: gaugeOrientation!,
+        rulerPadding: rulerPadding!,
+        textStyle: textStyle!,
+        primaryRulersWidth: primaryRulersWidth!,
+        primaryRulersHeight: primaryRulersHeight!,
+        secondaryRulersHeight: secondaryRulersHeight!,
+        secondaryRulersWidth: secondaryRulersWidth!,
+        labelTopMargin: labelTopMargin!,
+        primaryRulerColor: primaryRulerColor!,
+        secondaryRulerColor: secondaryRulerColor!,
+        linearGaugeBoxDecoration: linearGaugeBoxDecoration!,
+        secondaryRulerPerInterval: secondaryRulerPerInterval!,
+        linearGaugeContainerBgColor: linearGaugeBoxDecoration!.color,
+        linearGaugeContainerValueColor:
+            linearGaugeBoxDecoration!.linearGaugeValueColor!,
+        value: value!);
   }
 
   @override
@@ -332,6 +353,9 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setSteps = steps!
       ..setTextStyle = textStyle!
       ..setSecondaryRulerPerInterval = secondaryRulerPerInterval!
-      ..setLinearGaugeContainerBgColor = linearGaugeBoxDecoration!.color;
+      ..setLinearGaugeContainerBgColor = linearGaugeBoxDecoration!.color
+      ..setLinearGaugeContainerValueColor =
+          linearGaugeBoxDecoration!.linearGaugeValueColor!
+      ..setValue = value!;
   }
 }

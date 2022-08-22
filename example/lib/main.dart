@@ -30,19 +30,17 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              child: LinearGauge(
-                start: 0,
-                end: 900,
-                secondaryRulerPerInterval: 1,
-                linearGaugeBoxDecoration:
-                    LinearGaugeBoxDecoration(color: c, borderRadius: 0),
+              child: const LinearGauge(
+                start: 100,
+                end: 1000,
+                value: 10,
+                labelTopMargin: 10,
+                steps: 200,
+                rulerPadding: Padding(padding: EdgeInsets.only(left: 1000)),
+                linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+                    borderRadius: 10, linearGaugeValueColor: Colors.amber),
               ),
             ),
-            OutlinedButton(
-                onPressed: () {
-                  changeState();
-                },
-                child: const Text("Update Color"))
           ],
         ),
       ),
