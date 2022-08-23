@@ -26,7 +26,6 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.steps = 0,
       this.showLinearGaugeContainer = true,
       this.gaugeOrientation = GaugeOrientation.horizontal,
-      this.rulerPadding = const Padding(padding: EdgeInsets.all(0)),
       this.textStyle = const TextStyle(
         fontSize: 12.0,
         color: Color.fromARGB(255, 86, 86, 86),
@@ -37,7 +36,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.primaryRulersHeight = 15.0,
       this.secondaryRulersHeight = 1.0,
       this.secondaryRulersWidth = 1.0,
-      this.labelTopMargin = 10.0,
+      this.labelTopMargin = 0.0,
       this.primaryRulerColor = Colors.black54,
       this.secondaryRulerColor = Colors.grey,
       this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
@@ -110,19 +109,6 @@ class LinearGauge extends LeafRenderObjectWidget {
   /// ```
   ///
   final GaugeOrientation? gaugeOrientation;
-
-  ///
-  /// `rulerPadding` set the padding around the ruler of [LinearGauge]
-  ///
-  ///  default is to `const Padding(padding: EdgeInsets.all(0))`
-  ///
-  /// ```dart
-  /// const LinearGauge(
-  ///  rulerPadding: Padding(padding: EdgeInsets.all(20.0)),
-  /// ),
-  /// ```
-  ///
-  final Padding? rulerPadding;
 
   ///
   /// `textStyle` sets the Label text style of [LinearGauge]
@@ -317,7 +303,6 @@ class LinearGauge extends LeafRenderObjectWidget {
         steps: steps!,
         showLinearGaugeContainer: showLinearGaugeContainer!,
         gaugeOrientation: gaugeOrientation!,
-        rulerPadding: rulerPadding!,
         textStyle: textStyle!,
         primaryRulersWidth: primaryRulersWidth!,
         primaryRulersHeight: primaryRulersHeight!,
@@ -347,7 +332,6 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setSecondaryRulerColor = secondaryRulerColor!
       ..setSecondaryRulersHeight = secondaryRulersHeight!
       ..setSecondaryRulersWidth = secondaryRulersWidth!
-      ..setRulerPadding = rulerPadding!
       ..setShowLinearGaugeContainer = showLinearGaugeContainer!
       ..setStart = start!
       ..setSteps = steps!

@@ -40,13 +40,13 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
-    Size startLabel,
-    Size endLabel,
-    Size size,
-    double end,
-    double primaryRulersHeight,
-    double linearGaugeBoxContainerHeight,
-  ) {
+      Size startLabel,
+      Size endLabel,
+      Size size,
+      double end,
+      double primaryRulersHeight,
+      double linearGaugeBoxContainerHeight,
+      double labelTopMargin) {
     primaryRulers.clear();
     print((endLabel.width / 2) - (startLabel.width / 2));
 

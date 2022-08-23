@@ -12,7 +12,6 @@ class RenderLinearGauge extends RenderBox {
     required double steps,
     required bool showLinearGaugeContainer,
     required GaugeOrientation gaugeOrientation,
-    required Padding rulerPadding,
     required TextStyle textStyle,
     required double primaryRulersWidth,
     required double primaryRulersHeight,
@@ -32,7 +31,6 @@ class RenderLinearGauge extends RenderBox {
         _steps = steps,
         _showLinearGaugeContainer = showLinearGaugeContainer,
         _gaugeOrientation = gaugeOrientation,
-        _rulerPadding = rulerPadding,
         _textStyle = textStyle,
         _primaryRulerColor = primaryRulerColor,
         _primaryRulersWidth = primaryRulersWidth,
@@ -104,19 +102,6 @@ class RenderLinearGauge extends RenderBox {
 
     _gaugeOrientation = gaugeOrientation;
     markNeedsLayout();
-  }
-
-  ///
-  /// Getter and Setter for the [rulerPadding] parameter.
-  ///
-  get getRulerPadding => _rulerPadding;
-  Padding _rulerPadding;
-
-  set setRulerPadding(rulerPadding) {
-    if (_rulerPadding == rulerPadding) return;
-
-    _rulerPadding = rulerPadding;
-    markNeedsPaint();
   }
 
   ///
@@ -326,7 +311,8 @@ class RenderLinearGauge extends RenderBox {
         size,
         getEnd,
         getPrimaryRulersHeight,
-        getLinearGaugeBoxDecoration.height);
+        getLinearGaugeBoxDecoration.height,
+        getLabelTopMargin);
   }
 
   void _drawLabels(Canvas canvas, String text, List<Offset> list) {
@@ -353,11 +339,8 @@ class RenderLinearGauge extends RenderBox {
 
     canvas.drawParagraph(
         paragraph,
-        Offset(
-            list[0].dx - (labelSize.width / 2),
-            list[0].dy +
-                getLabelTopMargin +
-                (getLinearGaugeBoxDecoration.height / 4)));
+        Offset(list[0].dx - (labelSize.width / 2),
+            list[0].dy + getPrimaryRulersHeight + getLabelTopMargin));
   }
 
   void _paintGaugeContainer(Canvas canvas, Size size) {
@@ -437,11 +420,17 @@ class RenderLinearGauge extends RenderBox {
 
   void _drawSecondaryRulers(Canvas canvas) {
     _linearGaugeLabel.generateSecondaryRulers(getSecondaryRulerPerInterval,
-        canvas, _secondaryRulersPaint, getLinearGaugeBoxDecoration.height);
+        canvas, _secondaryRulersPaint, getSecondaryRulersHeight);
   }
 
   void _setPrimaryRulersPaint() {
     _primaryRulersPaint.color = getPrimaryRulerColor;
+    _primaryRulersPaint.strokeWidth = getPrimaryRulersWidth;
+  }
+
+  void _setSecondaryRulersPaint() {
+    _secondaryRulersPaint.color = getSecondaryRulerColor;
+    _secondaryRulersPaint.strokeWidth = getSecondaryRulersWidth;
   }
 
   void _setLinearGaugeContainerPaint() {
@@ -470,7 +459,7 @@ class RenderLinearGauge extends RenderBox {
     canvas.save();
     canvas.translate(offset.dx, offset.dy);
     _setLinearGaugeContainerPaint();
-
+    _setSecondaryRulersPaint();
     _calculateRulerPoints();
     _drawPrimaryRulers(canvas);
     _drawSecondaryRulers(canvas);
