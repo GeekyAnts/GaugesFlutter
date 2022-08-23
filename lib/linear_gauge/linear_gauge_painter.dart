@@ -419,8 +419,11 @@ class RenderLinearGauge extends RenderBox {
   }
 
   void _drawSecondaryRulers(Canvas canvas) {
-    _linearGaugeLabel.generateSecondaryRulers(getSecondaryRulerPerInterval,
-        canvas, _secondaryRulersPaint, getSecondaryRulersHeight);
+    _linearGaugeLabel.generateSecondaryRulers(
+        getSecondaryRulerPerInterval,
+        canvas,
+        _secondaryRulersPaint,
+        getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height);
   }
 
   void _setPrimaryRulersPaint() {

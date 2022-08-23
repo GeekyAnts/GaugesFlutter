@@ -40,7 +40,13 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
                 secondaryRulerPerInterval: 10,
                 secondaryRulersHeight: 30,
                 steps: 200,
+                labelTopMargin: 40,
+                secondaryRulerColor: Colors.green,
+                secondaryRulersWidth: 5.0,
+                showLinearGaugeContainer: false,
+                textStyle: TextStyle(color: Colors.red),
                 linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+                  height: 30,
                   borderRadius: 10,
                   linearGaugeValueColor: Colors.amber,
                 ),
