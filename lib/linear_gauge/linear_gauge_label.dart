@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
-
-import 'package:gauges/gauges.dart';
 
 class LinearGaugeLabel {
   String? text;
@@ -11,7 +8,7 @@ class LinearGaugeLabel {
   // Will be adding other members as required
 
   final List<LinearGaugeLabel> _linearGaugeLabel = [];
-  late final Map<double, String> _map = {};
+
   late final Map<String, List<Offset>> primaryRulers = {};
   final TextPainter _textPainter =
       TextPainter(textDirection: TextDirection.ltr);
@@ -48,7 +45,6 @@ class LinearGaugeLabel {
       double linearGaugeBoxContainerHeight,
       double labelTopMargin) {
     primaryRulers.clear();
-    print((endLabel.width / 2) - (startLabel.width / 2));
 
     Offset a = Offset(startLabel.width / 2, linearGaugeBoxContainerHeight);
     Offset b = Offset(

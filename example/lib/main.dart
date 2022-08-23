@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gauges/gauges.dart';
-import 'dart:math' as math;
 
 void main() {
   runApp(const MaterialApp(home: MyGaugeExample()));
@@ -28,9 +27,9 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              child: const LinearGauge(
+          children: const [
+            SizedBox(
+              child: LinearGauge(
                 start: 100,
                 end: 1000,
                 value: 10,

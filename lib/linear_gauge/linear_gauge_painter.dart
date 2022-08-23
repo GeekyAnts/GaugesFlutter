@@ -448,7 +448,7 @@ class RenderLinearGauge extends RenderBox {
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     final desiredWidth = constraints.maxWidth;
-    final desiredHeight = constraints.maxHeight;
+    //final desiredHeight = constraints.maxHeight;
     final desiredSize = Size(desiredWidth, 50);
     return constraints.constrain(desiredSize);
   }
