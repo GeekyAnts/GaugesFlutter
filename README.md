@@ -73,6 +73,12 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 
 <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/screen-two.png" width="250" alt="accessibility text">
 
+## Public API's to customize the LinearGauge
 
+| Properties    | Description                                                  |
+| --------------| -------------------------------------------------------------|
+| start         | Starts from the value given in `double`. It is Default to `0.0`|
+| end           | Ends at the value given in `double`. It is Default to `100`    |
+| steps         | Increment the interval between Primary Labels with the given steps . Its Default to `0`. The Intervals will be calculated automatically as per the device width|
 
 

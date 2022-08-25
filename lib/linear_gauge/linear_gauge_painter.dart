@@ -339,7 +339,7 @@ class RenderLinearGauge extends RenderBox {
 
     canvas.drawParagraph(
         paragraph,
-        Offset(list[0].dx - (labelSize.width / 2),
+        Offset((list[0].dx - (labelSize.width / 2)),
             list[0].dy + getPrimaryRulersHeight + getLabelTopMargin));
   }
 
@@ -389,12 +389,8 @@ class RenderLinearGauge extends RenderBox {
       canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
-      gaugeContainer = Rect.fromLTWH(
-        (offset.dx + _startLabelSize.width / 2),
-        offset.dy,
-        totalValOnPixel - _endLabelSize.width / 2,
-        getLinearGaugeBoxDecoration.height,
-      );
+      gaugeContainer = Rect.fromLTWH((offset.dx + _startLabelSize.width / 2),
+          offset.dy, totalValOnPixel, getLinearGaugeBoxDecoration.height);
       if (getLinearGaugeBoxDecoration.linearGradient != null) {
         _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
             .linearGradient!

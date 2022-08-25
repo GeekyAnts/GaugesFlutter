@@ -30,25 +30,9 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           children: const [
             SizedBox(
               child: LinearGauge(
-                start: 100,
-                end: 1000,
-                value: 10,
-                primaryRulerColor: Colors.purple,
-                primaryRulersHeight: 30,
-                primaryRulersWidth: 5,
-                secondaryRulerPerInterval: 10,
-                secondaryRulersHeight: 30,
-                steps: 200,
-                labelTopMargin: 40,
-                secondaryRulerColor: Colors.green,
-                secondaryRulersWidth: 5.0,
-                showLinearGaugeContainer: false,
-                textStyle: TextStyle(color: Colors.red),
-                linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-                  height: 30,
-                  borderRadius: 10,
-                  linearGaugeValueColor: Colors.amber,
-                ),
+                value: 30,
+                steps: 5,
+                secondaryRulerPerInterval: 12,
               ),
             ),
           ],

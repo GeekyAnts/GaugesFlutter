@@ -33,7 +33,7 @@ void main() {
       linearGaugeContainerBgColor: Colors.grey,
     );
   });
-  group('RenderLinearGauge', () {
+  group(' Testing', () {
     test('RenderLinearGauge test getter and setter', () {
       TextStyle textStyel = const TextStyle(
         fontSize: 12.0,
@@ -49,6 +49,17 @@ void main() {
           renderLinearGauge.getGaugeOrientation, GaugeOrientation.horizontal);
       expect(renderLinearGauge.getTextStyle, textStyel);
       expect(renderLinearGauge.getPrimaryRulersWidth, 1.0);
+      expect(renderLinearGauge.getPrimaryRulersHeight, 15.0);
+      expect(renderLinearGauge.getSecondaryRulerColor, Colors.grey);
+      expect(renderLinearGauge.getPrimaryRulerColor, Colors.black54);
+      expect(renderLinearGauge.getSecondaryRulersHeight, 1);
+      expect(renderLinearGauge.getSecondaryRulersWidth, 1);
+      expect(renderLinearGauge.getLabelTopMargin, 0.0);
+      expect(renderLinearGauge.getLinearGaugeBoxDecoration,
+          const LinearGaugeBoxDecoration());
+      expect(renderLinearGauge.getSecondaryRulerPerInterval, 1.0);
+      expect(renderLinearGauge.getLinearGaugeContainerValueColor, Colors.green);
+      expect(renderLinearGauge.getLinearGaugeContainerBgColor, Colors.grey);
     });
   });
 }
