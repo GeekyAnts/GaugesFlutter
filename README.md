@@ -14,11 +14,12 @@ and the Flutter guide for
 
 A gauge, in science and engineering, is a device used to make measurements or in order to display certain dimensional information. A wide variety of tools exist which serve such functions, ranging from simple pieces of material against which sizes can be measured to complex pieces of machinery.
 
-## Features
+### Features
 
-LinerGauge 
+1. LinerGauge 
 
-## Getting started
+
+### Getting started
 
 Run this command 
 
@@ -37,7 +38,7 @@ dependencies:
 
 
 
-## Usage
+### Usage
 
 Import it inside your main.dart
 
@@ -69,16 +70,20 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 
 
 
-## Screens
+### Screens
 
 <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/screen-two.png" width="250" alt="accessibility text">
 
-## Public API's to customize the LinearGauge
+
+
+### Public API's to customize the LinearGauge
 
 | Properties    | Description                                                  |
 | --------------| -------------------------------------------------------------|
 | start         | Starts from the value given in `double`. It is Default to `0.0`|
 | end           | Ends at the value given in `double`. It is Default to `100`    |
-| steps         | Increment the interval between Primary Labels with the given steps . Its Default to `0`. The Intervals will be calculated automatically as per the device width|
+| steps         | Increment the interval between Primary Labels with the given steps .Its Default to `0`. The Intervals will be calculated automatically as per the device width **Note displaying `double` values on label is not supported yet**|
+showLinearGaugeContainer | Display or Hide the LinearGauge container with the help of given `bool` value. It is Default to true|
+| gaugeOrientation         | Sets the Orientation of the Gauge to Horizontal or Vertical with the help given `GaugeOrientation` value.It is Default to `GaugeOrientation.horizontal`, **Note vertical is not supported yet**|
 
 

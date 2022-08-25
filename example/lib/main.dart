@@ -31,7 +31,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
             SizedBox(
               child: LinearGauge(
                 value: 30,
-                steps: 5,
+                steps: 5.50,
                 secondaryRulerPerInterval: 12,
               ),
             ),
