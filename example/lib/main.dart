@@ -13,14 +13,6 @@ class MyGaugeExample extends StatefulWidget {
 }
 
 class _MyGaugeExampleState extends State<MyGaugeExample> {
-  Color c = Colors.red;
-
-  void changeState() {
-    setState(() {
-      c = Colors.green;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +22,14 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           children: const [
             SizedBox(
               child: LinearGauge(
-                value: 30,
-                steps: 5.50,
-                secondaryRulerPerInterval: 12,
+                value: 900,
+                secondaryRulerPerInterval: 4,
+                start: 400,
+                end: 4000,
+                linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+                    borderRadius: 30.0,
+                    linearGradient:
+                        LinearGradient(colors: [Colors.blue, Colors.green])),
               ),
             ),
           ],

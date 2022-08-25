@@ -357,10 +357,14 @@ class RenderLinearGauge extends RenderBox {
     }
 
     // get 50 % of total width;
+    double removeStartPercentage = (getStart * 100) / getEnd;
+
     double totalWidth =
         size.width - ((_endLabelSize.width / 2) + (_startLabelSize.width / 2));
-    double percentageInVal = (getValue * 100) / getEnd;
-    double totalValOnPixel = (totalWidth * percentageInVal) / 100;
+    double percentageInVal = (getValue * 100) / (getEnd);
+
+    double totalValOnPixel = ((totalWidth * percentageInVal) / 100) -
+        ((totalWidth * removeStartPercentage) / 100);
 
     if (getLinearGaugeBoxDecoration.borderRadius != null) {
       canvas.drawRRect(

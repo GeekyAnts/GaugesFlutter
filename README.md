@@ -72,7 +72,11 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 
 ### Screens
 
-<img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/screen-two.png" width="250" alt="accessibility text">
+<img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/screen-two.png" width="250" alt="accessibility text"> <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/default.png" width="250" alt="accessibility text">
+
+<img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/value.png" width="250" alt="accessibility text"> <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/border-radius.png" width="250" alt="accessibility text">
+
+<img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/linearGrd.png" width="250" alt="accessibility text"> <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/higher-values.png" width="250" alt="accessibility text">
 
 
 
