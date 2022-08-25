@@ -79,7 +79,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/linearGrd.png" width="250" alt="accessibility text"> <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/higher-values.png" width="250" alt="accessibility text">
 
 
-<img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/demo.gif" width="250" alt="accessibility text">
+<img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/demo.gif" width="850" alt="accessibility text">
 
 
 
