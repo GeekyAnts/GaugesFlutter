@@ -82,9 +82,20 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 | --------------| -------------------------------------------------------------|
 | start         | Starts from the value given in `double`. It is Default to `0.0`|
 | end           | Ends at the value given in `double`. It is Default to `100`    |
+| Value         | plots the value between the start and end on the LinearGauge. It is Default to `0`   |
 | steps         | Increment the interval between Primary Labels with the given steps .Its Default to `0`. The Intervals will be calculated automatically as per the device width **Note displaying `double` values on label is not supported yet**|
 showLinearGaugeContainer | Display or Hide the LinearGauge container with the help of given `bool` value. It is Default to true|
 | gaugeOrientation         | Sets the Orientation of the Gauge to Horizontal or Vertical with the help given `GaugeOrientation` value.It is Default to `GaugeOrientation.horizontal`, **Note vertical is not supported yet**|
 | primaryRulersWidth         | Sets the width of the Primary rulers from the value given in `double`. It is Default to `1.0`|
-| primaryRulersWidth         | Sets the width of the Primary rulers from the value given in `double`. It is Default to `1.0`|
+| primaryRulersHeight         | Sets the height of the Primary rulers from the value given in `double`. It is Default to `15.0`|
+| primaryRulersColor         | Sets the color of the Primary rulers from the value given in `Color`. It is Default to `Colors.black54`|
+| secondaryRulersWidth         | Sets the width of the Secondary rulers from the value given in `double`. It is Default to `1.0`|
+| secondaryRulersHeight         | Sets the height of the Secondary rulers from the value given in `double`. It is Default to `1.0`|
+| secondaryRulersColor         | Sets the color of the Secondary rulers from the value given in `Color`. It is Default to `Colors.grey`|
+| labelTopMargin         | Sets the margin from top using the value given in `double`. It is Default to `0.0`|
+| linearGaugeBoxDecoration         | Sets the style of linear gauge container from the given styles in `linearGaugeBoxDecoration`|
+| secondaryRulerPerInterval         | Increase or Decrease the number of secondary rulers to drawn between primary labels from the given value in `double`. It is Default to `1.0`|
+
+
+
 
