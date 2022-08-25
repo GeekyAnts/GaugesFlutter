@@ -85,5 +85,6 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 | steps         | Increment the interval between Primary Labels with the given steps .Its Default to `0`. The Intervals will be calculated automatically as per the device width **Note displaying `double` values on label is not supported yet**|
 showLinearGaugeContainer | Display or Hide the LinearGauge container with the help of given `bool` value. It is Default to true|
 | gaugeOrientation         | Sets the Orientation of the Gauge to Horizontal or Vertical with the help given `GaugeOrientation` value.It is Default to `GaugeOrientation.horizontal`, **Note vertical is not supported yet**|
-
+| primaryRulersWidth         | Sets the width of the Primary rulers from the value given in `double`. It is Default to `1.0`|
+| primaryRulersWidth         | Sets the width of the Primary rulers from the value given in `double`. It is Default to `1.0`|
 

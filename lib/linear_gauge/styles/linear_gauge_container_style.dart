@@ -7,7 +7,7 @@ class LinearGaugeBoxDecoration {
   ///
   /// [LinearGaugeBoxDecoration] allows to customize the style of [LinearGauge] container.
   const LinearGaugeBoxDecoration({
-    this.color = const Color.fromARGB(255, 207, 207, 207),
+    this.color = Colors.grey,
     this.height = 4.0,
     this.linearGradient,
     this.borderRadius,
