@@ -39,9 +39,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.labelTopMargin = 0.0,
       this.primaryRulerColor = Colors.black54,
       this.secondaryRulerColor = Colors.grey,
-      this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(
-        
-      ),
+      this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
       this.secondaryRulerPerInterval = 1.0,
       this.value = 0})
       : super(key: key);
