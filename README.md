@@ -72,13 +72,17 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 
 ### Screens
 
+#### Default Styles
 <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/screen-two.png" width="250" alt="accessibility text"> <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/default.png" width="250" alt="accessibility text">
 
+#### Value on Gauge with Border Radius
 <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/value.png" width="250" alt="accessibility text"> <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/border-radius.png" width="250" alt="accessibility text">
 
+#### Higher label values with LinearGradient Color
 <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/linearGrd.png" width="250" alt="accessibility text"> <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/higher-values.png" width="250" alt="accessibility text">
 
 
+#### Labels being adjusted depending on screen width
 <img src="https://github.com/hasnentai/GaugesFlutter/blob/stable/example/screens/demo.gif" width="850" alt="accessibility text">
 
 
