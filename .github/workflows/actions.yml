@@ -43,5 +43,8 @@ jobs:
     - run: flutter test
     
     # Pub dry run.
-    - run: flutter pub publish --dry-run 
+    - run: flutter pub publish --dry-run
+
+    # Pub dry run.
+    - run: flutter pub publish 
     

@@ -28,7 +28,7 @@ Run this command
 
 ```
 
-$flutter pub add gauges
+$flutter pub add geekyants_flutter_gauges
 
 ```
 
@@ -36,7 +36,7 @@ This will add a line like this to your package's pubspec.yaml (and run an implic
 
 ```
 dependencies:
-  geekyants_flutter_gauges: ^0.0.1
+  geekyants_flutter_gauges: ^0.0.5
 ```
 
 
