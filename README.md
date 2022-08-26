@@ -110,6 +110,13 @@ showLinearGaugeContainer | Display or Hide the LinearGauge container with the he
 | linearGaugeBoxDecoration         | Sets the style of linear gauge container from the given styles in `linearGaugeBoxDecoration`|
 | secondaryRulerPerInterval         | Increase or Decrease the number of secondary rulers to drawn between primary labels from the given value in `double`. It is Default to `1.0`|
 
+### Road Map
 
-
-
+- Label Font Size.
+- Label Font Color.
+- Show/Hide Labels and Rulers.
+- Padding for Gauge Container.
+- Pointer for showing the Current Reading on Gauge.
+- Vertical Linear Gauge.
+- Label Placement on different sides.
+- Animation for Linear Gauge
