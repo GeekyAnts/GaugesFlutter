@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
-import 'package:gauges/linear_gauge/linear_gauge_label.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
 
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge({
