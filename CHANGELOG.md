@@ -1,9 +1,6 @@
-## 0.0.1
+## 0.0.2
 
-* Initial release
-* Generate Labels as per width of screen
-* Generate Labels as per steps given
-* Gradient Color for Container
-* Border Radius 
+* Screens updated
+
 
 
