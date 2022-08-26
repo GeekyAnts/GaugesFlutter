@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/gauges.dart';
 
 void main() {
   runApp(const MaterialApp(home: MyGaugeExample()));

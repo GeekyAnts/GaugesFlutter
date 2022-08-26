@@ -1,4 +1,4 @@
-library gauges;
+library geekyants_flutter_gauges;
 
 export 'linear_gauge/linear_gauge.dart';
 export './utils/gauge_orientation.dart';
