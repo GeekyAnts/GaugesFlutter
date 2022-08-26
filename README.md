@@ -76,17 +76,17 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 ### Screens
 
 #### 1. Default Styles
-<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/stable/example/screens/screen-two.png" width="250" alt="accessibility text"> <img src="https://github.com/GeekyAnts/GaugesFlutter/blob/stable/example/screens/default.png" width="250" alt="accessibility text">
+<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/main/example/screens/screen-two.png" width="250" alt="accessibility text"> <img src="https://github.com/GeekyAnts/GaugesFlutter/blob/main/example/screens/default.png" width="250" alt="accessibility text">
 
 #### 2. Value on Gauge with Border Radius
-<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/stable/example/screens/value.png" width="250" alt="accessibility text"> <img src="https://github.com/GeekyAnts/GaugesFlutter/blob/stable/example/screens/border-radius.png" width="250" alt="accessibility text">
+<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/main/example/screens/value.png" width="250" alt="accessibility text"> <img src="https://github.com/GeekyAnts/GaugesFlutter/blob/main/example/screens/border-radius.png" width="250" alt="accessibility text">
 
 #### 3. Higher label values with LinearGradient Color
-<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/stable/example/screens/linearGrd.png" width="250" alt="accessibility text"> <img src="https://github.com/GeekyAnts/GaugesFlutter/blob/stable/example/screens/higher-values.png" width="250" alt="accessibility text">
+<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/main/example/screens/linearGrd.png" width="250" alt="accessibility text"> <img src="https://github.com/GeekyAnts/GaugesFlutter/blob/main/example/screens/higher-values.png" width="250" alt="accessibility text">
 
 
 #### 4. Labels being adjusted depending on screen width
-<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/stable/example/screens/demo.gif" width="850" alt="accessibility text">
+<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/main/example/screens/demo.gif" width="850" alt="accessibility text">
 
 
 
