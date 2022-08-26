@@ -36,7 +36,7 @@ This will add a line like this to your package's pubspec.yaml (and run an implic
 
 ```
 dependencies:
-  gauges: ^0.0.1
+  geekyants_flutter_gauges: ^0.0.1
 ```
 
 
@@ -46,7 +46,7 @@ dependencies:
 Import it inside your main.dart
 
 ```
-import 'package:gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/gauges.dart';
 
 ```
 
