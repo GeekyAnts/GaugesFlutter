@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gauges/linear_gauge/linear_gauge_painter.dart';
-import 'package:gauges/linear_gauge/styles/linear_gauge_container_style.dart';
-import 'package:gauges/utils/gauge_orientation.dart';
+import 'package:gauges/gauges.dart';
 
 void main() {
-  late RenderLinearGauge renderLinearGauge;
+  LinearGauge linearGauge = const LinearGauge();
   setUp(() {
-    renderLinearGauge = RenderLinearGauge(
+    linearGauge = const LinearGauge(
       start: 0,
       end: 1000,
       steps: 0,
       showLinearGaugeContainer: true,
       gaugeOrientation: GaugeOrientation.horizontal,
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontSize: 12.0,
         color: Color.fromARGB(255, 86, 86, 86),
         fontStyle: FontStyle.normal,
@@ -26,11 +24,9 @@ void main() {
       labelTopMargin: 0.0,
       primaryRulerColor: Colors.black54,
       secondaryRulerColor: Colors.grey,
-      linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(),
+      linearGaugeBoxDecoration: LinearGaugeBoxDecoration(),
       secondaryRulerPerInterval: 1.0,
       value: 0,
-      linearGaugeContainerValueColor: Colors.green,
-      linearGaugeContainerBgColor: Colors.grey,
     );
   });
   group(' Testing', () {
@@ -41,25 +37,25 @@ void main() {
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.normal,
       );
-      expect(renderLinearGauge.getStart, 0.0);
-      expect(renderLinearGauge.getEnd, 1000.0);
-      expect(renderLinearGauge.getSteps, 0);
-      expect(renderLinearGauge.getShowLinearGaugeContainer, true);
-      expect(
-          renderLinearGauge.getGaugeOrientation, GaugeOrientation.horizontal);
-      expect(renderLinearGauge.getTextStyle, textStyel);
-      expect(renderLinearGauge.getPrimaryRulersWidth, 1.0);
-      expect(renderLinearGauge.getPrimaryRulersHeight, 15.0);
-      expect(renderLinearGauge.getSecondaryRulerColor, Colors.grey);
-      expect(renderLinearGauge.getPrimaryRulerColor, Colors.black54);
-      expect(renderLinearGauge.getSecondaryRulersHeight, 1);
-      expect(renderLinearGauge.getSecondaryRulersWidth, 1);
-      expect(renderLinearGauge.getLabelTopMargin, 0.0);
-      expect(renderLinearGauge.getLinearGaugeBoxDecoration,
+      expect(linearGauge.start, 0.0);
+      expect(linearGauge.end, 1000.0);
+      expect(linearGauge.value, 0);
+      expect(linearGauge.steps, 0);
+      expect(linearGauge.showLinearGaugeContainer, true);
+      expect(linearGauge.gaugeOrientation, GaugeOrientation.horizontal);
+      expect(linearGauge.textStyle, textStyel);
+      expect(linearGauge.primaryRulersWidth, 1.0);
+      expect(linearGauge.primaryRulersHeight, 15.0);
+      expect(linearGauge.secondaryRulerColor, Colors.grey);
+      expect(linearGauge.primaryRulerColor, Colors.black54);
+      expect(linearGauge.secondaryRulersHeight, 1);
+      expect(linearGauge.secondaryRulersWidth, 1);
+      expect(linearGauge.labelTopMargin, 0.0);
+      expect(linearGauge.linearGaugeBoxDecoration,
           const LinearGaugeBoxDecoration());
-      expect(renderLinearGauge.getSecondaryRulerPerInterval, 1.0);
-      expect(renderLinearGauge.getLinearGaugeContainerValueColor, Colors.green);
-      expect(renderLinearGauge.getLinearGaugeContainerBgColor, Colors.grey);
+      expect(linearGauge.secondaryRulerPerInterval, 1.0);
     });
+
+    test("Verify Offset boundaries", () {});
   });
 }

@@ -22,14 +22,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           children: const [
             SizedBox(
               child: LinearGauge(
-                value: 900,
-                secondaryRulerPerInterval: 4,
-                start: 400,
-                end: 4000,
-                linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-                    borderRadius: 30.0,
-                    linearGradient:
-                        LinearGradient(colors: [Colors.blue, Colors.green])),
+                value: 50.0,
               ),
             ),
           ],

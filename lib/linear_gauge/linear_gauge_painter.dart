@@ -267,6 +267,10 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  LinearGaugeLabel get getLinearGaugeLabel {
+    return _linearGaugeLabel;
+  }
+
   final Paint _linearGaugeContainerPaint = Paint();
   final Paint _primaryRulersPaint = Paint();
   final Paint _secondaryRulersPaint = Paint();
