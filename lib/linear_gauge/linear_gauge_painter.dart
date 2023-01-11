@@ -24,6 +24,8 @@ class RenderLinearGauge extends RenderBox {
     required double secondaryRulerPerInterval,
     required Color linearGaugeContainerBgColor,
     required Color linearGaugeContainerValueColor,
+    required double labelSize,
+    required Color labelColor,
     required double value,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
@@ -43,6 +45,8 @@ class RenderLinearGauge extends RenderBox {
         _secondaryRulerPerInterval = secondaryRulerPerInterval,
         _linearGaugeContainerBgColor = linearGaugeBoxDecoration.color,
         _linearGaugeContainerValueColor = linearGaugeContainerValueColor,
+        _labelSize = labelSize,
+        _labelColor = labelColor,
         _value = value;
 
   ///
@@ -267,6 +271,22 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  double get getLabelSize => _labelSize;
+  double _labelSize;
+  set setLabelSize(double val) {
+    if (_labelSize == val) return;
+    _labelSize = val;
+    markNeedsPaint();
+  }
+
+  Color get getLabelColor => _labelColor;
+  Color _labelColor;
+  set setLabelColor(Color val) {
+    if (_labelColor == val) return;
+    _labelColor = val;
+    markNeedsPaint();
+  }
+
   LinearGaugeLabel get getLinearGaugeLabel {
     return _linearGaugeLabel;
   }
@@ -326,8 +346,8 @@ class RenderLinearGauge extends RenderBox {
     final String labelText = text;
     final double? value = double.tryParse(text);
     final ui.TextStyle labelTextStyle = ui.TextStyle(
-      color: Colors.black,
-      fontSize: 11.0,
+      color: _labelColor,
+      fontSize: _labelSize,
     );
     final ui.ParagraphBuilder paragraphBuilder =
         ui.ParagraphBuilder(paragraphStyle)

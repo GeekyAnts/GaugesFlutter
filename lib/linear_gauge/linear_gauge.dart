@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/styles/linear_gauge_label_style.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
@@ -40,6 +41,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.primaryRulerColor = Colors.black54,
       this.secondaryRulerColor = Colors.grey,
       this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
+      this.labelStyle = const LabelStyle(),
       this.secondaryRulerPerInterval = 1.0,
       this.value = 0})
       : super(key: key);
@@ -295,6 +297,11 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///
   final double? value;
 
+  ///
+  /// `labelStyle` sets the styles of label using [LabelStyle]  properties
+  ///
+  final LabelStyle? labelStyle;
+
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
@@ -316,6 +323,8 @@ class LinearGauge extends LeafRenderObjectWidget {
         linearGaugeContainerBgColor: linearGaugeBoxDecoration!.color,
         linearGaugeContainerValueColor:
             linearGaugeBoxDecoration!.linearGaugeValueColor!,
+        labelSize: labelStyle!.fontSize!,
+        labelColor: labelStyle!.color!,
         value: value!);
   }
 
@@ -340,6 +349,8 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setLinearGaugeContainerBgColor = linearGaugeBoxDecoration!.color
       ..setLinearGaugeContainerValueColor =
           linearGaugeBoxDecoration!.linearGaugeValueColor!
+      ..setLabelSize = labelStyle!.fontSize!
+      ..setLabelColor = labelStyle!.color!
       ..setValue = value!;
   }
 }
