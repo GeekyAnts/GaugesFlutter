@@ -7,7 +7,7 @@ class LinearGaugeBoxDecoration {
   ///
   /// [LinearGaugeBoxDecoration] allows to customize the style of [LinearGauge] container.
   const LinearGaugeBoxDecoration({
-    this.color = Colors.grey,
+    this.backgroundColor = Colors.grey,
     this.height = 4.0,
     this.linearGradient,
     this.borderRadius,
@@ -20,11 +20,11 @@ class LinearGaugeBoxDecoration {
   /// ```dart
   ///  const LinearGauge(
   ///   linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-  ///     color: Colors.red,
+  ///     backgroundColor: Colors.red,
   ///   ),
   // ),
   /// ```
-  final Color color;
+  final Color backgroundColor;
 
   ///
   /// `height` Sets the height of the [LinearGauge] Container
