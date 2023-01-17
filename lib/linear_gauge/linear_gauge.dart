@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/styles/linear_gauge_label_style.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
@@ -43,6 +42,8 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
       this.labelStyle = const LabelStyle(),
       this.secondaryRulerPerInterval = 1.0,
+      this.showSecondaryRulers = true,
+      this.showPrimaryRulers = true,
       this.value = 0})
       : super(key: key);
 
@@ -302,6 +303,16 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///
   final LabelStyle? labelStyle;
 
+  ///
+  ///
+  /// `showSecondaryRules` sets the visibility of the secondary rulers.
+  final bool showSecondaryRulers;
+
+  ///
+  ///
+  /// `showSecondaryRules` sets the visibility of the primary rulers.
+  final bool showPrimaryRulers;
+
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
@@ -320,11 +331,14 @@ class LinearGauge extends LeafRenderObjectWidget {
         secondaryRulerColor: secondaryRulerColor!,
         linearGaugeBoxDecoration: linearGaugeBoxDecoration!,
         secondaryRulerPerInterval: secondaryRulerPerInterval!,
-        linearGaugeContainerBgColor: linearGaugeBoxDecoration!.color,
+        linearGaugeContainerBgColor: linearGaugeBoxDecoration!.backgroundColor,
         linearGaugeContainerValueColor:
             linearGaugeBoxDecoration!.linearGaugeValueColor!,
         labelSize: labelStyle!.fontSize!,
         labelColor: labelStyle!.color!,
+        showLabel: labelStyle!.showLabel!,
+        showSecondaryRulers: showSecondaryRulers,
+        showPrimaryRulers: showPrimaryRulers,
         value: value!);
   }
 
@@ -346,11 +360,15 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setSteps = steps!
       ..setTextStyle = textStyle!
       ..setSecondaryRulerPerInterval = secondaryRulerPerInterval!
-      ..setLinearGaugeContainerBgColor = linearGaugeBoxDecoration!.color
+      ..setLinearGaugeContainerBgColor =
+          linearGaugeBoxDecoration!.backgroundColor
       ..setLinearGaugeContainerValueColor =
           linearGaugeBoxDecoration!.linearGaugeValueColor!
       ..setLabelSize = labelStyle!.fontSize!
       ..setLabelColor = labelStyle!.color!
+      ..setShowLabel = labelStyle!.showLabel!
+      ..setShowSecondaryRulers = showSecondaryRulers
+      ..setShowPrimaryRulers = showPrimaryRulers
       ..setValue = value!;
   }
 }

@@ -26,6 +26,9 @@ class RenderLinearGauge extends RenderBox {
     required Color linearGaugeContainerValueColor,
     required double labelSize,
     required Color labelColor,
+    required bool showLabel,
+    required bool showSecondaryRulers,
+    required bool showPrimaryRulers,
     required double value,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
@@ -43,10 +46,13 @@ class RenderLinearGauge extends RenderBox {
         _labelTopMargin = labelTopMargin,
         _linearGaugeBoxDecoration = linearGaugeBoxDecoration,
         _secondaryRulerPerInterval = secondaryRulerPerInterval,
-        _linearGaugeContainerBgColor = linearGaugeBoxDecoration.color,
+        _linearGaugeContainerBgColor = linearGaugeBoxDecoration.backgroundColor,
         _linearGaugeContainerValueColor = linearGaugeContainerValueColor,
         _labelSize = labelSize,
         _labelColor = labelColor,
+        _showLabel = showLabel,
+        _showSecondaryRulers = showSecondaryRulers,
+        _showPrimaryRulers = showPrimaryRulers,
         _value = value;
 
   ///
@@ -287,6 +293,30 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  bool get showLabel => _showLabel;
+  bool _showLabel;
+  set setShowLabel(bool val) {
+    if (_showLabel == val) return;
+    _showLabel = val;
+    markNeedsPaint();
+  }
+
+  bool get showSecondaryRulers => _showSecondaryRulers;
+  bool _showSecondaryRulers;
+  set setShowSecondaryRulers(bool val) {
+    if (_showSecondaryRulers == val) return;
+    _showSecondaryRulers = val;
+    markNeedsPaint();
+  }
+
+  bool get showPrimaryRulers => _showSecondaryRulers;
+  bool _showPrimaryRulers;
+  set setShowPrimaryRulers(bool val) {
+    if (_showPrimaryRulers == val) return;
+    _showPrimaryRulers = val;
+    markNeedsPaint();
+  }
+
   LinearGaugeLabel get getLinearGaugeLabel {
     return _linearGaugeLabel;
   }
@@ -295,7 +325,6 @@ class RenderLinearGauge extends RenderBox {
   final Paint _primaryRulersPaint = Paint();
   final Paint _secondaryRulersPaint = Paint();
   final Paint _linearGaugeContainerValuePaint = Paint();
-
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _startLabelSize, _endLabelSize;
@@ -357,8 +386,6 @@ class RenderLinearGauge extends RenderBox {
     final Size labelSize =
         _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: value);
 
-    // ignore: todo
-    /// TODO:: Hardcoded value
     paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
     canvas.drawParagraph(
@@ -369,22 +396,28 @@ class RenderLinearGauge extends RenderBox {
 
   void _paintGaugeContainer(Canvas canvas, Size size) {
     Offset offset = const Offset(0, 0);
+    late double end;
+    late double start;
+
+    if (showLabel) {
+      end = size.width -
+          ((_endLabelSize.width / 2) + (_startLabelSize.width / 2));
+      start = (offset.dx + _startLabelSize.width / 2);
+    } else {
+      end = size.width;
+      start = offset.dx;
+    }
 
     late Rect gaugeContainer;
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
       gaugeContainer = Rect.fromLTWH(
-          (offset.dx + _startLabelSize.width / 2),
-          offset.dy,
-          size.width -
-              ((_endLabelSize.width / 2) + (_startLabelSize.width / 2)),
-          getLinearGaugeBoxDecoration.height);
+          start, offset.dy, end, getLinearGaugeBoxDecoration.height);
     }
 
     // get 50 % of total width;
     double removeStartPercentage = (getStart * 100) / getEnd;
 
-    double totalWidth =
-        size.width - ((_endLabelSize.width / 2) + (_startLabelSize.width / 2));
+    double totalWidth = end;
     double percentageInVal = (getValue * 100) / (getEnd);
 
     double totalValOnPixel = ((totalWidth * percentageInVal) / 100) -
@@ -399,8 +432,8 @@ class RenderLinearGauge extends RenderBox {
           _linearGaugeContainerPaint);
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
-      gaugeContainer = Rect.fromLTWH((offset.dx + _startLabelSize.width / 2),
-          offset.dy, totalValOnPixel, getLinearGaugeBoxDecoration.height);
+      gaugeContainer = Rect.fromLTWH(start, offset.dy, totalValOnPixel,
+          getLinearGaugeBoxDecoration.height);
       if (getLinearGaugeBoxDecoration.linearGradient != null) {
         _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
             .linearGradient!
@@ -417,8 +450,8 @@ class RenderLinearGauge extends RenderBox {
       canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
-      gaugeContainer = Rect.fromLTWH((offset.dx + _startLabelSize.width / 2),
-          offset.dy, totalValOnPixel, getLinearGaugeBoxDecoration.height);
+      gaugeContainer = Rect.fromLTWH(start, offset.dy, totalValOnPixel,
+          getLinearGaugeBoxDecoration.height);
       if (getLinearGaugeBoxDecoration.linearGradient != null) {
         _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
             .linearGradient!
@@ -438,7 +471,9 @@ class RenderLinearGauge extends RenderBox {
       double x = value[1].dx;
       Offset a = Offset(x, y);
       canvas.drawLine(value[0], a, _primaryRulersPaint);
-      _drawLabels(canvas, key, value);
+      if (showLabel) {
+        _drawLabels(canvas, key, value);
+      }
     });
   }
 
@@ -488,8 +523,14 @@ class RenderLinearGauge extends RenderBox {
     _setLinearGaugeContainerPaint();
     _setSecondaryRulersPaint();
     _calculateRulerPoints();
-    _drawPrimaryRulers(canvas);
-    _drawSecondaryRulers(canvas);
+    if (showPrimaryRulers) {
+      _drawPrimaryRulers(canvas);
+    }
+
+    if (showSecondaryRulers) {
+      _drawSecondaryRulers(canvas);
+    }
+
     if (getShowLinearGaugeContainer) _paintGaugeContainer(canvas, size);
     canvas.restore();
   }
