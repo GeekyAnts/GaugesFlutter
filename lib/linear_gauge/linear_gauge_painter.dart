@@ -309,7 +309,7 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
-  bool get showPrimaryRulers => _showSecondaryRulers;
+  bool get showPrimaryRulers => _showPrimaryRulers;
   bool _showPrimaryRulers;
   set setShowPrimaryRulers(bool val) {
     if (_showPrimaryRulers == val) return;
