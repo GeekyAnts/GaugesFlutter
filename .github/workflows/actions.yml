@@ -50,7 +50,7 @@ jobs:
         PUB_DEV_PUBLISH_TOKEN_ENDPOINT: ${{ secrets.PUB_DEV_PUBLISH_TOKEN_ENDPOINT }}
         PUB_DEV_PUBLISH_EXPIRATION: ${{ secrets.PUB_DEV_PUBLISH_EXPIRATION }}
       run: |
-        mkdir -p ~/Library/Application\ Support/dart/ 
+        mkdir -p ~/.pub-cache/
         sh ./pub_login.sh    
 
     # Pub dry run.
