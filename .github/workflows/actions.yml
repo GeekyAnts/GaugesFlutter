@@ -25,7 +25,7 @@ jobs:
         java-version: '12.x'
     
     # Setup the flutter environment.
-    name: '>> Dart package <<'
+    - name: '>> Dart package <<'
         uses: k-paxian/dart-package-publisher@master
         with:
           accessToken: ${{ secrets.PUB_DEV_PUBLISH_ACCESS_TOKEN }}
