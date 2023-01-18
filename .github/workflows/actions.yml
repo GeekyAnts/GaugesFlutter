@@ -3,8 +3,6 @@ on:
   push :
     branches:
     - main
-    - stable
-    - dev
 jobs:
   publishing:
     runs-on: ubuntu-latest
@@ -12,7 +10,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@main # required!
         
-      - name: 'GAUGES FLUTTER'
+      - name: 'GeekyAnts Gauges Flutter'
         uses: k-paxian/dart-package-publisher@master
         with:
           credentialJson: ${{ secrets.CREDENTIALLS_JSON }}
