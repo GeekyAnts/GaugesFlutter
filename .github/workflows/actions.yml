@@ -25,10 +25,11 @@ jobs:
         java-version: '12.x'
     
     # Setup the flutter environment.
-    - uses: subosito/flutter-action@v1
-      with:
-        channel: 'stable' # 'dev', 'alpha', default to: 'stable'
-        # flutter-version: '1.12.x' # you can also specify exact version of flutter
+    name: '>> Dart package <<'
+        uses: k-paxian/dart-package-publisher@master
+        with:
+          accessToken: ${{ secrets.PUB_DEV_PUBLISH_ACCESS_TOKEN }}
+          refreshToken: ${{ secrets.PUB_DEV_PUBLISH_REFRESH_TOKEN }}
     
     # Get flutter dependencies.
     - run: flutter pub get
