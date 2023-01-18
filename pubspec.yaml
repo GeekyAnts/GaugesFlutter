@@ -1,6 +1,6 @@
 name: geekyants_flutter_gauges
 description: Here in Flutter you can use this package to plot a machinery information effortlessly.
-version: 0.0.6
+version: 0.0.6+1
 homepage: https://github.com/GeekyAnts/GaugesFlutter
 
 environment:
