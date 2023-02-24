@@ -383,11 +383,12 @@ class RenderLinearGauge extends RenderBox {
       textDirection: TextDirection.ltr,
     );
     final String labelText = text;
+    final Paint sample = Paint();
     final double? value = double.tryParse(text);
     final ui.TextStyle labelTextStyle = ui.TextStyle(
-      color: _labelColor,
-      fontSize: _labelSize,
-    );
+        color: _labelColor,
+        fontSize: _labelSize,
+        background: sample..color = Colors.amber);
     final ui.ParagraphBuilder paragraphBuilder =
         ui.ParagraphBuilder(paragraphStyle)
           ..pushStyle(labelTextStyle)
@@ -401,8 +402,9 @@ class RenderLinearGauge extends RenderBox {
     if (invertLabels) {
       canvas.drawParagraph(
           paragraph,
+          // Offset(0, -(19 + getLinearGaugeBoxDecoration.height)));
           Offset((list[0].dx - (labelSize.width / 2)),
-              -(list[0].dy + getPrimaryRulersHeight + getLabelTopMargin)));
+              -(getPrimaryRulersHeight + labelSize.height - 2)));
     } else {
       canvas.drawParagraph(
           paragraph,
@@ -490,7 +492,7 @@ class RenderLinearGauge extends RenderBox {
       double y;
       double x;
       if (invertLabels) {
-        y = -(value[1].dy - getLinearGaugeBoxDecoration.height);
+        y = -value[1].dy;
         x = value[1].dx;
       } else {
         y = value[1].dy + getLinearGaugeBoxDecoration.height;
@@ -511,7 +513,9 @@ class RenderLinearGauge extends RenderBox {
         getSecondaryRulerPerInterval,
         canvas,
         _secondaryRulersPaint,
-        getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height);
+        getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height,
+        invertLabels,
+        getLinearGaugeBoxDecoration.height);
   }
 
   void _setPrimaryRulersPaint() {

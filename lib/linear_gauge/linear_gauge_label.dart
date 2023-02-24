@@ -67,8 +67,13 @@ class LinearGaugeLabel {
   ///
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
-  void generateSecondaryRulers(double totalRulers, Canvas canvas,
-      Paint secondaryRulersPaint, double height) {
+  void generateSecondaryRulers(
+      double totalRulers,
+      Canvas canvas,
+      Paint secondaryRulersPaint,
+      double height,
+      bool inverted,
+      double linearGaugeHeight) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     int i = 0;
     for (var element in offset) {
@@ -81,9 +86,22 @@ class LinearGaugeLabel {
               b.dx * (i / (totalRulers + 1));
           double y = a.dy * (1 - ((i) / (totalRulers + 1))) +
               b.dy * (i / (totalRulers + 1));
+
           if (Offset(x, y) != a) {
-            canvas.drawLine(
-                Offset(x, y), Offset(x, 5 + height), secondaryRulersPaint);
+            if (inverted) {
+              canvas.drawLine(
+                  Offset(x, y),
+                  Offset(x, -(5 + height - linearGaugeHeight)),
+                  secondaryRulersPaint);
+            } else {
+              canvas.drawLine(
+                  //the value 5 for the offset y axis is the height parameter for the secondary rulers
+                  Offset(x, y),
+                  Offset(x, 5 + height),
+                  secondaryRulersPaint);
+            }
+            // canvas.drawLine(
+            //     Offset(x, y), Offset(x, 5 + height), secondaryRulersPaint);
           }
         }
         i = i + 1;
