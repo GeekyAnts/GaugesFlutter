@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 class LabelStyle {
   const LabelStyle(
-      {this.fontSize = 12.0, this.color = Colors.black, this.showLabel = true});
+      {this.fontSize = 12.0,
+      this.color = Colors.black,
+      this.showLabel = true,
+      this.invertLabels = false});
 
   ///
   /// Sets the font size of the label
@@ -18,4 +21,10 @@ class LabelStyle {
   /// Sets the visibility of the label
   /// default is to true
   final bool? showLabel;
+
+  ///
+  /// Sets the position of the label
+  /// i.e upside or bottomside of the GaugeContainer
+  /// default is to false
+  final bool? invertLabels;
 }

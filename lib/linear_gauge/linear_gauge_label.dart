@@ -54,6 +54,9 @@ class LinearGaugeLabel {
           b.dx * (i / (_linearGaugeLabel.length - 1));
       double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
           b.dy * (i / (_linearGaugeLabel.length - 1));
+      // print(Offset(x, y));
+      // print(Offset(x, primaryRulersHeight));
+
       primaryRulers[_linearGaugeLabel[i].text!] = [
         Offset(x, y),
         Offset(x, primaryRulersHeight)
