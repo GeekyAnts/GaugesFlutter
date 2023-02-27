@@ -194,11 +194,12 @@ class RenderLinearGauge extends RenderBox {
   /// Getter and Setter for the [LinearGaugeIndicator] parameter.
   ///
   get getLinearGaugeIndicator => _indicator;
-  LinearGaugeIndicator _indicator;
+  LinearGaugeIndicator _indicator =
+      const LinearGaugeIndicator(shape: PointerShape.circle);
 
   set setLinearGaugeIndicator(linearGaugeIndicator) {
-    if (_indicator == linearGaugeIndicator) return;
     _indicator = linearGaugeIndicator;
+
     markNeedsPaint();
   }
 
