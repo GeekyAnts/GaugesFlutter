@@ -192,13 +192,11 @@ class RenderLinearGauge extends RenderBox {
 
   //! Linear Gauge Container
   get getLinearGaugeIndicator => _indicator;
-  LinearGaugeIndicator _indicator = LinearGaugeIndicator(
-    value: 10,
-  );
+  LinearGaugeIndicator _indicator;
 
   set setLinearGaugeIndicator(linearGaugeIndicator) {
+    if (_indicator == linearGaugeIndicator) return;
     _indicator = linearGaugeIndicator;
-
     markNeedsPaint();
   }
 
