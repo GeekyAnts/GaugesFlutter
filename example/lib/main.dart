@@ -23,15 +23,11 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
             SizedBox(
               child: LinearGauge(
                 value: 50.0,
-                primaryRulersHeight: 25,
-                // showLinearGaugeContainer: false,
                 labelStyle: LabelStyle(
-                  showLabel: true,
                   fontSize: 10,
                   color: Colors.red,
                   invertLabels: true,
                 ),
-                linearGaugeBoxDecoration: LinearGaugeBoxDecoration(height: 4),
               ),
             ),
           ],

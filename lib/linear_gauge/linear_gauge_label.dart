@@ -54,8 +54,6 @@ class LinearGaugeLabel {
           b.dx * (i / (_linearGaugeLabel.length - 1));
       double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
           b.dy * (i / (_linearGaugeLabel.length - 1));
-      // print(Offset(x, y));
-      // print(Offset(x, primaryRulersHeight));
 
       primaryRulers[_linearGaugeLabel[i].text!] = [
         Offset(x, y),
@@ -88,20 +86,23 @@ class LinearGaugeLabel {
               b.dy * (i / (totalRulers + 1));
 
           if (Offset(x, y) != a) {
+            // the co-ordinate points where secondary ruler will end
+            Offset secondaryRulerEndPoint;
             if (inverted) {
-              canvas.drawLine(
-                  Offset(x, y),
-                  Offset(x, -(5 + height - linearGaugeHeight)),
-                  secondaryRulersPaint);
+              //the value 5 for the offset y axis is the height parameter for the secondary rulers
+
+              secondaryRulerEndPoint =
+                  Offset(x, -(5 + height - linearGaugeHeight));
             } else {
-              canvas.drawLine(
-                  //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                  Offset(x, y),
-                  Offset(x, 5 + height),
-                  secondaryRulersPaint);
+              //the value 5 for the offset y axis is the height parameter for the secondary rulers
+
+              secondaryRulerEndPoint = Offset(x, 5 + height);
             }
-            // canvas.drawLine(
-            //     Offset(x, y), Offset(x, 5 + height), secondaryRulersPaint);
+            canvas.drawLine(
+              Offset(x, y),
+              secondaryRulerEndPoint,
+              secondaryRulersPaint,
+            );
           }
         }
         i = i + 1;

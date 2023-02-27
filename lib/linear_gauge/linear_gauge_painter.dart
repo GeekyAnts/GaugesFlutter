@@ -383,12 +383,11 @@ class RenderLinearGauge extends RenderBox {
       textDirection: TextDirection.ltr,
     );
     final String labelText = text;
-    final Paint sample = Paint();
     final double? value = double.tryParse(text);
     final ui.TextStyle labelTextStyle = ui.TextStyle(
-        color: _labelColor,
-        fontSize: _labelSize,
-        background: sample..color = Colors.amber);
+      color: _labelColor,
+      fontSize: _labelSize,
+    );
     final ui.ParagraphBuilder paragraphBuilder =
         ui.ParagraphBuilder(paragraphStyle)
           ..pushStyle(labelTextStyle)
@@ -399,18 +398,22 @@ class RenderLinearGauge extends RenderBox {
 
     paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
+    Offset labelOffsets;
     if (invertLabels) {
-      canvas.drawParagraph(
-          paragraph,
-          // Offset(0, -(19 + getLinearGaugeBoxDecoration.height)));
-          Offset((list[0].dx - (labelSize.width / 2)),
-              -(getPrimaryRulersHeight + labelSize.height - 2)));
+      labelOffsets = Offset(
+        (list[0].dx - (labelSize.width / 2)),
+        -(getPrimaryRulersHeight + labelSize.height - 2),
+      );
     } else {
-      canvas.drawParagraph(
-          paragraph,
-          Offset((list[0].dx - (labelSize.width / 2)),
-              list[0].dy + getPrimaryRulersHeight + getLabelTopMargin));
+      labelOffsets = Offset(
+        (list[0].dx - (labelSize.width / 2)),
+        (list[0].dy + getPrimaryRulersHeight + getLabelTopMargin),
+      );
     }
+    canvas.drawParagraph(
+      paragraph,
+      labelOffsets,
+    );
   }
 
   void _paintGaugeContainer(Canvas canvas, Size size) {
@@ -486,15 +489,18 @@ class RenderLinearGauge extends RenderBox {
   void _drawPrimaryRulers(Canvas canvas) {
     _setPrimaryRulersPaint();
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
-      // double y = value[1].dy + getLinearGaugeBoxDecoration.height;
-      // double x = value[1].dx;
-      // Offset a = Offset(x, y);
       double y;
       double x;
       if (invertLabels) {
+        //in case of invert labels
+        //y co-ordinate will be simply inverted on negative side by adding -ve sign
+        //no need to adjust y co-ordinate by adding the height of gauge container
         y = -value[1].dy;
         x = value[1].dx;
       } else {
+        //in case of non-invert labels
+        //there is need to adjust y co-ordinate by adding the height of gauge container
+        //bcz line will start drawing from behind of gauge container
         y = value[1].dy + getLinearGaugeBoxDecoration.height;
         x = value[1].dx;
       }
