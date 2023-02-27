@@ -71,6 +71,7 @@ class LinearGaugeLabel {
       Paint secondaryRulersPaint,
       double height,
       bool inverted,
+      bool crossRuler,
       double linearGaugeHeight) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     int i = 0;
@@ -103,6 +104,21 @@ class LinearGaugeLabel {
               secondaryRulerEndPoint,
               secondaryRulersPaint,
             );
+            Offset secondaryRulerStartPoint;
+            if (crossRuler) {
+              //in case of cross ruler
+              //the staring point is shifted half of the secondary ruler height from the
+              //center of the gauge container
+              secondaryRulerStartPoint =
+                  Offset(x, (y / 2) - ((5 + height - linearGaugeHeight) / 2));
+              //the y co-ordinate of the ending point is halved from it's original position
+              secondaryRulerEndPoint = Offset(x, (5 + height) / 2);
+            } else {
+              secondaryRulerStartPoint = Offset(x, y);
+              secondaryRulerEndPoint = Offset(x, 5 + height);
+            }
+            canvas.drawLine(secondaryRulerStartPoint, secondaryRulerEndPoint,
+                secondaryRulersPaint);
           }
         }
         i = i + 1;

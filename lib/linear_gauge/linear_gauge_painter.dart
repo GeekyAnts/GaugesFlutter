@@ -30,7 +30,7 @@ class RenderLinearGauge extends RenderBox {
     required Color labelColor,
     required bool showLabel,
     required bool invertLabels,
-    required bool middleRuler,
+    required bool crossRuler,
     required bool showSecondaryRulers,
     required bool showPrimaryRulers,
     required double value,
@@ -56,7 +56,7 @@ class RenderLinearGauge extends RenderBox {
         _labelColor = labelColor,
         _showLabel = showLabel,
         _invertLabels = invertLabels,
-        _middleRuler = middleRuler,
+        _crossRuler = crossRuler,
         _showSecondaryRulers = showSecondaryRulers,
         _showPrimaryRulers = showPrimaryRulers,
         _value = value,
@@ -332,11 +332,11 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
-  bool get middleRuler => _middleRuler;
-  bool _middleRuler;
-  set setMiddleRuler(bool val) {
-    if (_middleRuler == val) return;
-    _middleRuler = val;
+  bool get crossRuler => _crossRuler;
+  bool _crossRuler;
+  set setCrossRuler(bool val) {
+    if (_crossRuler == val) return;
+    _crossRuler = val;
     markNeedsPaint();
   }
 
@@ -548,6 +548,27 @@ class RenderLinearGauge extends RenderBox {
 
       Offset a = Offset(x, y);
 
+      Offset primaryRulerStartPoint;
+
+      if (crossRuler) {
+        //in case of cross ruler
+        //the y co-ordinate of the ending point is halved from it's original position
+        y = (value[1].dy + getLinearGaugeBoxDecoration.height) / 2;
+        x = value[1].dx;
+
+        //the staring point is shifted half of the primary ruler height from the
+        //center of the gauge container
+        primaryRulerStartPoint =
+            Offset(value[0].dx, value[0].dy / 2 - getPrimaryRulersHeight / 2);
+      } else {
+        y = value[1].dy + getLinearGaugeBoxDecoration.height;
+        x = value[1].dx;
+        primaryRulerStartPoint = value[0];
+      }
+      //the ending point of the primary ruler
+
+      canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
+
       canvas.drawLine(value[0], a, _primaryRulersPaint);
       if (showLabel) {
         _drawLabels(canvas, key, value);
@@ -562,6 +583,7 @@ class RenderLinearGauge extends RenderBox {
         _secondaryRulersPaint,
         getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height,
         invertLabels,
+        crossRuler,
         getLinearGaugeBoxDecoration.height);
   }
 
@@ -606,7 +628,7 @@ class RenderLinearGauge extends RenderBox {
 
     _calculateRulerPoints();
 
-    if (middleRuler) {
+    if (crossRuler) {
       if (getShowLinearGaugeContainer) {
         _paintGaugeContainer(canvas, size);
       }
@@ -620,7 +642,7 @@ class RenderLinearGauge extends RenderBox {
       _drawSecondaryRulers(canvas);
     }
 
-    if (!middleRuler) {
+    if (!crossRuler) {
       if (getShowLinearGaugeContainer) {
         _paintGaugeContainer(canvas, size);
       }

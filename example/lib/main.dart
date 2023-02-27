@@ -24,7 +24,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
               child: LinearGauge(
                 value: 50.0,
                 labelStyle: LabelStyle(
-                  middleRuler: true,
+                  crossRuler: true,
                   fontSize: 10,
                   color: Colors.red,
                   invertLabels: true,
@@ -39,7 +39,6 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
                   // shape: PointerShape.triangle,
                   color: Colors.blue,
                 ),
-                // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(height: 100),
               ),
             ),
           ],

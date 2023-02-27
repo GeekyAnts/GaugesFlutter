@@ -6,7 +6,7 @@ class LabelStyle {
       this.color = Colors.black,
       this.showLabel = true,
       this.invertLabels = false,
-      this.middleRuler = false});
+      this.crossRuler = false});
 
   ///
   /// Sets the font size of the label
@@ -31,5 +31,5 @@ class LabelStyle {
 
   /// Sets whether ruler starts from middle or not
   /// default is to false
-  final bool? middleRuler;
+  final bool? crossRuler;
 }
