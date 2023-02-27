@@ -44,6 +44,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.secondaryRulerPerInterval = 1.0,
       this.showSecondaryRulers = true,
       this.showPrimaryRulers = true,
+      this.indicator = const LinearGaugeIndicator(),
       this.value = 0})
       : super(key: key);
 
@@ -313,6 +314,11 @@ class LinearGauge extends LeafRenderObjectWidget {
   /// `showSecondaryRules` sets the visibility of the primary rulers.
   final bool showPrimaryRulers;
 
+  /// TODO: Add docs
+  ///
+  ///
+  final LinearGaugeIndicator indicator;
+
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
@@ -340,6 +346,7 @@ class LinearGauge extends LeafRenderObjectWidget {
         invertLabels: labelStyle!.invertLabels!,
         showSecondaryRulers: showSecondaryRulers,
         showPrimaryRulers: showPrimaryRulers,
+        indicator: indicator,
         value: value!);
   }
 
@@ -371,6 +378,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setInvertLabels = labelStyle!.invertLabels!
       ..setShowSecondaryRulers = showSecondaryRulers
       ..setShowPrimaryRulers = showPrimaryRulers
-      ..setValue = value!;
+      ..setValue = value!
+      ..setLinearGaugeIndicator = indicator;
   }
 }

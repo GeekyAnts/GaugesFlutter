@@ -4,9 +4,11 @@ import 'dart:ui' as ui;
 import 'dart:math' as math;
 
 import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
+// import 'package:geekyants_flutter_gauges/linear_gauge/pointers/linear_gauge_pointer.dart';
 
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge({
+    required LinearGaugeIndicator indicator,
     required double start,
     required double end,
     required double steps,
@@ -55,7 +57,14 @@ class RenderLinearGauge extends RenderBox {
         _invertLabels = invertLabels,
         _showSecondaryRulers = showSecondaryRulers,
         _showPrimaryRulers = showPrimaryRulers,
-        _value = value;
+        _value = value,
+        _indicator = indicator;
+
+  //! X axis Vlaue
+  ///
+  double _valueInPixel = 0;
+
+  ///
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -178,6 +187,16 @@ class RenderLinearGauge extends RenderBox {
     if (_secondaryRulersWidth == secondaryRulersWidth) return;
 
     _secondaryRulersWidth = secondaryRulersWidth;
+    markNeedsPaint();
+  }
+
+  //! Linear Gauge Container
+  get getLinearGaugeIndicator => _indicator;
+  LinearGaugeIndicator _indicator;
+
+  set setLinearGaugeIndicator(linearGaugeIndicator) {
+    if (_indicator == linearGaugeIndicator) return;
+    _indicator = linearGaugeIndicator;
     markNeedsPaint();
   }
 
@@ -445,6 +464,18 @@ class RenderLinearGauge extends RenderBox {
     double totalValOnPixel = ((totalWidth * percentageInVal) / 100) -
         ((totalWidth * removeStartPercentage) / 100);
 
+//!
+    if (_indicator.getPointerValue == null) {
+      _valueInPixel = totalValOnPixel;
+    } else {
+      double percentageInValPointer =
+          (_indicator.getPointerValue * 100) / (getEnd);
+      double totalValOnPixelPointer =
+          ((totalWidth * percentageInValPointer) / 100) -
+              ((totalWidth * removeStartPercentage) / 100);
+      _valueInPixel = totalValOnPixelPointer;
+    }
+
     if (getLinearGaugeBoxDecoration.borderRadius != null) {
       canvas.drawRRect(
           RRect.fromRectAndRadius(
@@ -557,10 +588,12 @@ class RenderLinearGauge extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
+
     canvas.save();
     canvas.translate(offset.dx, offset.dy);
     _setLinearGaugeContainerPaint();
     _setSecondaryRulersPaint();
+
     _calculateRulerPoints();
     if (showPrimaryRulers) {
       _drawPrimaryRulers(canvas);
@@ -570,7 +603,31 @@ class RenderLinearGauge extends RenderBox {
       _drawSecondaryRulers(canvas);
     }
 
-    if (getShowLinearGaugeContainer) _paintGaugeContainer(canvas, size);
+//!    // print(getLinearGaugeIndicator.value);
+    double value = getLinearGaugeIndicator.value ?? _valueInPixel;
+
+    if (getShowLinearGaugeContainer) {
+      _paintGaugeContainer(
+        canvas,
+        size,
+      );
+    }
+
+    var firstOffset = Offset(_valueInPixel, 0.0);
+    if (_indicator.getPointerValue == null) {
+      _indicator.setPointerValue = value;
+    }
+    var firstOff =
+        _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
+
+    // getLinearGaugeIndicator.drawCirclePointer(canvas, value, offset,
+    //     _indicator.height, _indicator.width, _indicator.color);
+    getLinearGaugeIndicator.drawCirclePointer(canvas, value, firstOff,
+        _indicator.height, _indicator.width, _indicator.color);
+
+    getLinearGaugeIndicator.drawTrianglePointer(canvas, firstOff,
+        _indicator.height, _indicator.width, value, _indicator.color);
+
     canvas.restore();
   }
 }
