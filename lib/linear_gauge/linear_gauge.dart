@@ -337,6 +337,7 @@ class LinearGauge extends LeafRenderObjectWidget {
         labelSize: labelStyle!.fontSize!,
         labelColor: labelStyle!.color!,
         showLabel: labelStyle!.showLabel!,
+        invertLabels: labelStyle!.invertLabels!,
         showSecondaryRulers: showSecondaryRulers,
         showPrimaryRulers: showPrimaryRulers,
         value: value!);
@@ -367,6 +368,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setLabelSize = labelStyle!.fontSize!
       ..setLabelColor = labelStyle!.color!
       ..setShowLabel = labelStyle!.showLabel!
+      ..setInvertLabels = labelStyle!.invertLabels!
       ..setShowSecondaryRulers = showSecondaryRulers
       ..setShowPrimaryRulers = showPrimaryRulers
       ..setValue = value!;

@@ -27,6 +27,7 @@ class RenderLinearGauge extends RenderBox {
     required double labelSize,
     required Color labelColor,
     required bool showLabel,
+    required bool invertLabels,
     required bool showSecondaryRulers,
     required bool showPrimaryRulers,
     required double value,
@@ -51,6 +52,7 @@ class RenderLinearGauge extends RenderBox {
         _labelSize = labelSize,
         _labelColor = labelColor,
         _showLabel = showLabel,
+        _invertLabels = invertLabels,
         _showSecondaryRulers = showSecondaryRulers,
         _showPrimaryRulers = showPrimaryRulers,
         _value = value;
@@ -301,6 +303,14 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  bool get invertLabels => _invertLabels;
+  bool _invertLabels;
+  set setInvertLabels(bool val) {
+    if (_invertLabels == val) return;
+    _invertLabels = val;
+    markNeedsPaint();
+  }
+
   bool get showSecondaryRulers => _showSecondaryRulers;
   bool _showSecondaryRulers;
   set setShowSecondaryRulers(bool val) {
@@ -388,10 +398,22 @@ class RenderLinearGauge extends RenderBox {
 
     paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
+    Offset labelOffsets;
+    if (invertLabels) {
+      labelOffsets = Offset(
+        (list[0].dx - (labelSize.width / 2)),
+        -(getPrimaryRulersHeight + labelSize.height - 2),
+      );
+    } else {
+      labelOffsets = Offset(
+        (list[0].dx - (labelSize.width / 2)),
+        (list[0].dy + getPrimaryRulersHeight + getLabelTopMargin),
+      );
+    }
     canvas.drawParagraph(
-        paragraph,
-        Offset((list[0].dx - (labelSize.width / 2)),
-            list[0].dy + getPrimaryRulersHeight + getLabelTopMargin));
+      paragraph,
+      labelOffsets,
+    );
   }
 
   void _paintGaugeContainer(Canvas canvas, Size size) {
@@ -467,9 +489,24 @@ class RenderLinearGauge extends RenderBox {
   void _drawPrimaryRulers(Canvas canvas) {
     _setPrimaryRulersPaint();
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
-      double y = value[1].dy + getLinearGaugeBoxDecoration.height;
-      double x = value[1].dx;
+      double y;
+      double x;
+      if (invertLabels) {
+        //in case of invert labels
+        //y co-ordinate will be simply inverted on negative side by adding -ve sign
+        //no need to adjust y co-ordinate by adding the height of gauge container
+        y = -value[1].dy;
+        x = value[1].dx;
+      } else {
+        //in case of non-invert labels
+        //there is need to adjust y co-ordinate by adding the height of gauge container
+        //bcz line will start drawing from behind of gauge container
+        y = value[1].dy + getLinearGaugeBoxDecoration.height;
+        x = value[1].dx;
+      }
+
       Offset a = Offset(x, y);
+
       canvas.drawLine(value[0], a, _primaryRulersPaint);
       if (showLabel) {
         _drawLabels(canvas, key, value);
@@ -482,7 +519,9 @@ class RenderLinearGauge extends RenderBox {
         getSecondaryRulerPerInterval,
         canvas,
         _secondaryRulersPaint,
-        getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height);
+        getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height,
+        invertLabels,
+        getLinearGaugeBoxDecoration.height);
   }
 
   void _setPrimaryRulersPaint() {

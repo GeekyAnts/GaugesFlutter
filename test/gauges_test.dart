@@ -17,6 +17,9 @@ void main() {
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.normal,
       ),
+      labelStyle: LabelStyle(
+        invertLabels: true,
+      ),
       primaryRulersWidth: 1.0,
       primaryRulersHeight: 15.0,
       secondaryRulersHeight: 1.0,
@@ -54,6 +57,7 @@ void main() {
       expect(linearGauge.linearGaugeBoxDecoration,
           const LinearGaugeBoxDecoration());
       expect(linearGauge.secondaryRulerPerInterval, 1.0);
+      expect(linearGauge.labelStyle!.invertLabels, true);
     });
 
     test("Verify Offset boundaries", () {});
