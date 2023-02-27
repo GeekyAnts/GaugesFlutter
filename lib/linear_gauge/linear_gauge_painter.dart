@@ -610,24 +610,20 @@ class RenderLinearGauge extends RenderBox {
       if (getShowLinearGaugeContainer) {
         _paintGaugeContainer(canvas, size);
       }
+    }
 
-      if (showPrimaryRulers) {
-        _drawPrimaryRulers(canvas);
-      }
+    if (showPrimaryRulers) {
+      _drawPrimaryRulers(canvas);
+    }
 
-      if (showSecondaryRulers) {
-        _drawSecondaryRulers(canvas);
-      }
-    } else {
-      if (showPrimaryRulers) {
-        _drawPrimaryRulers(canvas);
-      }
+    if (showSecondaryRulers) {
+      _drawSecondaryRulers(canvas);
+    }
 
-      if (showSecondaryRulers) {
-        _drawSecondaryRulers(canvas);
+    if (!middleRuler) {
+      if (getShowLinearGaugeContainer) {
+        _paintGaugeContainer(canvas, size);
       }
-
-      if (getShowLinearGaugeContainer) _paintGaugeContainer(canvas, size);
     }
 
     if (showSecondaryRulers) {

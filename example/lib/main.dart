@@ -39,6 +39,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
                   // shape: PointerShape.triangle,
                   color: Colors.blue,
                 ),
+                // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(height: 100),
               ),
             ),
           ],
