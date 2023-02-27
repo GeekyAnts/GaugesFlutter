@@ -54,6 +54,7 @@ class LinearGaugeLabel {
           b.dx * (i / (_linearGaugeLabel.length - 1));
       double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
           b.dy * (i / (_linearGaugeLabel.length - 1));
+
       primaryRulers[_linearGaugeLabel[i].text!] = [
         Offset(x, y),
         Offset(x, primaryRulersHeight)
@@ -64,8 +65,13 @@ class LinearGaugeLabel {
   ///
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
-  void generateSecondaryRulers(double totalRulers, Canvas canvas,
-      Paint secondaryRulersPaint, double height) {
+  void generateSecondaryRulers(
+      double totalRulers,
+      Canvas canvas,
+      Paint secondaryRulersPaint,
+      double height,
+      bool inverted,
+      double linearGaugeHeight) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     int i = 0;
     for (var element in offset) {
@@ -78,9 +84,25 @@ class LinearGaugeLabel {
               b.dx * (i / (totalRulers + 1));
           double y = a.dy * (1 - ((i) / (totalRulers + 1))) +
               b.dy * (i / (totalRulers + 1));
+
           if (Offset(x, y) != a) {
+            // the co-ordinate points where secondary ruler will end
+            Offset secondaryRulerEndPoint;
+            if (inverted) {
+              //the value 5 for the offset y axis is the height parameter for the secondary rulers
+
+              secondaryRulerEndPoint =
+                  Offset(x, -(5 + height - linearGaugeHeight));
+            } else {
+              //the value 5 for the offset y axis is the height parameter for the secondary rulers
+
+              secondaryRulerEndPoint = Offset(x, 5 + height);
+            }
             canvas.drawLine(
-                Offset(x, y), Offset(x, 5 + height), secondaryRulersPaint);
+              Offset(x, y),
+              secondaryRulerEndPoint,
+              secondaryRulersPaint,
+            );
           }
         }
         i = i + 1;

@@ -26,6 +26,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
                 labelStyle: LabelStyle(
                   fontSize: 10,
                   color: Colors.red,
+                  invertLabels: true,
                 ),
               ),
             ),
