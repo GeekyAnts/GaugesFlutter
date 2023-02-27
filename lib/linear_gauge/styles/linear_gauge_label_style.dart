@@ -5,7 +5,8 @@ class LabelStyle {
       {this.fontSize = 12.0,
       this.color = Colors.black,
       this.showLabel = true,
-      this.invertLabels = false});
+      this.invertLabels = false,
+      this.middleRuler = false});
 
   ///
   /// Sets the font size of the label
@@ -27,4 +28,8 @@ class LabelStyle {
   /// i.e upside or bottomside of the GaugeContainer
   /// default is to false
   final bool? invertLabels;
+
+  /// Sets whether ruler starts from middle or not
+  /// default is to false
+  final bool? middleRuler;
 }

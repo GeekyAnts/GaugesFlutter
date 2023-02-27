@@ -30,6 +30,7 @@ class RenderLinearGauge extends RenderBox {
     required Color labelColor,
     required bool showLabel,
     required bool invertLabels,
+    required bool middleRuler,
     required bool showSecondaryRulers,
     required bool showPrimaryRulers,
     required double value,
@@ -55,6 +56,7 @@ class RenderLinearGauge extends RenderBox {
         _labelColor = labelColor,
         _showLabel = showLabel,
         _invertLabels = invertLabels,
+        _middleRuler = middleRuler,
         _showSecondaryRulers = showSecondaryRulers,
         _showPrimaryRulers = showPrimaryRulers,
         _value = value,
@@ -330,6 +332,14 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  bool get middleRuler => _middleRuler;
+  bool _middleRuler;
+  set setMiddleRuler(bool val) {
+    if (_middleRuler == val) return;
+    _middleRuler = val;
+    markNeedsPaint();
+  }
+
   bool get showSecondaryRulers => _showSecondaryRulers;
   bool _showSecondaryRulers;
   set setShowSecondaryRulers(bool val) {
@@ -595,8 +605,29 @@ class RenderLinearGauge extends RenderBox {
     _setSecondaryRulersPaint();
 
     _calculateRulerPoints();
-    if (showPrimaryRulers) {
-      _drawPrimaryRulers(canvas);
+
+    if (middleRuler) {
+      if (getShowLinearGaugeContainer) {
+        _paintGaugeContainer(canvas, size);
+      }
+
+      if (showPrimaryRulers) {
+        _drawPrimaryRulers(canvas);
+      }
+
+      if (showSecondaryRulers) {
+        _drawSecondaryRulers(canvas);
+      }
+    } else {
+      if (showPrimaryRulers) {
+        _drawPrimaryRulers(canvas);
+      }
+
+      if (showSecondaryRulers) {
+        _drawSecondaryRulers(canvas);
+      }
+
+      if (getShowLinearGaugeContainer) _paintGaugeContainer(canvas, size);
     }
 
     if (showSecondaryRulers) {
