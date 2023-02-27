@@ -111,13 +111,13 @@ class LinearGaugeIndicator {
     Offset offset,
     double height,
     double width,
-    // Color indicatorColor,
+    Color indicatorColor,
   ) {
     final paint = Paint();
     paint.color = Colors.blue;
     // print("width in the pointer  ${size.width}");
-    final position = Offset(offset.dx, offset.dy);
-    canvas.drawCircle(position, 10, paint);
+    final position = Offset(offset.dx, offset.dy / 2);
+    canvas.drawCircle(position, height, paint);
   }
 
   // void drawRectPointer(

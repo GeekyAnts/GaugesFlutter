@@ -30,7 +30,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
                 ),
                 primaryRulerColor: Colors.red,
                 indicator: LinearGaugeIndicator(
-                  // value: 60,
+                  value: 60,
                   height: 30,
                   width: 30,
                   // value: ,

@@ -624,6 +624,8 @@ class RenderLinearGauge extends RenderBox {
 
     // getLinearGaugeIndicator.drawCirclePointer(canvas, value, offset,
     //     _indicator.height, _indicator.width, _indicator.color);
+    getLinearGaugeIndicator.drawCirclePointer(canvas, value, firstOff,
+        _indicator.height, _indicator.width, _indicator.color);
 
     getLinearGaugeIndicator.drawTrianglePointer(canvas, firstOff,
         _indicator.height, _indicator.width, value, _indicator.color);
