@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geekyants_flutter_gauges/gauges.dart';
 
 class LinearGaugeLabel {
   String? text;
@@ -70,8 +71,7 @@ class LinearGaugeLabel {
       Canvas canvas,
       Paint secondaryRulersPaint,
       double height,
-      bool inverted,
-      bool crossRuler,
+      RulerPosition rulerPosition,
       double linearGaugeHeight) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     int i = 0;
@@ -87,36 +87,33 @@ class LinearGaugeLabel {
               b.dy * (i / (totalRulers + 1));
 
           if (Offset(x, y) != a) {
-            // the co-ordinate points where secondary ruler will end
-            Offset secondaryRulerEndPoint;
-            if (inverted) {
-              //the value 5 for the offset y axis is the height parameter for the secondary rulers
-
-              secondaryRulerEndPoint =
-                  Offset(x, -(5 + height - linearGaugeHeight));
-            } else {
-              //the value 5 for the offset y axis is the height parameter for the secondary rulers
-
-              secondaryRulerEndPoint = Offset(x, 5 + height);
-            }
-            canvas.drawLine(
-              Offset(x, y),
-              secondaryRulerEndPoint,
-              secondaryRulersPaint,
-            );
             Offset secondaryRulerStartPoint;
-            if (crossRuler) {
-              //in case of cross ruler
-              //the staring point is shifted half of the secondary ruler height from the
-              //center of the gauge container
-              secondaryRulerStartPoint =
-                  Offset(x, (y / 2) - ((5 + height - linearGaugeHeight) / 2));
-              //the y co-ordinate of the ending point is halved from it's original position
-              secondaryRulerEndPoint = Offset(x, (5 + height) / 2);
-            } else {
-              secondaryRulerStartPoint = Offset(x, y);
-              secondaryRulerEndPoint = Offset(x, 5 + height);
+            Offset secondaryRulerEndPoint;
+
+            switch (rulerPosition) {
+              case RulerPosition.top:
+                //the value 5 for the offset y axis is the height parameter for the secondary rulers
+                secondaryRulerStartPoint = Offset(x, y);
+
+                secondaryRulerEndPoint =
+                    Offset(x, -(5 + height - linearGaugeHeight));
+                break;
+              case RulerPosition.center:
+                //the staring point is shifted half of the secondary ruler height from the
+                //center of the gauge container
+                secondaryRulerStartPoint =
+                    Offset(x, (y / 2) - ((5 + height - linearGaugeHeight) / 2));
+                //the y co-ordinate of the ending point is halved from it's original position
+                secondaryRulerEndPoint = Offset(x, (5 + height) / 2);
+                break;
+              case RulerPosition.bottom:
+                //the value 5 for the offset y axis is the height parameter for the secondary rulers
+                secondaryRulerStartPoint = Offset(x, y);
+
+                secondaryRulerEndPoint = Offset(x, 5 + height);
+                break;
             }
+
             canvas.drawLine(secondaryRulerStartPoint, secondaryRulerEndPoint,
                 secondaryRulersPaint);
           }

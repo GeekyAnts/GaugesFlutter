@@ -17,17 +17,16 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child:Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               child: LinearGauge(
                 value: 50.0,
                 labelStyle: LabelStyle(
-                  crossRuler: true,
                   fontSize: 10,
                   color: Colors.red,
-                  invertLabels: true,
+                  rulerPosition: RulerPosition.top,
                 ),
                 primaryRulerColor: Colors.red,
                 indicator: LinearGaugeIndicator(
