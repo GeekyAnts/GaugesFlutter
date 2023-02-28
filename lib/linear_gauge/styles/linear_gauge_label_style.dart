@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:geekyants_flutter_gauges/gauges.dart';
 
 class LabelStyle {
-  const LabelStyle(
-      {this.fontSize = 12.0,
-      this.color = Colors.black,
-      this.showLabel = true,
-      this.invertLabels = false});
+  const LabelStyle({
+    this.fontSize = 12.0,
+    this.color = Colors.black,
+    this.showLabel = true,
+    this.rulerPosition = RulerPosition.bottom,
+  });
 
   ///
   /// Sets the font size of the label
@@ -23,8 +25,19 @@ class LabelStyle {
   final bool? showLabel;
 
   ///
-  /// Sets the position of the label
-  /// i.e upside or bottomside of the GaugeContainer
-  /// default is to false
-  final bool? invertLabels;
+  ///
+  /// `rulerPosition` Sets the position of the rulers (top,center,bottom)
+  ///
+  /// default is to `rulerPosition =RulerPosition.bottom
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LabelStyle(
+  ///   rulerPosition: RulerPosition.bottom,
+  /// ),
+  /// ```
+  ///
+
+  final RulerPosition? rulerPosition;
 }
