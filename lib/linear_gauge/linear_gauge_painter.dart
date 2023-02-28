@@ -190,7 +190,9 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
-  //! Linear Gauge Container
+  ///
+  /// Getter and Setter for the [LinearGaugeIndicator] parameter.
+  ///
   get getLinearGaugeIndicator => _indicator;
   LinearGaugeIndicator _indicator;
 
@@ -394,7 +396,8 @@ class RenderLinearGauge extends RenderBox {
         getEnd,
         getPrimaryRulersHeight,
         getLinearGaugeBoxDecoration.height,
-        getLabelTopMargin);
+        getLabelTopMargin,
+        _indicator);
   }
 
   void _drawLabels(Canvas canvas, String text, List<Offset> list) {
@@ -442,8 +445,12 @@ class RenderLinearGauge extends RenderBox {
 
     if (showLabel) {
       end = size.width -
-          ((_endLabelSize.width / 2) + (_startLabelSize.width / 2));
-      start = (offset.dx + _startLabelSize.width / 2);
+          ((_endLabelSize.width / 2) +
+              (_startLabelSize.width / 2) +
+              (_indicator.width!));
+
+      start =
+          (offset.dx + (_startLabelSize.width / 2) + (_indicator.width! / 2));
     } else {
       end = size.width;
       start = offset.dx;
@@ -464,7 +471,7 @@ class RenderLinearGauge extends RenderBox {
     double totalValOnPixel = ((totalWidth * percentageInVal) / 100) -
         ((totalWidth * removeStartPercentage) / 100);
 
-//!
+    // if pointer value is null then draw the value in the gauge container
     if (_indicator.getPointerValue == null) {
       _valueInPixel = totalValOnPixel;
     } else {
@@ -519,6 +526,7 @@ class RenderLinearGauge extends RenderBox {
 
   void _drawPrimaryRulers(Canvas canvas) {
     _setPrimaryRulersPaint();
+
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
       double y;
       double x;
@@ -538,7 +546,7 @@ class RenderLinearGauge extends RenderBox {
 
       Offset a = Offset(x, y);
 
-      canvas.drawLine(value[0], a, _primaryRulersPaint);
+      canvas.drawLine(Offset(value[0].dx, value[0].dy), a, _primaryRulersPaint);
       if (showLabel) {
         _drawLabels(canvas, key, value);
       }
@@ -552,7 +560,8 @@ class RenderLinearGauge extends RenderBox {
         _secondaryRulersPaint,
         getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height,
         invertLabels,
-        getLinearGaugeBoxDecoration.height);
+        getLinearGaugeBoxDecoration.height,
+        _indicator);
   }
 
   void _setPrimaryRulersPaint() {
@@ -603,7 +612,7 @@ class RenderLinearGauge extends RenderBox {
       _drawSecondaryRulers(canvas);
     }
 
-//!    // print(getLinearGaugeIndicator.value);
+    // value
     double value = getLinearGaugeIndicator.value ?? _valueInPixel;
 
     if (getShowLinearGaugeContainer) {
@@ -613,20 +622,24 @@ class RenderLinearGauge extends RenderBox {
       );
     }
 
-    var firstOffset = Offset(_valueInPixel, 0.0);
-    if (_indicator.getPointerValue == null) {
-      _indicator.setPointerValue = value;
+    if (_indicator.value != null) {
+      var firstOffset = Offset(_valueInPixel, 0.0);
+      if (_indicator.getPointerValue == null) {
+        _indicator.setPointerValue = value;
+      }
+
+      var firstOff =
+          _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
+
+      getLinearGaugeIndicator.drawPointer(
+          _indicator.shape,
+          canvas,
+          firstOff,
+          _indicator.height,
+          _indicator.width,
+          _indicator.color,
+          getLinearGaugeBoxDecoration.height);
     }
-    var firstOff =
-        _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
-
-    // getLinearGaugeIndicator.drawCirclePointer(canvas, value, offset,
-    //     _indicator.height, _indicator.width, _indicator.color);
-    getLinearGaugeIndicator.drawCirclePointer(canvas, value, firstOff,
-        _indicator.height, _indicator.width, _indicator.color);
-
-    getLinearGaugeIndicator.drawTrianglePointer(canvas, firstOff,
-        _indicator.height, _indicator.width, value, _indicator.color);
 
     canvas.restore();
   }
