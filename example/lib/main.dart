@@ -30,9 +30,9 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
                 ),
                 primaryRulerColor: Colors.red,
                 indicator: LinearGaugeIndicator(
-                  shape: PointerShape.triangle,
-                  value: 0,
-                  width: 100,
+                  shape: PointerShape.circle,
+                  value: 100,
+                  width: 20,
                   color: Colors.red,
                 ),
               ),
