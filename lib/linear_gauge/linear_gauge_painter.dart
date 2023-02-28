@@ -30,6 +30,7 @@ class RenderLinearGauge extends RenderBox {
     required Color labelColor,
     required bool showLabel,
     required RulerPosition rulerPosition,
+    required double labelOffset,
     required bool showSecondaryRulers,
     required bool showPrimaryRulers,
     required double value,
@@ -55,6 +56,7 @@ class RenderLinearGauge extends RenderBox {
         _labelColor = labelColor,
         _showLabel = showLabel,
         _rulerPosition = rulerPosition,
+        _labelOffset = labelOffset,
         _showSecondaryRulers = showSecondaryRulers,
         _showPrimaryRulers = showPrimaryRulers,
         _value = value,
@@ -332,6 +334,14 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  double get getLabelOffset => _labelOffset;
+  double _labelOffset;
+  set setLabelOffset(double val) {
+    if (_labelOffset == val) return;
+    _labelOffset = val;
+    markNeedsPaint();
+  }
+
   bool get showSecondaryRulers => _showSecondaryRulers;
   bool _showSecondaryRulers;
   set setShowSecondaryRulers(bool val) {
@@ -420,26 +430,29 @@ class RenderLinearGauge extends RenderBox {
 
     paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
-    Offset labelOffsets;
+    // offset for drawing the label on the canvas
+    Offset labelPosition;
 
     switch (rulerPosition) {
       case RulerPosition.top:
-        labelOffsets = Offset(
+        labelPosition = Offset(
           (list[0].dx - (labelSize.width / 2)),
-          -(getPrimaryRulersHeight + labelSize.height - 2),
+          -(getPrimaryRulersHeight + getLabelOffset + labelSize.height - 2),
         );
         break;
       default:
-        labelOffsets = Offset(
+        double labelOffset =
+            (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
+        labelPosition = Offset(
           (list[0].dx - (labelSize.width / 2)),
-          (list[0].dy + getPrimaryRulersHeight + getLabelTopMargin),
+          (list[0].dy + getPrimaryRulersHeight + labelOffset),
         );
         break;
     }
 
     canvas.drawParagraph(
       paragraph,
-      labelOffsets,
+      labelPosition,
     );
   }
 
@@ -568,7 +581,6 @@ class RenderLinearGauge extends RenderBox {
 
       Offset a = Offset(x, y);
 
-
       canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
       if (showLabel) {
         _drawLabels(canvas, key, value);
@@ -585,7 +597,6 @@ class RenderLinearGauge extends RenderBox {
         rulerPosition,
         getLinearGaugeBoxDecoration.height,
         _indicator);
-
   }
 
   void _setPrimaryRulersPaint() {
@@ -642,7 +653,6 @@ class RenderLinearGauge extends RenderBox {
     if (showSecondaryRulers) {
       _drawSecondaryRulers(canvas);
     }
-
 
     if (rulerPosition != RulerPosition.center) {
       if (getShowLinearGaugeContainer) {

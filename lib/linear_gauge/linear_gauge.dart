@@ -202,6 +202,9 @@ class LinearGauge extends LeafRenderObjectWidget {
   final double? secondaryRulersWidth;
 
   ///
+  /// `Warning`:`deprecated`
+  ///
+  /// use `labelOffset` property in `labelStyle` to set gap b/w label & primary ruler
   ///
   /// `labelTopMargin` sets the margin from the  top of the label
   ///
@@ -215,6 +218,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   /// ),
   /// ```
   ///
+
   final double? labelTopMargin;
 
   ///
@@ -357,6 +361,7 @@ class LinearGauge extends LeafRenderObjectWidget {
         labelColor: labelStyle!.color!,
         showLabel: labelStyle!.showLabel!,
         rulerPosition: labelStyle!.rulerPosition!,
+        labelOffset: labelStyle!.labelOffset!,
         showSecondaryRulers: showSecondaryRulers,
         showPrimaryRulers: showPrimaryRulers,
         indicator: indicator!,
@@ -389,6 +394,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setLabelColor = labelStyle!.color!
       ..setShowLabel = labelStyle!.showLabel!
       ..setRulerPosition = labelStyle!.rulerPosition!
+      ..setLabelOffset = labelStyle!.labelOffset!
       ..setShowSecondaryRulers = showSecondaryRulers
       ..setShowPrimaryRulers = showPrimaryRulers
       ..setValue = value!
