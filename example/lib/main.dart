@@ -31,7 +31,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
                 primaryRulerColor: Colors.red,
                 indicator: LinearGaugeIndicator(
                   shape: PointerShape.circle,
-                  value: 100,
+                  // value: 100,
                   width: 20,
                   color: Colors.red,
                 ),
