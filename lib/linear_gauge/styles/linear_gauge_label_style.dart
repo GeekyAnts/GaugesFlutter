@@ -7,6 +7,7 @@ class LabelStyle {
     this.color = Colors.black,
     this.showLabel = true,
     this.rulerPosition = RulerPosition.bottom,
+    this.labelOffset = 0,
   });
 
   ///
@@ -40,4 +41,19 @@ class LabelStyle {
   ///
 
   final RulerPosition? rulerPosition;
+
+  ///
+  /// `labelOffset` Sets the gap of the label from the primary ruler
+  ///
+  /// default is to `labelOffset = 0.0
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LabelStyle(
+  ///   labelOffset: 10.0,
+  /// ),
+  /// ```
+  ///
+  final double? labelOffset;
 }
