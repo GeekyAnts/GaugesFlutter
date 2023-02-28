@@ -622,24 +622,22 @@ class RenderLinearGauge extends RenderBox {
       );
     }
 
-    if (_indicator.value != null) {
-      var firstOffset = Offset(_valueInPixel, 0.0);
-      if (_indicator.getPointerValue == null) {
-        _indicator.setPointerValue = value;
-      }
-
-      var firstOff =
-          _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
-
-      getLinearGaugeIndicator.drawPointer(
-          _indicator.shape,
-          canvas,
-          firstOff,
-          _indicator.height,
-          _indicator.width,
-          _indicator.color,
-          getLinearGaugeBoxDecoration.height);
+    var firstOffset = Offset(_valueInPixel, 0.0);
+    if (_indicator.getPointerValue == null) {
+      _indicator.setPointerValue = value;
     }
+
+    var firstOff =
+        _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
+
+    getLinearGaugeIndicator.drawPointer(
+        _indicator.shape,
+        canvas,
+        firstOff,
+        _indicator.height,
+        _indicator.width,
+        _indicator.color,
+        getLinearGaugeBoxDecoration.height);
 
     canvas.restore();
   }
