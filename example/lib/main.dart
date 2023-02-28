@@ -22,21 +22,18 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           children: [
             SizedBox(
               child: LinearGauge(
-                value: 50.0,
+                value: 75.0,
                 labelStyle: LabelStyle(
                   fontSize: 10,
                   color: Colors.red,
-                  invertLabels: true,
+                  invertLabels: false,
                 ),
                 primaryRulerColor: Colors.red,
                 indicator: LinearGaugeIndicator(
-                  value: 60,
-                  height: 30,
-                  width: 30,
-                  // value: ,
-
-                  // shape: PointerShape.triangle,
-                  color: Colors.blue,
+                  shape: PointerShape.triangle,
+                  value: 0,
+                  width: 100,
+                  color: Colors.red,
                 ),
               ),
             ),

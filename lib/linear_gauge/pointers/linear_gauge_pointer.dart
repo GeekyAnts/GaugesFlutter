@@ -24,7 +24,7 @@ class LinearGaugeIndicator {
   const LinearGaugeIndicator(
       {Key? key,
       this.value,
-      this.height = 30.0,
+      this.height = 10.0,
       this.color = Colors.red,
       this.width = 10.0,
       this.shape = PointerShape.circle});
@@ -105,54 +105,122 @@ class LinearGaugeIndicator {
   get getPointerShape => shape;
   set setPointerShape(PointerShape? shape) => shape = shape;
 
+  // void drawPointer(PointerShape shape, Canvas canvas, double? value,
+  //     Offset offset, double height, double width, Color indicatorColor) {
+  //   switch (shape) {
+  //     case PointerShape.circle:
+  //       drawCirclePointer(canvas, value, offset, height, width, indicatorColor);
+  //       break;
+  //     case PointerShape.rectangle:
+  //       print("rectangle");
+  //       break;
+  //     case PointerShape.triangle:
+  //       print("triangle");
+  //       drawTrianglePointer(
+  //           canvas, offset, height, width, value, indicatorColor);
+  //       break;
+  //     case PointerShape.diamond:
+  //       print("diamond");
+  //       break;
+  //   }
+  // }
+
   void drawCirclePointer(
     Canvas canvas,
-    double? value,
     Offset offset,
     double height,
     double width,
     Color indicatorColor,
   ) {
     final paint = Paint();
-    paint.color = Colors.blue;
-    // print("width in the pointer  ${size.width}");
-    final position = Offset(offset.dx, offset.dy / 2);
-    canvas.drawCircle(position, height, paint);
+    paint.color = indicatorColor;
+    // TODO Replace 4 with the gauge height
+    final position = Offset(offset.dx, offset.dy - ((width / 2) + 4));
+    canvas.drawCircle(position, width / 2, paint);
   }
-
-  // void drawRectPointer(
-  //   Canvas canvas,
-  //   Size size,
-  //   double? value,
-  //   // Color indicatorColor,
-  // ) {
-  //   final paint = Paint();
-  //   paint.color = Colors.red;
-  //   final position = Offset(value! * size.width / 100, size.height / 40);
-  //   canvas.drawRect(
-  //       Rect.fromCenter(center: position, width: 20, height: 20), paint);
-  // }
 
   void drawTrianglePointer(
     Canvas canvas,
     Offset offset,
     double height,
     double width,
-    double? value,
     Color indicatorColor,
   ) {
     final paint = Paint();
     paint.color = indicatorColor;
-    // print(size.height);
-    // final center = Offset(value! * size.width / 100 - 10, size.height - 70);
+
     final position = Offset(offset.dx, offset.dy);
     final path = Path();
-    // Y is for height
-    // X is for width
-    path.moveTo(position.dx - width, -height);
+    path.moveTo(position.dx - (width / 2), -height);
     path.lineTo(position.dx, position.dy - 4);
-    path.lineTo(position.dx + width, -height);
+    path.lineTo(position.dx + (width / 2), -height);
+    canvas.drawPath(path, paint);
+  }
+
+  void drawCustomPointer(
+    Canvas canvas,
+    Offset offset,
+    double height,
+    double width,
+    Color indicatorColor,
+  ) {
+    final paint = Paint();
+    paint.color = indicatorColor;
+
+    final position = Offset(offset.dx, offset.dy);
+    final path = Path();
+
+    path.moveTo(position.dx - (width / 2), -height);
+    path.lineTo(position.dx, position.dy - 4);
+    path.lineTo(position.dx + (width / 2), -height);
+//!
+    path.lineTo(position.dx, position.dy + 4);
 
     canvas.drawPath(path, paint);
+    //
+
+    canvas.drawPath(path, paint);
+  }
+
+  void drawDiamondPointer(
+    Canvas canvas,
+    Offset offset,
+    double height,
+    double width,
+    Color indicatorColor,
+  ) {
+    final paint = Paint();
+    paint.color = indicatorColor;
+
+    final position = Offset(offset.dx, offset.dy);
+    final path = Path();
+
+    path.moveTo(position.dx - (width / 2), -width);
+    path.lineTo(position.dx, position.dy - 4);
+    path.lineTo(position.dx + (width / 2), -width);
+//!
+    path.lineTo(position.dx, position.dy - width - width - 4);
+
+    canvas.drawPath(path, paint);
+    //
+
+    canvas.drawPath(path, paint);
+  }
+
+  void drawReactangle(
+    Canvas canvas,
+    Offset offset,
+    double height,
+    double width,
+    Color indicatorColor,
+  ) {
+    final paint = Paint();
+    paint.color = indicatorColor;
+
+    final position = Offset(offset.dx - width / 2, offset.dy - (height + 4));
+    Rect pointerContainer =
+        Rect.fromLTWH(position.dx, position.dy, width, height);
+
+    canvas.drawRect(pointerContainer, paint);
   }
 }
