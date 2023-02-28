@@ -2,76 +2,75 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
 class LinearGaugeIndicator {
-  /// A [pointer] is a widget that is used to indicate the value of the [LinearGauge].
+  /// A [LinearGaugeIndicator] is a widget that is used to indicate the value of the [LinearGauge].
   /// `value` Sets the value of the pointer
   /// `height` and `weight` Sets the height  & weight of the pointer
   ///
   /// `PointerShape` Sets the shape of the pointer
   ///
+  /// Note: The `value` of the pointer should be between the `start` and `end` value of the [LinearGauge] and if the value is null it takes the value specified in  `Linear Gauge`
+  ///
   /// ```dart
   /// const LinearGauge(
-  ///  pointers: [
-  ///   Pointer(
+  ///    indicator: LinearGaugeIndicator(
+  ///    height: 20.0,
+  ///    width: 20.0,
+  ///    color: Colors.red,
   ///    value: 50.0,
-  ///   height: 20.0,
-  ///  shape: PointerShape.circle,
-  ///  width: 20.0,
+  ///    shape: PointerShape.circle,
   /// ),
   /// ```
   ///
   ///
 
-  const LinearGaugeIndicator(
-      {Key? key,
-      this.value,
-      this.height = 30.0,
-      this.color = Colors.red,
-      this.width = 10.0,
-      this.shape = PointerShape.circle});
+  const LinearGaugeIndicator({
+    Key? key,
+    this.value,
+    this.height = 10.0,
+    this.color = Colors.red,
+    this.width = 10.0,
+    required this.shape,
+  });
 
   ///
-  /// `value` Sets the value of the pointer on the [LinearGauge]
-  /// default is to 0.0
+  /// `value` Sets the value of the indicator on the [LinearGauge]
+  /// default is to set to the value of the [LinearGauge]
   /// ```dart
   /// const LinearGauge(
-  /// pointers: [
-  /// Pointer(
-  /// value: 50.0,
+  ///  indicator: LinearGaugeIndicator(
+  ///  value: 50.0,
   /// ),
   /// ```
   final double? value;
 
   ///
-  /// `height` Sets the height of the pointer on the [LinearGauge]
+  /// `height` Sets the height of the indicator on the [LinearGauge]
   /// ```dart
   /// const LinearGauge(
-  /// pointers: [
-  /// Pointer(
-  /// height: 20.0,
+  ///   indicator: LinearGaugeIndicator(
+  ///   height: 20.0,
   /// ),
   /// ```
   ///
   final double? height;
 
   ///
-  /// `width` Sets the width of the pointer on the [LinearGauge]
+  /// `width` Sets the width of the indicator on the [LinearGauge]
   /// ```dart
   /// const LinearGauge(
-  /// pointers: [
-  /// Pointer(
-  /// width: 20.0,
+  ///  indicator: LinearGaugeIndicator(
+  ///  width: 20.0,
   /// ),
   /// ```
   ///
   final double? width;
 
   ///
-  /// `color` Sets the color of the pointer on the [LinearGauge]
+  /// `color` Sets the color of the indicator on the [LinearGauge]
   /// ```dart
   /// const LinearGauge(
-  /// pointers: [
-  /// Pointer(
-  /// color: Colors.blue,
+  ///  indicator: LinearGaugeIndicator(
+  ///  color: Colors.blue,
   /// ),
   /// ```
   /// default is to [Colors.blue]
@@ -79,12 +78,11 @@ class LinearGaugeIndicator {
   final Color? color;
 
   ///
-  /// `shape` Sets the shape of the pointer on the [LinearGauge]
+  /// `shape` Sets the shape of the indicator on the [LinearGauge]
   /// ```dart
   /// const LinearGauge(
-  /// pointers: [
-  /// Pointer(
-  /// shape: PointerShape.circle,
+  ///   indicator: LinearGaugeIndicator(
+  ///    shape: PointerShape.circle,
   /// ),
   /// ```
   /// default is to [PointerShape.circle]
@@ -105,54 +103,94 @@ class LinearGaugeIndicator {
   get getPointerShape => shape;
   set setPointerShape(PointerShape? shape) => shape = shape;
 
-  void drawCirclePointer(
-    Canvas canvas,
-    double? value,
-    Offset offset,
-    double height,
-    double width,
-    Color indicatorColor,
-  ) {
-    final paint = Paint();
-    paint.color = Colors.blue;
-    // print("width in the pointer  ${size.width}");
-    final position = Offset(offset.dx, offset.dy / 2);
-    canvas.drawCircle(position, height, paint);
+  /// Method to draw the pointer on the canvas
+  void drawPointer(PointerShape shape, Canvas canvas, Offset offset,
+      double height, double width, Color indicatorColor, double gaugeHeight) {
+    switch (shape) {
+      case PointerShape.circle:
+        drawCirclePointer(
+            canvas, offset, height, width, indicatorColor, gaugeHeight);
+        break;
+      case PointerShape.rectangle:
+        drawReactangle(
+            canvas, offset, height, width, indicatorColor, gaugeHeight);
+        break;
+      case PointerShape.triangle:
+        drawTrianglePointer(
+            canvas, offset, height, width, indicatorColor, gaugeHeight);
+        break;
+      case PointerShape.diamond:
+        drawDiamondPointer(
+            canvas, offset, height, width, indicatorColor, gaugeHeight);
+        break;
+      default:
+        drawCustomPointer(
+            canvas, offset, height, width, indicatorColor, gaugeHeight);
+    }
   }
 
-  // void drawRectPointer(
-  //   Canvas canvas,
-  //   Size size,
-  //   double? value,
-  //   // Color indicatorColor,
-  // ) {
-  //   final paint = Paint();
-  //   paint.color = Colors.red;
-  //   final position = Offset(value! * size.width / 100, size.height / 40);
-  //   canvas.drawRect(
-  //       Rect.fromCenter(center: position, width: 20, height: 20), paint);
-  // }
-
-  void drawTrianglePointer(
-    Canvas canvas,
-    Offset offset,
-    double height,
-    double width,
-    double? value,
-    Color indicatorColor,
-  ) {
+  void drawCirclePointer(Canvas canvas, Offset offset, double height,
+      double width, Color indicatorColor, double gaugeHeight) {
     final paint = Paint();
     paint.color = indicatorColor;
-    // print(size.height);
-    // final center = Offset(value! * size.width / 100 - 10, size.height - 70);
+    final position = Offset(offset.dx, offset.dy - ((width / 2) + gaugeHeight));
+    canvas.drawCircle(position, width / 2, paint);
+  }
+
+  void drawTrianglePointer(Canvas canvas, Offset offset, double height,
+      double width, Color indicatorColor, double gaugeHeight) {
+    final paint = Paint();
+    paint.color = indicatorColor;
+
     final position = Offset(offset.dx, offset.dy);
     final path = Path();
-    // Y is for height
-    // X is for width
-    path.moveTo(position.dx - width, -height);
+    path.moveTo(position.dx - (width / 2), -height);
     path.lineTo(position.dx, position.dy - 4);
-    path.lineTo(position.dx + width, -height);
+    path.lineTo(position.dx + (width / 2), -height);
+    canvas.drawPath(path, paint);
+  }
+
+  void drawCustomPointer(Canvas canvas, Offset offset, double height,
+      double width, Color indicatorColor, double gaugeHeight) {
+    final paint = Paint();
+    paint.color = indicatorColor;
+
+    final position = Offset(offset.dx, offset.dy);
+    final path = Path();
+
+    path.moveTo(position.dx - (width / 2), -height);
+    path.lineTo(position.dx, position.dy - 4);
+    path.lineTo(position.dx + (width / 2), -height);
+    path.lineTo(position.dx, position.dy + 4);
 
     canvas.drawPath(path, paint);
+  }
+
+  void drawDiamondPointer(Canvas canvas, Offset offset, double height,
+      double width, Color indicatorColor, double gaugeHeight) {
+    final paint = Paint();
+    paint.color = indicatorColor;
+
+    final position = Offset(offset.dx, offset.dy);
+    final path = Path();
+
+    path.moveTo(position.dx - (width / 2), -width);
+    path.lineTo(position.dx, position.dy - 4);
+    path.lineTo(position.dx + (width / 2), -width);
+    path.lineTo(position.dx, position.dy - width - width - 4);
+
+    canvas.drawPath(path, paint);
+  }
+
+  void drawReactangle(Canvas canvas, Offset offset, double height, double width,
+      Color indicatorColor, double gaugeHeight) {
+    final paint = Paint();
+    paint.color = indicatorColor;
+
+    final position = Offset(offset.dx - width / 2, offset.dy - (height + 4));
+    Rect pointerContainer =
+        Rect.fromLTWH(position.dx, position.dy, width, height);
+
+    canvas.drawRect(pointerContainer, paint);
   }
 }

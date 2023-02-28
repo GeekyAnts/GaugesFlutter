@@ -38,18 +38,22 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
-      Size startLabel,
-      Size endLabel,
-      Size size,
-      double end,
-      double primaryRulersHeight,
-      double linearGaugeBoxContainerHeight,
-      double labelTopMargin) {
+    Size startLabel,
+    Size endLabel,
+    Size size,
+    double end,
+    double primaryRulersHeight,
+    double linearGaugeBoxContainerHeight,
+    double labelTopMargin,
+    LinearGaugeIndicator indicator,
+  ) {
     primaryRulers.clear();
 
-    Offset a = Offset(startLabel.width / 2, linearGaugeBoxContainerHeight);
+    Offset a = Offset((startLabel.width / 2) + (indicator.width! / 2),
+        linearGaugeBoxContainerHeight);
     Offset b = Offset(
-        size.width - (endLabel.width / 2), linearGaugeBoxContainerHeight);
+        size.width - (endLabel.width / 2) - (indicator.width! / 2),
+        linearGaugeBoxContainerHeight);
     for (int i = 0; i < _linearGaugeLabel.length; i++) {
       double x = a.dx * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
           b.dx * (i / (_linearGaugeLabel.length - 1));
@@ -72,7 +76,11 @@ class LinearGaugeLabel {
       Paint secondaryRulersPaint,
       double height,
       RulerPosition rulerPosition,
-      double linearGaugeHeight) {
+      double linearGaugeHeight,
+      LinearGaugeIndicator indicator,
+  ) {
+
+
     Iterable<List<Offset>> offset = primaryRulers.values;
     int i = 0;
     for (var element in offset) {
