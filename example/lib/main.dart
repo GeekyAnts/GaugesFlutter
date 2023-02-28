@@ -15,9 +15,9 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Column(
+        child:Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
