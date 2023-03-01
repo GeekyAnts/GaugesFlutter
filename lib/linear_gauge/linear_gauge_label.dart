@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/range_linear_gauge/range_linear_gauge.dart';
 
 class LinearGaugeLabel {
   String? text;
@@ -72,24 +71,22 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateSecondaryRulers(
-    double totalRulers,
-    Canvas canvas,
-    Paint secondaryRulersPaint,
-    double height,
-    RulerPosition rulerPosition,
-    double linearGaugeHeight,
-    LinearGaugeIndicator indicator,
-    List<RangeLinearGauge> rangeLinearGauge,
+      double totalRulers,
+      Canvas canvas,
+      Paint secondaryRulersPaint,
+      double height,
+      RulerPosition rulerPosition,
+      double linearGaugeHeight,
+      LinearGaugeIndicator indicator,
   ) {
-    Iterable<List<Offset>> offset = primaryRulers.values;
-    Iterable<String> keys = primaryRulers.keys;
-    Color fallBackColor = secondaryRulersPaint.color;
 
-    int j = 0;
+
+    Iterable<List<Offset>> offset = primaryRulers.values;
+    int i = 0;
     for (var element in offset) {
-      if (j != offset.length - 1) {
+      if (i != offset.length - 1) {
         Offset a = element[0];
-        Offset b = offset.elementAt(j + 1)[0];
+        Offset b = offset.elementAt(i + 1)[0];
 
         for (int i = 0; i < totalRulers + 1; i++) {
           double x = a.dx * (1 - ((i) / (totalRulers + 1))) +
@@ -125,25 +122,11 @@ class LinearGaugeLabel {
                 break;
             }
 
-            Color secondaryRulerColor = secondaryRulersPaint.color;
-            for (int k = 0; k < rangeLinearGauge.length; k++) {
-              var range = rangeLinearGauge[k].end;
-              var offset = double.parse(keys.elementAt(j));
-              if (offset >= rangeLinearGauge[k].start && offset < range) {
-                secondaryRulerColor = rangeLinearGauge[k].color;
-                secondaryRulersPaint.color = secondaryRulerColor;
-
-                break;
-              } else {
-                secondaryRulersPaint.color = fallBackColor;
-              }
-            }
-
             canvas.drawLine(secondaryRulerStartPoint, secondaryRulerEndPoint,
                 secondaryRulersPaint);
           }
         }
-        j = j + 1;
+        i = i + 1;
       }
     }
   }
