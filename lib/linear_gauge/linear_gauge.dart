@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/range_linear_gauge/range_linear_gauge.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
@@ -19,13 +20,37 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///),
   /// ```
   ///
-  const LinearGauge({
-    Key? key,
-    this.start = 0,
-    this.end = 100,
-    this.steps = 0,
-    this.rulers = const RulerStyle(),
-  }) : super(key: key);
+  const LinearGauge(
+      {Key? key,
+      this.start = 0,
+      this.end = 100,
+      this.steps = 0,
+      this.showLinearGaugeContainer = true,
+      this.gaugeOrientation = GaugeOrientation.horizontal,
+      this.textStyle = const TextStyle(
+        fontSize: 12.0,
+        color: Color.fromARGB(255, 86, 86, 86),
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.normal,
+      ),
+      this.primaryRulersWidth = 1.0,
+      this.primaryRulersHeight = 15.0,
+      this.secondaryRulersHeight = 1.0,
+      this.secondaryRulersWidth = 1.0,
+      this.labelTopMargin = 0.0,
+      this.primaryRulerColor = Colors.black54,
+      this.secondaryRulerColor = Colors.grey,
+      this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
+      this.rulerStyle = const RulerStyle(),
+      this.secondaryRulerPerInterval = 1.0,
+      this.showSecondaryRulers = true,
+      this.showPrimaryRulers = true,
+      this.indicator = const LinearGaugeIndicator(
+        shape: PointerShape.circle,
+      ),
+      this.rangeLinearGauge,
+      this.value = 0})
+      : super(key: key);
 
   ///
   /// `start` Sets the starting label of the [LinearGauge] Container
@@ -60,9 +85,265 @@ class LinearGauge extends LeafRenderObjectWidget {
   final double? steps;
 
   ///
+  /// `showLinearGaugeContainer`  controls the  [LinearGauge] Container render
+  ///
+  /// Below example renders the [LinearGauge] Container
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///   showLinearGaugeContainer : true
+  /// ),
+  /// ```
+  ///
+  /// Below example will not render the [LinearGauge] Container
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///   showLinearGaugeContainer : false
+  /// ),
+  /// ```
+  ///
+  final bool? showLinearGaugeContainer;
+
+  ///
+  ///  `gaugeOrientation` sets the [LinearGauge] orientation to horizontal or vertical
+  ///
+  ///  default is to `GaugeOrientation.horizontal`
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///   gaugeOrientation : GaugeOrientation.horizontal
+  /// ),
+  /// ```
+  ///
+  final GaugeOrientation? gaugeOrientation;
+
+  ///
+  /// `textStyle` sets the Label text style of [LinearGauge]
+  ///
+  ///  default is to
+  /// ```dart
+  /// const TextStyle(
+  ///   fontSize: 12.0,
+  ///   color: Colors.grey,
+  ///  fontStyle: FontStyle.normal,
+  ///   fontWeight: FontWeight.normal,
+  /// ),
+  ///   ```
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   textStyle: TextStyle(color: Colors.red, fontSize: 16.0),
+  /// ),
+  /// ```
+  final TextStyle? textStyle;
+
+  ///
+  ///
+  /// `primaryRulersWidth` set the width of the Rulers which are attached to the labels
+  ///
+  /// default is to `primaryRulersWidth =`1.0`
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   primaryRulersWidth: 2,
+  /// ),
+  /// ```
+  final double? primaryRulersWidth;
+
+  ///
+  ///
+  /// `primaryRulersHeight` set the Height of the Rulers which are attached to the labels
+  ///
+  /// default is to `primaryRulersHeight =`10.0`
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   primaryRulersHeight: 20,
+  /// ),
+  /// ```
+  ///
+  final double? primaryRulersHeight;
+
+  ///
+  ///
+  /// `secondaryRulersHeight` set the Height of the Rulers which are in the between of  label Rulers
+  ///
+  /// default is to `secondaryRulersHeight =`1.0`
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   secondaryRulersHeight: 20,
+  /// ),
+  /// ```
+  ///
+  final double? secondaryRulersHeight;
+
+  ///
+  ///
+  /// `secondaryRulersWidth` set the width of the Rulers which are in the between of  label Rulers
+  ///
+  /// default is to `secondaryRulersHeight =`1.0`
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   primaryRulersHeight: 20,
+  /// ),
+  /// ```
+  ///
+  final double? secondaryRulersWidth;
+
+  ///
+  /// `Warning`:`deprecated`
+  ///
+  /// use `labelOffset` property in `labelStyle` to set gap b/w label & primary ruler
+  ///
+  /// `labelTopMargin` sets the margin from the  top of the label
+  ///
+  /// default is to `labelTopMargin =`0.0`
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   labelTopMargin: 5.0,
+  /// ),
+  /// ```
+  ///
+
+  final double? labelTopMargin;
+
+  ///
+  ///
+  /// `primaryRulerColor` sets the color of the ruler which is attached to labels
+  ///
+  /// default is to `primaryRulerColor =Colors.grey
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   primaryRulerColor: Colors.green,
+  /// ),
+  /// ```
+  ///
+  final Color? primaryRulerColor;
+
+  ///
+  ///
+  /// `secondaryRulerColor` sets the color of the ruler which are in the between of ruler attached to labels
+  ///
+  /// default is to `secondaryRulerColor =Colors.grey
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   secondaryRulerColor: Colors.green,
+  /// ),
+  /// ```
+  ///
+  final Color? secondaryRulerColor;
+
+  ///
+  ///
+  /// `secondaryRulerPerInterval` draw the ruler between primary rulers as per interval provided
+  ///
+  /// default is to `secondaryRulerPerInterval =1
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   secondaryRulerPerInterval:1,
+  /// ),
+  /// ```
+  ///
+  final double? secondaryRulerPerInterval;
+
+  ///
+  ///
+  /// `linearGaugeBoxDecoration` sets the styles of Container using
+  /// [LinearGaugeBoxDecoration] decoration properties
+  ///
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// const LinearGauge(
+  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+  ///               color: Colors.green,
+  ///               height: 30.0,
+  ///            ),
+  ///        ),
+  /// ```
+  ///
+  final LinearGaugeBoxDecoration? linearGaugeBoxDecoration;
+
+  ///
+  ///
+  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
+  ///
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// const LinearGauge(
+  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+  ///               color: Colors.green,
+  ///               height: 30.0,
+  ///            ),
+  ///        ),
+  /// ```
+  ///
+  final double? value;
+
+  ///
   /// `rulerStyle` sets the styles of label using [RulerStyle]  properties
   ///
-  final RulerStyle? rulers;
+  final RulerStyle? rulerStyle;
+
+  ///
+  ///
+  /// `showSecondaryRules` sets the visibility of the secondary rulers.
+  final bool showSecondaryRulers;
+
+  ///
+  ///
+  /// `showSecondaryRules` sets the visibility of the primary rulers.
+  final bool showPrimaryRulers;
+
+  ///
+  /// `indicator` sets the styles of indicator using [LinearGaugeIndicator]  properties
+  ///
+  /// Example
+  /// ```dart
+  /// const LinearGauge(
+  ///            indicator: LinearGaugeIndicator(
+  ///             color: Colors.green,
+  ///            width: 10.0,
+  ///           shape: LinearGaugeIndicatorShape.circle,
+  ///           height: 10.0,
+  ///           ),
+  /// ```
+  ///
+  final LinearGaugeIndicator? indicator;
+
+  ///
+  /// `rangeLinearGauge` takes a List of [RangeLinearGauge] and sets the styles
+  /// of range using provided properties.
+  ///
+  final List<RangeLinearGauge>? rangeLinearGauge;
 
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
@@ -70,29 +351,29 @@ class LinearGauge extends LeafRenderObjectWidget {
         start: start!,
         end: end!,
         steps: steps!,
-        showLinearGaugeContainer: rulers!.showLinearGaugeContainer!,
-        gaugeOrientation: rulers!.gaugeOrientation!,
-        primaryRulersWidth: rulers!.primaryRulersWidth!,
-        primaryRulersHeight: rulers!.primaryRulersHeight!,
-        secondaryRulersHeight: rulers!.secondaryRulersHeight!,
-        secondaryRulersWidth: rulers!.secondaryRulersWidth!,
-        labelTopMargin: rulers!.labelTopMargin!,
-        primaryRulerColor: rulers!.primaryRulerColor!,
-        secondaryRulerColor: rulers!.secondaryRulerColor!,
-        linearGaugeBoxDecoration: rulers!.linearGaugeBoxDecoration!,
-        secondaryRulerPerInterval: rulers!.secondaryRulerPerInterval!,
-        linearGaugeContainerBgColor:
-            rulers!.linearGaugeBoxDecoration!.backgroundColor,
+        showLinearGaugeContainer: showLinearGaugeContainer!,
+        gaugeOrientation: gaugeOrientation!,
+        textStyle: textStyle!,
+        primaryRulersWidth: primaryRulersWidth!,
+        primaryRulersHeight: primaryRulersHeight!,
+        secondaryRulersHeight: secondaryRulersHeight!,
+        secondaryRulersWidth: secondaryRulersWidth!,
+        labelTopMargin: labelTopMargin!,
+        primaryRulerColor: primaryRulerColor!,
+        secondaryRulerColor: secondaryRulerColor!,
+        linearGaugeBoxDecoration: linearGaugeBoxDecoration!,
+        secondaryRulerPerInterval: secondaryRulerPerInterval!,
+        linearGaugeContainerBgColor: linearGaugeBoxDecoration!.backgroundColor,
         linearGaugeContainerValueColor:
-            rulers!.linearGaugeBoxDecoration!.linearGaugeValueColor!,
-        textStyle: rulers!.textStyle!,
-        showLabel: rulers!.showLabel!,
-        rulerPosition: rulers!.rulerPosition!,
-        labelOffset: rulers!.labelOffset!,
-        showSecondaryRulers: rulers!.showSecondaryRulers,
-        showPrimaryRulers: rulers!.showPrimaryRulers,
-        indicator: rulers!.indicator!,
-        value: rulers!.value!);
+            linearGaugeBoxDecoration!.linearGaugeValueColor!,
+        showLabel: rulerStyle!.showLabel!,
+        rulerPosition: rulerStyle!.rulerPosition!,
+        labelOffset: rulerStyle!.labelOffset!,
+        showSecondaryRulers: showSecondaryRulers,
+        showPrimaryRulers: showPrimaryRulers,
+        indicator: indicator!,
+        value: value!,
+        rangeLinearGauge: rangeLinearGauge ?? []);
   }
 
   @override
@@ -100,29 +381,30 @@ class LinearGauge extends LeafRenderObjectWidget {
       BuildContext context, RenderLinearGauge renderObject) {
     renderObject
       ..setEnd = end!
-      ..setGaugeOrientation = rulers!.gaugeOrientation!
-      ..setLabelTopMargin = rulers!.labelTopMargin!
-      ..setPrimaryRulerColor = rulers!.primaryRulerColor!
-      ..setPrimaryRulersHeight = rulers!.primaryRulersHeight!
-      ..setPrimaryRulersWidth = rulers!.primaryRulersWidth!
-      ..setSecondaryRulerColor = rulers!.secondaryRulerColor!
-      ..setSecondaryRulersHeight = rulers!.secondaryRulersHeight!
-      ..setSecondaryRulersWidth = rulers!.secondaryRulersWidth!
-      ..setShowLinearGaugeContainer = rulers!.showLinearGaugeContainer!
+      ..setGaugeOrientation = gaugeOrientation!
+      ..setLabelTopMargin = labelTopMargin!
+      ..setPrimaryRulerColor = primaryRulerColor!
+      ..setPrimaryRulersHeight = primaryRulersHeight!
+      ..setPrimaryRulersWidth = primaryRulersWidth!
+      ..setSecondaryRulerColor = secondaryRulerColor!
+      ..setSecondaryRulersHeight = secondaryRulersHeight!
+      ..setSecondaryRulersWidth = secondaryRulersWidth!
+      ..setShowLinearGaugeContainer = showLinearGaugeContainer!
       ..setStart = start!
       ..setSteps = steps!
-      ..setTextStyle = rulers!.textStyle!
-      ..setSecondaryRulerPerInterval = rulers!.secondaryRulerPerInterval!
+      ..setTextStyle = textStyle!
+      ..setSecondaryRulerPerInterval = secondaryRulerPerInterval!
       ..setLinearGaugeContainerBgColor =
-          rulers!.linearGaugeBoxDecoration!.backgroundColor
+          linearGaugeBoxDecoration!.backgroundColor
       ..setLinearGaugeContainerValueColor =
-          rulers!.linearGaugeBoxDecoration!.linearGaugeValueColor!
-      ..setShowLabel = rulers!.showLabel!
-      ..setRulerPosition = rulers!.rulerPosition!
-      ..setLabelOffset = rulers!.labelOffset!
-      ..setShowSecondaryRulers = rulers!.showSecondaryRulers
-      ..setShowPrimaryRulers = rulers!.showPrimaryRulers
-      ..setValue = rulers!.value!
-      ..setLinearGaugeIndicator = rulers!.indicator;
+          linearGaugeBoxDecoration!.linearGaugeValueColor!
+      ..setShowLabel = rulerStyle!.showLabel!
+      ..setRulerPosition = rulerStyle!.rulerPosition!
+      ..setLabelOffset = rulerStyle!.labelOffset!
+      ..setShowSecondaryRulers = showSecondaryRulers
+      ..setShowPrimaryRulers = showPrimaryRulers
+      ..setValue = value!
+      ..setLinearGaugeIndicator = indicator
+      ..rangeLinearGauge = rangeLinearGauge;
   }
 }
