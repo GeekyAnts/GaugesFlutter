@@ -24,8 +24,10 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
               child: LinearGauge(
                 value: 75.0,
                 labelStyle: LabelStyle(
-                    fontSize: 10,
-                    color: Colors.red,
+                    textStyle: TextStyle(
+                      color: Colors.red,
+                      fontSize: 10,
+                    ),
                     rulerPosition: RulerPosition.top,
                     labelOffset: 20),
                 primaryRulerColor: Colors.red,
