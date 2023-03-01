@@ -195,12 +195,12 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [LinearGaugeIndicator] parameter.
   ///
-  get getLinearGaugeIndicator => _indicator;
+  LinearGaugeIndicator get getLinearGaugeIndicator => _indicator;
   LinearGaugeIndicator _indicator;
 
   set setLinearGaugeIndicator(linearGaugeIndicator) {
-    if (_indicator == linearGaugeIndicator) return;
     _indicator = linearGaugeIndicator;
+
     markNeedsPaint();
   }
 
@@ -673,13 +673,7 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
 
     getLinearGaugeIndicator.drawPointer(
-        _indicator.shape,
-        canvas,
-        firstOff,
-        _indicator.height,
-        _indicator.width,
-        _indicator.color,
-        getLinearGaugeBoxDecoration.height);
+        _indicator.shape!, canvas, firstOff, this);
 
     canvas.restore();
   }
