@@ -53,7 +53,8 @@ class LabelStyle {
   /// Example
   ///
   ///  ```dart
-  /// child: const LabelStyle(
+  /// child: const LinearGauge(
+  /// labelStyle : LabelStyle(
   ///   rulerPosition: RulerPosition.bottom,
   /// ),
   /// ```
@@ -69,7 +70,8 @@ class LabelStyle {
   /// Example
   ///
   ///  ```dart
-  /// child: const LabelStyle(
+  /// child: const LinearGauge(
+  /// labelStyle : LabelStyle(
   ///   labelOffset: 10.0,
   /// ),
   /// ```
