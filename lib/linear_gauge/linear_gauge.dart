@@ -41,7 +41,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.primaryRulerColor = Colors.black54,
       this.secondaryRulerColor = Colors.grey,
       this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
-      this.labelStyle = const LabelStyle(),
+      this.rulerStyle = const RulerStyle(),
       this.secondaryRulerPerInterval = 1.0,
       this.showSecondaryRulers = true,
       this.showPrimaryRulers = true,
@@ -308,9 +308,9 @@ class LinearGauge extends LeafRenderObjectWidget {
   final double? value;
 
   ///
-  /// `labelStyle` sets the styles of label using [LabelStyle]  properties
+  /// `rulerStyle` sets the styles of label using [RulerStyle]  properties
   ///
-  final LabelStyle? labelStyle;
+  final RulerStyle? rulerStyle;
 
   ///
   ///
@@ -363,11 +363,9 @@ class LinearGauge extends LeafRenderObjectWidget {
         linearGaugeContainerBgColor: linearGaugeBoxDecoration!.backgroundColor,
         linearGaugeContainerValueColor:
             linearGaugeBoxDecoration!.linearGaugeValueColor!,
-        labelSize: labelStyle!.fontSize!,
-        labelColor: labelStyle!.color!,
-        showLabel: labelStyle!.showLabel!,
-        rulerPosition: labelStyle!.rulerPosition!,
-        labelOffset: labelStyle!.labelOffset!,
+        showLabel: rulerStyle!.showLabel!,
+        rulerPosition: rulerStyle!.rulerPosition!,
+        labelOffset: rulerStyle!.labelOffset!,
         showSecondaryRulers: showSecondaryRulers,
         showPrimaryRulers: showPrimaryRulers,
         indicator: indicator!,
@@ -397,11 +395,9 @@ class LinearGauge extends LeafRenderObjectWidget {
           linearGaugeBoxDecoration!.backgroundColor
       ..setLinearGaugeContainerValueColor =
           linearGaugeBoxDecoration!.linearGaugeValueColor!
-      ..setLabelSize = labelStyle!.fontSize!
-      ..setLabelColor = labelStyle!.color!
-      ..setShowLabel = labelStyle!.showLabel!
-      ..setRulerPosition = labelStyle!.rulerPosition!
-      ..setLabelOffset = labelStyle!.labelOffset!
+      ..setShowLabel = rulerStyle!.showLabel!
+      ..setRulerPosition = rulerStyle!.rulerPosition!
+      ..setLabelOffset = rulerStyle!.labelOffset!
       ..setShowSecondaryRulers = showSecondaryRulers
       ..setShowPrimaryRulers = showPrimaryRulers
       ..setValue = value!
