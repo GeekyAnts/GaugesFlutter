@@ -9,9 +9,19 @@ void main() {
       start: 0,
       end: 1000,
       steps: 0,
-      showLinearGaugeContainer: true,
-      gaugeOrientation: GaugeOrientation.horizontal,
-      labelStyle: LabelStyle(
+      rulers: RulerStyle(
+        primaryRulerColor: Colors.black54,
+        showLinearGaugeContainer: true,
+        gaugeOrientation: GaugeOrientation.horizontal,
+        primaryRulersWidth: 1.0,
+        primaryRulersHeight: 15.0,
+        secondaryRulersHeight: 1.0,
+        secondaryRulersWidth: 1.0,
+        labelTopMargin: 0.0,
+        secondaryRulerColor: Colors.grey,
+        secondaryRulerPerInterval: 1.0,
+        linearGaugeBoxDecoration: LinearGaugeBoxDecoration(),
+        value: 0,
         textStyle: TextStyle(
           fontSize: 12.0,
           color: Color.fromARGB(255, 86, 86, 86),
@@ -20,16 +30,6 @@ void main() {
         ),
         rulerPosition: RulerPosition.bottom,
       ),
-      primaryRulersWidth: 1.0,
-      primaryRulersHeight: 15.0,
-      secondaryRulersHeight: 1.0,
-      secondaryRulersWidth: 1.0,
-      labelTopMargin: 0.0,
-      primaryRulerColor: Colors.black54,
-      secondaryRulerColor: Colors.grey,
-      linearGaugeBoxDecoration: LinearGaugeBoxDecoration(),
-      secondaryRulerPerInterval: 1.0,
-      value: 0,
     );
   });
   group(' Testing', () {
@@ -42,22 +42,22 @@ void main() {
       );
       expect(linearGauge.start, 0.0);
       expect(linearGauge.end, 1000.0);
-      expect(linearGauge.value, 0);
+      expect(linearGauge.rulers!.value, 0);
       expect(linearGauge.steps, 0);
-      expect(linearGauge.showLinearGaugeContainer, true);
-      expect(linearGauge.gaugeOrientation, GaugeOrientation.horizontal);
-      expect(linearGauge.labelStyle!.textStyle, textStyle);
-      expect(linearGauge.primaryRulersWidth, 1.0);
-      expect(linearGauge.primaryRulersHeight, 15.0);
-      expect(linearGauge.secondaryRulerColor, Colors.grey);
-      expect(linearGauge.primaryRulerColor, Colors.black54);
-      expect(linearGauge.secondaryRulersHeight, 1);
-      expect(linearGauge.secondaryRulersWidth, 1);
-      expect(linearGauge.labelTopMargin, 0.0);
-      expect(linearGauge.linearGaugeBoxDecoration,
+      expect(linearGauge.rulers!.showLinearGaugeContainer, true);
+      expect(linearGauge.rulers!.gaugeOrientation, GaugeOrientation.horizontal);
+      expect(linearGauge.rulers!.textStyle, textStyle);
+      expect(linearGauge.rulers!.primaryRulersWidth, 1.0);
+      expect(linearGauge.rulers!.primaryRulersHeight, 15.0);
+      expect(linearGauge.rulers!.secondaryRulerColor, Colors.grey);
+      expect(linearGauge.rulers!.primaryRulerColor, Colors.black54);
+      expect(linearGauge.rulers!.secondaryRulersHeight, 1);
+      expect(linearGauge.rulers!.secondaryRulersWidth, 1);
+      expect(linearGauge.rulers!.labelTopMargin, 0.0);
+      expect(linearGauge.rulers!.linearGaugeBoxDecoration,
           const LinearGaugeBoxDecoration());
-      expect(linearGauge.secondaryRulerPerInterval, 1.0);
-      expect(linearGauge.labelStyle!.rulerPosition!, RulerPosition.bottom);
+      expect(linearGauge.rulers!.secondaryRulerPerInterval, 1.0);
+      expect(linearGauge.rulers!.rulerPosition!, RulerPosition.bottom);
     });
 
     test("Verify Offset boundaries", () {});
