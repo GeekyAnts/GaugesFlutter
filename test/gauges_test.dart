@@ -11,13 +11,13 @@ void main() {
       steps: 0,
       showLinearGaugeContainer: true,
       gaugeOrientation: GaugeOrientation.horizontal,
-      textStyle: TextStyle(
-        fontSize: 12.0,
-        color: Color.fromARGB(255, 86, 86, 86),
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.normal,
-      ),
       labelStyle: LabelStyle(
+        textStyle: TextStyle(
+          fontSize: 12.0,
+          color: Color.fromARGB(255, 86, 86, 86),
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.normal,
+        ),
         rulerPosition: RulerPosition.bottom,
       ),
       primaryRulersWidth: 1.0,
@@ -34,7 +34,7 @@ void main() {
   });
   group(' Testing', () {
     test('RenderLinearGauge test getter and setter', () {
-      TextStyle textStyel = const TextStyle(
+      TextStyle textStyle = const TextStyle(
         fontSize: 12.0,
         color: Color.fromARGB(255, 86, 86, 86),
         fontStyle: FontStyle.normal,
@@ -46,7 +46,7 @@ void main() {
       expect(linearGauge.steps, 0);
       expect(linearGauge.showLinearGaugeContainer, true);
       expect(linearGauge.gaugeOrientation, GaugeOrientation.horizontal);
-      expect(linearGauge.textStyle, textStyel);
+      expect(linearGauge.labelStyle!.textStyle, textStyle);
       expect(linearGauge.primaryRulersWidth, 1.0);
       expect(linearGauge.primaryRulersHeight, 15.0);
       expect(linearGauge.secondaryRulerColor, Colors.grey);

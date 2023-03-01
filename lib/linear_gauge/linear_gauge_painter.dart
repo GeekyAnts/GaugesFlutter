@@ -26,8 +26,6 @@ class RenderLinearGauge extends RenderBox {
     required double secondaryRulerPerInterval,
     required Color linearGaugeContainerBgColor,
     required Color linearGaugeContainerValueColor,
-    required double labelSize,
-    required Color labelColor,
     required bool showLabel,
     required RulerPosition rulerPosition,
     required double labelOffset,
@@ -52,8 +50,6 @@ class RenderLinearGauge extends RenderBox {
         _secondaryRulerPerInterval = secondaryRulerPerInterval,
         _linearGaugeContainerBgColor = linearGaugeBoxDecoration.backgroundColor,
         _linearGaugeContainerValueColor = linearGaugeContainerValueColor,
-        _labelSize = labelSize,
-        _labelColor = labelColor,
         _showLabel = showLabel,
         _rulerPosition = rulerPosition,
         _labelOffset = labelOffset,
@@ -302,22 +298,6 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
-  double get getLabelSize => _labelSize;
-  double _labelSize;
-  set setLabelSize(double val) {
-    if (_labelSize == val) return;
-    _labelSize = val;
-    markNeedsPaint();
-  }
-
-  Color get getLabelColor => _labelColor;
-  Color _labelColor;
-  set setLabelColor(Color val) {
-    if (_labelColor == val) return;
-    _labelColor = val;
-    markNeedsPaint();
-  }
-
   bool get showLabel => _showLabel;
   bool _showLabel;
   set setShowLabel(bool val) {
@@ -417,9 +397,29 @@ class RenderLinearGauge extends RenderBox {
     final String labelText = text;
     final double? value = double.tryParse(text);
     final ui.TextStyle labelTextStyle = ui.TextStyle(
-      color: _labelColor,
-      fontSize: _labelSize,
+      color: getTextStyle.color,
+      fontSize: getTextStyle.fontSize,
+      background: getTextStyle.background,
+      decoration: getTextStyle.decoration,
+      decorationColor: getTextStyle.decorationColor,
+      decorationStyle: getTextStyle.decorationStyle,
+      decorationThickness: getTextStyle.decorationThickness,
+      fontFamily: getTextStyle.fontFamily,
+      fontFamilyFallback: getTextStyle.fontFamilyFallback,
+      fontFeatures: getTextStyle.fontFeatures,
+      fontStyle: getTextStyle.fontStyle,
+      fontVariations: getTextStyle.fontVariations,
+      fontWeight: getTextStyle.fontWeight,
+      foreground: getTextStyle.foreground,
+      height: getTextStyle.height,
+      leadingDistribution: getTextStyle.leadingDistribution,
+      letterSpacing: getTextStyle.letterSpacing,
+      locale: getTextStyle.locale,
+      shadows: getTextStyle.shadows,
+      textBaseline: getTextStyle.textBaseline,
+      wordSpacing: getTextStyle.wordSpacing,
     );
+
     final ui.ParagraphBuilder paragraphBuilder =
         ui.ParagraphBuilder(paragraphStyle)
           ..pushStyle(labelTextStyle)

@@ -26,12 +26,6 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.steps = 0,
       this.showLinearGaugeContainer = true,
       this.gaugeOrientation = GaugeOrientation.horizontal,
-      this.textStyle = const TextStyle(
-        fontSize: 12.0,
-        color: Color.fromARGB(255, 86, 86, 86),
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.normal,
-      ),
       this.primaryRulersWidth = 1.0,
       this.primaryRulersHeight = 15.0,
       this.secondaryRulersHeight = 1.0,
@@ -115,28 +109,6 @@ class LinearGauge extends LeafRenderObjectWidget {
   /// ```
   ///
   final GaugeOrientation? gaugeOrientation;
-
-  ///
-  /// `textStyle` sets the Label text style of [LinearGauge]
-  ///
-  ///  default is to
-  /// ```dart
-  /// const TextStyle(
-  ///   fontSize: 12.0,
-  ///   color: Colors.grey,
-  ///  fontStyle: FontStyle.normal,
-  ///   fontWeight: FontWeight.normal,
-  /// ),
-  ///   ```
-  ///
-  /// Example
-  ///
-  ///  ```dart
-  /// child: const LinearGauge(
-  ///   textStyle: TextStyle(color: Colors.red, fontSize: 16.0),
-  /// ),
-  /// ```
-  final TextStyle? textStyle;
 
   ///
   ///
@@ -344,7 +316,6 @@ class LinearGauge extends LeafRenderObjectWidget {
         steps: steps!,
         showLinearGaugeContainer: showLinearGaugeContainer!,
         gaugeOrientation: gaugeOrientation!,
-        textStyle: textStyle!,
         primaryRulersWidth: primaryRulersWidth!,
         primaryRulersHeight: primaryRulersHeight!,
         secondaryRulersHeight: secondaryRulersHeight!,
@@ -357,8 +328,7 @@ class LinearGauge extends LeafRenderObjectWidget {
         linearGaugeContainerBgColor: linearGaugeBoxDecoration!.backgroundColor,
         linearGaugeContainerValueColor:
             linearGaugeBoxDecoration!.linearGaugeValueColor!,
-        labelSize: labelStyle!.fontSize!,
-        labelColor: labelStyle!.color!,
+        textStyle: labelStyle!.textStyle!,
         showLabel: labelStyle!.showLabel!,
         rulerPosition: labelStyle!.rulerPosition!,
         labelOffset: labelStyle!.labelOffset!,
@@ -384,14 +354,12 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setShowLinearGaugeContainer = showLinearGaugeContainer!
       ..setStart = start!
       ..setSteps = steps!
-      ..setTextStyle = textStyle!
+      ..setTextStyle = labelStyle!.textStyle!
       ..setSecondaryRulerPerInterval = secondaryRulerPerInterval!
       ..setLinearGaugeContainerBgColor =
           linearGaugeBoxDecoration!.backgroundColor
       ..setLinearGaugeContainerValueColor =
           linearGaugeBoxDecoration!.linearGaugeValueColor!
-      ..setLabelSize = labelStyle!.fontSize!
-      ..setLabelColor = labelStyle!.color!
       ..setShowLabel = labelStyle!.showLabel!
       ..setRulerPosition = labelStyle!.rulerPosition!
       ..setLabelOffset = labelStyle!.labelOffset!

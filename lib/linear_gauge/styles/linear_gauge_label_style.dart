@@ -3,22 +3,41 @@ import 'package:geekyants_flutter_gauges/gauges.dart';
 
 class LabelStyle {
   const LabelStyle({
-    this.fontSize = 12.0,
-    this.color = Colors.black,
+    this.textStyle = const TextStyle(
+      fontSize: 12.0,
+      color: Color.fromARGB(255, 86, 86, 86),
+      fontStyle: FontStyle.normal,
+      fontWeight: FontWeight.normal,
+    ),
     this.showLabel = true,
     this.rulerPosition = RulerPosition.bottom,
     this.labelOffset = 0,
   });
 
   ///
-  /// Sets the font size of the label
-  /// default is to 11.0
-  final double? fontSize;
-
+  /// `textStyle` sets the ruler text style of [LinearGauge]
   ///
-  /// Sets the font color of the label
-  /// default is to [Colors.black]
-  final Color? color;
+  ///  default is to
+  /// ```dart
+  /// const TextStyle(
+  ///   fontSize: 12.0,
+  ///   color: Color.fromARGB(255, 86, 86, 86),
+  ///  fontStyle: FontStyle.normal,
+  ///   fontWeight: FontWeight.normal,
+  /// ),
+  ///   ```
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  ///   labelStyle: LabelStyle(
+  ///   textStyle: TextStyle(color: Colors.red, fontSize: 16.0),
+  /// )
+  /// ),
+  /// ```
+  ///
+  final TextStyle? textStyle;
 
   ///
   /// Sets the visibility of the label
@@ -34,7 +53,8 @@ class LabelStyle {
   /// Example
   ///
   ///  ```dart
-  /// child: const LabelStyle(
+  /// child: const LinearGauge(
+  /// labelStyle : LabelStyle(
   ///   rulerPosition: RulerPosition.bottom,
   /// ),
   /// ```
@@ -50,7 +70,8 @@ class LabelStyle {
   /// Example
   ///
   ///  ```dart
-  /// child: const LabelStyle(
+  /// child: const LinearGauge(
+  /// labelStyle : LabelStyle(
   ///   labelOffset: 10.0,
   /// ),
   /// ```
