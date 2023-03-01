@@ -22,7 +22,14 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           children: [
             SizedBox(
               child: LinearGauge(
-                value: 100,
+
+                value: 75.0,
+                labelStyle: LabelStyle(
+                    fontSize: 10,
+                    color: Colors.red,
+                    rulerPosition: RulerPosition.top,
+                    labelOffset: 20),
+
                 primaryRulerColor: Colors.red,
                 labelStyle: LabelStyle(rulerPosition: RulerPosition.bottom),
                 indicator: LinearGaugeIndicator(
