@@ -22,12 +22,11 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              child: LinearGauge(
-
-                  // value: 50,
-
-                  // primaryRulerColor: Colors.grey,
-                  ),
+              child: LinearGauge(rangeLinearGauge: [
+                RangeLinearGauge(color: Colors.green, start: 0, end: 25),
+                RangeLinearGauge(color: Colors.orange, start: 25, end: 75),
+                RangeLinearGauge(color: Colors.red, start: 75, end: 100)
+              ]),
             ),
           ],
         ),

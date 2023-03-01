@@ -273,7 +273,8 @@ class LinearGauge extends LeafRenderObjectWidget {
 
   ///
   ///
-  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
+  /// `linearGaugeBoxDecoration` sets the styles of Container using
+  /// [LinearGaugeBoxDecoration] decoration properties
   ///
   ///
   /// Example
@@ -339,7 +340,9 @@ class LinearGauge extends LeafRenderObjectWidget {
   final LinearGaugeIndicator? indicator;
 
   ///
-  /// `rangeLinearGauge` takes a List of [RangeLinearGauge] and sets the styles of range using provided properties
+  /// `rangeLinearGauge` takes a List of [RangeLinearGauge] and sets the styles
+  /// of range using provided properties.
+  ///
   final List<RangeLinearGauge>? rangeLinearGauge;
 
   @override
