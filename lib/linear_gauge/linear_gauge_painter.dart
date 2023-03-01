@@ -193,9 +193,8 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [LinearGaugeIndicator] parameter.
   ///
-  get getLinearGaugeIndicator => _indicator;
-  LinearGaugeIndicator _indicator =
-      const LinearGaugeIndicator(shape: PointerShape.circle);
+  LinearGaugeIndicator get getLinearGaugeIndicator => _indicator;
+  LinearGaugeIndicator _indicator;
 
   set setLinearGaugeIndicator(linearGaugeIndicator) {
     _indicator = linearGaugeIndicator;
@@ -569,7 +568,6 @@ class RenderLinearGauge extends RenderBox {
 
       Offset a = Offset(x, y);
 
-
       canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
       if (showLabel) {
         _drawLabels(canvas, key, value);
@@ -586,7 +584,6 @@ class RenderLinearGauge extends RenderBox {
         rulerPosition,
         getLinearGaugeBoxDecoration.height,
         _indicator);
-
   }
 
   void _setPrimaryRulersPaint() {
@@ -644,7 +641,6 @@ class RenderLinearGauge extends RenderBox {
       _drawSecondaryRulers(canvas);
     }
 
-
     if (rulerPosition != RulerPosition.center) {
       if (getShowLinearGaugeContainer) {
         _paintGaugeContainer(canvas, size);
@@ -664,13 +660,7 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
 
     getLinearGaugeIndicator.drawPointer(
-        _indicator.shape,
-        canvas,
-        firstOff,
-        _indicator.height,
-        _indicator.width,
-        _indicator.color,
-        getLinearGaugeBoxDecoration.height);
+        _indicator.shape!, canvas, firstOff, this);
 
     canvas.restore();
   }

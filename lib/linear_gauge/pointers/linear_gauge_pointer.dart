@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_painter.dart';
 
 class LinearGaugeIndicator {
   /// A [LinearGaugeIndicator] is a widget that is used to indicate the value of the [LinearGauge].
@@ -104,90 +105,185 @@ class LinearGaugeIndicator {
   set setPointerShape(PointerShape? shape) => shape = shape;
 
   /// Method to draw the pointer on the canvas
-  void drawPointer(PointerShape shape, Canvas canvas, Offset offset,
-      double height, double width, Color indicatorColor, double gaugeHeight) {
+  void drawPointer(
+    PointerShape shape,
+    Canvas canvas,
+    Offset offset,
+    RenderLinearGauge linearGauge,
+  ) {
     switch (shape) {
       case PointerShape.circle:
-        drawCirclePointer(
-            canvas, offset, height, width, indicatorColor, gaugeHeight);
+        _drawCirclePointer(canvas, offset, linearGauge);
         break;
       case PointerShape.rectangle:
-        drawReactangle(
-            canvas, offset, height, width, indicatorColor, gaugeHeight);
+        _drawReactangle(canvas, offset, linearGauge);
         break;
       case PointerShape.triangle:
-        drawTrianglePointer(
-            canvas, offset, height, width, indicatorColor, gaugeHeight);
+        _drawTrianglePointer(canvas, offset, linearGauge);
         break;
       case PointerShape.diamond:
-        drawDiamondPointer(
-            canvas, offset, height, width, indicatorColor, gaugeHeight);
+        _drawDiamondPointer(canvas, offset, linearGauge);
         break;
       default:
-        drawCustomPointer(
-            canvas, offset, height, width, indicatorColor, gaugeHeight);
+        _drawArrowPointer(canvas, offset, linearGauge);
     }
   }
 
-  void drawCirclePointer(Canvas canvas, Offset offset, double height,
-      double width, Color indicatorColor, double gaugeHeight) {
+  void _drawCirclePointer(
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
+    Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
+    double height = linearGauge.getLinearGaugeIndicator.height!;
+    double width = linearGauge.getLinearGaugeIndicator.width!;
+    double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
+    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
+
     final paint = Paint();
     paint.color = indicatorColor;
-    final position = Offset(offset.dx, offset.dy - ((width / 2) + gaugeHeight));
+    late double yPos;
+    linearGauge.getLinearGaugeIndicator;
+
+    if (linearGauge.rulerPosition == RulerPosition.bottom) {
+      yPos = offset.dy - ((width / 2) + gaugeheight);
+    } else if (rulerPosition == RulerPosition.center) {
+      yPos = offset.dy - ((width / 2) + primaryRulerHeight / 2);
+    } else {
+      yPos = offset.dy + ((width / 2));
+    }
+    final position = Offset(offset.dx, yPos);
     canvas.drawCircle(position, width / 2, paint);
   }
 
-  void drawTrianglePointer(Canvas canvas, Offset offset, double height,
-      double width, Color indicatorColor, double gaugeHeight) {
+  void _drawTrianglePointer(
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
+    Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
+    double height = linearGauge.getLinearGaugeIndicator.height!;
+    double width = linearGauge.getLinearGaugeIndicator.width!;
+    double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
+    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
+    final paint = Paint();
+    paint.color = indicatorColor;
+
+    late double yPos;
+    if (rulerPosition == RulerPosition.top) {
+      yPos = gaugeheight + height;
+    } else if (rulerPosition == RulerPosition.center) {
+      yPos = -height + primaryRulerHeight / 2;
+    } else {
+      yPos = -height;
+    }
+
+    final position = Offset(offset.dx, offset.dy);
+    final path = Path();
+    path.moveTo(position.dx - (width / 2), yPos);
+    path.lineTo(position.dx, position.dy - 4);
+    path.lineTo(position.dx + (width / 2), yPos);
+    canvas.drawPath(path, paint);
+  }
+
+  void _drawArrowPointer(
+    Canvas canvas,
+    Offset offset,
+    RenderLinearGauge linearGauge,
+  ) {
+    double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
+    Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
+    double height = linearGauge.getLinearGaugeIndicator.height!;
+    double width = linearGauge.getLinearGaugeIndicator.width!;
+    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
+    // double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
     final paint = Paint();
     paint.color = indicatorColor;
 
     final position = Offset(offset.dx, offset.dy);
     final path = Path();
-    path.moveTo(position.dx - (width / 2), -height);
-    path.lineTo(position.dx, position.dy - 4);
-    path.lineTo(position.dx + (width / 2), -height);
+    late double yPos;
+
+    if (rulerPosition == RulerPosition.bottom) {
+      path.moveTo(position.dx - (width / 2), -height);
+      path.lineTo(position.dx, position.dy - gaugeheight);
+      path.lineTo(position.dx + (width / 2), -height);
+      path.lineTo(position.dx, position.dy - primaryRulerHeight + gaugeheight);
+    } else {
+      path.moveTo(position.dx - (width / 2), height);
+      path.lineTo(position.dx, position.dy - gaugeheight);
+      path.lineTo(position.dx + (width / 2), height);
+      path.lineTo(position.dx, position.dy - primaryRulerHeight);
+    }
     canvas.drawPath(path, paint);
   }
 
-  void drawCustomPointer(Canvas canvas, Offset offset, double height,
-      double width, Color indicatorColor, double gaugeHeight) {
+  void _drawDiamondPointer(
+    Canvas canvas,
+    Offset offset,
+    RenderLinearGauge linearGauge,
+  ) {
+    Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
+    double height = linearGauge.getLinearGaugeIndicator.height!;
+    double width = linearGauge.getLinearGaugeIndicator.width!;
+    double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
+    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
+
+    late double yPos;
+
+    if (rulerPosition == RulerPosition.top) {
+      yPos = -width;
+    } else {
+      yPos = -width;
+    }
     final paint = Paint();
     paint.color = indicatorColor;
 
     final position = Offset(offset.dx, offset.dy);
     final path = Path();
 
-    path.moveTo(position.dx - (width / 2), -height);
-    path.lineTo(position.dx, position.dy - 4);
-    path.lineTo(position.dx + (width / 2), -height);
-    path.lineTo(position.dx, position.dy + 4);
+    if (rulerPosition == RulerPosition.bottom) {
+      path.moveTo(position.dx - (width / 2), -width);
+      path.lineTo(position.dx, position.dy - gaugeheight);
+
+      path.lineTo(position.dx + (width / 2), -width);
+      path.lineTo(position.dx, offset.dy - width - width - gaugeheight);
+      path.close();
+    } else if (rulerPosition == RulerPosition.center) {
+      path.moveTo(position.dx - (width / 2), -width);
+      path.lineTo(position.dx, position.dy - primaryRulerHeight / 2);
+      path.lineTo(position.dx + (width / 2), -width);
+      path.lineTo(position.dx, offset.dy - width - width - gaugeheight);
+      path.close();
+    } else {
+      path.moveTo(position.dx - (width / 2), offset.dy + width);
+      path.lineTo(position.dx, position.dy);
+      path.lineTo(position.dx + (width / 2), offset.dy + width);
+      path.lineTo(position.dx, offset.dy + width + width - gaugeheight);
+      path.close();
+    }
 
     canvas.drawPath(path, paint);
   }
 
-  void drawDiamondPointer(Canvas canvas, Offset offset, double height,
-      double width, Color indicatorColor, double gaugeHeight) {
+  void _drawReactangle(
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
     final paint = Paint();
+    Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
+    double height = linearGauge.getLinearGaugeIndicator.height!;
+    double width = linearGauge.getLinearGaugeIndicator.width!;
+    double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
     paint.color = indicatorColor;
 
-    final position = Offset(offset.dx, offset.dy);
-    final path = Path();
+    double yPos;
+    if (rulerPosition == RulerPosition.top) {
+      yPos = offset.dy;
+    } else if (rulerPosition == RulerPosition.center) {
+      yPos = offset.dy - height - (2 * gaugeheight);
+    } else {
+      yPos = offset.dy - gaugeheight - height;
+    }
 
-    path.moveTo(position.dx - (width / 2), -width);
-    path.lineTo(position.dx, position.dy - 4);
-    path.lineTo(position.dx + (width / 2), -width);
-    path.lineTo(position.dx, position.dy - width - width - 4);
-
-    canvas.drawPath(path, paint);
-  }
-
-  void drawReactangle(Canvas canvas, Offset offset, double height, double width,
-      Color indicatorColor, double gaugeHeight) {
-    final paint = Paint();
-    paint.color = indicatorColor;
-
-    final position = Offset(offset.dx - width / 2, offset.dy - (height + 4));
+    final position = Offset(offset.dx - width / 2, yPos);
     Rect pointerContainer =
         Rect.fromLTWH(position.dx, position.dy, width, height);
 
