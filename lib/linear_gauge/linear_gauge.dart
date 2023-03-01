@@ -44,6 +44,9 @@ class LinearGauge extends LeafRenderObjectWidget {
       this.secondaryRulerPerInterval = 1.0,
       this.showSecondaryRulers = true,
       this.showPrimaryRulers = true,
+      this.indicator = const LinearGaugeIndicator(
+        shape: PointerShape.circle,
+      ),
       this.value = 0})
       : super(key: key);
 
@@ -199,6 +202,9 @@ class LinearGauge extends LeafRenderObjectWidget {
   final double? secondaryRulersWidth;
 
   ///
+  /// `Warning`:`deprecated`
+  ///
+  /// use `labelOffset` property in `labelStyle` to set gap b/w label & primary ruler
   ///
   /// `labelTopMargin` sets the margin from the  top of the label
   ///
@@ -212,6 +218,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   /// ),
   /// ```
   ///
+
   final double? labelTopMargin;
 
   ///
@@ -313,6 +320,22 @@ class LinearGauge extends LeafRenderObjectWidget {
   /// `showSecondaryRules` sets the visibility of the primary rulers.
   final bool showPrimaryRulers;
 
+  ///
+  /// `indicator` sets the styles of indicator using [LinearGaugeIndicator]  properties
+  ///
+  /// Example
+  /// ```dart
+  /// const LinearGauge(
+  ///            indicator: LinearGaugeIndicator(
+  ///             color: Colors.green,
+  ///            width: 10.0,
+  ///           shape: LinearGaugeIndicatorShape.circle,
+  ///           height: 10.0,
+  ///           ),
+  /// ```
+  ///
+  final LinearGaugeIndicator? indicator;
+
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
@@ -337,9 +360,11 @@ class LinearGauge extends LeafRenderObjectWidget {
         labelSize: labelStyle!.fontSize!,
         labelColor: labelStyle!.color!,
         showLabel: labelStyle!.showLabel!,
-        invertLabels: labelStyle!.invertLabels!,
+        rulerPosition: labelStyle!.rulerPosition!,
+        labelOffset: labelStyle!.labelOffset!,
         showSecondaryRulers: showSecondaryRulers,
         showPrimaryRulers: showPrimaryRulers,
+        indicator: indicator!,
         value: value!);
   }
 
@@ -368,9 +393,11 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setLabelSize = labelStyle!.fontSize!
       ..setLabelColor = labelStyle!.color!
       ..setShowLabel = labelStyle!.showLabel!
-      ..setInvertLabels = labelStyle!.invertLabels!
+      ..setRulerPosition = labelStyle!.rulerPosition!
+      ..setLabelOffset = labelStyle!.labelOffset!
       ..setShowSecondaryRulers = showSecondaryRulers
       ..setShowPrimaryRulers = showPrimaryRulers
-      ..setValue = value!;
+      ..setValue = value!
+      ..setLinearGaugeIndicator = indicator;
   }
 }

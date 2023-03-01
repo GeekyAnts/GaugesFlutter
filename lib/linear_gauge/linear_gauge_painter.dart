@@ -4,9 +4,11 @@ import 'dart:ui' as ui;
 import 'dart:math' as math;
 
 import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
+// import 'package:geekyants_flutter_gauges/linear_gauge/pointers/linear_gauge_pointer.dart';
 
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge({
+    required LinearGaugeIndicator indicator,
     required double start,
     required double end,
     required double steps,
@@ -27,7 +29,8 @@ class RenderLinearGauge extends RenderBox {
     required double labelSize,
     required Color labelColor,
     required bool showLabel,
-    required bool invertLabels,
+    required RulerPosition rulerPosition,
+    required double labelOffset,
     required bool showSecondaryRulers,
     required bool showPrimaryRulers,
     required double value,
@@ -52,10 +55,18 @@ class RenderLinearGauge extends RenderBox {
         _labelSize = labelSize,
         _labelColor = labelColor,
         _showLabel = showLabel,
-        _invertLabels = invertLabels,
+        _rulerPosition = rulerPosition,
+        _labelOffset = labelOffset,
         _showSecondaryRulers = showSecondaryRulers,
         _showPrimaryRulers = showPrimaryRulers,
-        _value = value;
+        _value = value,
+        _indicator = indicator;
+
+  //! X axis Vlaue
+  ///
+  double _valueInPixel = 0;
+
+  ///
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -182,6 +193,18 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
+  /// Getter and Setter for the [LinearGaugeIndicator] parameter.
+  ///
+  LinearGaugeIndicator get getLinearGaugeIndicator => _indicator;
+  LinearGaugeIndicator _indicator;
+
+  set setLinearGaugeIndicator(linearGaugeIndicator) {
+    _indicator = linearGaugeIndicator;
+
+    markNeedsPaint();
+  }
+
+  ///
   /// Getter and Setter for the [labelTopMargin] parameter.
   ///
   get getLabelTopMargin => _labelTopMargin;
@@ -303,11 +326,19 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
-  bool get invertLabels => _invertLabels;
-  bool _invertLabels;
-  set setInvertLabels(bool val) {
-    if (_invertLabels == val) return;
-    _invertLabels = val;
+  RulerPosition get rulerPosition => _rulerPosition;
+  RulerPosition _rulerPosition;
+  set setRulerPosition(RulerPosition val) {
+    if (_rulerPosition == val) return;
+    _rulerPosition = val;
+    markNeedsPaint();
+  }
+
+  double get getLabelOffset => _labelOffset;
+  double _labelOffset;
+  set setLabelOffset(double val) {
+    if (_labelOffset == val) return;
+    _labelOffset = val;
     markNeedsPaint();
   }
 
@@ -375,7 +406,8 @@ class RenderLinearGauge extends RenderBox {
         getEnd,
         getPrimaryRulersHeight,
         getLinearGaugeBoxDecoration.height,
-        getLabelTopMargin);
+        getLabelTopMargin,
+        _indicator);
   }
 
   void _drawLabels(Canvas canvas, String text, List<Offset> list) {
@@ -398,21 +430,29 @@ class RenderLinearGauge extends RenderBox {
 
     paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
-    Offset labelOffsets;
-    if (invertLabels) {
-      labelOffsets = Offset(
-        (list[0].dx - (labelSize.width / 2)),
-        -(getPrimaryRulersHeight + labelSize.height - 2),
-      );
-    } else {
-      labelOffsets = Offset(
-        (list[0].dx - (labelSize.width / 2)),
-        (list[0].dy + getPrimaryRulersHeight + getLabelTopMargin),
-      );
+    // offset for drawing the label on the canvas
+    Offset labelPosition;
+
+    switch (rulerPosition) {
+      case RulerPosition.top:
+        labelPosition = Offset(
+          (list[0].dx - (labelSize.width / 2)),
+          -(getPrimaryRulersHeight + getLabelOffset + labelSize.height - 2),
+        );
+        break;
+      default:
+        double labelOffset =
+            (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
+        labelPosition = Offset(
+          (list[0].dx - (labelSize.width / 2)),
+          (list[0].dy + getPrimaryRulersHeight + labelOffset),
+        );
+        break;
     }
+
     canvas.drawParagraph(
       paragraph,
-      labelOffsets,
+      labelPosition,
     );
   }
 
@@ -423,8 +463,12 @@ class RenderLinearGauge extends RenderBox {
 
     if (showLabel) {
       end = size.width -
-          ((_endLabelSize.width / 2) + (_startLabelSize.width / 2));
-      start = (offset.dx + _startLabelSize.width / 2);
+          ((_endLabelSize.width / 2) +
+              (_startLabelSize.width / 2) +
+              (_indicator.width!));
+
+      start =
+          (offset.dx + (_startLabelSize.width / 2) + (_indicator.width! / 2));
     } else {
       end = size.width;
       start = offset.dx;
@@ -444,6 +488,18 @@ class RenderLinearGauge extends RenderBox {
 
     double totalValOnPixel = ((totalWidth * percentageInVal) / 100) -
         ((totalWidth * removeStartPercentage) / 100);
+
+    // if pointer value is null then draw the value in the gauge container
+    if (_indicator.getPointerValue == null) {
+      _valueInPixel = totalValOnPixel;
+    } else {
+      double percentageInValPointer =
+          (_indicator.getPointerValue * 100) / (getEnd);
+      double totalValOnPixelPointer =
+          ((totalWidth * percentageInValPointer) / 100) -
+              ((totalWidth * removeStartPercentage) / 100);
+      _valueInPixel = totalValOnPixelPointer;
+    }
 
     if (getLinearGaugeBoxDecoration.borderRadius != null) {
       canvas.drawRRect(
@@ -488,26 +544,44 @@ class RenderLinearGauge extends RenderBox {
 
   void _drawPrimaryRulers(Canvas canvas) {
     _setPrimaryRulersPaint();
+
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
       double y;
       double x;
-      if (invertLabels) {
-        //in case of invert labels
-        //y co-ordinate will be simply inverted on negative side by adding -ve sign
-        //no need to adjust y co-ordinate by adding the height of gauge container
-        y = -value[1].dy;
-        x = value[1].dx;
-      } else {
-        //in case of non-invert labels
-        //there is need to adjust y co-ordinate by adding the height of gauge container
-        //bcz line will start drawing from behind of gauge container
-        y = value[1].dy + getLinearGaugeBoxDecoration.height;
-        x = value[1].dx;
+      Offset primaryRulerStartPoint;
+
+      switch (rulerPosition) {
+        case RulerPosition.top:
+          //y co-ordinate will be simply inverted on negative side by adding -ve sign
+          //no need to adjust y co-ordinate by adding the height of gauge container
+          y = -value[1].dy;
+          x = value[1].dx;
+          primaryRulerStartPoint = value[0];
+          break;
+        case RulerPosition.center:
+          //the y co-ordinate of the ending point is halved from it's original position
+
+          y = (value[1].dy + getLinearGaugeBoxDecoration.height) / 2;
+          x = value[1].dx;
+          //the staring point is shifted half of the primary ruler height from the
+          //center of the gauge container
+          primaryRulerStartPoint =
+              Offset(value[0].dx, value[0].dy / 2 - getPrimaryRulersHeight / 2);
+          break;
+        case RulerPosition.bottom:
+          //there is need to adjust y co-ordinate by adding the height of gauge container
+          //bcz line will start drawing from behind of gauge container
+          y = value[1].dy + getLinearGaugeBoxDecoration.height;
+          x = value[1].dx;
+          primaryRulerStartPoint = value[0];
+          break;
       }
+
+      //the ending point of the primary ruler
 
       Offset a = Offset(x, y);
 
-      canvas.drawLine(value[0], a, _primaryRulersPaint);
+      canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
       if (showLabel) {
         _drawLabels(canvas, key, value);
       }
@@ -520,8 +594,9 @@ class RenderLinearGauge extends RenderBox {
         canvas,
         _secondaryRulersPaint,
         getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height,
-        invertLabels,
-        getLinearGaugeBoxDecoration.height);
+        rulerPosition,
+        getLinearGaugeBoxDecoration.height,
+        _indicator);
   }
 
   void _setPrimaryRulersPaint() {
@@ -557,11 +632,20 @@ class RenderLinearGauge extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
+
     canvas.save();
     canvas.translate(offset.dx, offset.dy);
     _setLinearGaugeContainerPaint();
     _setSecondaryRulersPaint();
+
     _calculateRulerPoints();
+
+    if (rulerPosition == RulerPosition.center) {
+      if (getShowLinearGaugeContainer) {
+        _paintGaugeContainer(canvas, size);
+      }
+    }
+
     if (showPrimaryRulers) {
       _drawPrimaryRulers(canvas);
     }
@@ -570,7 +654,27 @@ class RenderLinearGauge extends RenderBox {
       _drawSecondaryRulers(canvas);
     }
 
-    if (getShowLinearGaugeContainer) _paintGaugeContainer(canvas, size);
+    if (rulerPosition != RulerPosition.center) {
+      if (getShowLinearGaugeContainer) {
+        _paintGaugeContainer(canvas, size);
+      }
+    }
+
+//!    // print(getLinearGaugeIndicator.value);
+
+    double value = getLinearGaugeIndicator.value ?? _valueInPixel;
+
+    var firstOffset = Offset(_valueInPixel, 0.0);
+    if (_indicator.getPointerValue == null) {
+      _indicator.setPointerValue = value;
+    }
+
+    var firstOff =
+        _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
+
+    getLinearGaugeIndicator.drawPointer(
+        _indicator.shape!, canvas, firstOff, this);
+
     canvas.restore();
   }
 }
