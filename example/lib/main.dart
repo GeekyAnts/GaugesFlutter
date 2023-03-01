@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/range_linear_gauge/range_linear_gauge.dart';
 
 void main() {
   runApp(const MaterialApp(home: MyGaugeExample()));
@@ -22,11 +21,23 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              child: LinearGauge(rangeLinearGauge: [
-                RangeLinearGauge(color: Colors.green, start: 0, end: 25),
-                RangeLinearGauge(color: Colors.orange, start: 25, end: 75),
-                RangeLinearGauge(color: Colors.red, start: 75, end: 100)
-              ]),
+              child: LinearGauge(
+                rulers: RulerStyle(
+                    value: 75.0,
+                    primaryRulerColor: Colors.red,
+                    indicator: LinearGaugeIndicator(
+                      width: 20,
+                      value: 0,
+                      shape: PointerShape.arrow,
+                      color: Colors.red,
+                    ),
+                    textStyle: TextStyle(
+                      color: Colors.red,
+                      fontSize: 10,
+                    ),
+                    rulerPosition: RulerPosition.top,
+                    labelOffset: 20),
+              ),
             ),
           ],
         ),

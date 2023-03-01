@@ -132,7 +132,7 @@ class LinearGaugeIndicator {
   void _drawCirclePointer(
       Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
     Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
-    // double height = linearGauge.getLinearGaugeIndicator.height!;
+    double height = linearGauge.getLinearGaugeIndicator.height!;
     double width = linearGauge.getLinearGaugeIndicator.width!;
     double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
@@ -199,7 +199,7 @@ class LinearGaugeIndicator {
 
     final position = Offset(offset.dx, offset.dy);
     final path = Path();
-    // late double yPos;
+    late double yPos;
 
     if (rulerPosition == RulerPosition.bottom) {
       path.moveTo(position.dx - (width / 2), -height);
@@ -221,14 +221,19 @@ class LinearGaugeIndicator {
     RenderLinearGauge linearGauge,
   ) {
     Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
-    // double height = linearGauge.getLinearGaugeIndicator.height!;
+    double height = linearGauge.getLinearGaugeIndicator.height!;
     double width = linearGauge.getLinearGaugeIndicator.width!;
     double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
     double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
 
+    late double yPos;
+
     if (rulerPosition == RulerPosition.top) {
-    } else {}
+      yPos = -width;
+    } else {
+      yPos = -width;
+    }
     final paint = Paint();
     paint.color = indicatorColor;
 
