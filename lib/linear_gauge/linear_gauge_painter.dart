@@ -498,6 +498,14 @@ class RenderLinearGauge extends RenderBox {
     double totalWidth = end;
     double percentageInVal = (getValue * 100) / (getEnd);
 
+//todo : create a function for thisx
+    // double calculateValuePixelWidth(double value) {
+    //   double percentInVal = (value * 100) / (getEnd);
+    //   double totalValOnPixel = ((value * percentInVal) / 100) -
+    //       ((value * removeStartPercentage) / 100);
+    //   return totalValOnPixel;
+    // }
+
     double totalValOnPixel = ((totalWidth * percentageInVal) / 100) -
         ((totalWidth * removeStartPercentage) / 100);
 
@@ -539,6 +547,8 @@ class RenderLinearGauge extends RenderBox {
     } else {
       canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
 
+      //Todo: Need to change the Color values HERE!!
+
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
       gaugeContainer = Rect.fromLTWH(start, offset.dy, totalValOnPixel,
           getLinearGaugeBoxDecoration.height);
@@ -547,10 +557,40 @@ class RenderLinearGauge extends RenderBox {
             .linearGradient!
             .createShader(gaugeContainer);
       }
-      canvas.drawRect(
-        gaugeContainer,
-        _linearGaugeContainerValuePaint,
-      );
+
+      ///* Normal DrawRect
+      // canvas.drawRect(
+      //   gaugeContainer,
+      //   _linearGaugeContainerValuePaint,
+      // );
+
+      /// For loop for calculating colors in [Linear-Gauge-Color]
+      for (int i = 0; i < rangeLinearGauge!.length; i++) {
+        // Method to cal exact width
+        double calculateValuePixelWidth(double value) {
+          return (totalWidth * (value / getEnd)) -
+              ((totalWidth * removeStartPercentage) / 100);
+        }
+
+        // Start of the ColorRange
+        double colorRangeStart =
+            calculateValuePixelWidth(rangeLinearGauge![i].start) + start;
+
+        // width of the colorRange
+        double colorRangeWidth =
+            calculateValuePixelWidth(rangeLinearGauge![i].end) -
+                calculateValuePixelWidth(rangeLinearGauge![i].start);
+
+        _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
+        gaugeContainer = Rect.fromLTWH(colorRangeStart, offset.dy,
+            colorRangeWidth, getLinearGaugeBoxDecoration.height);
+        _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
+        canvas.drawRect(
+          gaugeContainer,
+          _linearGaugeContainerValuePaint,
+        );
+        // x += width;
+      }
     }
   }
 
@@ -561,6 +601,17 @@ class RenderLinearGauge extends RenderBox {
       double y;
       double x;
       Offset primaryRulerStartPoint;
+      Color primaryRulerColor = getPrimaryRulerColor;
+
+      for (int i = 0; i < rangeLinearGauge!.length; i++) {
+        var range = rangeLinearGauge![i].end;
+
+        var offset = double.parse(key);
+        if (offset >= rangeLinearGauge![i].start && offset <= range) {
+          primaryRulerColor = rangeLinearGauge![i].color;
+          break;
+        }
+      }
 
       switch (rulerPosition) {
         case RulerPosition.top:
@@ -592,6 +643,7 @@ class RenderLinearGauge extends RenderBox {
       //the ending point of the primary ruler
 
       Offset a = Offset(x, y);
+      _primaryRulersPaint.color = primaryRulerColor;
 
       canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
       if (showLabel) {
@@ -608,7 +660,8 @@ class RenderLinearGauge extends RenderBox {
         getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height,
         rulerPosition,
         getLinearGaugeBoxDecoration.height,
-        _indicator);
+        _indicator,
+        rangeLinearGauge!);
   }
 
   void _setPrimaryRulersPaint() {
