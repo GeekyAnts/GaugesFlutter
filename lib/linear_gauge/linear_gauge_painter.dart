@@ -482,6 +482,13 @@ class RenderLinearGauge extends RenderBox {
   }
 
   void _paintGaugeContainer(Canvas canvas, Size size) {
+    if (rangeLinearGauge!.isNotEmpty) {
+      assert(rangeLinearGauge!.last.end <= getEnd,
+          'The end value of the range should be less than the end value of the gauge.');
+      assert(rangeLinearGauge!.first.start >= getStart,
+          'The start value of the range should be less than the start value of the gauge.');
+    }
+
     Offset offset = const Offset(0, 0);
     late double end;
     late double start;
@@ -569,7 +576,7 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeContainerValuePaint,
       );
 
-      /// For loop for calculating colors in [Linear-Gauge-Color]
+      /// For loop for calculating colors in [RangeLinearGauge]
       for (int i = 0; i < rangeLinearGauge!.length; i++) {
         // Method to cal exact width
         double calculateValuePixelWidth(double value) {
@@ -587,8 +594,11 @@ class RenderLinearGauge extends RenderBox {
                 calculateValuePixelWidth(rangeLinearGauge![i].start);
 
         _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
-        gaugeContainer = Rect.fromLTWH(colorRangeStart, offset.dy,
-            colorRangeWidth, getLinearGaugeBoxDecoration.height);
+        // gaugeContainer = Rect.fromLTWH(colorRangeStart, offset.dy,
+        //     colorRangeWidth, getLinearGaugeBoxDecoration.height);
+
+        gaugeContainer = Rect.fromLTWH(start, offset.dy, totalValOnPixel,
+            getLinearGaugeBoxDecoration.height);
         _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
         canvas.drawRect(
           gaugeContainer,
@@ -736,8 +746,10 @@ class RenderLinearGauge extends RenderBox {
       _indicator.setPointerValue = value;
     }
 
-    var firstOff =
-        _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
+    print(firstOffset);
+    var firstOff = _linearGaugeLabel
+            .getPrimaryRulersOffset[getStart.toInt().toString()]![0] +
+        firstOffset;
 
     getLinearGaugeIndicator.drawPointer(
         _indicator.shape!, canvas, firstOff, this);

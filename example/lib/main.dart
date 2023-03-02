@@ -16,23 +16,18 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               child: LinearGauge(
-                value: 60,
+                start: 10,
+                end: 50,
+                value: 25,
                 indicator: LinearGaugeIndicator(shape: PointerShape.circle),
                 linearGaugeBoxDecoration: LinearGaugeBoxDecoration(),
-                rangeLinearGauge: [
-                  RangeLinearGauge(color: Colors.green, start: 0, end: 10),
-                  RangeLinearGauge(color: Colors.yellow, start: 10, end: 25),
-                  RangeLinearGauge(color: Colors.amber, start: 25, end: 50),
-                  RangeLinearGauge(color: Colors.blue, start: 50, end: 75),
-                  RangeLinearGauge(color: Colors.red, start: 75, end: 100)
-                ],
               ),
             ),
           ],
