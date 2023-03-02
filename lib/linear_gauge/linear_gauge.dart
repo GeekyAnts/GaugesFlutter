@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'linear_gauge_painter.dart';
+import './range_linear_gauge/range_linear_gauge.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
   ///
@@ -25,6 +26,7 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.end = 100,
     this.steps = 0,
     this.rulers = const RulerStyle(),
+    this.rangeLinearGauge,
   }) : super(key: key);
 
   ///
@@ -64,35 +66,40 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///
   final RulerStyle? rulers;
 
+  ///
+  ///
+  final List<RangeLinearGauge>? rangeLinearGauge;
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
-        start: start!,
-        end: end!,
-        steps: steps!,
-        showLinearGaugeContainer: rulers!.showLinearGaugeContainer!,
-        gaugeOrientation: rulers!.gaugeOrientation!,
-        primaryRulersWidth: rulers!.primaryRulersWidth!,
-        primaryRulersHeight: rulers!.primaryRulersHeight!,
-        secondaryRulersHeight: rulers!.secondaryRulersHeight!,
-        secondaryRulersWidth: rulers!.secondaryRulersWidth!,
-        labelTopMargin: rulers!.labelTopMargin!,
-        primaryRulerColor: rulers!.primaryRulerColor!,
-        secondaryRulerColor: rulers!.secondaryRulerColor!,
-        linearGaugeBoxDecoration: rulers!.linearGaugeBoxDecoration!,
-        secondaryRulerPerInterval: rulers!.secondaryRulerPerInterval!,
-        linearGaugeContainerBgColor:
-            rulers!.linearGaugeBoxDecoration!.backgroundColor,
-        linearGaugeContainerValueColor:
-            rulers!.linearGaugeBoxDecoration!.linearGaugeValueColor!,
-        textStyle: rulers!.textStyle!,
-        showLabel: rulers!.showLabel!,
-        rulerPosition: rulers!.rulerPosition!,
-        labelOffset: rulers!.labelOffset!,
-        showSecondaryRulers: rulers!.showSecondaryRulers,
-        showPrimaryRulers: rulers!.showPrimaryRulers,
-        indicator: rulers!.indicator!,
-        value: rulers!.value!);
+      start: start!,
+      end: end!,
+      steps: steps!,
+      showLinearGaugeContainer: rulers!.showLinearGaugeContainer!,
+      gaugeOrientation: rulers!.gaugeOrientation!,
+      primaryRulersWidth: rulers!.primaryRulersWidth!,
+      primaryRulersHeight: rulers!.primaryRulersHeight!,
+      secondaryRulersHeight: rulers!.secondaryRulersHeight!,
+      secondaryRulersWidth: rulers!.secondaryRulersWidth!,
+      labelTopMargin: rulers!.labelTopMargin!,
+      primaryRulerColor: rulers!.primaryRulerColor!,
+      secondaryRulerColor: rulers!.secondaryRulerColor!,
+      linearGaugeBoxDecoration: rulers!.linearGaugeBoxDecoration!,
+      secondaryRulerPerInterval: rulers!.secondaryRulerPerInterval!,
+      linearGaugeContainerBgColor:
+          rulers!.linearGaugeBoxDecoration!.backgroundColor,
+      linearGaugeContainerValueColor:
+          rulers!.linearGaugeBoxDecoration!.linearGaugeValueColor!,
+      textStyle: rulers!.textStyle!,
+      showLabel: rulers!.showLabel!,
+      rulerPosition: rulers!.rulerPosition!,
+      labelOffset: rulers!.labelOffset!,
+      showSecondaryRulers: rulers!.showSecondaryRulers,
+      showPrimaryRulers: rulers!.showPrimaryRulers,
+      indicator: rulers!.indicator!,
+      value: rulers!.value!,
+      rangeLinearGauge: rangeLinearGauge!,
+    );
   }
 
   @override
@@ -123,6 +130,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setShowSecondaryRulers = rulers!.showSecondaryRulers
       ..setShowPrimaryRulers = rulers!.showPrimaryRulers
       ..setValue = rulers!.value!
-      ..setLinearGaugeIndicator = rulers!.indicator;
+      ..setLinearGaugeIndicator = rulers!.indicator
+      ..setRangeLinearGauge = rangeLinearGauge;
   }
 }
