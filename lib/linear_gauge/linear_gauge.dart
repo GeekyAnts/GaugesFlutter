@@ -29,9 +29,7 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.showLinearGaugeContainer = true,
     this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
     this.labelTopMargin = 0.0,
-    this.indicator = const LinearGaugeIndicator(
-      shape: PointerShape.circle,
-    ),
+    this.indicator = const LinearGaugeIndicator(),
     this.rulers = const RulerStyle(),
     this.rangeLinearGauge = const [],
   }) : super(key: key);
