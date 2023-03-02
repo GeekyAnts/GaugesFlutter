@@ -123,7 +123,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [textStyle] parameter.
+  /// Getter and Setter for the [_textStyle] parameter.
   ///
   get getTextStyle => _textStyle;
   TextStyle _textStyle;
@@ -135,7 +135,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [primaryRulersWidth] parameter.
+  /// Getter and Setter for the [_primaryRulersWidth] parameter.
   ///
   get getPrimaryRulersWidth => _primaryRulersWidth;
   double _primaryRulersWidth;
@@ -147,7 +147,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [primaryRulersHeight] parameter.
+  /// Getter and Setter for the [_primaryRulersHeight] parameter.
   ///
   get getPrimaryRulersHeight => _primaryRulersHeight;
 
@@ -161,8 +161,9 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [secondaryRulersHeight] parameter.
+  /// Getter and Setter for the [_secondaryRulersHeight] parameter.
   ///
+
   get getSecondaryRulersHeight => _secondaryRulersHeight;
 
   double _secondaryRulersHeight;
@@ -175,9 +176,8 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [secondaryRulersWidth] parameter.
+  /// Getter and Setter for the [_secondaryRulersWidth] parameter.
   ///
-
   get getSecondaryRulersWidth => _secondaryRulersWidth;
   double _secondaryRulersWidth;
   set setSecondaryRulersWidth(secondaryRulersWidth) {
@@ -188,7 +188,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [LinearGaugeIndicator] parameter.
+  /// Getter and Setter for the [_indicator] parameter.
   ///
   LinearGaugeIndicator get getLinearGaugeIndicator => _indicator;
   LinearGaugeIndicator _indicator;
@@ -213,7 +213,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [primaryRulerColor] parameter.
+  /// Getter and Setter for the [_primaryRulerColor] parameter.
   ///
   Color get getPrimaryRulerColor => _primaryRulerColor;
   Color _primaryRulerColor;
@@ -250,7 +250,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  ///
+  /// Getter and Setter for the [SecondaryRulerPerInterval] parameter.
   ///
   double get getSecondaryRulerPerInterval => _secondaryRulerPerInterval;
   double _secondaryRulerPerInterval;
@@ -264,7 +264,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  ///
+  /// Getter and Setter for the [LinearGaugeContainerBgColor] parameter.
   ///
   Color get getLinearGaugeContainerBgColor => _linearGaugeContainerBgColor;
   Color _linearGaugeContainerBgColor;
@@ -397,15 +397,32 @@ class RenderLinearGauge extends RenderBox {
         _indicator);
   }
 
-  void _drawLabels(Canvas canvas, String text, List<Offset> list) {
+  void _drawLabels(
+    Canvas canvas,
+    String text,
+    List<Offset> list,
+  ) {
     final ui.ParagraphStyle paragraphStyle = ui.ParagraphStyle(
       textDirection: TextDirection.ltr,
     );
     final String labelText = text;
     final double? value = double.tryParse(text);
 
+    // calculator method to get the text style based on the range
+    Color getRangeColor(String text) {
+      for (int i = 0; i < rangeLinearGauge!.length; i++) {
+        if (value! >= rangeLinearGauge![i].start &&
+            value <= rangeLinearGauge![i].end) {
+          return rangeLinearGauge![i].color;
+        }
+      }
+      // Return a default style if no range color is found
+      return getTextStyle.color;
+    }
+
     final ui.TextStyle labelTextStyle = ui.TextStyle(
-      color: getTextStyle.color,
+      // color: getTextStyle.color,
+      color: getRangeColor(text),
       fontSize: getTextStyle.fontSize,
       background: getTextStyle.background,
       decoration: getTextStyle.decoration,
@@ -494,14 +511,6 @@ class RenderLinearGauge extends RenderBox {
     double totalWidth = end;
     double percentageInVal = (getValue * 100) / (getEnd);
 
-//todo : create a function for thisx
-    // double calculateValuePixelWidth(double value) {
-    //   double percentInVal = (value * 100) / (getEnd);
-    //   double totalValOnPixel = ((value * percentInVal) / 100) -
-    //       ((value * removeStartPercentage) / 100);
-    //   return totalValOnPixel;
-    // }
-
     double totalValOnPixel = ((totalWidth * percentageInVal) / 100) -
         ((totalWidth * removeStartPercentage) / 100);
 
@@ -554,11 +563,11 @@ class RenderLinearGauge extends RenderBox {
             .createShader(gaugeContainer);
       }
 
-      ///* Normal DrawRect
-      // canvas.drawRect(
-      //   gaugeContainer,
-      //   _linearGaugeContainerValuePaint,
-      // );
+      // ValueContainer for Linear-Gauge
+      canvas.drawRect(
+        gaugeContainer,
+        _linearGaugeContainerValuePaint,
+      );
 
       /// For loop for calculating colors in [Linear-Gauge-Color]
       for (int i = 0; i < rangeLinearGauge!.length; i++) {
@@ -585,7 +594,6 @@ class RenderLinearGauge extends RenderBox {
           gaugeContainer,
           _linearGaugeContainerValuePaint,
         );
-        // x += width;
       }
     }
   }

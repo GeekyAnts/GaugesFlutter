@@ -16,7 +16,7 @@ class RangeLinearGauge {
     required this.color,
     required this.start,
     required this.end,
-  });
+  }) : assert(start < end, 'Start value should be less than end value');
 
   /// `color` Sets the color of the range
   final Color color;

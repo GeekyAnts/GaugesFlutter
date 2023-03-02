@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'linear_gauge_painter.dart';
-import './range_linear_gauge/range_linear_gauge.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
   ///
@@ -34,7 +33,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       shape: PointerShape.circle,
     ),
     this.rulers = const RulerStyle(),
-    this.rangeLinearGauge,
+    this.rangeLinearGauge = const [],
   }) : super(key: key);
 
   ///
