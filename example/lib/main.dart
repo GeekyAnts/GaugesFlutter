@@ -16,6 +16,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xff1e1e1e),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
-
 import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
-
-import 'range_linear_gauge/range_linear_gauge.dart';
-// import 'package:geekyants_flutter_gauges/linear_gauge/pointers/linear_gauge_pointer.dart';
 
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge({
@@ -724,8 +720,6 @@ class RenderLinearGauge extends RenderBox {
         _paintGaugeContainer(canvas, size);
       }
     }
-
-//!    // print(getLinearGaugeIndicator.value);
 
     double value = getLinearGaugeIndicator.value ?? _valueInPixel;
 
