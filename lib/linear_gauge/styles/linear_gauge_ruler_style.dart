@@ -4,22 +4,14 @@ import 'package:geekyants_flutter_gauges/gauges.dart';
 class RulerStyle {
   const RulerStyle({
     this.primaryRulerColor = Colors.black54,
-    this.showLinearGaugeContainer = true,
-    this.gaugeOrientation = GaugeOrientation.horizontal,
     this.primaryRulersWidth = 1.0,
     this.primaryRulersHeight = 15.0,
     this.secondaryRulersHeight = 1.0,
     this.secondaryRulersWidth = 1.0,
-    this.labelTopMargin = 0.0,
     this.secondaryRulerColor = Colors.grey,
     this.secondaryRulerPerInterval = 1.0,
-    this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
-    this.value = 0,
     this.showSecondaryRulers = true,
     this.showPrimaryRulers = true,
-    this.indicator = const LinearGaugeIndicator(
-      shape: PointerShape.circle,
-    ),
     this.textStyle = const TextStyle(
       fontSize: 12.0,
       color: Color.fromARGB(255, 86, 86, 86),
@@ -41,45 +33,13 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
+  /// rulers : RulerStyle(
   ///   primaryRulerColor: Colors.green,
+  /// )
   /// ),
   /// ```
   ///
   final Color? primaryRulerColor;
-
-  ///
-  /// `showLinearGaugeContainer`  controls the  [LinearGauge] Container render
-  ///
-  /// Below example renders the [LinearGauge] Container
-  ///
-  /// ```dart
-  /// const LinearGauge(
-  ///   showLinearGaugeContainer : true
-  /// ),
-  /// ```
-  ///
-  /// Below example will not render the [LinearGauge] Container
-  ///
-  /// ```dart
-  /// const LinearGauge(
-  ///   showLinearGaugeContainer : false
-  /// ),
-  /// ```
-  ///
-  final bool? showLinearGaugeContainer;
-
-  ///
-  ///  `gaugeOrientation` sets the [LinearGauge] orientation to horizontal or vertical
-  ///
-  ///  default is to `GaugeOrientation.horizontal`
-  ///
-  /// ```dart
-  /// const LinearGauge(
-  ///   gaugeOrientation : GaugeOrientation.horizontal
-  /// ),
-  /// ```
-  ///
-  final GaugeOrientation? gaugeOrientation;
 
   ///
   ///
@@ -91,7 +51,9 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
+  /// rulers : RulerStyle(
   ///   primaryRulersWidth: 2,
+  /// )
   /// ),
   /// ```
   final double? primaryRulersWidth;
@@ -106,7 +68,9 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
+  /// rulers : RulerStyle(
   ///   primaryRulersHeight: 20,
+  /// )
   /// ),
   /// ```
   ///
@@ -122,7 +86,9 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
+  /// rulers : RulerStyle(
   ///   secondaryRulersHeight: 20,
+  /// )
   /// ),
   /// ```
   ///
@@ -138,31 +104,13 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
+  /// rulers : RulerStyle(
   ///   primaryRulersHeight: 20,
+  /// )
   /// ),
   /// ```
   ///
   final double? secondaryRulersWidth;
-
-  ///
-  /// `Warning`:`deprecated`
-  ///
-  /// use `labelOffset` property in `labelStyle` to set gap b/w label & primary ruler
-  ///
-  /// `labelTopMargin` sets the margin from the  top of the label
-  ///
-  /// default is to `labelTopMargin =`0.0`
-  ///
-  /// Example
-  ///
-  ///  ```dart
-  /// child: const LinearGauge(
-  ///   labelTopMargin: 5.0,
-  /// ),
-  /// ```
-  ///
-
-  final double? labelTopMargin;
 
   ///
   ///
@@ -174,7 +122,9 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
+  /// rulers : RulerStyle(
   ///   secondaryRulerColor: Colors.green,
+  /// )
   /// ),
   /// ```
   ///
@@ -190,47 +140,13 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
+  /// rulers : RulerStyle(
   ///   secondaryRulerPerInterval:1,
+  /// )
   /// ),
   /// ```
   ///
   final double? secondaryRulerPerInterval;
-
-  ///
-  ///
-  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
-  ///
-  ///
-  /// Example
-  ///
-  ///  ```dart
-  /// const LinearGauge(
-  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-  ///               color: Colors.green,
-  ///               height: 30.0,
-  ///            ),
-  ///        ),
-  /// ```
-  ///
-  final LinearGaugeBoxDecoration? linearGaugeBoxDecoration;
-
-  ///
-  ///
-  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
-  ///
-  ///
-  /// Example
-  ///
-  ///  ```dart
-  /// const LinearGauge(
-  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-  ///               color: Colors.green,
-  ///               height: 30.0,
-  ///            ),
-  ///        ),
-  /// ```
-  ///
-  final double? value;
 
   ///
   ///
@@ -241,22 +157,6 @@ class RulerStyle {
   ///
   /// `showSecondaryRules` sets the visibility of the primary rulers.
   final bool showPrimaryRulers;
-
-  ///
-  /// `indicator` sets the styles of indicator using [LinearGaugeIndicator]  properties
-  ///
-  /// Example
-  /// ```dart
-  /// const LinearGauge(
-  ///            indicator: LinearGaugeIndicator(
-  ///             color: Colors.green,
-  ///            width: 10.0,
-  ///           shape: LinearGaugeIndicatorShape.circle,
-  ///           height: 10.0,
-  ///           ),
-  /// ```
-  ///
-  final LinearGaugeIndicator? indicator;
 
   ///
   /// `textStyle` sets the ruler text style of [LinearGauge]
@@ -275,7 +175,7 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
-  ///   labelStyle: RulerStyle(
+  ///   rulers: RulerStyle(
   ///   textStyle: TextStyle(color: Colors.red, fontSize: 16.0),
   /// )
   /// ),
@@ -298,7 +198,7 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
-  /// labelStyle : RulerStyle(
+  /// rulers : RulerStyle(
   ///   rulerPosition: RulerPosition.bottom,
   /// ),
   /// ```
@@ -315,7 +215,7 @@ class RulerStyle {
   ///
   ///  ```dart
   /// child: const LinearGauge(
-  /// labelStyle : RulerStyle(
+  /// rulers : RulerStyle(
   ///   labelOffset: 10.0,
   /// ),
   /// ```
