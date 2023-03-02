@@ -22,22 +22,15 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           children: [
             SizedBox(
               child: LinearGauge(
-                rulers: RulerStyle(
-                    value: 75.0,
-                    primaryRulerColor: Colors.red,
-                    indicator: LinearGaugeIndicator(
-                      width: 20,
-                      value: 0,
-                      shape: PointerShape.arrow,
-                      color: Colors.red,
-                    ),
-                    textStyle: TextStyle(
-                      color: Colors.red,
-                      fontSize: 10,
-                    ),
-                    rulerPosition: RulerPosition.top,
-                    labelOffset: 20),
-              ),
+                  // rulers: ,
+                  rangeLinearGauge: [
+                    RangeLinearGauge(color: Colors.blue, start: 0, end: 10),
+                    RangeLinearGauge(color: Colors.green, start: 10, end: 25),
+                    RangeLinearGauge(color: Colors.orange, start: 25, end: 35),
+                    RangeLinearGauge(color: Colors.yellow, start: 35, end: 50),
+                    RangeLinearGauge(color: Colors.purple, start: 50, end: 75),
+                    RangeLinearGauge(color: Colors.red, start: 75, end: 100)
+                  ]),
             ),
           ],
         ),

@@ -4,6 +4,8 @@ import 'dart:ui' as ui;
 import 'dart:math' as math;
 
 import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
+
+import 'range_linear_gauge/range_linear_gauge.dart';
 // import 'package:geekyants_flutter_gauges/linear_gauge/pointers/linear_gauge_pointer.dart';
 
 class RenderLinearGauge extends RenderBox {
@@ -32,6 +34,7 @@ class RenderLinearGauge extends RenderBox {
     required bool showSecondaryRulers,
     required bool showPrimaryRulers,
     required double value,
+    required List<RangeLinearGauge> rangeLinearGauge,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -56,9 +59,9 @@ class RenderLinearGauge extends RenderBox {
         _showSecondaryRulers = showSecondaryRulers,
         _showPrimaryRulers = showPrimaryRulers,
         _value = value,
-        _indicator = indicator;
+        _indicator = indicator,
+        _rangeLinearGauge = rangeLinearGauge;
 
-  //! X axis Vlaue
   ///
   double _valueInPixel = 0;
 
@@ -338,6 +341,14 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  List<RangeLinearGauge>? get rangeLinearGauge => _rangeLinearGauge;
+  List<RangeLinearGauge>? _rangeLinearGauge = <RangeLinearGauge>[];
+  set setRangeLinearGauge(List<RangeLinearGauge>? val) {
+    if (_rangeLinearGauge == val) return;
+    _rangeLinearGauge = val;
+    markNeedsPaint();
+  }
+
   LinearGaugeLabel get getLinearGaugeLabel {
     return _linearGaugeLabel;
   }
@@ -396,6 +407,7 @@ class RenderLinearGauge extends RenderBox {
     );
     final String labelText = text;
     final double? value = double.tryParse(text);
+
     final ui.TextStyle labelTextStyle = ui.TextStyle(
       color: getTextStyle.color,
       fontSize: getTextStyle.fontSize,
