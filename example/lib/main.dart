@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
 void main() {
-  runApp(const MaterialApp(home: MyGaugeExample()));
+  runApp(const MaterialApp(
+      debugShowCheckedModeBanner: false, home: MyGaugeExample()));
 }
 
 class MyGaugeExample extends StatefulWidget {
@@ -22,15 +23,14 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           children: [
             SizedBox(
               child: LinearGauge(
-                  // rulers: ,
-                  rangeLinearGauge: [
-                    RangeLinearGauge(color: Colors.blue, start: 0, end: 10),
-                    RangeLinearGauge(color: Colors.green, start: 10, end: 25),
-                    RangeLinearGauge(color: Colors.orange, start: 25, end: 35),
-                    RangeLinearGauge(color: Colors.yellow, start: 35, end: 50),
-                    RangeLinearGauge(color: Colors.purple, start: 50, end: 75),
-                    RangeLinearGauge(color: Colors.red, start: 75, end: 100)
-                  ]),
+                start: 10,
+                end: 50,
+                value: 50,
+                indicator: const LinearGaugeIndicator(
+                  shape: PointerShape.triangle,
+                ),
+                rulers: const RulerStyle(),
+              ),
             ),
           ],
         ),
