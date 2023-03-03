@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
-
 import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
-
-import 'range_linear_gauge/range_linear_gauge.dart';
-// import 'package:geekyants_flutter_gauges/linear_gauge/pointers/linear_gauge_pointer.dart';
 
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge({
@@ -127,7 +123,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [textStyle] parameter.
+  /// Getter and Setter for the [_textStyle] parameter.
   ///
   get getTextStyle => _textStyle;
   TextStyle _textStyle;
@@ -139,7 +135,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [primaryRulersWidth] parameter.
+  /// Getter and Setter for the [_primaryRulersWidth] parameter.
   ///
   get getPrimaryRulersWidth => _primaryRulersWidth;
   double _primaryRulersWidth;
@@ -151,7 +147,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [primaryRulersHeight] parameter.
+  /// Getter and Setter for the [_primaryRulersHeight] parameter.
   ///
   get getPrimaryRulersHeight => _primaryRulersHeight;
 
@@ -165,8 +161,9 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [secondaryRulersHeight] parameter.
+  /// Getter and Setter for the [_secondaryRulersHeight] parameter.
   ///
+
   get getSecondaryRulersHeight => _secondaryRulersHeight;
 
   double _secondaryRulersHeight;
@@ -179,9 +176,8 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [secondaryRulersWidth] parameter.
+  /// Getter and Setter for the [_secondaryRulersWidth] parameter.
   ///
-
   get getSecondaryRulersWidth => _secondaryRulersWidth;
   double _secondaryRulersWidth;
   set setSecondaryRulersWidth(secondaryRulersWidth) {
@@ -192,7 +188,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [LinearGaugeIndicator] parameter.
+  /// Getter and Setter for the [_indicator] parameter.
   ///
   LinearGaugeIndicator get getLinearGaugeIndicator => _indicator;
   LinearGaugeIndicator _indicator;
@@ -217,7 +213,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [primaryRulerColor] parameter.
+  /// Getter and Setter for the [_primaryRulerColor] parameter.
   ///
   Color get getPrimaryRulerColor => _primaryRulerColor;
   Color _primaryRulerColor;
@@ -254,7 +250,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  ///
+  /// Getter and Setter for the [SecondaryRulerPerInterval] parameter.
   ///
   double get getSecondaryRulerPerInterval => _secondaryRulerPerInterval;
   double _secondaryRulerPerInterval;
@@ -268,7 +264,7 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  ///
+  /// Getter and Setter for the [LinearGaugeContainerBgColor] parameter.
   ///
   Color get getLinearGaugeContainerBgColor => _linearGaugeContainerBgColor;
   Color _linearGaugeContainerBgColor;
@@ -401,15 +397,32 @@ class RenderLinearGauge extends RenderBox {
         _indicator);
   }
 
-  void _drawLabels(Canvas canvas, String text, List<Offset> list) {
+  void _drawLabels(
+    Canvas canvas,
+    String text,
+    List<Offset> list,
+  ) {
     final ui.ParagraphStyle paragraphStyle = ui.ParagraphStyle(
       textDirection: TextDirection.ltr,
     );
     final String labelText = text;
     final double? value = double.tryParse(text);
 
+    // calculator method to get the text style based on the range
+    Color getRangeColor(String text) {
+      for (int i = 0; i < rangeLinearGauge!.length; i++) {
+        if (value! >= rangeLinearGauge![i].start &&
+            value <= rangeLinearGauge![i].end) {
+          return rangeLinearGauge![i].color;
+        }
+      }
+      // Return a default style if no range color is found
+      return getTextStyle.color;
+    }
+
     final ui.TextStyle labelTextStyle = ui.TextStyle(
-      color: getTextStyle.color,
+      // color: getTextStyle.color,
+      color: getRangeColor(text),
       fontSize: getTextStyle.fontSize,
       background: getTextStyle.background,
       decoration: getTextStyle.decoration,
@@ -469,6 +482,13 @@ class RenderLinearGauge extends RenderBox {
   }
 
   void _paintGaugeContainer(Canvas canvas, Size size) {
+    if (rangeLinearGauge!.isNotEmpty) {
+      assert(rangeLinearGauge!.last.end <= getEnd,
+          'The end value of the range should be less than the end value of the gauge.');
+      assert(rangeLinearGauge!.first.start >= getStart,
+          'The start value of the range should be less than the start value of the gauge.');
+    }
+
     Offset offset = const Offset(0, 0);
     late double end;
     late double start;
@@ -492,33 +512,24 @@ class RenderLinearGauge extends RenderBox {
           start, offset.dy, end, getLinearGaugeBoxDecoration.height);
     }
 
-    // get 50 % of total width;
-    double removeStartPercentage = (getStart * 100) / getEnd;
-
     double totalWidth = end;
-    double percentageInVal = (getValue * 100) / (getEnd);
+    double totalValOnPixel;
 
-//todo : create a function for thisx
-    // double calculateValuePixelWidth(double value) {
-    //   double percentInVal = (value * 100) / (getEnd);
-    //   double totalValOnPixel = ((value * percentInVal) / 100) -
-    //       ((value * removeStartPercentage) / 100);
-    //   return totalValOnPixel;
-    // }
-
-    double totalValOnPixel = ((totalWidth * percentageInVal) / 100) -
-        ((totalWidth * removeStartPercentage) / 100);
+    if (getValue < getStart) {
+      totalValOnPixel = 0.0;
+    } else {
+      totalValOnPixel =
+          ((getValue - getStart) / (getEnd - getStart)) * totalWidth;
+    }
 
     // if pointer value is null then draw the value in the gauge container
     if (_indicator.getPointerValue == null) {
       _valueInPixel = totalValOnPixel;
     } else {
-      double percentageInValPointer =
-          (_indicator.getPointerValue * 100) / (getEnd);
-      double totalValOnPixelPointer =
-          ((totalWidth * percentageInValPointer) / 100) -
-              ((totalWidth * removeStartPercentage) / 100);
-      _valueInPixel = totalValOnPixelPointer;
+      double pointerValue = _indicator.getPointerValue ?? getValue;
+      double pointerValueInPx =
+          ((pointerValue - getStart) / (getEnd - getStart)) * totalWidth;
+      _valueInPixel = pointerValueInPx;
     }
 
     if (getLinearGaugeBoxDecoration.borderRadius != null) {
@@ -558,18 +569,17 @@ class RenderLinearGauge extends RenderBox {
             .createShader(gaugeContainer);
       }
 
-      ///* Normal DrawRect
-      // canvas.drawRect(
-      //   gaugeContainer,
-      //   _linearGaugeContainerValuePaint,
-      // );
+      // ValueContainer for Linear-Gauge
+      canvas.drawRect(
+        gaugeContainer,
+        _linearGaugeContainerValuePaint,
+      );
 
-      /// For loop for calculating colors in [Linear-Gauge-Color]
+      /// For loop for calculating colors in [RangeLinearGauge]
       for (int i = 0; i < rangeLinearGauge!.length; i++) {
         // Method to cal exact width
         double calculateValuePixelWidth(double value) {
-          return (totalWidth * (value / getEnd)) -
-              ((totalWidth * removeStartPercentage) / 100);
+          return ((value - getStart) / (getEnd - getStart)) * totalWidth;
         }
 
         // Start of the ColorRange
@@ -584,12 +594,12 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
         gaugeContainer = Rect.fromLTWH(colorRangeStart, offset.dy,
             colorRangeWidth, getLinearGaugeBoxDecoration.height);
+
         _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
         canvas.drawRect(
           gaugeContainer,
           _linearGaugeContainerValuePaint,
         );
-        // x += width;
       }
     }
   }
@@ -725,8 +735,6 @@ class RenderLinearGauge extends RenderBox {
       }
     }
 
-//!    // print(getLinearGaugeIndicator.value);
-
     double value = getLinearGaugeIndicator.value ?? _valueInPixel;
 
     var firstOffset = Offset(_valueInPixel, 0.0);
@@ -734,8 +742,9 @@ class RenderLinearGauge extends RenderBox {
       _indicator.setPointerValue = value;
     }
 
-    var firstOff =
-        _linearGaugeLabel.getPrimaryRulersOffset["0"]![0] + firstOffset;
+    var firstOff = _linearGaugeLabel
+            .getPrimaryRulersOffset[getStart.toInt().toString()]![0] +
+        firstOffset;
 
     getLinearGaugeIndicator.drawPointer(
         _indicator.shape!, canvas, firstOff, this);
