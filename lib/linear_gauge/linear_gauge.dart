@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/custom_label/custom_linear_gauge_label.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
@@ -32,6 +33,7 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.indicator = const LinearGaugeIndicator(),
     this.rulers = const RulerStyle(),
     this.rangeLinearGauge = const [],
+    this.customLabels = const CustomLinearGaugeLabel(),
   }) : super(key: key);
 
   ///
@@ -178,6 +180,11 @@ class LinearGauge extends LeafRenderObjectWidget {
   final LinearGaugeIndicator? indicator;
 
   ///
+  /// `customLabels` customizes the label [CustomLinearGaugeLabel]  properties
+  ///
+  final CustomLinearGaugeLabel? customLabels;
+
+  ///
   ///
   final List<RangeLinearGauge>? rangeLinearGauge;
   @override
@@ -209,6 +216,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       indicator: indicator!,
       value: value!,
       rangeLinearGauge: rangeLinearGauge!,
+      // labelSymbol: customLabels!.labelSymbol!
     );
   }
 
@@ -242,5 +250,6 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setValue = value!
       ..setLinearGaugeIndicator = indicator
       ..setRangeLinearGauge = rangeLinearGauge;
+    // ..setLabelSymbol = customLabels!.labelSymbol;
   }
 }

@@ -31,6 +31,7 @@ class RenderLinearGauge extends RenderBox {
     required bool showPrimaryRulers,
     required double value,
     required List<RangeLinearGauge> rangeLinearGauge,
+    // required String labelSymbol,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -57,6 +58,7 @@ class RenderLinearGauge extends RenderBox {
         _value = value,
         _indicator = indicator,
         _rangeLinearGauge = rangeLinearGauge;
+  // _labelSymbol = labelSymbol;
 
   ///
   double _valueInPixel = 0;
@@ -345,6 +347,14 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  String? get getLabelSymbol => _labelSymbol;
+  String? _labelSymbol;
+  set setLabelSymbol(String? val) {
+    if (_labelSymbol == val) return;
+    _labelSymbol = val;
+    markNeedsPaint();
+  }
+
   LinearGaugeLabel get getLinearGaugeLabel {
     return _linearGaugeLabel;
   }
@@ -355,36 +365,50 @@ class RenderLinearGauge extends RenderBox {
   final Paint _linearGaugeContainerValuePaint = Paint();
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
-  late Size _startLabelSize, _endLabelSize;
+  late Size _startLabelSize, _endLabelSize, _labelSymbolSize;
 
   void _calculateRulerPoints() {
-    double screenSize = 3 * size.width;
-    final double count = math.max(screenSize / 100, 1.0);
-    double interval = (getEnd - getStart) / (screenSize / 100);
-    final List<double> intervalDivisions = <double>[10, 5, 2, 1];
-    late double currentInterval;
-    num v = math.pow(10, (math.log(interval) / math.log(10)).floor());
+    if (false) {
+      double screenSize = 3 * size.width;
+      final double count = math.max(screenSize / 100, 1.0);
+      double interval = (getEnd - getStart) / (screenSize / 100);
+      final List<double> intervalDivisions = <double>[10, 5, 2, 1];
+      late double currentInterval;
+      num v = math.pow(10, (math.log(interval) / math.log(10)).floor());
 
-    for (final double intervalDivision in intervalDivisions) {
-      currentInterval = v * intervalDivision;
+      for (final double intervalDivision in intervalDivisions) {
+        currentInterval = v * intervalDivision;
 
-      if (count < ((getEnd - getStart) / currentInterval)) {
-        break;
+        if (count < ((getEnd - getStart) / currentInterval)) {
+          break;
+        }
+        interval = currentInterval;
       }
-      interval = currentInterval;
+
+      _linearGaugeLabel.addLabels(
+        distanceValueInRangeOfHundred: getSteps == 0.0 ? interval : getSteps,
+        start: getStart,
+        end: getEnd,
+      );
     }
 
-    _linearGaugeLabel.addLabels(
-      distanceValueInRangeOfHundred: getSteps == 0.0 ? interval : getSteps,
-      start: getStart,
-      end: getEnd,
-    );
+    _linearGaugeLabel.addCustomLabels(labelList: [
+      CustomLinearGaugeLabel(text: "10", value: 10),
+      CustomLinearGaugeLabel(text: "15", value: 15),
+      CustomLinearGaugeLabel(text: "20", value: 20),
+      CustomLinearGaugeLabel(text: "25", value: 25),
+      CustomLinearGaugeLabel(text: "27.5", value: 27.5),
+      CustomLinearGaugeLabel(text: "30", value: 30)
+    ]);
 
     _startLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle, value: getStart);
+        textStyle: getTextStyle, value: getStart.toInt().toString());
 
-    _endLabelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: getEnd);
+    _endLabelSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle, value: getEnd.toInt().toString());
+
+    _labelSymbolSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle, value: getLabelSymbol ?? "");
 
     _linearGaugeLabel.generateOffSetsForLabel(
         _startLabelSize,
@@ -394,7 +418,8 @@ class RenderLinearGauge extends RenderBox {
         getPrimaryRulersHeight,
         getLinearGaugeBoxDecoration.height,
         getLabelTopMargin,
-        _indicator);
+        _indicator,
+        _labelSymbolSize);
   }
 
   void _drawLabels(
@@ -405,7 +430,8 @@ class RenderLinearGauge extends RenderBox {
     final ui.ParagraphStyle paragraphStyle = ui.ParagraphStyle(
       textDirection: TextDirection.ltr,
     );
-    final String labelText = text;
+    final String labelText = text + (getLabelSymbol ?? "");
+
     final double? value = double.tryParse(text);
 
     // calculator method to get the text style based on the range
@@ -450,10 +476,14 @@ class RenderLinearGauge extends RenderBox {
           ..pushStyle(labelTextStyle)
           ..addText(labelText);
     final ui.Paragraph paragraph = paragraphBuilder.build();
-    final Size labelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: value);
+    final Size labelSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle, value: value!.toInt().toString());
+    final Size labelSymbolSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle, value: getLabelSymbol ?? "");
+    final Size finalLabelSize =
+        Size(labelSymbolSize.width + labelSize.width, labelSize.height);
 
-    paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
+    paragraph.layout(ui.ParagraphConstraints(width: finalLabelSize.width));
 
     // offset for drawing the label on the canvas
     Offset labelPosition;
@@ -495,7 +525,7 @@ class RenderLinearGauge extends RenderBox {
 
     if (showLabel) {
       end = size.width -
-          ((_endLabelSize.width / 2) +
+          (((_endLabelSize.width + _labelSymbolSize.width) / 2) +
               (_startLabelSize.width / 2) +
               (_indicator.width!));
 
