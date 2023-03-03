@@ -19,7 +19,7 @@ class CustomLinearGaugeLabel {
   });
 
   ///
-  /// `text` Sets the text of the  on [LinearGauge]
+  /// `text` Sets the text of the label  on [LinearGauge]
   ///
   /// ```dart
   /// const CustomLinearGaugeLabel(
