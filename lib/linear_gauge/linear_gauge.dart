@@ -38,6 +38,8 @@ class LinearGauge extends LeafRenderObjectWidget {
 
   ///
   /// `start` Sets the starting label of the [LinearGauge] Container
+  /// This will be overridden when users add [CustomLinearGaugeLabel],
+  /// the first value from the list will be used as start
   ///
   /// ```dart
   /// const LinearGauge(
@@ -48,6 +50,9 @@ class LinearGauge extends LeafRenderObjectWidget {
 
   ///
   /// `end` Sets the ending label of the [LinearGauge] Container
+  /// This will be overridden when users add [CustomLinearGaugeLabel]
+  /// the last value from the list will be used as end
+  ///
   ///
   /// ```dart
   /// const LinearGauge(

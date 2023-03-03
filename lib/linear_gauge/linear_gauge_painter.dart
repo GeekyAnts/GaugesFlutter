@@ -391,6 +391,8 @@ class RenderLinearGauge extends RenderBox {
         end: getEnd,
       );
     } else {
+      _start = getCustomLabels!.first.value!;
+      _end = getCustomLabels!.last.value!;
       _linearGaugeLabel.addCustomLabels(labelList: getCustomLabels!);
     }
 

@@ -22,15 +22,13 @@ class LinearGaugeLabel {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
-      _linearGaugeLabel
-          .add(LinearGaugeLabel(text: i.toInt().toString(), value: i));
+      _linearGaugeLabel.add(LinearGaugeLabel(text: i.toString(), value: i));
     }
 
     final LinearGaugeLabel localLabel =
         _linearGaugeLabel[_linearGaugeLabel.length - 1];
     if (localLabel.value != end && localLabel.value! < end) {
-      _linearGaugeLabel
-          .add(LinearGaugeLabel(text: end.toInt().toString(), value: end));
+      _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
     }
   }
 
@@ -70,9 +68,9 @@ class LinearGaugeLabel {
       for (int i = 0; i < _linearGaugeLabel.length; i++) {
         // n is the nth point of the line
         double n = 100 /
-            (((_linearGaugeLabel[i].value! - _linearGaugeLabel[0].value!) /
-                    (_linearGaugeLabel[_linearGaugeLabel.length - 1].value! -
-                        _linearGaugeLabel[0].value!)) *
+            (((_linearGaugeLabel[i].value! - _linearGaugeLabel.first.value!) /
+                    (_linearGaugeLabel.last.value! -
+                        _linearGaugeLabel.first.value!)) *
                 100);
 
         if (i == 0) {
