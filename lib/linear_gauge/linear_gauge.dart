@@ -33,7 +33,7 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.indicator = const LinearGaugeIndicator(),
     this.rulers = const RulerStyle(),
     this.rangeLinearGauge = const [],
-    this.customLabels = const CustomLinearGaugeLabel(),
+    this.customLabels = const [],
   }) : super(key: key);
 
   ///
@@ -182,7 +182,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///
   /// `customLabels` customizes the label [CustomLinearGaugeLabel]  properties
   ///
-  final CustomLinearGaugeLabel? customLabels;
+  final List<CustomLinearGaugeLabel>? customLabels;
 
   ///
   ///
@@ -216,7 +216,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       indicator: indicator!,
       value: value!,
       rangeLinearGauge: rangeLinearGauge!,
-      // labelSymbol: customLabels!.labelSymbol!
+      customLabels: customLabels!,
     );
   }
 
@@ -224,7 +224,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, RenderLinearGauge renderObject) {
     renderObject
-      ..setEnd = end!
+      ..setCustomLabels = customLabels!
       ..setGaugeOrientation = gaugeOrientation!
       ..setLabelTopMargin = labelTopMargin!
       ..setPrimaryRulerColor = rulers!.primaryRulerColor!
@@ -235,6 +235,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setSecondaryRulersWidth = rulers!.secondaryRulersWidth!
       ..setShowLinearGaugeContainer = showLinearGaugeContainer!
       ..setStart = start!
+      ..setEnd = end!
       ..setSteps = steps!
       ..setTextStyle = rulers!.textStyle!
       ..setSecondaryRulerPerInterval = rulers!.secondaryRulerPerInterval!
@@ -250,6 +251,5 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setValue = value!
       ..setLinearGaugeIndicator = indicator
       ..setRangeLinearGauge = rangeLinearGauge;
-    // ..setLabelSymbol = customLabels!.labelSymbol;
   }
 }

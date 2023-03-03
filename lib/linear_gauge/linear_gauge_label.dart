@@ -49,62 +49,64 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
-    Size startLabel,
-    Size endLabel,
-    Size size,
-    double end,
-    double primaryRulersHeight,
-    double linearGaugeBoxContainerHeight,
-    double labelTopMargin,
-    LinearGaugeIndicator indicator,
-    Size labelSymbolSize,
-  ) {
+      Size startLabel,
+      Size endLabel,
+      Size size,
+      double end,
+      double primaryRulersHeight,
+      double linearGaugeBoxContainerHeight,
+      double labelTopMargin,
+      LinearGaugeIndicator indicator,
+      bool isCustomLabelsGiven) {
     primaryRulers.clear();
 
     Offset a = Offset((startLabel.width / 2) + (indicator.width! / 2),
         linearGaugeBoxContainerHeight);
     Offset b = Offset(
-        size.width -
-            ((endLabel.width + labelSymbolSize.width) / 2) -
-            (indicator.width! / 2),
+        size.width - (endLabel.width / 2) - (indicator.width! / 2),
         linearGaugeBoxContainerHeight);
 
-    for (int i = 0; i < _linearGaugeLabel.length; i++) {
-      double n1 = ((_linearGaugeLabel[i].value! - _linearGaugeLabel[0].value!) /
-              (_linearGaugeLabel[_linearGaugeLabel.length - 1].value! -
-                  _linearGaugeLabel[0].value!)) *
-          100;
+    if (isCustomLabelsGiven) {
+      for (int i = 0; i < _linearGaugeLabel.length; i++) {
+        // n is the nth point of the line
+        double n = 100 /
+            (((_linearGaugeLabel[i].value! - _linearGaugeLabel[0].value!) /
+                    (_linearGaugeLabel[_linearGaugeLabel.length - 1].value! -
+                        _linearGaugeLabel[0].value!)) *
+                100);
 
-      n1 = 100 / n1;
-      double n = (_linearGaugeLabel[0].value! +
-              _linearGaugeLabel[_linearGaugeLabel.length - 1].value!) /
-          _linearGaugeLabel[i].value!;
+        if (i == 0) {
+          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+            a,
+            Offset(a.dx, primaryRulersHeight)
+          ];
+        } else if (i == _linearGaugeLabel.length - 1) {
+          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+            b,
+            Offset(b.dx, primaryRulersHeight)
+          ];
+        } else {
+          double x = ((n - 1) / n) * a.dx + (1 / n) * b.dx;
+          double y = ((n - 1) / n) * a.dy + (1 / n) * b.dy;
 
-      if (i == 0) {
-        primaryRulers[_linearGaugeLabel[i].text!] = [
-          a,
-          Offset(a.dx, primaryRulersHeight)
-        ];
-      } else if (i == _linearGaugeLabel.length - 1) {
-        primaryRulers[_linearGaugeLabel[i].text!] = [
-          b,
-          Offset(b.dx, primaryRulersHeight)
-        ];
-      } else {
-        double x = ((n1 - 1) / n1) * a.dx + (1 / n1) * b.dx;
-        double y = ((n1 - 1) / n1) * a.dy + (1 / n1) * b.dy;
+          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+            Offset(x, y),
+            Offset(x, primaryRulersHeight)
+          ];
+        }
+      }
+    } else {
+      for (int i = 0; i < _linearGaugeLabel.length; i++) {
+        double x = a.dx * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
+            b.dx * (i / (_linearGaugeLabel.length - 1));
+        double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
+            b.dy * (i / (_linearGaugeLabel.length - 1));
 
-        primaryRulers[_linearGaugeLabel[i].text!] = [
+        primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
           Offset(x, y),
           Offset(x, primaryRulersHeight)
         ];
       }
-
-      // double x = a.dx * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
-      //     b.dx * (i / (_linearGaugeLabel.length - 1));
-      // double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
-      //     b.dy * (i / (_linearGaugeLabel.length - 1));
-
     }
   }
 
@@ -136,8 +138,6 @@ class LinearGaugeLabel {
               b.dx * (i / (totalRulers + 1));
           double y = a.dy * (1 - ((i) / (totalRulers + 1))) +
               b.dy * (i / (totalRulers + 1));
-
-          // print(x);
 
           if (Offset(x, y) != a) {
             Offset secondaryRulerStartPoint;

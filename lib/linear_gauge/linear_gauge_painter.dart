@@ -31,7 +31,7 @@ class RenderLinearGauge extends RenderBox {
     required bool showPrimaryRulers,
     required double value,
     required List<RangeLinearGauge> rangeLinearGauge,
-    // required String labelSymbol,
+    required List<CustomLinearGaugeLabel> customLabels,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -57,8 +57,8 @@ class RenderLinearGauge extends RenderBox {
         _showPrimaryRulers = showPrimaryRulers,
         _value = value,
         _indicator = indicator,
-        _rangeLinearGauge = rangeLinearGauge;
-  // _labelSymbol = labelSymbol;
+        _rangeLinearGauge = rangeLinearGauge,
+        _customLabels = customLabels;
 
   ///
   double _valueInPixel = 0;
@@ -347,11 +347,11 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
-  String? get getLabelSymbol => _labelSymbol;
-  String? _labelSymbol;
-  set setLabelSymbol(String? val) {
-    if (_labelSymbol == val) return;
-    _labelSymbol = val;
+  List<CustomLinearGaugeLabel>? get getCustomLabels => _customLabels;
+  List<CustomLinearGaugeLabel>? _customLabels = <CustomLinearGaugeLabel>[];
+  set setCustomLabels(List<CustomLinearGaugeLabel>? val) {
+    if (_customLabels == val) return;
+    _customLabels = val;
     markNeedsPaint();
   }
 
@@ -365,10 +365,10 @@ class RenderLinearGauge extends RenderBox {
   final Paint _linearGaugeContainerValuePaint = Paint();
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
-  late Size _startLabelSize, _endLabelSize, _labelSymbolSize;
+  late Size _startLabelSize, _endLabelSize;
 
   void _calculateRulerPoints() {
-    if (false) {
+    if (getCustomLabels!.isEmpty) {
       double screenSize = 3 * size.width;
       final double count = math.max(screenSize / 100, 1.0);
       double interval = (getEnd - getStart) / (screenSize / 100);
@@ -390,25 +390,15 @@ class RenderLinearGauge extends RenderBox {
         start: getStart,
         end: getEnd,
       );
+    } else {
+      _linearGaugeLabel.addCustomLabels(labelList: getCustomLabels!);
     }
-
-    _linearGaugeLabel.addCustomLabels(labelList: [
-      CustomLinearGaugeLabel(text: "10", value: 10),
-      CustomLinearGaugeLabel(text: "15", value: 15),
-      CustomLinearGaugeLabel(text: "20", value: 20),
-      CustomLinearGaugeLabel(text: "25", value: 25),
-      CustomLinearGaugeLabel(text: "27.5", value: 27.5),
-      CustomLinearGaugeLabel(text: "30", value: 30)
-    ]);
 
     _startLabelSize = _linearGaugeLabel.getLabelSize(
         textStyle: getTextStyle, value: getStart.toInt().toString());
 
     _endLabelSize = _linearGaugeLabel.getLabelSize(
         textStyle: getTextStyle, value: getEnd.toInt().toString());
-
-    _labelSymbolSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle, value: getLabelSymbol ?? "");
 
     _linearGaugeLabel.generateOffSetsForLabel(
         _startLabelSize,
@@ -419,20 +409,18 @@ class RenderLinearGauge extends RenderBox {
         getLinearGaugeBoxDecoration.height,
         getLabelTopMargin,
         _indicator,
-        _labelSymbolSize);
+        getCustomLabels!.isNotEmpty);
   }
 
   void _drawLabels(
     Canvas canvas,
     String text,
+    double? value,
     List<Offset> list,
   ) {
     final ui.ParagraphStyle paragraphStyle = ui.ParagraphStyle(
       textDirection: TextDirection.ltr,
     );
-    final String labelText = text + (getLabelSymbol ?? "");
-
-    final double? value = double.tryParse(text);
 
     // calculator method to get the text style based on the range
     Color getRangeColor(String text) {
@@ -474,16 +462,12 @@ class RenderLinearGauge extends RenderBox {
     final ui.ParagraphBuilder paragraphBuilder =
         ui.ParagraphBuilder(paragraphStyle)
           ..pushStyle(labelTextStyle)
-          ..addText(labelText);
+          ..addText(text);
     final ui.Paragraph paragraph = paragraphBuilder.build();
-    final Size labelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle, value: value!.toInt().toString());
-    final Size labelSymbolSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle, value: getLabelSymbol ?? "");
-    final Size finalLabelSize =
-        Size(labelSymbolSize.width + labelSize.width, labelSize.height);
+    final Size labelSize =
+        _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: text);
 
-    paragraph.layout(ui.ParagraphConstraints(width: finalLabelSize.width));
+    paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
     // offset for drawing the label on the canvas
     Offset labelPosition;
@@ -525,7 +509,7 @@ class RenderLinearGauge extends RenderBox {
 
     if (showLabel) {
       end = size.width -
-          (((_endLabelSize.width + _labelSymbolSize.width) / 2) +
+          ((_endLabelSize.width / 2) +
               (_startLabelSize.width / 2) +
               (_indicator.width!));
 
@@ -636,6 +620,7 @@ class RenderLinearGauge extends RenderBox {
 
   void _drawPrimaryRulers(Canvas canvas) {
     _setPrimaryRulersPaint();
+    int count = 0;
 
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
       double y;
@@ -645,7 +630,6 @@ class RenderLinearGauge extends RenderBox {
 
       for (int i = 0; i < rangeLinearGauge!.length; i++) {
         var range = rangeLinearGauge![i].end;
-
         var offset = double.parse(key);
         if (offset >= rangeLinearGauge![i].start && offset <= range) {
           primaryRulerColor = rangeLinearGauge![i].color;
@@ -687,8 +671,10 @@ class RenderLinearGauge extends RenderBox {
 
       canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
       if (showLabel) {
-        _drawLabels(canvas, key, value);
+        _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
+            _linearGaugeLabel.getListOfLabel[count].value!, value);
       }
+      count++;
     });
   }
 
@@ -771,10 +757,16 @@ class RenderLinearGauge extends RenderBox {
     if (_indicator.getPointerValue == null) {
       _indicator.setPointerValue = value;
     }
-
-    var firstOff = _linearGaugeLabel
-            .getPrimaryRulersOffset[getStart.toInt().toString()]![0] +
-        firstOffset;
+    var firstOff;
+    if (getCustomLabels!.isEmpty) {
+      firstOff =
+          _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
+              firstOffset;
+    } else {
+      firstOff = _linearGaugeLabel.getPrimaryRulersOffset[
+              getCustomLabels![0].value!.toDouble().toString()]![0] +
+          firstOffset;
+    }
 
     getLinearGaugeIndicator.drawPointer(
         _indicator.shape!, canvas, firstOff, this);
