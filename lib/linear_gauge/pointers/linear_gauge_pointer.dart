@@ -31,6 +31,7 @@ class LinearGaugeIndicator {
     this.color = Colors.red,
     this.width = 10.0,
     this.shape,
+    this.showLabel = false,
   });
 
   ///
@@ -80,6 +81,7 @@ class LinearGaugeIndicator {
 
   ///
   /// `shape` Sets the shape of the indicator on the [LinearGauge]
+  ///
   /// ```dart
   /// const LinearGauge(
   ///   indicator: LinearGaugeIndicator(
@@ -94,6 +96,19 @@ class LinearGaugeIndicator {
   /// 4. [PointerShape.diamond]
   ///
   final PointerShape? shape;
+
+  ///
+  /// `showLabel` shows/hides the label of the indicator on the [LinearGaugeIndicator]
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///  indicator: LinearGaugeIndicator(
+  /// showLabel: true,
+  /// ),
+  /// ```
+  /// default is to [false]
+  ///
+  final bool showLabel;
 
   get getPointerValue => value;
   set setPointerValue(double? value) => value = value;
@@ -116,7 +131,7 @@ class LinearGaugeIndicator {
         _drawCirclePointer(canvas, offset, linearGauge);
         break;
       case PointerShape.rectangle:
-        _drawReactangle(canvas, offset, linearGauge);
+        _drawRectangle(canvas, offset, linearGauge);
         break;
       case PointerShape.triangle:
         _drawTrianglePointer(canvas, offset, linearGauge);
@@ -127,6 +142,15 @@ class LinearGaugeIndicator {
       default:
         _drawArrowPointer(canvas, offset, linearGauge);
     }
+  }
+
+  //
+  void _drawText(Canvas canvas, TextSpan textSpan, TextPainter textPainter,
+      Offset position) {
+    textPainter.text = textSpan;
+    textPainter.layout();
+    final textOffset = position;
+    textPainter.paint(canvas, textOffset);
   }
 
   void _drawCirclePointer(
@@ -152,6 +176,27 @@ class LinearGaugeIndicator {
     }
     final position = Offset(offset.dx, yPos);
     canvas.drawCircle(position, width / 2, paint);
+
+    if (showLabel) {
+      final textSpan = TextSpan(
+        text: linearGauge.getValue.toString(),
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 10,
+        ),
+      );
+
+      final textPainter = TextPainter(
+        text: textSpan,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      )..layout();
+      final textOffset = Offset(
+        position.dx - textPainter.width / 2,
+        position.dy - textPainter.height / 2,
+      );
+      _drawText(canvas, textSpan, textPainter, textOffset);
+    }
   }
 
   void _drawTrianglePointer(
@@ -177,42 +222,28 @@ class LinearGaugeIndicator {
     final position = Offset(offset.dx, offset.dy);
     final path = Path();
     path.moveTo(position.dx - (width / 2), yPos);
-    path.lineTo(position.dx, position.dy - 4);
+    path.lineTo(position.dx, position.dy - gaugeheight);
     path.lineTo(position.dx + (width / 2), yPos);
     canvas.drawPath(path, paint);
-  }
 
-  void _drawArrowPointer(
-    Canvas canvas,
-    Offset offset,
-    RenderLinearGauge linearGauge,
-  ) {
-    double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
-    Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
-    double height = linearGauge.getLinearGaugeIndicator.height!;
-    double width = linearGauge.getLinearGaugeIndicator.width!;
-    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
-    // double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
-    RulerPosition rulerPosition = linearGauge.rulerPosition;
-    final paint = Paint();
-    paint.color = indicatorColor;
+    if (showLabel) {
+      final textSpan = TextSpan(
+        text: linearGauge.getValue.toString(),
+        style: TextStyle(
+          color: getPointerColor,
+          fontSize: 12,
+        ),
+      );
 
-    final position = Offset(offset.dx, offset.dy);
-    final path = Path();
-    // late double yPos;
-
-    if (rulerPosition == RulerPosition.bottom) {
-      path.moveTo(position.dx - (width / 2), -height);
-      path.lineTo(position.dx, position.dy - gaugeheight);
-      path.lineTo(position.dx + (width / 2), -height);
-      path.lineTo(position.dx, position.dy - primaryRulerHeight + gaugeheight);
-    } else {
-      path.moveTo(position.dx - (width / 2), height);
-      path.lineTo(position.dx, position.dy - gaugeheight);
-      path.lineTo(position.dx + (width / 2), height);
-      path.lineTo(position.dx, position.dy - primaryRulerHeight);
+      final textPainter = TextPainter(
+        text: textSpan,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      )..layout();
+      final textOffset = Offset(position.dx - textPainter.width / 2,
+          position.dy - height - gaugeheight - textPainter.height);
+      _drawText(canvas, textSpan, textPainter, textOffset);
     }
-    canvas.drawPath(path, paint);
   }
 
   void _drawDiamondPointer(
@@ -257,9 +288,28 @@ class LinearGaugeIndicator {
     }
 
     canvas.drawPath(path, paint);
+
+    if (showLabel) {
+      final textSpan = TextSpan(
+        text: linearGauge.getValue.toString(),
+        style: TextStyle(
+          color: getPointerColor,
+          fontSize: 12,
+        ),
+      );
+
+      final textPainter = TextPainter(
+        text: textSpan,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      )..layout();
+      final textOffset = Offset(position.dx - textPainter.width / 2,
+          position.dy - (width * 2) - textPainter.height - gaugeheight);
+      _drawText(canvas, textSpan, textPainter, textOffset);
+    }
   }
 
-  void _drawReactangle(
+  void _drawRectangle(
       Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
     final paint = Paint();
     Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
@@ -283,5 +333,62 @@ class LinearGaugeIndicator {
         Rect.fromLTWH(position.dx, position.dy, width, height);
 
     canvas.drawRect(pointerContainer, paint);
+
+    if (showLabel) {
+      final textSpan = TextSpan(
+        text: linearGauge.getValue.toString(),
+        style: TextStyle(
+          color: getPointerColor,
+          fontSize: 12,
+        ),
+      );
+
+      final textPainter = TextPainter(
+        text: textSpan,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      )..layout();
+      final textOffset = Offset(
+          position.dx - (textPainter.width / 2) + width / 2,
+          position.dy -
+              (height / gaugeheight) +
+              (height / gaugeheight) -
+              textPainter.height -
+              gaugeheight);
+      _drawText(canvas, textSpan, textPainter, textOffset);
+    }
+  }
+
+  void _drawArrowPointer(
+    Canvas canvas,
+    Offset offset,
+    RenderLinearGauge linearGauge,
+  ) {
+    double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
+    Color indicatorColor = linearGauge.getLinearGaugeIndicator.color!;
+    double height = linearGauge.getLinearGaugeIndicator.height!;
+    double width = linearGauge.getLinearGaugeIndicator.width!;
+    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
+    // double gaugeheight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
+    final paint = Paint();
+    paint.color = indicatorColor;
+
+    final position = Offset(offset.dx, offset.dy);
+    final path = Path();
+    // late double yPos;
+
+    if (rulerPosition == RulerPosition.bottom) {
+      path.moveTo(position.dx - (width / 2), -height);
+      path.lineTo(position.dx, position.dy - gaugeheight);
+      path.lineTo(position.dx + (width / 2), -height);
+      path.lineTo(position.dx, position.dy - primaryRulerHeight + gaugeheight);
+    } else {
+      path.moveTo(position.dx - (width / 2), height);
+      path.lineTo(position.dx, position.dy - gaugeheight);
+      path.lineTo(position.dx + (width / 2), height);
+      path.lineTo(position.dx, position.dy - primaryRulerHeight);
+    }
+    canvas.drawPath(path, paint);
   }
 }
