@@ -20,7 +20,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             SizedBox(
               child: LinearGauge(
                 value: 20,
@@ -29,12 +29,12 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
                 indicator: LinearGaugeIndicator(
                     value: 27.5, shape: PointerShape.circle),
                 customLabels: [
-                  CustomLinearGaugeLabel(text: "10%", value: 10),
-                  CustomLinearGaugeLabel(text: "15%", value: 15),
-                  CustomLinearGaugeLabel(text: "20%", value: 20),
-                  CustomLinearGaugeLabel(text: "25%", value: 25),
-                  CustomLinearGaugeLabel(text: "27.5%", value: 27.5),
-                  CustomLinearGaugeLabel(text: "30%", value: 30)
+                  CustomRulerLabel(text: "10%", value: 10),
+                  CustomRulerLabel(text: "15%", value: 15),
+                  CustomRulerLabel(text: "20%", value: 20),
+                  CustomRulerLabel(text: "25%", value: 25),
+                  CustomRulerLabel(text: "27.5%", value: 27.5),
+                  CustomRulerLabel(text: "30%", value: 30)
                 ],
               ),
             ),

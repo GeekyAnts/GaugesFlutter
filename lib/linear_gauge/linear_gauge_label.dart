@@ -33,7 +33,7 @@ class LinearGaugeLabel {
   }
 
   void addCustomLabels({
-    required List<CustomLinearGaugeLabel> labelList,
+    required List<CustomRulerLabel> labelList,
   }) {
     _linearGaugeLabel.clear();
 

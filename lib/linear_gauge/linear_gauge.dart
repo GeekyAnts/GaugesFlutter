@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/custom_label/custom_linear_gauge_label.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/custom_label/custom_ruler_label.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
@@ -38,7 +38,7 @@ class LinearGauge extends LeafRenderObjectWidget {
 
   ///
   /// `start` Sets the starting label of the [LinearGauge] Container
-  /// This will be overridden when users add [CustomLinearGaugeLabel],
+  /// This will be overridden when users add [CustomRulerLabel],
   /// the first value from the list will be used as start
   ///
   /// ```dart
@@ -50,7 +50,7 @@ class LinearGauge extends LeafRenderObjectWidget {
 
   ///
   /// `end` Sets the ending label of the [LinearGauge] Container
-  /// This will be overridden when users add [CustomLinearGaugeLabel]
+  /// This will be overridden when users add [CustomRulerLabel]
   /// the last value from the list will be used as end
   ///
   ///
@@ -185,9 +185,26 @@ class LinearGauge extends LeafRenderObjectWidget {
   final LinearGaugeIndicator? indicator;
 
   ///
-  /// `customLabels` customizes the label [CustomLinearGaugeLabel]  properties
+  /// `customLabels` allows for the creation of custom tick labels on the gauge's scale,
+  ///  enabling the display of non-standard values or units, and allowing for more specific
+  ///  labelling of the gauge's range
   ///
-  final List<CustomLinearGaugeLabel>? customLabels;
+  /// Note : `start and end of the [LinearGauge] will be overridden by first & last value of customLabels`
+  ///
+  /// Example
+  /// ```dart
+  /// child: const LinearGauge(
+  ///   customLabels:[
+  ///     CustomRulerLabel(text: "1%", value: 10),
+  ///     CustomRulerLabel(text: "2%", value:20),
+  ///     CustomRulerLabel(text: "2.5%", value: 25),
+  ///     CustomRulerLabel(text: "3%", value: 30),
+  /// ]
+  /// ),
+  /// ```
+  ///
+  ///
+  final List<CustomRulerLabel>? customLabels;
 
   ///
   ///

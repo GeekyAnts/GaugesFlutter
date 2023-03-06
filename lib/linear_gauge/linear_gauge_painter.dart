@@ -31,7 +31,7 @@ class RenderLinearGauge extends RenderBox {
     required bool showPrimaryRulers,
     required double value,
     required List<RangeLinearGauge> rangeLinearGauge,
-    required List<CustomLinearGaugeLabel> customLabels,
+    required List<CustomRulerLabel> customLabels,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -347,9 +347,9 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
-  List<CustomLinearGaugeLabel>? get getCustomLabels => _customLabels;
-  List<CustomLinearGaugeLabel>? _customLabels = <CustomLinearGaugeLabel>[];
-  set setCustomLabels(List<CustomLinearGaugeLabel>? val) {
+  List<CustomRulerLabel>? get getCustomLabels => _customLabels;
+  List<CustomRulerLabel>? _customLabels = <CustomRulerLabel>[];
+  set setCustomLabels(List<CustomRulerLabel>? val) {
     if (_customLabels == val) return;
     _customLabels = val;
     markNeedsPaint();
