@@ -18,7 +18,7 @@ class MyRulerOffset extends StatelessWidget {
                   rulerPosition: RulerPosition.bottom,
                   rulersOffset: 15,
                 ),
-                indicator: LinearGaugeIndicator(
+                pointer: Pointer(
                   value: 17.5,
                   shape: PointerShape.circle,
                 ),

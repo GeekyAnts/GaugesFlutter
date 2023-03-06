@@ -54,14 +54,13 @@ class LinearGaugeLabel {
       double primaryRulersHeight,
       double linearGaugeBoxContainerHeight,
       double labelTopMargin,
-      LinearGaugeIndicator indicator,
+      Pointer pointer,
       bool isCustomLabelsGiven) {
     primaryRulers.clear();
 
-    Offset a = Offset((startLabel.width / 2) + (indicator.width! / 2),
+    Offset a = Offset((startLabel.width / 2) + (pointer.width! / 2),
         linearGaugeBoxContainerHeight);
-    Offset b = Offset(
-        size.width - (endLabel.width / 2) - (indicator.width! / 2),
+    Offset b = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
         linearGaugeBoxContainerHeight);
 
     if (isCustomLabelsGiven) {
@@ -117,8 +116,8 @@ class LinearGaugeLabel {
     Paint secondaryRulersPaint,
     double height,
     RulerPosition rulerPosition,
-    double linearGaugeHeight,
-    LinearGaugeIndicator indicator,
+    double lineargaugeHeight,
+    Pointer pointer,
     List<RangeLinearGauge> rangeLinearGauge,
     double rulersOffset,
   ) {
@@ -148,13 +147,13 @@ class LinearGaugeLabel {
                 secondaryRulerStartPoint = Offset(x, -rulersOffset);
 
                 secondaryRulerEndPoint =
-                    Offset(x, -(5 + height - linearGaugeHeight + rulersOffset));
+                    Offset(x, -(5 + height - lineargaugeHeight + rulersOffset));
                 break;
               case RulerPosition.center:
                 //the staring point is shifted half of the secondary ruler height from the
                 //center of the gauge container
                 secondaryRulerStartPoint =
-                    Offset(x, (y / 2) - ((5 + height - linearGaugeHeight) / 2));
+                    Offset(x, (y / 2) - ((5 + height - lineargaugeHeight) / 2));
                 //the y co-ordinate of the ending point is halved from it's original position
                 secondaryRulerEndPoint = Offset(x, (5 + height) / 2);
                 break;
