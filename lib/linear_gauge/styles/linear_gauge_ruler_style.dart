@@ -208,22 +208,6 @@ class RulerStyle {
   final RulerPosition? rulerPosition;
 
   ///
-  /// `labelOffset` Sets the gap of the label from the primary ruler
-  ///
-  /// default is to `labelOffset = 0.0
-  ///
-  /// Example
-  ///
-  ///  ```dart
-  /// child: const LinearGauge(
-  /// rulers : RulerStyle(
-  ///   labelOffset: 10.0,
-  /// ),
-  /// ```
-  ///
-  final double? labelOffset;
-
-  ///
   /// `rulersOffset` Sets the gap between the rulers and the [LinearGauge]
   ///
   /// Note : `rulersOffset` works for `rulerPosition`- `[RulerPosition.top]` & `[RulerPosition.bottom]` only
@@ -240,4 +224,20 @@ class RulerStyle {
   /// ```
   ///
   final double? rulersOffset;
+
+  ///
+  /// `labelOffset` Sets the gap of the label from the primary ruler
+  ///
+  /// default is to `labelOffset = 0.0
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  /// rulers : RulerStyle(
+  ///   labelOffset: 10.0,
+  /// ),
+  /// ```
+  ///
+  final double? labelOffset;
 }

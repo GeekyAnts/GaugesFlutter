@@ -325,14 +325,6 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
-  double get getRulersOffset => _rulersOffset;
-  double _rulersOffset;
-  set setRulersOffset(double val) {
-    if (_rulersOffset == val) return;
-    _rulersOffset = val;
-    markNeedsPaint();
-  }
-
   bool get showSecondaryRulers => _showSecondaryRulers;
   bool _showSecondaryRulers;
   set setShowSecondaryRulers(bool val) {
@@ -362,6 +354,18 @@ class RenderLinearGauge extends RenderBox {
   set setCustomLabels(List<CustomRulerLabel>? val) {
     if (_customLabels == val) return;
     _customLabels = val;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [rulersOffset] parameter.
+  ///
+
+  double get getRulersOffset => _rulersOffset;
+  double _rulersOffset;
+  set setRulersOffset(double val) {
+    if (_rulersOffset == val) return;
+    _rulersOffset = val;
     markNeedsPaint();
   }
 
