@@ -256,7 +256,7 @@ class Pointer {
                   extraOffset);
       canvas.save();
       canvas.translate(center.dx, center.dy);
-      quaterTurns == QuaterTurns.zero
+      quaterTurns == QuaterTurns.three
           ? canvas.rotate(-90 * pi / 180)
           : canvas.rotate(90 * pi / 180);
       textPainter.paint(

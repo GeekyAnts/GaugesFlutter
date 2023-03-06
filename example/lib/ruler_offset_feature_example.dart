@@ -6,21 +6,25 @@ class MyRulerOffset extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             SizedBox(
               child: LinearGauge(
                 value: 20,
                 rulers: RulerStyle(
-                  rulerPosition: RulerPosition.bottom,
+                  rulerPosition: RulerPosition.top,
                   rulersOffset: 15,
                 ),
                 pointer: Pointer(
-                  value: 17.5,
-                  shape: PointerShape.circle,
+                  value: 20,
+                  height: 30,
+                  labelStyle: TextStyle(color: Colors.black),
+                  width: 30,
+                  quaterTurns: QuaterTurns.two,
+                  shape: PointerShape.triangle,
                 ),
               ),
             ),
