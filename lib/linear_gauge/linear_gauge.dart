@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/custom_label/custom_ruler_label.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
@@ -32,10 +33,13 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.indicator = const LinearGaugeIndicator(),
     this.rulers = const RulerStyle(),
     this.rangeLinearGauge = const [],
+    this.customLabels = const [],
   }) : super(key: key);
 
   ///
   /// `start` Sets the starting label of the [LinearGauge] Container
+  /// This will be overridden when users add [CustomRulerLabel],
+  /// the first value from the list will be used as start
   ///
   /// ```dart
   /// const LinearGauge(
@@ -46,6 +50,9 @@ class LinearGauge extends LeafRenderObjectWidget {
 
   ///
   /// `end` Sets the ending label of the [LinearGauge] Container
+  /// This will be overridden when users add [CustomRulerLabel]
+  /// the last value from the list will be used as end
+  ///
   ///
   /// ```dart
   /// const LinearGauge(
@@ -178,6 +185,28 @@ class LinearGauge extends LeafRenderObjectWidget {
   final LinearGaugeIndicator? indicator;
 
   ///
+  /// `customLabels` allows for the creation of custom tick labels on the gauge's scale,
+  ///  enabling the display of non-standard values or units, and allowing for more specific
+  ///  labelling of the gauge's range
+  ///
+  /// Note : `start and end of the [LinearGauge] will be overridden by first & last value of customLabels`
+  ///
+  /// Example
+  /// ```dart
+  /// child: const LinearGauge(
+  ///   customLabels:[
+  ///     CustomRulerLabel(text: "1%", value: 10),
+  ///     CustomRulerLabel(text: "2%", value:20),
+  ///     CustomRulerLabel(text: "2.5%", value: 25),
+  ///     CustomRulerLabel(text: "3%", value: 30),
+  /// ]
+  /// ),
+  /// ```
+  ///
+  ///
+  final List<CustomRulerLabel>? customLabels;
+
+  ///
   ///
   final List<RangeLinearGauge>? rangeLinearGauge;
   @override
@@ -209,6 +238,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       indicator: indicator!,
       value: value!,
       rangeLinearGauge: rangeLinearGauge!,
+      customLabels: customLabels!,
     );
   }
 
@@ -216,7 +246,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, RenderLinearGauge renderObject) {
     renderObject
-      ..setEnd = end!
+      ..setCustomLabels = customLabels!
       ..setGaugeOrientation = gaugeOrientation!
       ..setLabelTopMargin = labelTopMargin!
       ..setPrimaryRulerColor = rulers!.primaryRulerColor!
@@ -227,6 +257,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setSecondaryRulersWidth = rulers!.secondaryRulersWidth!
       ..setShowLinearGaugeContainer = showLinearGaugeContainer!
       ..setStart = start!
+      ..setEnd = end!
       ..setSteps = steps!
       ..setTextStyle = rulers!.textStyle!
       ..setSecondaryRulerPerInterval = rulers!.secondaryRulerPerInterval!
