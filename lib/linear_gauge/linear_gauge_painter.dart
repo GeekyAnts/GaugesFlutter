@@ -488,7 +488,11 @@ class RenderLinearGauge extends RenderBox {
       case RulerPosition.top:
         labelPosition = Offset(
           (list[0].dx - (labelSize.width / 2)),
-          -(getPrimaryRulersHeight + getLabelOffset + labelSize.height - 2),
+          -(getPrimaryRulersHeight +
+              getLabelOffset +
+              getRulersOffset +
+              labelSize.height +
+              2),
         );
         break;
       case RulerPosition.center:
@@ -661,9 +665,9 @@ class RenderLinearGauge extends RenderBox {
         case RulerPosition.top:
           //y co-ordinate will be simply inverted on negative side by adding -ve sign
           //no need to adjust y co-ordinate by adding the height of gauge container
-          y = -value[1].dy;
+          y = -(value[1].dy + getRulersOffset);
           x = value[1].dx;
-          primaryRulerStartPoint = Offset(value[0].dx, value[0].dy);
+          primaryRulerStartPoint = Offset(value[0].dx, -getRulersOffset);
           break;
         case RulerPosition.center:
           //the y co-ordinate of the ending point is halved from it's original position
