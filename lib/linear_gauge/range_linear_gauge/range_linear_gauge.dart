@@ -9,7 +9,8 @@ class RangeLinearGauge {
   ///   RangeLinearGauge(color: Colors.red, start: 0, end: 25),
   ///  RangeLinearGauge(color: Colors.yellow, start: 25, end: 50),
   /// RangeLinearGauge(color: Colors.red, start: 51, end: 100)
-  /// ],
+  ///  ],
+  /// )
   /// ```
 
   RangeLinearGauge({
