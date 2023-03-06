@@ -18,6 +18,7 @@ class MyRulerOffset extends StatelessWidget {
                   rulerPosition: RulerPosition.top,
                   rulersOffset: 15,
                 ),
+                customLabels: [],
                 pointer: Pointer(
                   value: 20,
                   height: 30,
