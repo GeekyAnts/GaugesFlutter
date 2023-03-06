@@ -32,7 +32,6 @@ class RenderLinearGauge extends RenderBox {
     required double value,
     required List<RangeLinearGauge> rangeLinearGauge,
     required List<CustomRulerLabel> customLabels,
-    required double rulersOffset,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -59,8 +58,7 @@ class RenderLinearGauge extends RenderBox {
         _value = value,
         _indicator = indicator,
         _rangeLinearGauge = rangeLinearGauge,
-        _customLabels = customLabels,
-        _rulersOffset = rulersOffset;
+        _customLabels = customLabels;
 
   ///
   double _valueInPixel = 0;
@@ -325,14 +323,6 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
-  double get getRulersOffset => _rulersOffset;
-  double _rulersOffset;
-  set setRulersOffset(double val) {
-    if (_rulersOffset == val) return;
-    _rulersOffset = val;
-    markNeedsPaint();
-  }
-
   bool get showSecondaryRulers => _showSecondaryRulers;
   bool _showSecondaryRulers;
   set setShowSecondaryRulers(bool val) {
@@ -491,20 +481,12 @@ class RenderLinearGauge extends RenderBox {
           -(getPrimaryRulersHeight + getLabelOffset + labelSize.height - 2),
         );
         break;
-      case RulerPosition.center:
+      default:
         double labelOffset =
             (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
         labelPosition = Offset(
           (list[0].dx - (labelSize.width / 2)),
           (list[0].dy + getPrimaryRulersHeight + labelOffset),
-        );
-        break;
-      case RulerPosition.bottom:
-        double labelOffset =
-            (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
-        labelPosition = Offset(
-          (list[0].dx - (labelSize.width / 2)),
-          (list[0].dy + getPrimaryRulersHeight + labelOffset + getRulersOffset),
         );
         break;
     }
@@ -663,7 +645,7 @@ class RenderLinearGauge extends RenderBox {
           //no need to adjust y co-ordinate by adding the height of gauge container
           y = -value[1].dy;
           x = value[1].dx;
-          primaryRulerStartPoint = Offset(value[0].dx, value[0].dy);
+          primaryRulerStartPoint = value[0];
           break;
         case RulerPosition.center:
           //the y co-ordinate of the ending point is halved from it's original position
@@ -678,12 +660,9 @@ class RenderLinearGauge extends RenderBox {
         case RulerPosition.bottom:
           //there is need to adjust y co-ordinate by adding the height of gauge container
           //bcz line will start drawing from behind of gauge container
-          y = value[1].dy +
-              getLinearGaugeBoxDecoration.height +
-              getRulersOffset;
+          y = value[1].dy + getLinearGaugeBoxDecoration.height;
           x = value[1].dx;
-          primaryRulerStartPoint =
-              Offset(value[0].dx, value[0].dy + getRulersOffset);
+          primaryRulerStartPoint = value[0];
           break;
       }
 
@@ -710,8 +689,7 @@ class RenderLinearGauge extends RenderBox {
         rulerPosition,
         getLinearGaugeBoxDecoration.height,
         _indicator,
-        rangeLinearGauge!,
-        getRulersOffset);
+        rangeLinearGauge!);
   }
 
   void _setPrimaryRulersPaint() {

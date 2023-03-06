@@ -120,7 +120,6 @@ class LinearGaugeLabel {
     double linearGaugeHeight,
     LinearGaugeIndicator indicator,
     List<RangeLinearGauge> rangeLinearGauge,
-    double rulersOffset,
   ) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     Iterable<String> keys = primaryRulers.keys;

@@ -21,7 +21,6 @@ class RulerStyle {
     this.showLabel = true,
     this.rulerPosition = RulerPosition.bottom,
     this.labelOffset = 0,
-    this.rulersOffset = 0,
   });
 
   ///
@@ -222,22 +221,4 @@ class RulerStyle {
   /// ```
   ///
   final double? labelOffset;
-
-  ///
-  /// `rulersOffset` Sets the gap between the rulers and the [LinearGauge]
-  ///
-  /// Note : `rulersOffset` works for `rulerPosition`- `[RulerPosition.top]` & `[RulerPosition.bottom]` only
-  ///
-  /// default is to `rulersOffset = 0.0`
-  ///
-  /// Example
-  ///
-  ///  ```dart
-  /// child: const LinearGauge(
-  /// rulers : RulerStyle(
-  ///   rulersOffset: 10.0,
-  /// ),
-  /// ```
-  ///
-  final double? rulersOffset;
 }
