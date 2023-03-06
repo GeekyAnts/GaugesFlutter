@@ -31,6 +31,8 @@ class RenderLinearGauge extends RenderBox {
     required bool showPrimaryRulers,
     required double value,
     required List<RangeLinearGauge> rangeLinearGauge,
+    required List<CustomRulerLabel> customLabels,
+    required double rulersOffset,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -56,7 +58,9 @@ class RenderLinearGauge extends RenderBox {
         _showPrimaryRulers = showPrimaryRulers,
         _value = value,
         _indicator = indicator,
-        _rangeLinearGauge = rangeLinearGauge;
+        _rangeLinearGauge = rangeLinearGauge,
+        _customLabels = customLabels,
+        _rulersOffset = rulersOffset;
 
   ///
   double _valueInPixel = 0;
@@ -345,6 +349,26 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  List<CustomRulerLabel>? get getCustomLabels => _customLabels;
+  List<CustomRulerLabel>? _customLabels = <CustomRulerLabel>[];
+  set setCustomLabels(List<CustomRulerLabel>? val) {
+    if (_customLabels == val) return;
+    _customLabels = val;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [rulersOffset] parameter.
+  ///
+
+  double get getRulersOffset => _rulersOffset;
+  double _rulersOffset;
+  set setRulersOffset(double val) {
+    if (_rulersOffset == val) return;
+    _rulersOffset = val;
+    markNeedsPaint();
+  }
+
   LinearGaugeLabel get getLinearGaugeLabel {
     return _linearGaugeLabel;
   }
@@ -358,33 +382,39 @@ class RenderLinearGauge extends RenderBox {
   late Size _startLabelSize, _endLabelSize;
 
   void _calculateRulerPoints() {
-    double screenSize = 3 * size.width;
-    final double count = math.max(screenSize / 100, 1.0);
-    double interval = (getEnd - getStart) / (screenSize / 100);
-    final List<double> intervalDivisions = <double>[10, 5, 2, 1];
-    late double currentInterval;
-    num v = math.pow(10, (math.log(interval) / math.log(10)).floor());
+    if (getCustomLabels!.isEmpty) {
+      double screenSize = 3 * size.width;
+      final double count = math.max(screenSize / 100, 1.0);
+      double interval = (getEnd - getStart) / (screenSize / 100);
+      final List<double> intervalDivisions = <double>[10, 5, 2, 1];
+      late double currentInterval;
+      num v = math.pow(10, (math.log(interval) / math.log(10)).floor());
 
-    for (final double intervalDivision in intervalDivisions) {
-      currentInterval = v * intervalDivision;
+      for (final double intervalDivision in intervalDivisions) {
+        currentInterval = v * intervalDivision;
 
-      if (count < ((getEnd - getStart) / currentInterval)) {
-        break;
+        if (count < ((getEnd - getStart) / currentInterval)) {
+          break;
+        }
+        interval = currentInterval;
       }
-      interval = currentInterval;
+
+      _linearGaugeLabel.addLabels(
+        distanceValueInRangeOfHundred: getSteps == 0.0 ? interval : getSteps,
+        start: getStart,
+        end: getEnd,
+      );
+    } else {
+      _start = getCustomLabels!.first.value!;
+      _end = getCustomLabels!.last.value!;
+      _linearGaugeLabel.addCustomLabels(labelList: getCustomLabels!);
     }
 
-    _linearGaugeLabel.addLabels(
-      distanceValueInRangeOfHundred: getSteps == 0.0 ? interval : getSteps,
-      start: getStart,
-      end: getEnd,
-    );
-
     _startLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle, value: getStart);
+        textStyle: getTextStyle, value: getStart.toInt().toString());
 
-    _endLabelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: getEnd);
+    _endLabelSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle, value: getEnd.toInt().toString());
 
     _linearGaugeLabel.generateOffSetsForLabel(
         _startLabelSize,
@@ -394,19 +424,19 @@ class RenderLinearGauge extends RenderBox {
         getPrimaryRulersHeight,
         getLinearGaugeBoxDecoration.height,
         getLabelTopMargin,
-        _indicator);
+        _indicator,
+        getCustomLabels!.isNotEmpty);
   }
 
   void _drawLabels(
     Canvas canvas,
     String text,
+    double? value,
     List<Offset> list,
   ) {
     final ui.ParagraphStyle paragraphStyle = ui.ParagraphStyle(
       textDirection: TextDirection.ltr,
     );
-    final String labelText = text;
-    final double? value = double.tryParse(text);
 
     // calculator method to get the text style based on the range
     Color getRangeColor(String text) {
@@ -448,10 +478,10 @@ class RenderLinearGauge extends RenderBox {
     final ui.ParagraphBuilder paragraphBuilder =
         ui.ParagraphBuilder(paragraphStyle)
           ..pushStyle(labelTextStyle)
-          ..addText(labelText);
+          ..addText(text);
     final ui.Paragraph paragraph = paragraphBuilder.build();
     final Size labelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: value);
+        _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: text);
 
     paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
 
@@ -462,15 +492,27 @@ class RenderLinearGauge extends RenderBox {
       case RulerPosition.top:
         labelPosition = Offset(
           (list[0].dx - (labelSize.width / 2)),
-          -(getPrimaryRulersHeight + getLabelOffset + labelSize.height - 2),
+          -(getPrimaryRulersHeight +
+              getLabelOffset +
+              getRulersOffset +
+              labelSize.height +
+              2),
         );
         break;
-      default:
+      case RulerPosition.center:
         double labelOffset =
             (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
         labelPosition = Offset(
           (list[0].dx - (labelSize.width / 2)),
           (list[0].dy + getPrimaryRulersHeight + labelOffset),
+        );
+        break;
+      case RulerPosition.bottom:
+        double labelOffset =
+            (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
+        labelPosition = Offset(
+          (list[0].dx - (labelSize.width / 2)),
+          (list[0].dy + getPrimaryRulersHeight + labelOffset + getRulersOffset),
         );
         break;
     }
@@ -606,6 +648,7 @@ class RenderLinearGauge extends RenderBox {
 
   void _drawPrimaryRulers(Canvas canvas) {
     _setPrimaryRulersPaint();
+    int count = 0;
 
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
       double y;
@@ -615,7 +658,6 @@ class RenderLinearGauge extends RenderBox {
 
       for (int i = 0; i < rangeLinearGauge!.length; i++) {
         var range = rangeLinearGauge![i].end;
-
         var offset = double.parse(key);
         if (offset >= rangeLinearGauge![i].start && offset <= range) {
           primaryRulerColor = rangeLinearGauge![i].color;
@@ -627,9 +669,9 @@ class RenderLinearGauge extends RenderBox {
         case RulerPosition.top:
           //y co-ordinate will be simply inverted on negative side by adding -ve sign
           //no need to adjust y co-ordinate by adding the height of gauge container
-          y = -value[1].dy;
+          y = -(value[1].dy + getRulersOffset);
           x = value[1].dx;
-          primaryRulerStartPoint = value[0];
+          primaryRulerStartPoint = Offset(value[0].dx, -getRulersOffset);
           break;
         case RulerPosition.center:
           //the y co-ordinate of the ending point is halved from it's original position
@@ -644,9 +686,12 @@ class RenderLinearGauge extends RenderBox {
         case RulerPosition.bottom:
           //there is need to adjust y co-ordinate by adding the height of gauge container
           //bcz line will start drawing from behind of gauge container
-          y = value[1].dy + getLinearGaugeBoxDecoration.height;
+          y = value[1].dy +
+              getLinearGaugeBoxDecoration.height +
+              getRulersOffset;
           x = value[1].dx;
-          primaryRulerStartPoint = value[0];
+          primaryRulerStartPoint =
+              Offset(value[0].dx, value[0].dy + getRulersOffset);
           break;
       }
 
@@ -657,8 +702,10 @@ class RenderLinearGauge extends RenderBox {
 
       canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
       if (showLabel) {
-        _drawLabels(canvas, key, value);
+        _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
+            _linearGaugeLabel.getListOfLabel[count].value!, value);
       }
+      count++;
     });
   }
 
@@ -671,7 +718,8 @@ class RenderLinearGauge extends RenderBox {
         rulerPosition,
         getLinearGaugeBoxDecoration.height,
         _indicator,
-        rangeLinearGauge!);
+        rangeLinearGauge!,
+        getRulersOffset);
   }
 
   void _setPrimaryRulersPaint() {
@@ -741,10 +789,16 @@ class RenderLinearGauge extends RenderBox {
     if (_indicator.getPointerValue == null) {
       _indicator.setPointerValue = value;
     }
-
-    var firstOff = _linearGaugeLabel
-            .getPrimaryRulersOffset[getStart.toInt().toString()]![0] +
-        firstOffset;
+    var firstOff;
+    if (getCustomLabels!.isEmpty) {
+      firstOff =
+          _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
+              firstOffset;
+    } else {
+      firstOff = _linearGaugeLabel.getPrimaryRulersOffset[
+              getCustomLabels![0].value!.toDouble().toString()]![0] +
+          firstOffset;
+    }
 
     getLinearGaugeIndicator.drawPointer(
         _indicator.shape!, canvas, firstOff, this);

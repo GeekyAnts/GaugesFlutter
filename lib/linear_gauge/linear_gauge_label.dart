@@ -22,15 +22,24 @@ class LinearGaugeLabel {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
-      _linearGaugeLabel
-          .add(LinearGaugeLabel(text: i.toInt().toString(), value: i));
+      _linearGaugeLabel.add(LinearGaugeLabel(text: i.toString(), value: i));
     }
 
     final LinearGaugeLabel localLabel =
         _linearGaugeLabel[_linearGaugeLabel.length - 1];
     if (localLabel.value != end && localLabel.value! < end) {
-      _linearGaugeLabel
-          .add(LinearGaugeLabel(text: end.toInt().toString(), value: end));
+      _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
+    }
+  }
+
+  void addCustomLabels({
+    required List<CustomRulerLabel> labelList,
+  }) {
+    _linearGaugeLabel.clear();
+
+    for (int i = 0; i < labelList.length; i++) {
+      _linearGaugeLabel.add(
+          LinearGaugeLabel(text: labelList[i].text, value: labelList[i].value));
     }
   }
 
@@ -38,15 +47,15 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
-    Size startLabel,
-    Size endLabel,
-    Size size,
-    double end,
-    double primaryRulersHeight,
-    double linearGaugeBoxContainerHeight,
-    double labelTopMargin,
-    LinearGaugeIndicator indicator,
-  ) {
+      Size startLabel,
+      Size endLabel,
+      Size size,
+      double end,
+      double primaryRulersHeight,
+      double linearGaugeBoxContainerHeight,
+      double labelTopMargin,
+      LinearGaugeIndicator indicator,
+      bool isCustomLabelsGiven) {
     primaryRulers.clear();
 
     Offset a = Offset((startLabel.width / 2) + (indicator.width! / 2),
@@ -54,16 +63,48 @@ class LinearGaugeLabel {
     Offset b = Offset(
         size.width - (endLabel.width / 2) - (indicator.width! / 2),
         linearGaugeBoxContainerHeight);
-    for (int i = 0; i < _linearGaugeLabel.length; i++) {
-      double x = a.dx * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
-          b.dx * (i / (_linearGaugeLabel.length - 1));
-      double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
-          b.dy * (i / (_linearGaugeLabel.length - 1));
 
-      primaryRulers[_linearGaugeLabel[i].text!] = [
-        Offset(x, y),
-        Offset(x, primaryRulersHeight)
-      ];
+    if (isCustomLabelsGiven) {
+      for (int i = 0; i < _linearGaugeLabel.length; i++) {
+        // n is the nth point of the line
+        double n = 100 /
+            (((_linearGaugeLabel[i].value! - _linearGaugeLabel.first.value!) /
+                    (_linearGaugeLabel.last.value! -
+                        _linearGaugeLabel.first.value!)) *
+                100);
+
+        if (i == 0) {
+          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+            a,
+            Offset(a.dx, primaryRulersHeight)
+          ];
+        } else if (i == _linearGaugeLabel.length - 1) {
+          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+            b,
+            Offset(b.dx, primaryRulersHeight)
+          ];
+        } else {
+          double x = ((n - 1) / n) * a.dx + (1 / n) * b.dx;
+          double y = ((n - 1) / n) * a.dy + (1 / n) * b.dy;
+
+          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+            Offset(x, y),
+            Offset(x, primaryRulersHeight)
+          ];
+        }
+      }
+    } else {
+      for (int i = 0; i < _linearGaugeLabel.length; i++) {
+        double x = a.dx * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
+            b.dx * (i / (_linearGaugeLabel.length - 1));
+        double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
+            b.dy * (i / (_linearGaugeLabel.length - 1));
+
+        primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+          Offset(x, y),
+          Offset(x, primaryRulersHeight)
+        ];
+      }
     }
   }
 
@@ -79,6 +120,7 @@ class LinearGaugeLabel {
     double linearGaugeHeight,
     LinearGaugeIndicator indicator,
     List<RangeLinearGauge> rangeLinearGauge,
+    double rulersOffset,
   ) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     Iterable<String> keys = primaryRulers.keys;
@@ -103,10 +145,10 @@ class LinearGaugeLabel {
             switch (rulerPosition) {
               case RulerPosition.top:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(x, y);
+                secondaryRulerStartPoint = Offset(x, -rulersOffset);
 
                 secondaryRulerEndPoint =
-                    Offset(x, -(5 + height - linearGaugeHeight));
+                    Offset(x, -(5 + height - linearGaugeHeight + rulersOffset));
                 break;
               case RulerPosition.center:
                 //the staring point is shifted half of the secondary ruler height from the
@@ -118,9 +160,9 @@ class LinearGaugeLabel {
                 break;
               case RulerPosition.bottom:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(x, y);
+                secondaryRulerStartPoint = Offset(x, y + rulersOffset);
 
-                secondaryRulerEndPoint = Offset(x, 5 + height);
+                secondaryRulerEndPoint = Offset(x, 5 + height + rulersOffset);
                 break;
             }
 
@@ -147,9 +189,8 @@ class LinearGaugeLabel {
     }
   }
 
-  Size getLabelSize({required TextStyle textStyle, required double? value}) {
-    final TextSpan textSpan =
-        TextSpan(text: value!.toInt().toString(), style: textStyle);
+  Size getLabelSize({required TextStyle textStyle, required String? value}) {
+    final TextSpan textSpan = TextSpan(text: value!, style: textStyle);
     _textPainter.text = textSpan;
     _textPainter.layout();
 

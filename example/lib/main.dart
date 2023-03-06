@@ -1,5 +1,5 @@
+import 'package:example/ruler_offset_feature_example.dart';
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -16,25 +16,6 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              child: LinearGauge(
-                start: 10,
-                end: 50,
-                value: 50,
-                indicator: const LinearGaugeIndicator(
-                  shape: PointerShape.triangle,
-                ),
-                rulers: const RulerStyle(),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return const MyRulerOffset();
   }
 }
