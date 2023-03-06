@@ -26,9 +26,6 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
                 value: 20,
                 start: 10,
                 end: 30,
-                rulers: RulerStyle(
-                  rulersOffset: 10,
-                ),
                 indicator: LinearGaugeIndicator(
                     value: 27.5, shape: PointerShape.circle),
                 customLabels: [
