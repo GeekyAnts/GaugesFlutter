@@ -145,10 +145,10 @@ class LinearGaugeLabel {
             switch (rulerPosition) {
               case RulerPosition.top:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(x, y);
+                secondaryRulerStartPoint = Offset(x, -rulersOffset);
 
                 secondaryRulerEndPoint =
-                    Offset(x, -(5 + height - linearGaugeHeight));
+                    Offset(x, -(5 + height - linearGaugeHeight + rulersOffset));
                 break;
               case RulerPosition.center:
                 //the staring point is shifted half of the secondary ruler height from the
@@ -160,9 +160,9 @@ class LinearGaugeLabel {
                 break;
               case RulerPosition.bottom:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(x, y);
+                secondaryRulerStartPoint = Offset(x, y + rulersOffset);
 
-                secondaryRulerEndPoint = Offset(x, 5 + height);
+                secondaryRulerEndPoint = Offset(x, 5 + height + rulersOffset);
                 break;
             }
 
