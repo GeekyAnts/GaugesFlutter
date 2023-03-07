@@ -1,3 +1,4 @@
+import 'package:example/gauge_vertical.dart';
 import 'package:example/ruler_offset_feature_example.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,6 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return const MyRulerOffset();
+    return const MyVerticalGauge();
   }
 }

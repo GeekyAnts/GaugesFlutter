@@ -4,6 +4,8 @@ import 'dart:ui' as ui;
 import 'dart:math' as math;
 import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
 
+const _kDefaultLinearGaugeHeight = 200;
+
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge({
     required Pointer pointer,
@@ -551,6 +553,9 @@ class RenderLinearGauge extends RenderBox {
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
       gaugeContainer = Rect.fromLTWH(
           start, offset.dy, end, getLinearGaugeBoxDecoration.height);
+    } else {
+      gaugeContainer = Rect.fromLTWH(
+          start, offset.dy, getLinearGaugeBoxDecoration.width, size.height);
     }
 
     double totalWidth = end;
@@ -743,8 +748,8 @@ class RenderLinearGauge extends RenderBox {
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     final desiredWidth = constraints.maxWidth;
-    //final desiredHeight = constraints.maxHeight;
-    final desiredSize = Size(desiredWidth, 50);
+    final desiredHeight = constraints.maxHeight;
+    final desiredSize = Size(desiredWidth, desiredHeight);
     return constraints.constrain(desiredSize);
   }
 
@@ -761,12 +766,6 @@ class RenderLinearGauge extends RenderBox {
     _setSecondaryRulersPaint();
 
     _calculateRulerPoints();
-
-    if (rulerPosition == RulerPosition.center) {
-      if (getShowLinearGaugeContainer) {
-        _paintGaugeContainer(canvas, size);
-      }
-    }
 
     if (showPrimaryRulers) {
       _drawPrimaryRulers(canvas);
