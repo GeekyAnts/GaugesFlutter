@@ -59,18 +59,14 @@ class LinearGaugeLabel {
     bool isRulersInversed,
   ) {
     primaryRulers.clear();
-    Offset a;
-    Offset b;
+    Offset a = Offset((startLabel.width / 2) + (pointer.width! / 2),
+        linearGaugeBoxContainerHeight);
+    Offset b = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
+        linearGaugeBoxContainerHeight);
     if (isRulersInversed) {
-      b = Offset((startLabel.width / 2) + (pointer.width! / 2),
-          linearGaugeBoxContainerHeight);
-      a = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
-          linearGaugeBoxContainerHeight);
-    } else {
-      a = Offset((startLabel.width / 2) + (pointer.width! / 2),
-          linearGaugeBoxContainerHeight);
-      b = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
-          linearGaugeBoxContainerHeight);
+      Offset temp = a;
+      a = b;
+      b = temp;
     }
 
     if (isCustomLabelsGiven) {
