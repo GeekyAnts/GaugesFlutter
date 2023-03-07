@@ -872,20 +872,17 @@ class RenderLinearGauge extends RenderBox {
     }
 
     double value = getPointer.value ?? _valueInPixel;
-    var firstOffset = Offset(_valueInPixel, 0.0);
+
+    var firstOffset = (!getInversedRulers)
+        ? Offset(_valueInPixel, 0.0)
+        : -Offset(_valueInPixel, 0.0);
     if (_pointer.value == null) {
       _pointer.setPointerValue = value;
     }
-    Offset firstOff;
-    if (getCustomLabels!.isEmpty) {
-      firstOff =
-          _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
-              firstOffset;
-    } else {
-      firstOff = _linearGaugeLabel.getPrimaryRulersOffset[
-              getCustomLabels![0].value!.toDouble().toString()]![0] +
-          firstOffset;
-    }
+
+    var firstOff =
+        _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
+            firstOffset;
 
     // Drawing the Pointer
     getPointer.drawPointer(

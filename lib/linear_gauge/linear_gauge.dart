@@ -292,9 +292,9 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setPointer = pointer
       ..setRangeLinearGauge = rangeLinearGauge
       ..setRulersOffset = rulers!.rulersOffset!
-      ..setInversedRulers = rulers!.inverseRulers!
       ..setValueBarPosition = valueBarPosition!
       ..setValueBarOffset = valueBarOffset!
-      ..setValueBar = valueBar;
+      ..setValueBar = valueBar
+      ..setInversedRulers = rulers!.inverseRulers!;
   }
 }
