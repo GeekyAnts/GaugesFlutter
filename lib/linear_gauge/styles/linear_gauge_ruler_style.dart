@@ -22,7 +22,7 @@ class RulerStyle {
     this.rulerPosition = RulerPosition.bottom,
     this.labelOffset = 0,
     this.rulersOffset = 0,
-    this.inversedRulers = false,
+    this.inverseRulers = false,
   });
 
   ///
@@ -257,5 +257,5 @@ class RulerStyle {
   /// ),
   /// ```
   ///
-  final bool? inversedRulers;
+  final bool? inverseRulers;
 }
