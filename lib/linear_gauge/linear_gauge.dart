@@ -240,6 +240,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       rangeLinearGauge: rangeLinearGauge!,
       customLabels: customLabels!,
       rulersOffset: rulers!.rulersOffset!,
+      inversedRulers: rulers!.inversedRulers!,
     );
   }
 
@@ -273,6 +274,8 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setShowPrimaryRulers = rulers!.showPrimaryRulers
       ..setValue = value!
       ..setPointer = pointer
-      ..setRangeLinearGauge = rangeLinearGauge;
+      ..setRangeLinearGauge = rangeLinearGauge
+      ..setRulersOffset = rulers!.rulersOffset!
+      ..setInversedRulers = rulers!.inversedRulers!;
   }
 }

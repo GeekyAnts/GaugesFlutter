@@ -22,6 +22,7 @@ class RulerStyle {
     this.rulerPosition = RulerPosition.bottom,
     this.labelOffset = 0,
     this.rulersOffset = 0,
+    this.inversedRulers = false,
   });
 
   ///
@@ -240,4 +241,21 @@ class RulerStyle {
   /// ```
   ///
   final double? labelOffset;
+
+  ///
+  /// `inversedRulers` allows for the inversion of the gauge's rulers,
+  ///  reversing the direction of the scale and indicators.
+  ///
+  /// default is to `inversedRulers = false`
+  ///
+  /// Example
+  ///
+  ///  ```dart
+  /// child: const LinearGauge(
+  /// rulers : RulerStyle(
+  ///   inversedRulers: true,
+  /// ),
+  /// ```
+  ///
+  final bool? inversedRulers;
 }

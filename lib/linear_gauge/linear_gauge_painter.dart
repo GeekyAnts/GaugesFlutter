@@ -33,6 +33,7 @@ class RenderLinearGauge extends RenderBox {
     required List<RangeLinearGauge> rangeLinearGauge,
     required List<CustomRulerLabel> customLabels,
     required double rulersOffset,
+    required bool inversedRulers,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -60,7 +61,8 @@ class RenderLinearGauge extends RenderBox {
         _pointer = pointer,
         _rangeLinearGauge = rangeLinearGauge,
         _customLabels = customLabels,
-        _rulersOffset = rulersOffset;
+        _rulersOffset = rulersOffset,
+        _inversedRulers = inversedRulers;
 
   ///
   double _valueInPixel = 0;
@@ -369,6 +371,18 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  ///
+  /// Getter and Setter for the [inversedRulers] parameter.
+  ///
+
+  bool get getInversedRulers => _inversedRulers;
+  bool _inversedRulers;
+  set setInversedRulers(bool val) {
+    if (_inversedRulers == val) return;
+    _inversedRulers = val;
+    markNeedsPaint();
+  }
+
   LinearGaugeLabel get getLinearGaugeLabel {
     return _linearGaugeLabel;
   }
@@ -410,22 +424,32 @@ class RenderLinearGauge extends RenderBox {
       _linearGaugeLabel.addCustomLabels(labelList: getCustomLabels!);
     }
 
-    _startLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle, value: getStart.toInt().toString());
+    if (getInversedRulers) {
+      _startLabelSize = _linearGaugeLabel.getLabelSize(
+          textStyle: getTextStyle, value: getEnd.toInt().toString());
 
-    _endLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle, value: getEnd.toInt().toString());
+      _endLabelSize = _linearGaugeLabel.getLabelSize(
+          textStyle: getTextStyle, value: getStart.toInt().toString());
+    } else {
+      _startLabelSize = _linearGaugeLabel.getLabelSize(
+          textStyle: getTextStyle, value: getStart.toInt().toString());
+
+      _endLabelSize = _linearGaugeLabel.getLabelSize(
+          textStyle: getTextStyle, value: getEnd.toInt().toString());
+    }
 
     _linearGaugeLabel.generateOffSetsForLabel(
-        _startLabelSize,
-        _endLabelSize,
-        size,
-        getEnd,
-        getPrimaryRulersHeight,
-        getLinearGaugeBoxDecoration.height,
-        getLabelTopMargin,
-        _pointer,
-        getCustomLabels!.isNotEmpty);
+      _startLabelSize,
+      _endLabelSize,
+      size,
+      getEnd,
+      getPrimaryRulersHeight,
+      getLinearGaugeBoxDecoration.height,
+      getLabelTopMargin,
+      _pointer,
+      getCustomLabels!.isNotEmpty,
+      getInversedRulers,
+    );
   }
 
   void _drawLabels(
@@ -582,8 +606,13 @@ class RenderLinearGauge extends RenderBox {
           _linearGaugeContainerPaint);
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
-      gaugeContainer = Rect.fromLTWH(start, offset.dy, totalValOnPixel,
-          getLinearGaugeBoxDecoration.height);
+      if (getInversedRulers) {
+        gaugeContainer = Rect.fromLTWH(start + end, offset.dy, -totalValOnPixel,
+            getLinearGaugeBoxDecoration.height);
+      } else {
+        gaugeContainer = Rect.fromLTWH(start, offset.dy, totalValOnPixel,
+            getLinearGaugeBoxDecoration.height);
+      }
       if (getLinearGaugeBoxDecoration.linearGradient != null) {
         _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
             .linearGradient!
@@ -602,8 +631,15 @@ class RenderLinearGauge extends RenderBox {
       //Todo: Need to change the Color values HERE!!
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
-      gaugeContainer = Rect.fromLTWH(start, offset.dy, totalValOnPixel,
-          getLinearGaugeBoxDecoration.height);
+
+      if (getInversedRulers) {
+        gaugeContainer = Rect.fromLTWH(start + end, offset.dy, -totalValOnPixel,
+            getLinearGaugeBoxDecoration.height);
+      } else {
+        gaugeContainer = Rect.fromLTWH(start, offset.dy, totalValOnPixel,
+            getLinearGaugeBoxDecoration.height);
+      }
+
       if (getLinearGaugeBoxDecoration.linearGradient != null) {
         _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
             .linearGradient!
@@ -623,14 +659,21 @@ class RenderLinearGauge extends RenderBox {
           return ((value - getStart) / (getEnd - getStart)) * totalWidth;
         }
 
-        // Start of the ColorRange
-        double colorRangeStart =
-            calculateValuePixelWidth(rangeLinearGauge![i].start) + start;
-
         // width of the colorRange
         double colorRangeWidth =
             calculateValuePixelWidth(rangeLinearGauge![i].end) -
                 calculateValuePixelWidth(rangeLinearGauge![i].start);
+        // Start of the ColorRange
+
+        double colorRangeStart;
+        if (getInversedRulers) {
+          colorRangeStart = (start + end) -
+              calculateValuePixelWidth(rangeLinearGauge![i].start);
+          colorRangeWidth = -1 * colorRangeWidth;
+        } else {
+          colorRangeStart =
+              calculateValuePixelWidth(rangeLinearGauge![i].start) + start;
+        }
 
         _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
         gaugeContainer = Rect.fromLTWH(colorRangeStart, offset.dy,
@@ -789,14 +832,14 @@ class RenderLinearGauge extends RenderBox {
       _pointer.setPointerValue = value;
     }
     var firstOff;
-    if (getCustomLabels!.isEmpty) {
+    if (getInversedRulers) {
+      firstOff =
+          _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] -
+              firstOffset;
+    } else {
       firstOff =
           _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
               firstOffset;
-    } else {
-      firstOff = _linearGaugeLabel.getPrimaryRulersOffset[
-              getCustomLabels![0].value!.toDouble().toString()]![0] +
-          firstOffset;
     }
 
     getPointer.drawPointer(
