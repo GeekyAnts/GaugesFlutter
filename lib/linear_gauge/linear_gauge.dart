@@ -30,7 +30,7 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.showLinearGaugeContainer = true,
     this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
     this.labelTopMargin = 0.0,
-    this.indicator = const LinearGaugeIndicator(),
+    this.pointer = const Pointer(),
     this.rulers = const RulerStyle(),
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
@@ -169,20 +169,20 @@ class LinearGauge extends LeafRenderObjectWidget {
   final RulerStyle? rulers;
 
   ///
-  /// `indicator` sets the styles of indicator using [LinearGaugeIndicator]  properties
+  /// `pointer` sets the styles of pointer using [Pointer]  properties
   ///
   /// Example
   /// ```dart
   /// const LinearGauge(
-  ///            indicator: LinearGaugeIndicator(
+  ///            pointer: Pointer(
   ///             color: Colors.green,
   ///            width: 10.0,
-  ///           shape: LinearGaugeIndicatorShape.circle,
+  ///           shape: PointerShape.circle,
   ///           height: 10.0,
   ///           ),
   /// ```
   ///
-  final LinearGaugeIndicator? indicator;
+  final Pointer? pointer;
 
   ///
   /// `customLabels` allows for the creation of custom tick labels on the gauge's scale,
@@ -235,7 +235,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       labelOffset: rulers!.labelOffset!,
       showSecondaryRulers: rulers!.showSecondaryRulers,
       showPrimaryRulers: rulers!.showPrimaryRulers,
-      indicator: indicator!,
+      pointer: pointer!,
       value: value!,
       rangeLinearGauge: rangeLinearGauge!,
       customLabels: customLabels!,
@@ -272,8 +272,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setShowSecondaryRulers = rulers!.showSecondaryRulers
       ..setShowPrimaryRulers = rulers!.showPrimaryRulers
       ..setValue = value!
-      ..setLinearGaugeIndicator = indicator
-      ..setRangeLinearGauge = rangeLinearGauge
-      ..setRulersOffset = rulers!.rulersOffset!;
+      ..setPointer = pointer
+      ..setRangeLinearGauge = rangeLinearGauge;
   }
 }

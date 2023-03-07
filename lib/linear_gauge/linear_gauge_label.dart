@@ -54,14 +54,13 @@ class LinearGaugeLabel {
       double primaryRulersHeight,
       double linearGaugeBoxContainerHeight,
       double labelTopMargin,
-      LinearGaugeIndicator indicator,
+      Pointer pointer,
       bool isCustomLabelsGiven) {
     primaryRulers.clear();
 
-    Offset a = Offset((startLabel.width / 2) + (indicator.width! / 2),
+    Offset a = Offset((startLabel.width / 2) + (pointer.width! / 2),
         linearGaugeBoxContainerHeight);
-    Offset b = Offset(
-        size.width - (endLabel.width / 2) - (indicator.width! / 2),
+    Offset b = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
         linearGaugeBoxContainerHeight);
 
     if (isCustomLabelsGiven) {
@@ -118,7 +117,7 @@ class LinearGaugeLabel {
     double height,
     RulerPosition rulerPosition,
     double linearGaugeHeight,
-    LinearGaugeIndicator indicator,
+    Pointer pointer,
     List<RangeLinearGauge> rangeLinearGauge,
     double rulersOffset,
   ) {

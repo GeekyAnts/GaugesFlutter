@@ -6,7 +6,7 @@ import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
 
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge({
-    required LinearGaugeIndicator indicator,
+    required Pointer pointer,
     required double start,
     required double end,
     required double steps,
@@ -57,7 +57,7 @@ class RenderLinearGauge extends RenderBox {
         _showSecondaryRulers = showSecondaryRulers,
         _showPrimaryRulers = showPrimaryRulers,
         _value = value,
-        _indicator = indicator,
+        _pointer = pointer,
         _rangeLinearGauge = rangeLinearGauge,
         _customLabels = customLabels,
         _rulersOffset = rulersOffset;
@@ -192,13 +192,13 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [_indicator] parameter.
+  /// Getter and Setter for the [_pointer] parameter.
   ///
-  LinearGaugeIndicator get getLinearGaugeIndicator => _indicator;
-  LinearGaugeIndicator _indicator;
+  Pointer get getPointer => _pointer;
+  Pointer _pointer;
 
-  set setLinearGaugeIndicator(linearGaugeIndicator) {
-    _indicator = linearGaugeIndicator;
+  set setPointer(linearGaugeIndicator) {
+    _pointer = linearGaugeIndicator;
 
     markNeedsPaint();
   }
@@ -424,7 +424,7 @@ class RenderLinearGauge extends RenderBox {
         getPrimaryRulersHeight,
         getLinearGaugeBoxDecoration.height,
         getLabelTopMargin,
-        _indicator,
+        _pointer,
         getCustomLabels!.isNotEmpty);
   }
 
@@ -539,10 +539,9 @@ class RenderLinearGauge extends RenderBox {
       end = size.width -
           ((_endLabelSize.width / 2) +
               (_startLabelSize.width / 2) +
-              (_indicator.width!));
+              (_pointer.width!));
 
-      start =
-          (offset.dx + (_startLabelSize.width / 2) + (_indicator.width! / 2));
+      start = (offset.dx + (_startLabelSize.width / 2) + (_pointer.width! / 2));
     } else {
       end = size.width;
       start = offset.dx;
@@ -565,10 +564,10 @@ class RenderLinearGauge extends RenderBox {
     }
 
     // if pointer value is null then draw the value in the gauge container
-    if (_indicator.getPointerValue == null) {
+    if (_pointer.value == null) {
       _valueInPixel = totalValOnPixel;
     } else {
-      double pointerValue = _indicator.getPointerValue ?? getValue;
+      double pointerValue = _pointer.value ?? getValue;
       double pointerValueInPx =
           ((pointerValue - getStart) / (getEnd - getStart)) * totalWidth;
       _valueInPixel = pointerValueInPx;
@@ -717,7 +716,7 @@ class RenderLinearGauge extends RenderBox {
         getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height,
         rulerPosition,
         getLinearGaugeBoxDecoration.height,
-        _indicator,
+        _pointer,
         rangeLinearGauge!,
         getRulersOffset);
   }
@@ -783,11 +782,11 @@ class RenderLinearGauge extends RenderBox {
       }
     }
 
-    double value = getLinearGaugeIndicator.value ?? _valueInPixel;
+    double value = getPointer.value ?? _valueInPixel;
 
     var firstOffset = Offset(_valueInPixel, 0.0);
-    if (_indicator.getPointerValue == null) {
-      _indicator.setPointerValue = value;
+    if (_pointer.value == null) {
+      _pointer.setPointerValue = value;
     }
     var firstOff;
     if (getCustomLabels!.isEmpty) {
@@ -800,8 +799,12 @@ class RenderLinearGauge extends RenderBox {
           firstOffset;
     }
 
-    getLinearGaugeIndicator.drawPointer(
-        _indicator.shape!, canvas, firstOff, this);
+    getPointer.drawPointer(
+      _pointer.shape!,
+      canvas,
+      firstOff,
+      this,
+    );
 
     canvas.restore();
   }
