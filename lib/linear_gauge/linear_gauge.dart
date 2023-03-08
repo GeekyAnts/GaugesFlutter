@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/custom_label/custom_ruler_label.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
@@ -25,7 +25,7 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.start = 0,
     this.end = 100,
     this.steps = 0,
-    this.value = 0,
+    @Deprecated('Use ValueBar instead') this.value = 0,
     this.gaugeOrientation = GaugeOrientation.horizontal,
     this.showLinearGaugeContainer = true,
     this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
@@ -34,6 +34,9 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.rulers = const RulerStyle(),
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
+    this.valueBarPosition = ValueBarPosition.center,
+    this.valueBarOffset = 0.0,
+    this.valueBar = const [],
   }) : super(key: key);
 
   ///
@@ -207,8 +210,18 @@ class LinearGauge extends LeafRenderObjectWidget {
   final List<CustomRulerLabel>? customLabels;
 
   ///
-  ///
+  //Todo: add docs
   final List<RangeLinearGauge>? rangeLinearGauge;
+
+  //Todo: add docs
+  final ValueBarPosition? valueBarPosition;
+
+  //Todo: add docs
+  final double? valueBarOffset;
+
+  //Todo: add docs
+  final List<ValueBar> valueBar;
+
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
@@ -241,6 +254,9 @@ class LinearGauge extends LeafRenderObjectWidget {
       customLabels: customLabels!,
       rulersOffset: rulers!.rulersOffset!,
       inversedRulers: rulers!.inverseRulers!,
+      valueBarPosition: valueBarPosition!,
+      valueBarOffset: valueBarOffset!,
+      valueBar: valueBar,
     );
   }
 
@@ -276,6 +292,9 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setPointer = pointer
       ..setRangeLinearGauge = rangeLinearGauge
       ..setRulersOffset = rulers!.rulersOffset!
-      ..setInversedRulers = rulers!.inverseRulers!;
+      ..setInversedRulers = rulers!.inverseRulers!
+      ..setValueBarPosition = valueBarPosition!
+      ..setValueBarOffset = valueBarOffset!
+      ..setValueBar = valueBar;
   }
 }
