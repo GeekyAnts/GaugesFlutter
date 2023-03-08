@@ -20,7 +20,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///),
   /// ```
   ///
-  const LinearGauge({
+  LinearGauge({
     Key? key,
     this.start = 0,
     this.end = 100,
@@ -31,10 +31,16 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
     this.labelTopMargin = 0.0,
     this.pointer = const Pointer(),
-    this.rulers = const RulerStyle(),
+    RulerStyle? rulers,
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
-  }) : super(key: key);
+  })  : rulers = rulers ??
+            RulerStyle(
+              rulerPosition: gaugeOrientation == GaugeOrientation.vertical
+                  ? RulerPosition.right
+                  : RulerPosition.bottom,
+            ),
+        super(key: key);
 
   ///
   /// `start` Sets the starting label of the [LinearGauge] Container

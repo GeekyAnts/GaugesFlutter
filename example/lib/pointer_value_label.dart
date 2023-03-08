@@ -11,7 +11,7 @@ class PointerValueLabel extends StatefulWidget {
 class _PointerValueLabelState extends State<PointerValueLabel> {
   @override
   Widget build(BuildContext context) {
-    return const LinearGauge(
+    return LinearGauge(
       value: 30,
       pointer: Pointer(
         color: Colors.red,

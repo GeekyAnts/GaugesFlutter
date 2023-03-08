@@ -10,7 +10,7 @@ class MyRulerOffset extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             SizedBox(
               child: LinearGauge(
                 value: 20,
