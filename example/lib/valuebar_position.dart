@@ -22,17 +22,17 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           valueBar: [
             ValueBar(
                 value: 50,
-                offset: 50,
+                offset: 40,
                 position: ValueBarPosition.top,
-                color: Colors.amber),
+                color: Colors.red),
             ValueBar(
                 value: 40,
-                offset: 60,
+                offset: 30,
                 position: ValueBarPosition.top,
                 color: Colors.blue),
             ValueBar(
                 value: 30,
-                offset: 40,
+                offset: 20,
                 position: ValueBarPosition.top,
                 color: Colors.orange),
             ValueBar(
