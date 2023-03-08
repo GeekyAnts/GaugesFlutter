@@ -253,10 +253,10 @@ class LinearGauge extends LeafRenderObjectWidget {
       rangeLinearGauge: rangeLinearGauge!,
       customLabels: customLabels!,
       rulersOffset: rulers!.rulersOffset!,
-      inversedRulers: rulers!.inverseRulers!,
       valueBarPosition: valueBarPosition!,
       valueBarOffset: valueBarOffset!,
       valueBar: valueBar,
+      inversedRulers: rulers!.inverseRulers!,
     );
   }
 
