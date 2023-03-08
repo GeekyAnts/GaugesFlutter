@@ -25,7 +25,7 @@ class ValueBar {
   ValueBar({
     required this.value,
     this.offset = 0,
-    required this.position,
+    this.position = ValueBarPosition.center,
     this.color = Colors.blue,
   });
 

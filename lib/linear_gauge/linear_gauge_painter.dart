@@ -690,12 +690,7 @@ class RenderLinearGauge extends RenderBox {
 
       // For loop for drawing value bar in [LinearGauge]
       for (int j = 0; j < getValueBar.length; j++) {
-        ValueBar(
-          value: getValueBar[j].value,
-          offset: getValueBar[j].offset,
-          position: getValueBar[j].position,
-          color: getValueBar[j].color,
-        ).drawValueBar(canvas, start, end, totalWidth, this);
+        getValueBar[j].drawValueBar(canvas, start, end, totalWidth, this);
       }
 
       /// For loop for calculating colors in [RangeLinearGauge]

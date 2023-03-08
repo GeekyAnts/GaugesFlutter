@@ -547,7 +547,6 @@ class Pointer {
     }
   }
 
-  @Deprecated('Use the other shapes  instead || Arrow does not support label')
   void _drawArrowPointer(
     Canvas canvas,
     Offset offset,

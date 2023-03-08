@@ -232,7 +232,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   final List<RangeLinearGauge>? rangeLinearGauge;
 
   ///
-  /// `valueBarPosition` sets the position of the value bar from the pointer
+  /// `valueBarPosition` sets the position of the value bar from the [LinearGauge]
   ///  default is to `valueBarPosition =`ValueBarPosition.center`
   ///
   /// ```
@@ -243,7 +243,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   final ValueBarPosition? valueBarPosition;
 
   ///
-  /// `valueBarOffset` sets the offset of the value bar from the pointer
+  /// `valueBarOffset` sets the sets the extra room depending on the position from the [LinearGauge]
   /// default is to `valueBarOffset =`0.0`
   ///
   /// ```
@@ -266,8 +266,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   /// ],
   /// ```
   ///
-  ///
-  final List<ValueBar> valueBar;
+  final List<ValueBar>? valueBar;
 
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
@@ -302,7 +301,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       rulersOffset: rulers!.rulersOffset!,
       valueBarPosition: valueBarPosition!,
       valueBarOffset: valueBarOffset!,
-      valueBar: valueBar,
+      valueBar: valueBar!,
       inversedRulers: rulers!.inverseRulers!,
     );
   }
@@ -341,7 +340,7 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setRulersOffset = rulers!.rulersOffset!
       ..setValueBarPosition = valueBarPosition!
       ..setValueBarOffset = valueBarOffset!
-      ..setValueBar = valueBar
+      ..setValueBar = valueBar!
       ..setInversedRulers = rulers!.inverseRulers!;
   }
 }
