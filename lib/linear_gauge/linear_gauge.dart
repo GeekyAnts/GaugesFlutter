@@ -37,6 +37,7 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.valueBarPosition = ValueBarPosition.center,
     this.valueBarOffset = 0.0,
     this.valueBar = const [],
+    this.pointers = const [],
   }) : super(key: key);
 
   ///
@@ -267,6 +268,21 @@ class LinearGauge extends LeafRenderObjectWidget {
   /// ```
   ///
   final List<ValueBar>? valueBar;
+
+  ///
+  /// `pointers` takes the list of [pointer] to render the value pointer/s
+  ///
+  /// ```
+  /// const LinearGauge(
+  ///  pointer: [
+  ///   pointer(
+  ///    shape: PointerShape.circle,
+  ///   color: Colors.green,
+  ///  ),
+  /// ],
+  /// ```
+  ///
+  final List<Pointer>? pointers;
 
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
