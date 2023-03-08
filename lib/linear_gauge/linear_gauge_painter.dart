@@ -3,6 +3,7 @@ import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
 
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge({
@@ -33,6 +34,9 @@ class RenderLinearGauge extends RenderBox {
     required List<RangeLinearGauge> rangeLinearGauge,
     required List<CustomRulerLabel> customLabels,
     required double rulersOffset,
+    required ValueBarPosition valueBarPosition,
+    required double valueBarOffset,
+    required List<ValueBar> valueBar,
     required bool inversedRulers,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
@@ -62,12 +66,10 @@ class RenderLinearGauge extends RenderBox {
         _rangeLinearGauge = rangeLinearGauge,
         _customLabels = customLabels,
         _rulersOffset = rulersOffset,
-        _inversedRulers = inversedRulers;
-
-  ///
-  double _valueInPixel = 0;
-
-  ///
+        _inversedRulers = inversedRulers,
+        _valueBarPosition = valueBarPosition,
+        _valueBarOffset = valueBarOffset,
+        _valueBar = valueBar;
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -343,6 +345,9 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  ///
+  /// Getter and Setter for the [rangeLinearGauge] parameter.
+  ///
   List<RangeLinearGauge>? get rangeLinearGauge => _rangeLinearGauge;
   List<RangeLinearGauge>? _rangeLinearGauge = <RangeLinearGauge>[];
   set setRangeLinearGauge(List<RangeLinearGauge>? val) {
@@ -387,6 +392,39 @@ class RenderLinearGauge extends RenderBox {
     return _linearGaugeLabel;
   }
 
+  ///
+  /// Getter and Setter for the [valueBarPosition] parameter.
+  ///
+  ValueBarPosition get valueBarPosition => _valueBarPosition;
+  ValueBarPosition _valueBarPosition;
+  set setValueBarPosition(ValueBarPosition val) {
+    if (_valueBarPosition == val) return;
+    _valueBarPosition = val;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [valueBarOffset] parameter.
+  ///
+  double get valueBarOffset => _valueBarOffset;
+  double _valueBarOffset;
+  set setValueBarOffset(double val) {
+    if (_valueBarOffset == val) return;
+    _valueBarOffset = val;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [valueBar] parameter.
+  ///
+  List<ValueBar> get getValueBar => _valueBar;
+  List<ValueBar> _valueBar = <ValueBar>[];
+  set setValueBar(List<ValueBar> val) {
+    if (_valueBar == val) return;
+    _valueBar = val;
+    markNeedsPaint();
+  }
+
   final Paint _linearGaugeContainerPaint = Paint();
   final Paint _primaryRulersPaint = Paint();
   final Paint _secondaryRulersPaint = Paint();
@@ -394,6 +432,8 @@ class RenderLinearGauge extends RenderBox {
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _startLabelSize, _endLabelSize;
+
+  double _valueInPixel = 0;
 
   void _calculateRulerPoints() {
     if (getCustomLabels!.isEmpty) {
@@ -627,8 +667,6 @@ class RenderLinearGauge extends RenderBox {
     } else {
       canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
 
-      //Todo: Need to change the Color values HERE!!
-
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
 
       gaugeContainer = Rect.fromLTWH(
@@ -644,11 +682,16 @@ class RenderLinearGauge extends RenderBox {
             .createShader(gaugeContainer);
       }
 
-      // ValueContainer for Linear-Gauge
+      // Draw the value bar in the gauge container for @deprecated value
       canvas.drawRect(
         gaugeContainer,
         _linearGaugeContainerValuePaint,
       );
+
+      // For loop for drawing value bar in [LinearGauge]
+      for (int j = 0; j < getValueBar.length; j++) {
+        getValueBar[j].drawValueBar(canvas, start, end, totalWidth, this);
+      }
 
       /// For loop for calculating colors in [RangeLinearGauge]
       for (int i = 0; i < rangeLinearGauge!.length; i++) {
@@ -784,7 +827,7 @@ class RenderLinearGauge extends RenderBox {
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     final desiredWidth = constraints.maxWidth;
-    //final desiredHeight = constraints.maxHeight;
+    // final desiredHeight = constraints.maxHeight;
     final desiredSize = Size(desiredWidth, 50);
     return constraints.constrain(desiredSize);
   }
@@ -836,13 +879,13 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
             firstOffset;
 
+    // Drawing the Pointer
     getPointer.drawPointer(
-      _pointer.shape!,
+      _pointer.shape,
       canvas,
       firstOff,
       this,
     );
-
     canvas.restore();
   }
 }

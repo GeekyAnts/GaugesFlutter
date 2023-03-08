@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/custom_label/custom_ruler_label.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends LeafRenderObjectWidget {
@@ -25,7 +25,7 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.start = 0,
     this.end = 100,
     this.steps = 0,
-    this.value = 0,
+    @Deprecated('Use ValueBar instead') this.value = 0,
     this.gaugeOrientation = GaugeOrientation.horizontal,
     this.showLinearGaugeContainer = true,
     this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
@@ -34,6 +34,9 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.rulers = const RulerStyle(),
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
+    this.valueBarPosition = ValueBarPosition.center,
+    this.valueBarOffset = 0.0,
+    this.valueBar = const [],
   }) : super(key: key);
 
   ///
@@ -207,8 +210,64 @@ class LinearGauge extends LeafRenderObjectWidget {
   final List<CustomRulerLabel>? customLabels;
 
   ///
+  /// `rangeLinearGauge` takes the list of [RangeLinearGauge] to render the ranges in [LinearGauge]
   ///
+  /// ```
+  /// const LinearGauge(
+  /// rangeLinearGauge: [
+  ///   RangeLinearGauge(
+  ///     start: 0.0,
+  ///     end: 50.0,
+  ///     color: Colors.green,
+  ///     ),
+  ///   RangeLinearGauge(
+  ///     start: 50.0,
+  ///     end: 100.0,
+  ///     color: Colors.red,
+  ///     ),
+  ///   ],
+  /// ),
+  /// ```
+
   final List<RangeLinearGauge>? rangeLinearGauge;
+
+  ///
+  /// `valueBarPosition` sets the position of the value bar from the [LinearGauge]
+  ///  default is to `valueBarPosition =`ValueBarPosition.center`
+  ///
+  /// ```
+  /// const LinearGauge(
+  ///   valueBarPosition: ValueBarPosition.center,
+  /// ),
+  /// ```
+  final ValueBarPosition? valueBarPosition;
+
+  ///
+  /// `valueBarOffset` sets the sets the extra room depending on the position from the [LinearGauge]
+  /// default is to `valueBarOffset =`0.0`
+  ///
+  /// ```
+  /// const LinearGauge(
+  /// valueBarOffset: 10.0,
+  /// ),
+  /// ```
+  final double? valueBarOffset;
+
+  ///
+  /// `valueBar` takes the list of [ValueBar] to render the value bar/s
+  ///
+  /// ```
+  /// const LinearGauge(
+  ///  valueBar: [
+  ///   ValueBar(
+  ///    value: 25,
+  ///   color: Colors.green,
+  ///  ),
+  /// ],
+  /// ```
+  ///
+  final List<ValueBar>? valueBar;
+
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
@@ -240,6 +299,9 @@ class LinearGauge extends LeafRenderObjectWidget {
       rangeLinearGauge: rangeLinearGauge!,
       customLabels: customLabels!,
       rulersOffset: rulers!.rulersOffset!,
+      valueBarPosition: valueBarPosition!,
+      valueBarOffset: valueBarOffset!,
+      valueBar: valueBar!,
       inversedRulers: rulers!.inverseRulers!,
     );
   }
@@ -276,6 +338,9 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setPointer = pointer
       ..setRangeLinearGauge = rangeLinearGauge
       ..setRulersOffset = rulers!.rulersOffset!
+      ..setValueBarPosition = valueBarPosition!
+      ..setValueBarOffset = valueBarOffset!
+      ..setValueBar = valueBar!
       ..setInversedRulers = rulers!.inverseRulers!;
   }
 }
