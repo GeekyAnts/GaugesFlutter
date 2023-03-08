@@ -56,24 +56,21 @@ class LinearGaugeLabel {
     double labelTopMargin,
     Pointer pointer,
     bool isCustomLabelsGiven,
+    bool isRulersInversed,
     GaugeOrientation orientation,
   ) {
     primaryRulers.clear();
-    Offset a;
-    Offset b;
-    if (GaugeOrientation.horizontal == orientation) {
+    late Offset a;
+    late Offset b;
+
+    if (orientation == GaugeOrientation.horizontal) {
       a = Offset((startLabel.width / 2) + (pointer.width! / 2),
           linearGaugeBoxDecoration.height);
       b = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
           linearGaugeBoxDecoration.height);
     } else {
-      /// Adding for vertical support
-      ///
-      /// TODO: Send a linearGauge Width
-      a = Offset(
-        (startLabel.height / 2) + (pointer.height! / 2),
-        linearGaugeBoxDecoration.width,
-      );
+      a = Offset((startLabel.height / 2) + (pointer.width! / 2),
+          linearGaugeBoxDecoration.width);
       b = Offset(
         size.height - (endLabel.height / 2) - (pointer.width! / 2),
         linearGaugeBoxDecoration.width,

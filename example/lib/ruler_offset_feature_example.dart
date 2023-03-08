@@ -12,21 +12,11 @@ class MyRulerOffset extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
+              height: 30,
               child: LinearGauge(
-                value: 20,
-                rulers: RulerStyle(
-                  rulerPosition: RulerPosition.top,
-                  rulersOffset: 15,
-                ),
-                customLabels: [],
-                pointer: Pointer(
-                  value: 20,
-                  height: 30,
-                  labelStyle: TextStyle(color: Colors.black),
-                  width: 30,
-                  quaterTurns: QuaterTurns.two,
-                  shape: PointerShape.triangle,
-                ),
+                // value: 50,
+                valueBarOffset: 0,
+                valueBarPosition: ValueBarPosition.bottom,
               ),
             ),
           ],

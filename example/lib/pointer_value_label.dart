@@ -18,7 +18,7 @@ class _PointerValueLabelState extends State<PointerValueLabel> {
         width: 70,
         height: 390,
         shape: PointerShape.rectangle,
-        quaterTurns: QuaterTurns.three,
+        quarterTurns: QuarterTurns.three,
         labelStyle: TextStyle(
           color: Colors.black,
           fontSize: 10.0,

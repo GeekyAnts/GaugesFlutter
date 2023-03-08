@@ -1,10 +1,14 @@
-import 'package:example/gauge_vertical.dart';
-import 'package:example/ruler_offset_feature_example.dart';
+import 'package:example/valuebar_position.dart';
 import 'package:flutter/material.dart';
+import 'package:geekyants_flutter_gauges/gauges.dart';
 
 void main() {
-  runApp(const MaterialApp(
-      debugShowCheckedModeBanner: false, home: MyGaugeExample()));
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyGaugeExample(),
+    ),
+  );
 }
 
 class MyGaugeExample extends StatefulWidget {
@@ -17,6 +21,11 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return const MyVerticalGauge();
+    return Scaffold(
+      body: Center(
+          child: LinearGauge(
+        gaugeOrientation: GaugeOrientation.vertical,
+      )),
+    );
   }
 }

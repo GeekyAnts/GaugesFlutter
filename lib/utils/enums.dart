@@ -4,4 +4,6 @@ enum PointerShape { circle, rectangle, triangle, diamond, arrow }
 
 enum RulerPosition { top, center, bottom, right }
 
-enum QuaterTurns { zero, one, two, three }
+enum QuarterTurns { zero, one, two, three }
+
+enum ValueBarPosition { top, center, bottom }

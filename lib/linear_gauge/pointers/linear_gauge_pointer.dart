@@ -35,7 +35,7 @@ class Pointer {
     this.width = 10.0,
     this.shape,
     this.showLabel = true,
-    this.quaterTurns = QuaterTurns.zero,
+    this.quarterTurns = QuarterTurns.zero,
     this.labelStyle = const TextStyle(),
   });
 
@@ -121,22 +121,31 @@ class Pointer {
   ///
   final bool showLabel;
 
-  final QuaterTurns? quaterTurns;
+  final QuarterTurns? quarterTurns;
 
   final TextStyle? labelStyle;
 
+  ///
+  /// Getters and Setters for `value`
+  ///
   get getPointerValue => value;
   set setPointerValue(double? value) => value = value;
 
+  ///
+  /// Getters and Setters for `color`
+  ///
   get getPointerColor => color;
   set setPointerColor(Color? color) => color = color;
 
+  ///
+  /// Getters and Setters for `shape`
+  ///
   get getPointerShape => shape;
   set setPointerShape(PointerShape? shape) => shape = shape;
 
   /// Method to draw the pointer on the canvas based on the pointer shape
   void drawPointer(
-    PointerShape shape,
+    PointerShape? shape,
     Canvas canvas,
     Offset offset,
     RenderLinearGauge linearGauge,
@@ -155,7 +164,7 @@ class Pointer {
         _drawDiamondPointer(canvas, offset, linearGauge);
         break;
       default:
-        _drawCirclePointer(canvas, offset, linearGauge);
+        return;
     }
   }
 
@@ -165,18 +174,18 @@ class Pointer {
     TextSpan textSpan,
     TextPainter textPainter,
     Offset offset,
-    QuaterTurns quaterTurns,
+    QuarterTurns quarterTurns,
     RulerPosition rulerPosition,
   ) {
     double extraOffset = 4;
     Offset center;
-    if (quaterTurns == QuaterTurns.zero) {
+    if (quarterTurns == QuarterTurns.zero) {
       rulerPosition == RulerPosition.top
           ? center = Offset(offset.dx, height! + extraOffset)
           : center = Offset(offset.dx, offset.dy);
 
       textPainter.paint(canvas, center);
-    } else if (quaterTurns == QuaterTurns.two) {
+    } else if (quarterTurns == QuarterTurns.two) {
       center = Offset(offset.dx + textPainter.width / 2,
           offset.dy + textPainter.height / 2);
       canvas.save();
@@ -199,7 +208,7 @@ class Pointer {
                   extraOffset);
       canvas.save();
       canvas.translate(center.dx, center.dy);
-      quaterTurns == QuaterTurns.three
+      quarterTurns == QuarterTurns.three
           ? canvas.rotate(-90 * pi / 180)
           : canvas.rotate(90 * pi / 180);
       textPainter.paint(
@@ -208,12 +217,6 @@ class Pointer {
       );
       canvas.restore();
     }
-
-    // textPainter.paint(
-    //   canvas,
-    //   Offset(-textPainter.width / 2, -textPainter.height / 2),
-    // );
-    // canvas.restore();
   }
 
   // Method to draw the Text for  Pointers
@@ -222,17 +225,17 @@ class Pointer {
     TextSpan textSpan,
     TextPainter textPainter,
     Offset offset,
-    QuaterTurns quaterTurns,
+    QuarterTurns quarterTurns,
     RulerPosition rulerPosition,
   ) {
     textPainter.text = textSpan;
     textPainter.layout();
     Offset center;
 
-    if (quaterTurns == QuaterTurns.zero) {
+    if (quarterTurns == QuarterTurns.zero) {
       center = offset;
       textPainter.paint(canvas, center);
-    } else if (quaterTurns == QuaterTurns.two) {
+    } else if (quarterTurns == QuarterTurns.two) {
       center = Offset(offset.dx + textPainter.width / 2,
           offset.dy + textPainter.height / 2);
       canvas.save();
@@ -256,7 +259,7 @@ class Pointer {
                   extraOffset);
       canvas.save();
       canvas.translate(center.dx, center.dy);
-      quaterTurns == QuaterTurns.three
+      quarterTurns == QuarterTurns.three
           ? canvas.rotate(-90 * pi / 180)
           : canvas.rotate(90 * pi / 180);
       textPainter.paint(
@@ -315,14 +318,14 @@ class Pointer {
       )..layout();
 
       // Draw the text centered at the rotated canvas origin
-      if (quaterTurns == QuaterTurns.zero) {
+      if (quarterTurns == QuarterTurns.zero) {
         textPainter.text = textSpan;
         textPainter.layout();
         final textOffset = Offset(position.dx - textPainter.width / 2,
             position.dy - textPainter.height / 2);
 
         textPainter.paint(canvas, textOffset);
-      } else if (quaterTurns == QuaterTurns.two) {
+      } else if (quarterTurns == QuarterTurns.two) {
         textPainter.text = textSpan;
         textPainter.layout();
 
@@ -347,7 +350,7 @@ class Pointer {
         canvas.save();
 
         canvas.translate(center.dx, center.dy);
-        quaterTurns == QuaterTurns.three
+        quarterTurns == QuarterTurns.three
             ? canvas.rotate(-90 * pi / 180)
             : canvas.rotate(90 * pi / 180);
         textPainter.paint(
@@ -413,7 +416,7 @@ class Pointer {
             yPos - position.dy - textPainter.height + gaugeHeight);
       }
 
-      _drawText(canvas, textSpan, textPainter, textOffset, quaterTurns!,
+      _drawText(canvas, textSpan, textPainter, textOffset, quarterTurns!,
           rulerPosition);
     }
   }
@@ -485,7 +488,7 @@ class Pointer {
             position.dy - (width * 2) - textPainter.height - gaugeHeight);
       }
 
-      _drawText(canvas, textSpan, textPainter, textOffset, quaterTurns!,
+      _drawText(canvas, textSpan, textPainter, textOffset, quarterTurns!,
           rulerPosition);
     }
   }
@@ -540,11 +543,10 @@ class Pointer {
               rectCenter.dx - textPainter.width / 2, yPos - textPainter.height);
 
       _drawTextRectangle(canvas, textSpan, textPainter, textOffset,
-          quaterTurns!, rulerPosition);
+          quarterTurns!, rulerPosition);
     }
   }
 
-  @Deprecated('Use the other shapes  instead || Arrow doesnt support label')
   void _drawArrowPointer(
     Canvas canvas,
     Offset offset,
