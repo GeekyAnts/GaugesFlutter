@@ -210,16 +210,63 @@ class LinearGauge extends LeafRenderObjectWidget {
   final List<CustomRulerLabel>? customLabels;
 
   ///
-  //Todo: add docs
+  /// `rangeLinearGauge` takes the list of [RangeLinearGauge] to render the ranges in [LinearGauge]
+  ///
+  /// ```
+  /// const LinearGauge(
+  /// rangeLinearGauge: [
+  ///   RangeLinearGauge(
+  ///     start: 0.0,
+  ///     end: 50.0,
+  ///     color: Colors.green,
+  ///     ),
+  ///   RangeLinearGauge(
+  ///     start: 50.0,
+  ///     end: 100.0,
+  ///     color: Colors.red,
+  ///     ),
+  ///   ],
+  /// ),
+  /// ```
+
   final List<RangeLinearGauge>? rangeLinearGauge;
 
-  //Todo: add docs
+  ///
+  /// `valueBarPosition` sets the position of the value bar from the pointer
+  ///  default is to `valueBarPosition =`ValueBarPosition.center`
+  ///
+  /// ```
+  /// const LinearGauge(
+  ///   valueBarPosition: ValueBarPosition.center,
+  /// ),
+  /// ```
   final ValueBarPosition? valueBarPosition;
 
-  //Todo: add docs
+  ///
+  /// `valueBarOffset` sets the offset of the value bar from the pointer
+  /// default is to `valueBarOffset =`0.0`
+  ///
+  /// ```
+  /// const LinearGauge(
+  /// valueBarOffset: 10.0,
+  /// ),
+  /// ```
   final double? valueBarOffset;
 
-  //Todo: add docs
+  ///
+  /// `valueBar` takes the list of [ValueBar] to render the value bar/s
+  ///
+  /// ```
+  /// const LinearGauge(
+  ///  valueBar: [
+  ///   ValueBar(
+  ///    value: 25,
+  ///   color: Colors.green,
+  ///  ),
+  /// ],
+  /// ```
+  ///
+  ///
   final List<ValueBar> valueBar;
 
   @override
