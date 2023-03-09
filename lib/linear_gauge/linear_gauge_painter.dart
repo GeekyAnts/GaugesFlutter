@@ -571,13 +571,13 @@ class RenderLinearGauge extends RenderBox {
               (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
           labelPosition = Offset(
             (list[0].dx - (labelSize.width / 2)),
-            (list[0].dy + getPrimaryRulersHeight + labelOffset),
+            (list[0].dy / 2 + getPrimaryRulersHeight / 2 + labelOffset),
           );
         } else {
           double labelOffset =
               (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
           labelPosition = Offset(
-            (list[0].dx + getPrimaryRulersHeight + labelOffset),
+            (list[0].dx / 2 + getPrimaryRulersHeight / 2 + labelOffset),
             (list[0].dy - (labelSize.height / 2)),
           );
         }
