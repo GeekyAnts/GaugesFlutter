@@ -898,22 +898,7 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
             firstOffset;
 
-    // Drawing the Pointer
-    // getPointer.drawPointer(
-    //   _pointer.shape,
-    //   canvas,
-    //   gaugeStart,
-    //   gaugeEnd,
-    //   firstOff,
-    //   this,
-    // );
-
-// for (int j = 0; j < getValueBar.length; j++) {
-//         getValueBar[j].drawValueBar(canvas, getStart, end, totalWidth, this);
-//       }
-
-    //!
-
+    // Drawing Pointers based on list of pointers added to the gauge
     for (int i = 0; i < getPointers.length; i++) {
       getPointers[i].drawPointer(
         getPointers[i].shape,
