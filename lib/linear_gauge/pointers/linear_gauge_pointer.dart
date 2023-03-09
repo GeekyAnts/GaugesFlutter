@@ -809,4 +809,76 @@ class Pointer {
           quarterTurns!, rulerPosition);
     }
   }
+
+  //*Triangle Pointer
+  void drawTrianglePointer(Canvas canvas, double start, double end,
+      Offset offset, RenderLinearGauge linearGauge) {
+    double pointerHeight = height!;
+    double pointerWidth = width!;
+    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
+    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
+    final paint = Paint();
+    paint.color = color!;
+
+    double endValue = linearGauge.getEnd;
+    double startValue = linearGauge.getStart;
+    double totalWidth = end;
+
+    double valueInPX =
+        ((value! - startValue) / (endValue - startValue)) * totalWidth;
+    offset = Offset(valueInPX + start, offset.dy);
+
+    late double yPos;
+    switch (rulerPosition) {
+      case RulerPosition.top:
+        yPos = gaugeHeight + pointerHeight;
+        break;
+      case RulerPosition.center:
+        yPos = -pointerHeight + primaryRulerHeight / 2;
+        break;
+      default:
+        yPos = -pointerHeight;
+        break;
+    }
+
+    final position = Offset(offset.dx, offset.dy);
+    final path = Path();
+    path.moveTo(position.dx - (pointerWidth / 2), yPos);
+    path.lineTo(position.dx, position.dy);
+    path.lineTo(position.dx + (pointerWidth / 2), yPos);
+    canvas.drawPath(path, paint);
+
+    if (showLabel) {
+      final textSpan = TextSpan(
+        text:
+            value == null ? linearGauge.getValue.toString() : value.toString(),
+        style: labelStyle ??
+            TextStyle(
+              color: getPointerColor,
+              fontSize: 12,
+            ),
+      );
+
+      final textPainter = TextPainter(
+        text: textSpan,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      )..layout();
+
+      Offset textOffset;
+      if (rulerPosition == RulerPosition.bottom) {
+        textOffset = Offset(position.dx - textPainter.width / 2,
+            position.dy - pointerHeight - gaugeHeight - textPainter.height);
+      } else if (rulerPosition == RulerPosition.top) {
+        textOffset = Offset(position.dx - textPainter.width / 2, yPos);
+      } else {
+        textOffset = Offset(position.dx - textPainter.width / 2,
+            yPos - position.dy - textPainter.height + gaugeHeight);
+      }
+
+      _drawText(canvas, textSpan, textPainter, textOffset, quarterTurns!,
+          rulerPosition);
+    }
+  }
 }

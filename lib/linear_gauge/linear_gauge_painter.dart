@@ -913,7 +913,7 @@ class RenderLinearGauge extends RenderBox {
     //!
 
     for (int i = 0; i < getPointers.length; i++) {
-      getPointers[i].drawRectangle(
+      getPointers[i].drawTrianglePointer(
         canvas,
         gaugeStart,
         gaugeEnd,
