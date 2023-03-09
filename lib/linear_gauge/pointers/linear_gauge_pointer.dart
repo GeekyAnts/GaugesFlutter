@@ -179,16 +179,16 @@ class Pointer {
   ) {
     switch (shape) {
       case PointerShape.circle:
-        drawCirclePointer(canvas, start, end, offset, linearGauge);
+        _drawCirclePointer(canvas, start, end, offset, linearGauge);
         break;
       case PointerShape.rectangle:
-        drawRectangle(canvas, start, end, offset, linearGauge);
+        _drawRectangle(canvas, start, end, offset, linearGauge);
         break;
       case PointerShape.triangle:
-        drawTrianglePointer(canvas, start, end, offset, linearGauge);
+        _drawTrianglePointer(canvas, start, end, offset, linearGauge);
         break;
       case PointerShape.diamond:
-        drawDiamondPointer(canvas, start, end, offset, linearGauge);
+        _drawDiamondPointer(canvas, start, end, offset, linearGauge);
         break;
       default:
         return;
@@ -322,7 +322,7 @@ class Pointer {
     }
   }
 
-  void drawCirclePointer(
+  void _drawCirclePointer(
     Canvas canvas,
     double start,
     double end,
@@ -436,7 +436,7 @@ class Pointer {
   }
 
   // Drawing the Rectangle Pointer
-  void drawRectangle(Canvas canvas, double start, double end, Offset offset,
+  void _drawRectangle(Canvas canvas, double start, double end, Offset offset,
       RenderLinearGauge linearGauge) {
     double pointerHeight = height!;
     double pointerWidth = width!;
@@ -511,7 +511,7 @@ class Pointer {
   }
 
   // Drawing the Triangle Pointer
-  void drawTrianglePointer(Canvas canvas, double start, double end,
+  void _drawTrianglePointer(Canvas canvas, double start, double end,
       Offset offset, RenderLinearGauge linearGauge) {
     double pointerHeight = height!;
     double pointerWidth = width!;
@@ -597,7 +597,7 @@ class Pointer {
   }
 
   // Drawing the Diamond pointer
-  void drawDiamondPointer(
+  void _drawDiamondPointer(
     Canvas canvas,
     double start,
     double end,
