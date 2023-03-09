@@ -57,7 +57,7 @@ class LinearGauge extends LeafRenderObjectWidget {
           } else {
             if (rulers?.rulerPosition == RulerPosition.right ||
                 rulers?.rulerPosition == RulerPosition.center ||
-                rulers?.rulerPosition == RulerPosition.top) {
+                rulers?.rulerPosition == RulerPosition.left) {
               return true;
             } else {
               assert(false,
