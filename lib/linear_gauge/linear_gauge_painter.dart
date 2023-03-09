@@ -625,7 +625,9 @@ class RenderLinearGauge extends RenderBox {
           ? (offset.dx + (_startLabelSize.width / 2) + (_pointer.width! / 2))
           : (offset.dx + (_startLabelSize.height / 2) + (_pointer.width! / 2));
     } else {
-      end = size.width;
+      end = GaugeOrientation.horizontal == getGaugeOrientation
+          ? size.width
+          : size.height;
       start = offset.dx;
     }
 
@@ -817,12 +819,12 @@ class RenderLinearGauge extends RenderBox {
           break;
         case RulerPosition.right:
           if (GaugeOrientation.vertical == getGaugeOrientation) {
-            y = value[1].dy +
-                getLinearGaugeBoxDecoration.height +
+            y = value[1].dy;
+            x = value[1].dx +
+                getLinearGaugeBoxDecoration.width +
                 getRulersOffset;
-            x = value[1].dx;
             primaryRulerStartPoint =
-                Offset(value[0].dx, value[0].dy + getRulersOffset);
+                Offset(value[0].dx + getRulersOffset, value[0].dy);
           }
 
           break;
@@ -879,9 +881,9 @@ class RenderLinearGauge extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final desiredWidth = getGaugeOrientation == GaugeOrientation.horizontal
-        ? constraints.maxWidth
-        : constraints.minWidth;
+    final desiredWidth = getGaugeOrientation == GaugeOrientation.vertical
+        ? constraints.minWidth
+        : constraints.maxWidth;
     final desiredHeight = getGaugeOrientation == GaugeOrientation.horizontal
         ? constraints.minHeight
         : constraints.maxHeight;
@@ -902,6 +904,12 @@ class RenderLinearGauge extends RenderBox {
     _setSecondaryRulersPaint();
 
     _calculateRulerPoints();
+
+    if (rulerPosition == RulerPosition.center) {
+      if (getShowLinearGaugeContainer) {
+        _paintGaugeContainer(canvas, size);
+      }
+    }
 
     if (showPrimaryRulers) {
       _drawPrimaryRulers(canvas);
