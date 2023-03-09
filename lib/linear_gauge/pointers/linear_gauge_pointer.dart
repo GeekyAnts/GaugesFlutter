@@ -238,11 +238,7 @@ class Pointer {
               textPainter.height + height! + extraOffset * 2);
         } else {
           center = Offset(
-              offset.dx + textPainter.width / 2,
-              offset.dy +
-                  textPainter.height / 2 -
-                  textPainter.height / 2 -
-                  extraOffset);
+              offset.dx + textPainter.width / 2, offset.dy + extraOffset);
         }
         canvas.save();
         canvas.translate(center.dx, center.dy);
