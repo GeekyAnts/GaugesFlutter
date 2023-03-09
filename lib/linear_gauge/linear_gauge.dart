@@ -35,7 +35,8 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
     this.valueBarPosition = ValueBarPosition.center,
-    this.valueBarOffset = 0.0,
+    @Deprecated('Use a list of ValueBars with individual offsets instead')
+        this.valueBarOffset = 0.0,
     this.valueBar = const [],
     this.pointers = const [],
   }) : super(key: key);
