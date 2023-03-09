@@ -845,7 +845,10 @@ class Pointer {
     final position = Offset(offset.dx, offset.dy);
     final path = Path();
     path.moveTo(position.dx - (pointerWidth / 2), yPos);
-    path.lineTo(position.dx, position.dy);
+    rulerPosition == RulerPosition.top
+        ? path.lineTo(position.dx, position.dy)
+        : path.lineTo(position.dx, position.dy - gaugeHeight);
+
     path.lineTo(position.dx + (pointerWidth / 2), yPos);
     canvas.drawPath(path, paint);
 

@@ -15,13 +15,13 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
       body: Center(
         child: LinearGauge(
           rulers: RulerStyle(
-              inverseRulers: false, rulerPosition: RulerPosition.top),
+              inverseRulers: false, rulerPosition: RulerPosition.center),
           pointers: [
             Pointer(
               value: 25,
               showLabel: true,
               width: 20,
-              height: 120,
+              height: 20,
               quarterTurns: QuarterTurns.one,
               labelStyle: TextStyle(color: Colors.red),
               color: Colors.blue,
