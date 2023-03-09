@@ -149,10 +149,16 @@ class Pointer {
     Canvas canvas,
     Offset offset,
     RenderLinearGauge linearGauge,
+    // double? value,
+    // Color? color,
   ) {
     switch (shape) {
       case PointerShape.circle:
-        _drawCirclePointer(canvas, offset, linearGauge);
+        _drawCirclePointer(
+          canvas,
+          offset,
+          linearGauge,
+        );
         break;
       case PointerShape.rectangle:
         _drawRectangle(canvas, offset, linearGauge);
@@ -179,43 +185,73 @@ class Pointer {
   ) {
     double extraOffset = 4;
     Offset center;
-    if (quarterTurns == QuarterTurns.zero) {
-      rulerPosition == RulerPosition.top
-          ? center = Offset(offset.dx, height! + extraOffset)
-          : center = Offset(offset.dx, offset.dy);
+    switch (quarterTurns) {
+      case QuarterTurns.zero:
+        if (rulerPosition == RulerPosition.top) {
+          center = Offset(offset.dx, height! + extraOffset);
+        } else {
+          center = Offset(offset.dx, offset.dy);
+        }
+        textPainter.paint(canvas, center);
+        break;
 
-      textPainter.paint(canvas, center);
-    } else if (quarterTurns == QuarterTurns.two) {
-      center = Offset(offset.dx + textPainter.width / 2,
-          offset.dy + textPainter.height / 2);
-      canvas.save();
-      canvas.translate(center.dx, center.dy);
-      canvas.rotate(180 * pi / 180);
-      textPainter.paint(
-        canvas,
-        Offset(-textPainter.width / 2, -textPainter.height / 2),
-      );
-      canvas.restore();
-    } else {
-      center = rulerPosition == RulerPosition.top
-          ? Offset(offset.dx + textPainter.width / 2,
-              textPainter.height + height! + extraOffset * 2)
-          : Offset(
+      case QuarterTurns.two:
+        if (rulerPosition == RulerPosition.top) {
+          center = Offset(offset.dx + textPainter.width / 2,
+              height! + textPainter.height / 2 + extraOffset);
+        } else {
+          center = Offset(offset.dx + textPainter.width / 2,
+              -height! - textPainter.height / 2 - extraOffset);
+        }
+        canvas.save();
+        canvas.translate(center.dx, center.dy);
+        canvas.rotate(180 * pi / 180);
+        textPainter.paint(
+            canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+        canvas.restore();
+        break;
+
+      case QuarterTurns.one:
+        if (rulerPosition == RulerPosition.top) {
+          center = Offset(offset.dx + textPainter.width / 2,
+              textPainter.height + height! + extraOffset * 2);
+        } else {
+          center = Offset(
               offset.dx + textPainter.width / 2,
               offset.dy +
                   textPainter.height / 2 -
                   textPainter.height / 2 -
                   extraOffset);
-      canvas.save();
-      canvas.translate(center.dx, center.dy);
-      quarterTurns == QuarterTurns.three
-          ? canvas.rotate(-90 * pi / 180)
-          : canvas.rotate(90 * pi / 180);
-      textPainter.paint(
-        canvas,
-        Offset(-textPainter.width / 2, -textPainter.height / 2),
-      );
-      canvas.restore();
+        }
+        canvas.save();
+        canvas.translate(center.dx, center.dy);
+        canvas.rotate(90 * pi / 180);
+        textPainter.paint(
+            canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+        canvas.restore();
+        break;
+
+      case QuarterTurns.three:
+        if (rulerPosition == RulerPosition.top) {
+          center = Offset(offset.dx + textPainter.width / 2,
+              textPainter.height + height! + extraOffset * 2);
+        } else {
+          center = Offset(
+              offset.dx + textPainter.width / 2,
+              offset.dy +
+                  textPainter.height / 2 -
+                  textPainter.height / 2 -
+                  extraOffset);
+        }
+        canvas.save();
+        canvas.translate(center.dx, center.dy);
+
+        canvas.rotate(-90 * pi / 180);
+
+        textPainter.paint(
+            canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+        canvas.restore();
+        break;
     }
   }
 
@@ -268,17 +304,14 @@ class Pointer {
       );
       canvas.restore();
     }
-
-    // textPainter.paint(
-    //   canvas,
-    //   Offset(-textPainter.width / 2, -textPainter.height / 2),
-    // );
-    // canvas.restore();
   }
 
   void _drawCirclePointer(
-      Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
-    Color pointerColor = linearGauge.getPointer.color!;
+    Canvas canvas,
+    Offset offset,
+    RenderLinearGauge linearGauge,
+  ) {
+    Color pointerColor = color!;
     // double height = linearGauge.getPointer.height!;
     double width = linearGauge.getPointer.width!;
     double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
@@ -289,6 +322,15 @@ class Pointer {
     paint.color = pointerColor;
     late double yPos;
     linearGauge.getPointer;
+
+    double endValue = linearGauge.getEnd;
+    double startValue = linearGauge.getStart;
+    double totalWidth = 1415.5;
+
+    //  width of the value bar in pixels based on the value
+    double valueInPX =
+        ((value! - startValue) / (endValue - startValue)) * totalWidth;
+    offset = Offset(valueInPX + 0, offset.dy);
 
     if (linearGauge.rulerPosition == RulerPosition.bottom) {
       yPos = offset.dy - ((width / 2) + gaugeHeight);
@@ -547,6 +589,7 @@ class Pointer {
     }
   }
 
+  // Arrow Pointer Draw Method
   void _drawArrowPointer(
     Canvas canvas,
     Offset offset,
@@ -578,5 +621,192 @@ class Pointer {
       path.lineTo(position.dx, position.dy - primaryRulerHeight);
     }
     canvas.drawPath(path, paint);
+  }
+
+  void drawCirclePointer(
+    Canvas canvas,
+    double start,
+    double end,
+    Offset offset,
+    RenderLinearGauge linearGauge,
+  ) {
+    Color pointerColor = color!;
+    double pointerWidth = width!;
+    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
+
+    final paint = Paint();
+    paint.color = pointerColor;
+    late double yPos;
+    linearGauge.getPointer;
+
+    double endValue = linearGauge.getEnd;
+    double startValue = linearGauge.getStart;
+    double totalWidth = end;
+
+    //  width of the [Pointer]  in pixels based on the value
+    double valueInPX =
+        ((value! - startValue) / (endValue - startValue)) * totalWidth;
+    offset = Offset(valueInPX + start, offset.dy);
+
+    // Adjusting the position of the pointer based on the [RulerPosition]
+    switch (linearGauge.rulerPosition) {
+      case RulerPosition.bottom:
+        yPos = offset.dy - ((pointerWidth / 2) + gaugeHeight);
+        break;
+      case RulerPosition.center:
+        yPos = offset.dy - ((pointerWidth / 2) + primaryRulerHeight / 2);
+        break;
+      case RulerPosition.top:
+        yPos = offset.dy + ((pointerWidth / 2));
+        break;
+      default:
+        RulerPosition.bottom;
+        break;
+    }
+
+    final position = Offset(offset.dx, yPos);
+    canvas.drawCircle(position, pointerWidth / 2, paint);
+
+    // Drawing the TextLabel for the pointer
+    if (showLabel) {
+      final textSpan = TextSpan(
+        text:
+            value == null ? linearGauge.getValue.toString() : value.toString(),
+        style: labelStyle ??
+            TextStyle(
+              color: getPointerColor,
+              fontSize: 12,
+            ),
+      );
+
+      final textPainter = TextPainter(
+        text: textSpan,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      )..layout();
+
+      // Draw the text centered at the rotated canvas origin
+      switch (quarterTurns) {
+        case QuarterTurns.zero:
+          textPainter.text = textSpan;
+          textPainter.layout();
+          final textOffset = Offset(position.dx - textPainter.width / 2,
+              position.dy - textPainter.height / 2);
+          textPainter.paint(canvas, textOffset);
+          break;
+
+        case QuarterTurns.two:
+          textPainter.text = textSpan;
+          textPainter.layout();
+          final center = position;
+          canvas.save();
+          canvas.translate(center.dx, center.dy);
+          canvas.rotate(180 * pi / 180);
+          textPainter.paint(
+              canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+          canvas.restore();
+          break;
+
+        case QuarterTurns.one:
+          textPainter.text = textSpan;
+          textPainter.layout();
+          final center = position;
+          canvas.save();
+          canvas.translate(center.dx, center.dy);
+          canvas.rotate(90 * pi / 180);
+          textPainter.paint(
+              canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+          canvas.restore();
+          break;
+        case QuarterTurns.three:
+          textPainter.text = textSpan;
+          textPainter.layout();
+          final center = position;
+          canvas.save();
+          canvas.translate(center.dx, center.dy);
+          canvas.rotate(-90 * pi / 180);
+          textPainter.paint(
+              canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+          canvas.restore();
+          break;
+        default:
+          QuarterTurns.zero;
+      }
+    }
+  }
+
+  // Drawing the Rectangle
+  void drawRectangle(Canvas canvas, double start, double end, Offset offset,
+      RenderLinearGauge linearGauge) {
+    double pointerHeight = height!;
+    double pointerWidth = width!;
+    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
+
+    final paint = Paint();
+    paint.color = color!;
+
+    double endValue = linearGauge.getEnd;
+    double startValue = linearGauge.getStart;
+    double totalWidth = end;
+
+    double valueInPX =
+        ((value! - startValue) / (endValue - startValue)) * totalWidth;
+
+    offset = Offset(valueInPX + start, offset.dy);
+
+    double yPos;
+    switch (rulerPosition) {
+      case RulerPosition.top:
+        yPos = offset.dy;
+        break;
+      case RulerPosition.center:
+        yPos = offset.dy - pointerHeight - (2 * gaugeHeight);
+        break;
+      case RulerPosition.bottom:
+        yPos = offset.dy - gaugeHeight - pointerHeight;
+        break;
+      default:
+        yPos = offset.dy - gaugeHeight - pointerHeight;
+        break;
+    }
+
+    double xPos = offset.dx - pointerWidth / 2;
+
+    final position = Offset(xPos / 2, yPos);
+    final rectCenter =
+        Offset(xPos + pointerWidth / 2, yPos + pointerHeight / 2);
+    Rect pointerContainer =
+        Rect.fromLTWH(xPos, position.dy, pointerWidth, pointerHeight);
+
+    canvas.drawRect(pointerContainer, paint);
+
+    // Drawing the TextLabel for the pointer
+    if (showLabel) {
+      final textSpan = TextSpan(
+          text: value == null
+              ? linearGauge.getValue.toString()
+              : value.toString(),
+          style: labelStyle ??
+              TextStyle(
+                color: getPointerColor,
+                fontSize: 12,
+              ));
+
+      final textPainter = TextPainter(
+        text: textSpan,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      )..layout();
+      Offset textOffset;
+      rulerPosition == RulerPosition.top
+          ? textOffset = Offset(rectCenter.dx - textPainter.width / 2,
+              pointerHeight + textPainter.height / 2 - yPos)
+          : textOffset = Offset(
+              rectCenter.dx - textPainter.width / 2, yPos - textPainter.height);
+      _drawTextRectangle(canvas, textSpan, textPainter, textOffset,
+          quarterTurns!, rulerPosition);
+    }
   }
 }

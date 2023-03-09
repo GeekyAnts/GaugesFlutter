@@ -73,6 +73,10 @@ class RenderLinearGauge extends RenderBox {
         _valueBar = valueBar,
         _pointers = pointers;
 
+//! For getting Gauge Values
+  double gaugeStart = 0;
+  double gaugeEnd = 0;
+
   ///
   /// Getter and Setter for the [_start] parameter.
   ///
@@ -638,6 +642,8 @@ class RenderLinearGauge extends RenderBox {
           ((getValue - getStart) / (getEnd - getStart)) * totalWidth;
     }
 
+    gaugeStart = start;
+    gaugeEnd = end;
     // if pointer value is null then draw the value in the gauge container
     if (_pointer.value == null) {
       _valueInPixel = totalValOnPixel;
@@ -899,6 +905,23 @@ class RenderLinearGauge extends RenderBox {
       firstOff,
       this,
     );
+
+// for (int j = 0; j < getValueBar.length; j++) {
+//         getValueBar[j].drawValueBar(canvas, getStart, end, totalWidth, this);
+//       }
+
+    //!
+
+    for (int i = 0; i < getPointers.length; i++) {
+      getPointers[i].drawRectangle(
+        canvas,
+        gaugeStart,
+        gaugeEnd,
+        firstOff,
+        this,
+      );
+    }
+
     canvas.restore();
   }
 }
