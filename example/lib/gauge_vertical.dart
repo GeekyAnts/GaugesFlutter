@@ -15,6 +15,9 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
       body: Center(
         child: LinearGauge(
           gaugeOrientation: GaugeOrientation.vertical,
+          rulers: const RulerStyle(
+            rulerPosition: RulerPosition.right,
+          ),
         ),
       ),
     );

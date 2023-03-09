@@ -19,7 +19,7 @@ class RulerStyle {
       fontWeight: FontWeight.normal,
     ),
     this.showLabel = true,
-    this.rulerPosition = RulerPosition.bottom,
+    required this.rulerPosition,
     this.labelOffset = 0,
     this.rulersOffset = 0,
     this.inverseRulers = false,

@@ -44,6 +44,28 @@ class LinearGauge extends LeafRenderObjectWidget {
                   ? RulerPosition.right
                   : RulerPosition.bottom,
             ),
+        assert(() {
+          if (gaugeOrientation == GaugeOrientation.horizontal) {
+            if (rulers?.rulerPosition == RulerPosition.bottom ||
+                rulers?.rulerPosition == RulerPosition.center ||
+                rulers?.rulerPosition == RulerPosition.top) {
+              return true;
+            } else {
+              assert(false,
+                  "Invalid ruler position. Rulers must be horizontal, positioned at top, bottom, or center.");
+            }
+          } else {
+            if (rulers?.rulerPosition == RulerPosition.right ||
+                rulers?.rulerPosition == RulerPosition.center ||
+                rulers?.rulerPosition == RulerPosition.top) {
+              return true;
+            } else {
+              assert(false,
+                  "Invalid ruler position. Rulers must be vertical, positioned at left, right, or center.");
+            }
+          }
+          return true;
+        }()),
         super(key: key);
 
   ///

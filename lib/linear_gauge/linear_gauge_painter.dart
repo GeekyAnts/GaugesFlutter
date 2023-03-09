@@ -699,13 +699,21 @@ class RenderLinearGauge extends RenderBox {
       canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
-
-      gaugeContainer = Rect.fromLTWH(
-        !getInversedRulers ? start : (start + end),
-        offset.dy,
-        !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
-        getLinearGaugeBoxDecoration.height,
-      );
+      if (getGaugeOrientation == GaugeOrientation.horizontal) {
+        gaugeContainer = Rect.fromLTWH(
+          !getInversedRulers ? start : (start + end),
+          offset.dy,
+          !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
+          getLinearGaugeBoxDecoration.height,
+        );
+      } else {
+        gaugeContainer = Rect.fromLTWH(
+          offset.dy,
+          !getInversedRulers ? start : (start + end),
+          getLinearGaugeBoxDecoration.height,
+          !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
+        );
+      }
 
       if (getLinearGaugeBoxDecoration.linearGradient != null) {
         _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
@@ -871,7 +879,9 @@ class RenderLinearGauge extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final desiredWidth = constraints.maxWidth;
+    final desiredWidth = getGaugeOrientation == GaugeOrientation.horizontal
+        ? constraints.maxWidth
+        : constraints.minWidth;
     final desiredHeight = getGaugeOrientation == GaugeOrientation.horizontal
         ? constraints.minHeight
         : constraints.maxHeight;

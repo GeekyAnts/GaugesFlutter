@@ -75,6 +75,15 @@ class LinearGaugeLabel {
         size.height - (endLabel.height / 2) - (pointer.width! / 2),
         linearGaugeBoxDecoration.width,
       );
+      // this will allow to start from bottom
+      Offset temp = a;
+      a = b;
+      b = temp;
+    }
+    if (isRulersInversed) {
+      Offset temp = a;
+      a = b;
+      b = temp;
     }
 
     if (isCustomLabelsGiven) {
@@ -119,7 +128,6 @@ class LinearGaugeLabel {
             Offset(x, primaryRulersHeight)
           ];
         } else {
-          print("${x},${y}");
           primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
             Offset(y, x),
             Offset(primaryRulersHeight, x - y)
