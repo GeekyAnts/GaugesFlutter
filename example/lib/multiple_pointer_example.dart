@@ -14,22 +14,9 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
     return const Scaffold(
       body: Center(
         child: LinearGauge(
-          // showLinearGaugeContainer: false,
           rulers: RulerStyle(
               inverseRulers: false, rulerPosition: RulerPosition.bottom),
           pointers: [
-            Pointer(
-              value: 25,
-              showLabel: true,
-              width: 20,
-              height: 20,
-              shape: PointerShape.circle,
-              quarterTurns: QuarterTurns.one,
-              labelStyle: TextStyle(color: Colors.red),
-              color: Colors.blue,
-              // quarterTurns: QuarterTurns.three
-              // shape: PointerShape.circle,
-            ),
             Pointer(
               value: 28,
               width: 20,
@@ -61,16 +48,6 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
               shape: PointerShape.triangle,
               labelStyle: TextStyle(color: Colors.green),
               color: Colors.red,
-              // shape: PointerShape.circle,
-            ),
-            Pointer(
-              value: 18,
-              // width: 20,
-              // height: 30,
-              showLabel: true,
-              shape: PointerShape.triangle,
-              labelStyle: TextStyle(color: Colors.red),
-              color: Colors.blue,
               // shape: PointerShape.circle,
             ),
             Pointer(

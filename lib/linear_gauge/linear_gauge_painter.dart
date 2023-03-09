@@ -73,7 +73,7 @@ class RenderLinearGauge extends RenderBox {
         _valueBar = valueBar,
         _pointers = pointers;
 
-//! For getting Gauge Values
+  // For getting Gauge Values
   double gaugeStart = 0;
   double gaugeEnd = 0;
 
