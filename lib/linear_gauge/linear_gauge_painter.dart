@@ -38,6 +38,7 @@ class RenderLinearGauge extends RenderBox {
     required double valueBarOffset,
     required List<ValueBar> valueBar,
     required bool inversedRulers,
+    required List<Pointer> pointers,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -69,7 +70,8 @@ class RenderLinearGauge extends RenderBox {
         _inversedRulers = inversedRulers,
         _valueBarPosition = valueBarPosition,
         _valueBarOffset = valueBarOffset,
-        _valueBar = valueBar;
+        _valueBar = valueBar,
+        _pointers = pointers;
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -422,6 +424,17 @@ class RenderLinearGauge extends RenderBox {
   set setValueBar(List<ValueBar> val) {
     if (_valueBar == val) return;
     _valueBar = val;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [Pointer] parameter.
+  ///
+  List<Pointer> get getPointers => _pointers;
+  List<Pointer> _pointers = <Pointer>[];
+  set setPointers(List<Pointer> val) {
+    if (_pointers == val) return;
+    _pointers = val;
     markNeedsPaint();
   }
 
