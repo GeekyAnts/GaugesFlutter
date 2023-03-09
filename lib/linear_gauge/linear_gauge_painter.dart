@@ -899,12 +899,14 @@ class RenderLinearGauge extends RenderBox {
             firstOffset;
 
     // Drawing the Pointer
-    getPointer.drawPointer(
-      _pointer.shape,
-      canvas,
-      firstOff,
-      this,
-    );
+    // getPointer.drawPointer(
+    //   _pointer.shape,
+    //   canvas,
+    //   gaugeStart,
+    //   gaugeEnd,
+    //   firstOff,
+    //   this,
+    // );
 
 // for (int j = 0; j < getValueBar.length; j++) {
 //         getValueBar[j].drawValueBar(canvas, getStart, end, totalWidth, this);
@@ -913,7 +915,8 @@ class RenderLinearGauge extends RenderBox {
     //!
 
     for (int i = 0; i < getPointers.length; i++) {
-      getPointers[i].drawTrianglePointer(
+      getPointers[i].drawPointer(
+        getPointers[i].shape,
         canvas,
         gaugeStart,
         gaugeEnd,
