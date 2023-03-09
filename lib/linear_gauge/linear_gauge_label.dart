@@ -86,6 +86,11 @@ class LinearGaugeLabel {
       b = temp;
     }
 
+    if (isRulersInversed) {
+      Offset temp = a;
+      a = b;
+      b = temp;
+    }
     if (isCustomLabelsGiven) {
       for (int i = 0; i < _linearGaugeLabel.length; i++) {
         // n is the nth point of the line
@@ -96,23 +101,44 @@ class LinearGaugeLabel {
                 100);
 
         if (i == 0) {
-          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
-            a,
-            Offset(a.dx, primaryRulersHeight)
-          ];
+          if (GaugeOrientation.horizontal == orientation) {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              a,
+              Offset(a.dx, primaryRulersHeight)
+            ];
+          } else {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              Offset(a.dy, a.dx),
+              Offset(primaryRulersHeight, a.dx)
+            ];
+          }
         } else if (i == _linearGaugeLabel.length - 1) {
-          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
-            b,
-            Offset(b.dx, primaryRulersHeight)
-          ];
+          if (GaugeOrientation.horizontal == orientation) {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              b,
+              Offset(b.dx, primaryRulersHeight)
+            ];
+          } else {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              Offset(b.dy, b.dx),
+              Offset(primaryRulersHeight, b.dx)
+            ];
+          }
         } else {
           double x = ((n - 1) / n) * a.dx + (1 / n) * b.dx;
           double y = ((n - 1) / n) * a.dy + (1 / n) * b.dy;
 
-          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
-            Offset(x, y),
-            Offset(x, primaryRulersHeight)
-          ];
+          if (GaugeOrientation.horizontal == orientation) {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              Offset(x, y),
+              Offset(x, primaryRulersHeight)
+            ];
+          } else {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              Offset(y, x),
+              Offset(primaryRulersHeight, x)
+            ];
+          }
         }
       }
     } else {

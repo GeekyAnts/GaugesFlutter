@@ -32,6 +32,12 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
             showLabel: true,
             labelOffset: 10),
         gaugeOrientation: GaugeOrientation.vertical,
+        customLabels: [
+          CustomRulerLabel(text: "10%", value: 10),
+          CustomRulerLabel(text: "20%", value: 20),
+          CustomRulerLabel(text: "25%", value: 25),
+          CustomRulerLabel(text: "30%", value: 30),
+        ],
       )),
     );
   }
