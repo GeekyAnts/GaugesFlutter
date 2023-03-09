@@ -130,7 +130,7 @@ class LinearGaugeLabel {
         } else {
           primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
             Offset(y, x),
-            Offset(primaryRulersHeight, x - y)
+            Offset(primaryRulersHeight, x)
           ];
           // Inverted the axis here
           // primaryRulers[_linearGaugeLabel[i].value!.toString()] = [

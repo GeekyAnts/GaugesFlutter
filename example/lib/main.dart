@@ -23,8 +23,16 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: MyVerticalGauge(),
+    return Scaffold(
+      body: Center(
+          child: LinearGauge(
+        rulers: RulerStyle(
+            rulersOffset: 10,
+            rulerPosition: RulerPosition.right,
+            showLabel: true,
+            labelOffset: 10),
+        gaugeOrientation: GaugeOrientation.vertical,
+      )),
     );
   }
 }
