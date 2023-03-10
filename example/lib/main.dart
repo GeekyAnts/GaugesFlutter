@@ -1,9 +1,15 @@
-import 'package:example/multiple_pointer_example.dart';
+import 'package:example/gauge_vertical.dart';
 import 'package:flutter/material.dart';
+import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
 
 void main() {
-  runApp(const MaterialApp(
-      debugShowCheckedModeBanner: false, home: MyGaugeExample()));
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyGaugeExample(),
+    ),
+  );
 }
 
 class MyGaugeExample extends StatefulWidget {
@@ -16,6 +22,6 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return const MultiplePointerExample();
+    return MyVerticalGauge();
   }
 }

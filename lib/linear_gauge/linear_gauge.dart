@@ -20,7 +20,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///),
   /// ```
   ///
-  const LinearGauge({
+  LinearGauge({
     Key? key,
     this.start = 0,
     this.end = 100,
@@ -31,13 +31,41 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
     this.labelTopMargin = 0.0,
     this.pointer = const Pointer(),
-    this.rulers = const RulerStyle(),
+    RulerStyle? rulers,
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
     this.valueBarPosition = ValueBarPosition.center,
     this.valueBar = const [],
     this.pointers = const [],
-  }) : super(key: key);
+  })  : rulers = rulers ??
+            RulerStyle(
+              rulerPosition: gaugeOrientation == GaugeOrientation.vertical
+                  ? RulerPosition.right
+                  : RulerPosition.bottom,
+            ),
+        assert(() {
+          if (gaugeOrientation == GaugeOrientation.horizontal) {
+            if (rulers?.rulerPosition == RulerPosition.bottom ||
+                rulers?.rulerPosition == RulerPosition.center ||
+                rulers?.rulerPosition == RulerPosition.top) {
+              return true;
+            } else {
+              assert(false,
+                  "Invalid ruler position. Rulers must be horizontal, positioned at top, bottom, or center.");
+            }
+          } else {
+            if (rulers?.rulerPosition == RulerPosition.right ||
+                rulers?.rulerPosition == RulerPosition.center ||
+                rulers?.rulerPosition == RulerPosition.left) {
+              return true;
+            } else {
+              assert(false,
+                  "Invalid ruler position. Rulers must be vertical, positioned at left, right, or center.");
+            }
+          }
+          return true;
+        }()),
+        super(key: key);
 
   ///
   /// `start` Sets the starting label of the [LinearGauge] Container
