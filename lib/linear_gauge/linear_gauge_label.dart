@@ -47,21 +47,27 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
-      Size startLabel,
-      Size endLabel,
-      Size size,
-      double end,
-      double primaryRulersHeight,
-      double linearGaugeBoxContainerHeight,
-      double labelTopMargin,
-      Pointer pointer,
-      bool isCustomLabelsGiven) {
+    Size startLabel,
+    Size endLabel,
+    Size size,
+    double end,
+    double primaryRulersHeight,
+    double linearGaugeBoxContainerHeight,
+    double labelTopMargin,
+    Pointer pointer,
+    bool isCustomLabelsGiven,
+    bool isRulersInversed,
+  ) {
     primaryRulers.clear();
-
     Offset a = Offset((startLabel.width / 2) + (pointer.width! / 2),
         linearGaugeBoxContainerHeight);
     Offset b = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
         linearGaugeBoxContainerHeight);
+    if (isRulersInversed) {
+      Offset temp = a;
+      a = b;
+      b = temp;
+    }
 
     if (isCustomLabelsGiven) {
       for (int i = 0; i < _linearGaugeLabel.length; i++) {
