@@ -13,8 +13,8 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: const LinearGauge(
-          gaugeOrientation: GaugeOrientation.vertical,
+        child: LinearGauge(
+          gaugeOrientation: GaugeOrientation.horizontal,
         ),
       ),
     );

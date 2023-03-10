@@ -37,9 +37,9 @@ class RenderLinearGauge extends RenderBox {
     required List<CustomRulerLabel> customLabels,
     required double rulersOffset,
     required ValueBarPosition valueBarPosition,
-    required double valueBarOffset,
     required List<ValueBar> valueBar,
     required bool inversedRulers,
+    required List<Pointer> pointers,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -70,8 +70,12 @@ class RenderLinearGauge extends RenderBox {
         _rulersOffset = rulersOffset,
         _inversedRulers = inversedRulers,
         _valueBarPosition = valueBarPosition,
-        _valueBarOffset = valueBarOffset,
-        _valueBar = valueBar;
+        _valueBar = valueBar,
+        _pointers = pointers;
+
+  // For getting Gauge Values
+  double gaugeStart = 0;
+  double gaugeEnd = 0;
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -406,17 +410,6 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [valueBarOffset] parameter.
-  ///
-  double get valueBarOffset => _valueBarOffset;
-  double _valueBarOffset;
-  set setValueBarOffset(double val) {
-    if (_valueBarOffset == val) return;
-    _valueBarOffset = val;
-    markNeedsPaint();
-  }
-
-  ///
   /// Getter and Setter for the [valueBar] parameter.
   ///
   List<ValueBar> get getValueBar => _valueBar;
@@ -424,6 +417,17 @@ class RenderLinearGauge extends RenderBox {
   set setValueBar(List<ValueBar> val) {
     if (_valueBar == val) return;
     _valueBar = val;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [Pointer] parameter.
+  ///
+  List<Pointer> get getPointers => _pointers;
+  List<Pointer> _pointers = <Pointer>[];
+  set setPointers(List<Pointer> val) {
+    if (_pointers == val) return;
+    _pointers = val;
     markNeedsPaint();
   }
 
@@ -439,7 +443,9 @@ class RenderLinearGauge extends RenderBox {
 
   void _calculateRulerPoints() {
     if (getCustomLabels!.isEmpty) {
-      double screenSize = 3 * size.width;
+      double screenSize = getGaugeOrientation == GaugeOrientation.horizontal
+          ? 3 * size.width
+          : 3 * size.height;
       final double count = math.max(screenSize / 100, 1.0);
       double interval = (getEnd - getStart) / (screenSize / 100);
       final List<double> intervalDivisions = <double>[10, 5, 2, 1];
@@ -479,17 +485,17 @@ class RenderLinearGauge extends RenderBox {
             : getStart.toInt().toString());
 
     _linearGaugeLabel.generateOffSetsForLabel(
-      _startLabelSize,
-      _endLabelSize,
-      size,
-      getEnd,
-      getPrimaryRulersHeight,
-      getLinearGaugeBoxDecoration.height,
-      getLabelTopMargin,
-      _pointer,
-      getCustomLabels!.isNotEmpty,
-      getInversedRulers,
-    );
+        _startLabelSize,
+        _endLabelSize,
+        size,
+        getEnd,
+        getPrimaryRulersHeight,
+        getLinearGaugeBoxDecoration,
+        getLabelTopMargin,
+        _pointer,
+        getCustomLabels!.isNotEmpty,
+        getInversedRulers,
+        getGaugeOrientation);
   }
 
   void _drawLabels(
@@ -564,12 +570,21 @@ class RenderLinearGauge extends RenderBox {
         );
         break;
       case RulerPosition.center:
-        double labelOffset =
-            (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
-        labelPosition = Offset(
-          (list[0].dx - (labelSize.width / 2)),
-          (list[0].dy + getPrimaryRulersHeight + labelOffset),
-        );
+        if (getGaugeOrientation == GaugeOrientation.horizontal) {
+          double labelOffset =
+              (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
+          labelPosition = Offset(
+            (list[0].dx - (labelSize.width / 2)),
+            (list[0].dy / 2 + getPrimaryRulersHeight / 2 + labelOffset),
+          );
+        } else {
+          double labelOffset =
+              (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
+          labelPosition = Offset(
+            (list[0].dx / 2 + getPrimaryRulersHeight / 2 + labelOffset),
+            (list[0].dy - (labelSize.height / 2)),
+          );
+        }
         break;
       case RulerPosition.bottom:
         double labelOffset =
@@ -577,6 +592,26 @@ class RenderLinearGauge extends RenderBox {
         labelPosition = Offset(
           (list[0].dx - (labelSize.width / 2)),
           (list[0].dy + getPrimaryRulersHeight + labelOffset + getRulersOffset),
+        );
+        break;
+      case RulerPosition.right:
+        double labelOffset =
+            (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
+        labelPosition = Offset(
+          (list[0].dx +
+              (getPrimaryRulersHeight + labelOffset + getRulersOffset)),
+          (list[0].dy - (labelSize.height / 2)),
+        );
+        break;
+      case RulerPosition.left:
+        double labelOffset =
+            (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
+        labelPosition = Offset(
+          -(getPrimaryRulersHeight +
+              labelOffset +
+              getRulersOffset +
+              labelSize.width),
+          (list[0].dy - (labelSize.height / 2)),
         );
         break;
     }
@@ -600,24 +635,41 @@ class RenderLinearGauge extends RenderBox {
     late double start;
 
     if (showLabel) {
-      end = size.width -
-          ((_endLabelSize.width / 2) +
-              (_startLabelSize.width / 2) +
-              (_pointer.width!));
+      end = GaugeOrientation.horizontal == getGaugeOrientation
+          ? size.width -
+              ((_endLabelSize.width / 2) +
+                  (_startLabelSize.width / 2) +
+                  (_pointer.width!))
+          : (size.height -
+              ((_endLabelSize.height / 2) +
+                  (_startLabelSize.height / 2) +
+                  (_pointer.width!)));
 
-      start = (offset.dx + (_startLabelSize.width / 2) + (_pointer.width! / 2));
+      start = GaugeOrientation.horizontal == getGaugeOrientation
+          ? (offset.dx + (_startLabelSize.width / 2) + (_pointer.width! / 2))
+          : (offset.dx + (_startLabelSize.height / 2) + (_pointer.width! / 2));
     } else {
-      end = size.width;
+      end = GaugeOrientation.horizontal == getGaugeOrientation
+          ? size.width
+          : size.height;
       start = offset.dx;
     }
 
     late Rect gaugeContainer;
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
       gaugeContainer = Rect.fromLTWH(
-          start, offset.dy, end, getLinearGaugeBoxDecoration.height);
+        start,
+        offset.dy,
+        end,
+        getLinearGaugeBoxDecoration.height,
+      );
     } else {
       gaugeContainer = Rect.fromLTWH(
-          start, offset.dy, getLinearGaugeBoxDecoration.width, size.height);
+        offset.dy,
+        start,
+        getLinearGaugeBoxDecoration.width,
+        end,
+      );
     }
 
     double totalWidth = end;
@@ -630,6 +682,8 @@ class RenderLinearGauge extends RenderBox {
           ((getValue - getStart) / (getEnd - getStart)) * totalWidth;
     }
 
+    gaugeStart = start;
+    gaugeEnd = end;
     // if pointer value is null then draw the value in the gauge container
     if (_pointer.value == null) {
       _valueInPixel = totalValOnPixel;
@@ -650,12 +704,21 @@ class RenderLinearGauge extends RenderBox {
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
 
-      gaugeContainer = Rect.fromLTWH(
-        !getInversedRulers ? start : (start + end),
-        offset.dy,
-        !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
-        getLinearGaugeBoxDecoration.height,
-      );
+      if (getGaugeOrientation == GaugeOrientation.horizontal) {
+        gaugeContainer = Rect.fromLTWH(
+          !getInversedRulers ? start : (start + end),
+          offset.dy,
+          !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
+          getLinearGaugeBoxDecoration.height,
+        );
+      } else {
+        gaugeContainer = Rect.fromLTWH(
+          offset.dy,
+          !getInversedRulers ? (start + end) : start,
+          getLinearGaugeBoxDecoration.height,
+          !getInversedRulers ? -totalValOnPixel : totalValOnPixel,
+        );
+      }
 
       if (getLinearGaugeBoxDecoration.linearGradient != null) {
         _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
@@ -673,13 +736,21 @@ class RenderLinearGauge extends RenderBox {
       canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
-
-      gaugeContainer = Rect.fromLTWH(
-        !getInversedRulers ? start : (start + end),
-        offset.dy,
-        !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
-        getLinearGaugeBoxDecoration.height,
-      );
+      if (getGaugeOrientation == GaugeOrientation.horizontal) {
+        gaugeContainer = Rect.fromLTWH(
+          !getInversedRulers ? start : (start + end),
+          offset.dy,
+          !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
+          getLinearGaugeBoxDecoration.height,
+        );
+      } else {
+        gaugeContainer = Rect.fromLTWH(
+          offset.dy,
+          !getInversedRulers ? (start + end) : start,
+          getLinearGaugeBoxDecoration.height,
+          !getInversedRulers ? -totalValOnPixel : totalValOnPixel,
+        );
+      }
 
       if (getLinearGaugeBoxDecoration.linearGradient != null) {
         _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
@@ -739,10 +810,10 @@ class RenderLinearGauge extends RenderBox {
     int count = 0;
 
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
-      double y;
-      double x;
-      Offset primaryRulerStartPoint;
-      Color primaryRulerColor = getPrimaryRulerColor;
+      double? y;
+      double? x;
+      Offset? primaryRulerStartPoint;
+      Color? primaryRulerColor = getPrimaryRulerColor;
 
       for (int i = 0; i < rangeLinearGauge!.length; i++) {
         var range = rangeLinearGauge![i].end;
@@ -762,14 +833,21 @@ class RenderLinearGauge extends RenderBox {
           primaryRulerStartPoint = Offset(value[0].dx, -getRulersOffset);
           break;
         case RulerPosition.center:
-          //the y co-ordinate of the ending point is halved from it's original position
+          if (getGaugeOrientation == GaugeOrientation.horizontal) {
+            //the y co-ordinate of the ending point is halved from it's original position
 
-          y = (value[1].dy + getLinearGaugeBoxDecoration.height) / 2;
-          x = value[1].dx;
-          //the staring point is shifted half of the primary ruler height from the
-          //center of the gauge container
-          primaryRulerStartPoint =
-              Offset(value[0].dx, value[0].dy / 2 - getPrimaryRulersHeight / 2);
+            y = (value[1].dy + getLinearGaugeBoxDecoration.height) / 2;
+            x = value[1].dx;
+            //the staring point is shifted half of the primary ruler height from the
+            //center of the gauge container
+            primaryRulerStartPoint = Offset(
+                value[0].dx, value[0].dy / 2 - getPrimaryRulersHeight / 2);
+          } else {
+            y = value[1].dy;
+            x = (value[1].dx + getLinearGaugeBoxDecoration.width) / 2;
+            primaryRulerStartPoint = Offset(
+                value[0].dx / 2 - getPrimaryRulersHeight / 2, value[0].dy);
+          }
           break;
         case RulerPosition.bottom:
           //there is need to adjust y co-ordinate by adding the height of gauge container
@@ -781,14 +859,33 @@ class RenderLinearGauge extends RenderBox {
           primaryRulerStartPoint =
               Offset(value[0].dx, value[0].dy + getRulersOffset);
           break;
+        case RulerPosition.right:
+          if (GaugeOrientation.vertical == getGaugeOrientation) {
+            y = value[1].dy;
+            x = value[1].dx +
+                getLinearGaugeBoxDecoration.width +
+                getRulersOffset;
+            primaryRulerStartPoint =
+                Offset(value[0].dx + getRulersOffset, value[0].dy);
+          }
+
+          break;
+        case RulerPosition.left:
+          if (GaugeOrientation.vertical == getGaugeOrientation) {
+            y = value[1].dy;
+            x = -(value[1].dx + getRulersOffset);
+            primaryRulerStartPoint = Offset(-getRulersOffset, value[0].dy);
+          }
+
+          break;
       }
 
       //the ending point of the primary ruler
 
-      Offset a = Offset(x, y);
-      _primaryRulersPaint.color = primaryRulerColor;
+      Offset a = Offset(x!, y!);
+      _primaryRulersPaint.color = primaryRulerColor!;
 
-      canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
+      canvas.drawLine(primaryRulerStartPoint!, a, _primaryRulersPaint);
       if (showLabel) {
         _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
             _linearGaugeLabel.getListOfLabel[count].value!, value);
@@ -802,12 +899,18 @@ class RenderLinearGauge extends RenderBox {
         getSecondaryRulerPerInterval,
         canvas,
         _secondaryRulersPaint,
-        getSecondaryRulersHeight + getLinearGaugeBoxDecoration.height,
+        getSecondaryRulersHeight +
+            (getGaugeOrientation == GaugeOrientation.horizontal
+                ? getLinearGaugeBoxDecoration.height
+                : getLinearGaugeBoxDecoration.width),
         rulerPosition,
-        getLinearGaugeBoxDecoration.height,
         _pointer,
         rangeLinearGauge!,
-        getRulersOffset);
+        getRulersOffset,
+        getGaugeOrientation,
+        getGaugeOrientation == GaugeOrientation.horizontal
+            ? getLinearGaugeBoxDecoration.height
+            : getLinearGaugeBoxDecoration.width);
   }
 
   void _setPrimaryRulersPaint() {
@@ -831,14 +934,13 @@ class RenderLinearGauge extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final desiredWidth = constraints.maxWidth;
-<<<<<<< HEAD
-    final desiredHeight = constraints.maxHeight;
+    final desiredWidth = getGaugeOrientation == GaugeOrientation.vertical
+        ? constraints.minWidth
+        : constraints.maxWidth;
+    final desiredHeight = getGaugeOrientation == GaugeOrientation.horizontal
+        ? constraints.minHeight
+        : constraints.maxHeight;
     final desiredSize = Size(desiredWidth, desiredHeight);
-=======
-    // final desiredHeight = constraints.maxHeight;
-    final desiredSize = Size(desiredWidth, 50);
->>>>>>> abcb787b33a719c55f5a57a52f7e1a0e407074f5
     return constraints.constrain(desiredSize);
   }
 
@@ -855,6 +957,12 @@ class RenderLinearGauge extends RenderBox {
     _setSecondaryRulersPaint();
 
     _calculateRulerPoints();
+
+    if (rulerPosition == RulerPosition.center) {
+      if (getShowLinearGaugeContainer) {
+        _paintGaugeContainer(canvas, size);
+      }
+    }
 
     if (showPrimaryRulers) {
       _drawPrimaryRulers(canvas);
@@ -883,13 +991,18 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
             firstOffset;
 
-    // Drawing the Pointer
-    getPointer.drawPointer(
-      _pointer.shape,
-      canvas,
-      firstOff,
-      this,
-    );
+    // Drawing Pointers based on list of pointers added to the gauge
+    for (int i = 0; i < getPointers.length; i++) {
+      getPointers[i].drawPointer(
+        getPointers[i].shape,
+        canvas,
+        gaugeStart,
+        gaugeEnd,
+        firstOff,
+        this,
+      );
+    }
+
     canvas.restore();
   }
 }

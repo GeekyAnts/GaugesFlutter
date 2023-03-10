@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
 void main() {
-  LinearGauge linearGauge = const LinearGauge();
+  LinearGauge linearGauge = LinearGauge();
   setUp(() {
-    linearGauge = const LinearGauge(
+    linearGauge = LinearGauge(
       start: 0,
       end: 1000,
       steps: 0,
