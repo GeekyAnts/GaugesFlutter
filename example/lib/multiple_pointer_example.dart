@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
 
 class MultiplePointerExample extends StatefulWidget {
   const MultiplePointerExample({super.key});
@@ -11,33 +12,24 @@ class MultiplePointerExample extends StatefulWidget {
 class _MultiplePointerExampleState extends State<MultiplePointerExample> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: LinearGauge(
           rulers: RulerStyle(
               inverseRulers: false, rulerPosition: RulerPosition.bottom),
+          valueBar: [
+            ValueBar(value: 23, color: Colors.red),
+          ],
           pointers: [
             Pointer(
               value: 28,
               width: 20,
               height: 120,
               showLabel: true,
-              shape: PointerShape.diamond,
+              shape: PointerShape.rectangle,
               quarterTurns: QuarterTurns.two,
               labelStyle: TextStyle(color: Colors.green),
               color: Color(0xff624CAB),
-              // shape: PointerShape.circle,
-            ),
-            Pointer(
-              value: 48,
-              width: 20,
-              height: 120,
-              showLabel: true,
-              shape: PointerShape.diamond,
-
-              quarterTurns: QuarterTurns.two,
-              labelStyle: TextStyle(color: Colors.green),
-              color: Color(0xff45CB85),
               // shape: PointerShape.circle,
             ),
             Pointer(
@@ -45,10 +37,9 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
               width: 20,
               height: 50,
               showLabel: true,
-              shape: PointerShape.triangle,
+              shape: PointerShape.rectangle,
               labelStyle: TextStyle(color: Colors.green),
               color: Colors.red,
-              // shape: PointerShape.circle,
             ),
             Pointer(
               value: 8,
@@ -68,16 +59,6 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
               shape: PointerShape.rectangle,
               labelStyle: TextStyle(color: Colors.red),
               color: Color(0xffB5FFE9),
-              // shape: PointerShape.circle,
-            ),
-            Pointer(
-              value: 78,
-              width: 20,
-              height: 100,
-              showLabel: true,
-              shape: PointerShape.triangle,
-              labelStyle: TextStyle(color: Colors.red),
-              color: Colors.red,
               // shape: PointerShape.circle,
             ),
           ],
