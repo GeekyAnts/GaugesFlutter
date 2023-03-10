@@ -35,7 +35,6 @@ class RenderLinearGauge extends RenderBox {
     required List<CustomRulerLabel> customLabels,
     required double rulersOffset,
     required ValueBarPosition valueBarPosition,
-    required double valueBarOffset,
     required List<ValueBar> valueBar,
     required bool inversedRulers,
     required List<Pointer> pointers,
@@ -69,7 +68,6 @@ class RenderLinearGauge extends RenderBox {
         _rulersOffset = rulersOffset,
         _inversedRulers = inversedRulers,
         _valueBarPosition = valueBarPosition,
-        _valueBarOffset = valueBarOffset,
         _valueBar = valueBar,
         _pointers = pointers;
 
@@ -406,17 +404,6 @@ class RenderLinearGauge extends RenderBox {
   set setValueBarPosition(ValueBarPosition val) {
     if (_valueBarPosition == val) return;
     _valueBarPosition = val;
-    markNeedsPaint();
-  }
-
-  ///
-  /// Getter and Setter for the [valueBarOffset] parameter.
-  ///
-  double get valueBarOffset => _valueBarOffset;
-  double _valueBarOffset;
-  set setValueBarOffset(double val) {
-    if (_valueBarOffset == val) return;
-    _valueBarOffset = val;
     markNeedsPaint();
   }
 
