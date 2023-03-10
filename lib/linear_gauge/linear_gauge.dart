@@ -31,36 +31,32 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
     this.labelTopMargin = 0.0,
     this.pointer = const Pointer(),
-    RulerStyle? rulers,
+    required this.rulers,
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
     this.valueBarPosition = ValueBarPosition.center,
     this.valueBar = const [],
     this.pointers = const [],
-  })  : rulers = rulers ??
-            RulerStyle(
-              rulerPosition: gaugeOrientation == GaugeOrientation.vertical
-                  ? RulerPosition.right
-                  : RulerPosition.bottom,
-            ),
-        assert(() {
-          if (gaugeOrientation == GaugeOrientation.horizontal) {
-            if (rulers?.rulerPosition == RulerPosition.bottom ||
-                rulers?.rulerPosition == RulerPosition.center ||
-                rulers?.rulerPosition == RulerPosition.top) {
-              return true;
+  })  : assert(() {
+          if (rulers != null) {
+            if (gaugeOrientation == GaugeOrientation.horizontal) {
+              if (rulers.rulerPosition == RulerPosition.bottom ||
+                  rulers.rulerPosition == RulerPosition.center ||
+                  rulers.rulerPosition == RulerPosition.top) {
+                return true;
+              } else {
+                assert(false,
+                    "Invalid ruler position. Rulers must be horizontal, positioned at top, bottom, or center.");
+              }
             } else {
-              assert(false,
-                  "Invalid ruler position. Rulers must be horizontal, positioned at top, bottom, or center.");
-            }
-          } else {
-            if (rulers?.rulerPosition == RulerPosition.right ||
-                rulers?.rulerPosition == RulerPosition.center ||
-                rulers?.rulerPosition == RulerPosition.left) {
-              return true;
-            } else {
-              assert(false,
-                  "Invalid ruler position. Rulers must be vertical, positioned at left, right, or center.");
+              if (rulers.rulerPosition == RulerPosition.right ||
+                  rulers.rulerPosition == RulerPosition.center ||
+                  rulers.rulerPosition == RulerPosition.left) {
+                return true;
+              } else {
+                assert(false,
+                    "Invalid ruler position. Rulers must be vertical, positioned at left, right, or center.");
+              }
             }
           }
           return true;
