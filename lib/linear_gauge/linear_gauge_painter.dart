@@ -698,12 +698,21 @@ class RenderLinearGauge extends RenderBox {
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
 
-      gaugeContainer = Rect.fromLTWH(
-        !getInversedRulers ? start : (start + end),
-        offset.dy,
-        !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
-        getLinearGaugeBoxDecoration.height,
-      );
+      if (getGaugeOrientation == GaugeOrientation.horizontal) {
+        gaugeContainer = Rect.fromLTWH(
+          !getInversedRulers ? start : (start + end),
+          offset.dy,
+          !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
+          getLinearGaugeBoxDecoration.height,
+        );
+      } else {
+        gaugeContainer = Rect.fromLTWH(
+          offset.dy,
+          !getInversedRulers ? (start + end) : start,
+          getLinearGaugeBoxDecoration.height,
+          !getInversedRulers ? -totalValOnPixel : totalValOnPixel,
+        );
+      }
 
       if (getLinearGaugeBoxDecoration.linearGradient != null) {
         _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
@@ -731,9 +740,9 @@ class RenderLinearGauge extends RenderBox {
       } else {
         gaugeContainer = Rect.fromLTWH(
           offset.dy,
-          !getInversedRulers ? start : (start + end),
+          !getInversedRulers ? (start + end) : start,
           getLinearGaugeBoxDecoration.height,
-          !getInversedRulers ? totalValOnPixel : -totalValOnPixel,
+          !getInversedRulers ? -totalValOnPixel : totalValOnPixel,
         );
       }
 
