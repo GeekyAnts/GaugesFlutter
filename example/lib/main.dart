@@ -1,4 +1,4 @@
-import 'package:example/valuebar_position.dart';
+import 'package:example/multiple_pointer_example.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,6 +16,6 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return const MyValueBarPosition();
+    return const MultiplePointerExample();
   }
 }

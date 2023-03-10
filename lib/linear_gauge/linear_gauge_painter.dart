@@ -35,9 +35,9 @@ class RenderLinearGauge extends RenderBox {
     required List<CustomRulerLabel> customLabels,
     required double rulersOffset,
     required ValueBarPosition valueBarPosition,
-    required double valueBarOffset,
     required List<ValueBar> valueBar,
     required bool inversedRulers,
+    required List<Pointer> pointers,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -68,8 +68,12 @@ class RenderLinearGauge extends RenderBox {
         _rulersOffset = rulersOffset,
         _inversedRulers = inversedRulers,
         _valueBarPosition = valueBarPosition,
-        _valueBarOffset = valueBarOffset,
-        _valueBar = valueBar;
+        _valueBar = valueBar,
+        _pointers = pointers;
+
+  // For getting Gauge Values
+  double gaugeStart = 0;
+  double gaugeEnd = 0;
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -404,17 +408,6 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [valueBarOffset] parameter.
-  ///
-  double get valueBarOffset => _valueBarOffset;
-  double _valueBarOffset;
-  set setValueBarOffset(double val) {
-    if (_valueBarOffset == val) return;
-    _valueBarOffset = val;
-    markNeedsPaint();
-  }
-
-  ///
   /// Getter and Setter for the [valueBar] parameter.
   ///
   List<ValueBar> get getValueBar => _valueBar;
@@ -422,6 +415,17 @@ class RenderLinearGauge extends RenderBox {
   set setValueBar(List<ValueBar> val) {
     if (_valueBar == val) return;
     _valueBar = val;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [Pointer] parameter.
+  ///
+  List<Pointer> get getPointers => _pointers;
+  List<Pointer> _pointers = <Pointer>[];
+  set setPointers(List<Pointer> val) {
+    if (_pointers == val) return;
+    _pointers = val;
     markNeedsPaint();
   }
 
@@ -625,6 +629,8 @@ class RenderLinearGauge extends RenderBox {
           ((getValue - getStart) / (getEnd - getStart)) * totalWidth;
     }
 
+    gaugeStart = start;
+    gaugeEnd = end;
     // if pointer value is null then draw the value in the gauge container
     if (_pointer.value == null) {
       _valueInPixel = totalValOnPixel;
@@ -879,13 +885,18 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
             firstOffset;
 
-    // Drawing the Pointer
-    getPointer.drawPointer(
-      _pointer.shape,
-      canvas,
-      firstOff,
-      this,
-    );
+    // Drawing Pointers based on list of pointers added to the gauge
+    for (int i = 0; i < getPointers.length; i++) {
+      getPointers[i].drawPointer(
+        getPointers[i].shape,
+        canvas,
+        gaugeStart,
+        gaugeEnd,
+        firstOff,
+        this,
+      );
+    }
+
     canvas.restore();
   }
 }

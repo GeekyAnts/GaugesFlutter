@@ -35,7 +35,6 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
     this.valueBarPosition = ValueBarPosition.center,
-    this.valueBarOffset = 0.0,
     this.valueBar = const [],
     this.pointers = const [],
   }) : super(key: key);
@@ -244,17 +243,6 @@ class LinearGauge extends LeafRenderObjectWidget {
   final ValueBarPosition? valueBarPosition;
 
   ///
-  /// `valueBarOffset` sets the sets the extra room depending on the position from the [LinearGauge]
-  /// default is to `valueBarOffset =`0.0`
-  ///
-  /// ```
-  /// const LinearGauge(
-  /// valueBarOffset: 10.0,
-  /// ),
-  /// ```
-  final double? valueBarOffset;
-
-  ///
   /// `valueBar` takes the list of [ValueBar] to render the value bar/s
   ///
   /// ```
@@ -316,9 +304,9 @@ class LinearGauge extends LeafRenderObjectWidget {
       customLabels: customLabels!,
       rulersOffset: rulers!.rulersOffset!,
       valueBarPosition: valueBarPosition!,
-      valueBarOffset: valueBarOffset!,
       valueBar: valueBar!,
       inversedRulers: rulers!.inverseRulers!,
+      pointers: pointers!,
     );
   }
 
@@ -355,8 +343,8 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setRangeLinearGauge = rangeLinearGauge
       ..setRulersOffset = rulers!.rulersOffset!
       ..setValueBarPosition = valueBarPosition!
-      ..setValueBarOffset = valueBarOffset!
       ..setValueBar = valueBar!
-      ..setInversedRulers = rulers!.inverseRulers!;
+      ..setInversedRulers = rulers!.inverseRulers!
+      ..setPointers = pointers!;
   }
 }
