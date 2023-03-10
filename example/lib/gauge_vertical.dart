@@ -14,7 +14,8 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          gaugeOrientation: GaugeOrientation.horizontal,
+          gaugeOrientation: GaugeOrientation.vertical,
+          rulers: const RulerStyle(rulerPosition: RulerPosition.left),
         ),
       ),
     );

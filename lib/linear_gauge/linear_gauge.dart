@@ -31,19 +31,13 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
     this.labelTopMargin = 0.0,
     this.pointer = const Pointer(),
-    RulerStyle? rulers,
+    required this.rulers,
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
     this.valueBarPosition = ValueBarPosition.center,
     this.valueBar = const [],
     this.pointers = const [],
-  })  : _rulers = rulers ??
-            RulerStyle(
-              rulerPosition: gaugeOrientation == GaugeOrientation.vertical
-                  ? RulerPosition.right
-                  : RulerPosition.bottom,
-            ),
-        assert(() {
+  })  : assert(() {
           if (rulers != null) {
             if (gaugeOrientation == GaugeOrientation.horizontal) {
               if (rulers.rulerPosition == RulerPosition.bottom ||
@@ -199,7 +193,7 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///
   /// `rulerStyle` sets the styles of label using [RulerStyle]  properties
   ///
-  final RulerStyle? _rulers;
+  final RulerStyle? rulers;
 
   ///
   /// `pointer` sets the styles of pointer using [Pointer]  properties
@@ -310,32 +304,32 @@ class LinearGauge extends LeafRenderObjectWidget {
       steps: steps!,
       showLinearGaugeContainer: showLinearGaugeContainer!,
       gaugeOrientation: gaugeOrientation!,
-      primaryRulersWidth: _rulers!.primaryRulersWidth!,
-      primaryRulersHeight: _rulers!.primaryRulersHeight!,
-      secondaryRulersHeight: _rulers!.secondaryRulersHeight!,
-      secondaryRulersWidth: _rulers!.secondaryRulersWidth!,
+      primaryRulersWidth: rulers!.primaryRulersWidth!,
+      primaryRulersHeight: rulers!.primaryRulersHeight!,
+      secondaryRulersHeight: rulers!.secondaryRulersHeight!,
+      secondaryRulersWidth: rulers!.secondaryRulersWidth!,
       labelTopMargin: labelTopMargin!,
-      primaryRulerColor: _rulers!.primaryRulerColor!,
-      secondaryRulerColor: _rulers!.secondaryRulerColor!,
+      primaryRulerColor: rulers!.primaryRulerColor!,
+      secondaryRulerColor: rulers!.secondaryRulerColor!,
       linearGaugeBoxDecoration: linearGaugeBoxDecoration!,
-      secondaryRulerPerInterval: _rulers!.secondaryRulerPerInterval!,
+      secondaryRulerPerInterval: rulers!.secondaryRulerPerInterval!,
       linearGaugeContainerBgColor: linearGaugeBoxDecoration!.backgroundColor,
       linearGaugeContainerValueColor:
           linearGaugeBoxDecoration!.linearGaugeValueColor!,
-      textStyle: _rulers!.textStyle!,
-      showLabel: _rulers!.showLabel!,
-      rulerPosition: _rulers!.rulerPosition!,
-      labelOffset: _rulers!.labelOffset!,
-      showSecondaryRulers: _rulers!.showSecondaryRulers,
-      showPrimaryRulers: _rulers!.showPrimaryRulers,
+      textStyle: rulers!.textStyle!,
+      showLabel: rulers!.showLabel!,
+      rulerPosition: rulers!.rulerPosition!,
+      labelOffset: rulers!.labelOffset!,
+      showSecondaryRulers: rulers!.showSecondaryRulers,
+      showPrimaryRulers: rulers!.showPrimaryRulers,
       pointer: pointer!,
       value: value!,
       rangeLinearGauge: rangeLinearGauge!,
       customLabels: customLabels!,
-      rulersOffset: _rulers!.rulersOffset!,
+      rulersOffset: rulers!.rulersOffset!,
       valueBarPosition: valueBarPosition!,
       valueBar: valueBar!,
-      inversedRulers: _rulers!.inverseRulers!,
+      inversedRulers: rulers!.inverseRulers!,
       pointers: pointers!,
     );
   }
@@ -347,34 +341,34 @@ class LinearGauge extends LeafRenderObjectWidget {
       ..setCustomLabels = customLabels!
       ..setGaugeOrientation = gaugeOrientation!
       ..setLabelTopMargin = labelTopMargin!
-      ..setPrimaryRulerColor = _rulers!.primaryRulerColor!
-      ..setPrimaryRulersHeight = _rulers!.primaryRulersHeight!
-      ..setPrimaryRulersWidth = _rulers!.primaryRulersWidth!
-      ..setSecondaryRulerColor = _rulers!.secondaryRulerColor!
-      ..setSecondaryRulersHeight = _rulers!.secondaryRulersHeight!
-      ..setSecondaryRulersWidth = _rulers!.secondaryRulersWidth!
+      ..setPrimaryRulerColor = rulers!.primaryRulerColor!
+      ..setPrimaryRulersHeight = rulers!.primaryRulersHeight!
+      ..setPrimaryRulersWidth = rulers!.primaryRulersWidth!
+      ..setSecondaryRulerColor = rulers!.secondaryRulerColor!
+      ..setSecondaryRulersHeight = rulers!.secondaryRulersHeight!
+      ..setSecondaryRulersWidth = rulers!.secondaryRulersWidth!
       ..setShowLinearGaugeContainer = showLinearGaugeContainer!
       ..setStart = start!
       ..setEnd = end!
       ..setSteps = steps!
-      ..setTextStyle = _rulers!.textStyle!
-      ..setSecondaryRulerPerInterval = _rulers!.secondaryRulerPerInterval!
+      ..setTextStyle = rulers!.textStyle!
+      ..setSecondaryRulerPerInterval = rulers!.secondaryRulerPerInterval!
       ..setLinearGaugeContainerBgColor =
           linearGaugeBoxDecoration!.backgroundColor
       ..setLinearGaugeContainerValueColor =
           linearGaugeBoxDecoration!.linearGaugeValueColor!
-      ..setShowLabel = _rulers!.showLabel!
-      ..setRulerPosition = _rulers!.rulerPosition!
-      ..setLabelOffset = _rulers!.labelOffset!
-      ..setShowSecondaryRulers = _rulers!.showSecondaryRulers
-      ..setShowPrimaryRulers = _rulers!.showPrimaryRulers
+      ..setShowLabel = rulers!.showLabel!
+      ..setRulerPosition = rulers!.rulerPosition!
+      ..setLabelOffset = rulers!.labelOffset!
+      ..setShowSecondaryRulers = rulers!.showSecondaryRulers
+      ..setShowPrimaryRulers = rulers!.showPrimaryRulers
       ..setValue = value!
       ..setPointer = pointer
       ..setRangeLinearGauge = rangeLinearGauge
-      ..setRulersOffset = _rulers!.rulersOffset!
+      ..setRulersOffset = rulers!.rulersOffset!
       ..setValueBarPosition = valueBarPosition!
       ..setValueBar = valueBar!
-      ..setInversedRulers = _rulers!.inverseRulers!
+      ..setInversedRulers = rulers!.inverseRulers!
       ..setPointers = pointers!;
   }
 }
