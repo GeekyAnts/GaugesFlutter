@@ -100,13 +100,8 @@ class ValueBar {
   /// Painter Method to Draw [ValueBar]
   ///
 
-  void drawValueBar(
-    Canvas canvas,
-    double start,
-    double end,
-    double totalWidth,
-    RenderLinearGauge linearGauge,
-  ) {
+  void drawValueBar(Canvas canvas, double start, double end, double totalWidth,
+      RenderLinearGauge linearGauge) {
     assert(value >= linearGauge.getStart && value <= linearGauge.getEnd,
         'Value should be between start and end values');
 
@@ -117,6 +112,9 @@ class ValueBar {
     //  width of the value bar in pixels based on the value
     double valueBarWidth =
         ((value - startValue) / (endValue - startValue)) * totalWidth;
+
+    /// Enable the animation for value bar
+    valueBarWidth = valueBarWidth * linearGauge.getAnimationValue;
 
     final ValueBarPosition valueBarPosition = position;
     final getLinearGaugeBoxDecoration = linearGauge.getLinearGaugeBoxDecoration;

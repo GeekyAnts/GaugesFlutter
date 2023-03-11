@@ -507,8 +507,13 @@ class Pointer {
   }
 
   // Drawing the Triangle Pointer
-  void _drawTrianglePointer(Canvas canvas, double start, double end,
-      Offset offset, RenderLinearGauge linearGauge) {
+  void _drawTrianglePointer(
+    Canvas canvas,
+    double start,
+    double end,
+    Offset offset,
+    RenderLinearGauge linearGauge,
+  ) {
     double pointerHeight = height!;
     double pointerWidth = width!;
     double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
@@ -523,7 +528,6 @@ class Pointer {
 
     double valueInPX =
         ((value! - startValue) / (endValue - startValue)) * totalWidth;
-    offset = Offset(valueInPX + start, offset.dy);
 
     late double yPos;
     switch (rulerPosition) {
@@ -538,14 +542,17 @@ class Pointer {
         break;
     }
 
-    final position = Offset(offset.dx, offset.dy);
+    final position = offset;
     final path = Path();
-    path.moveTo(position.dx - (pointerWidth / 2), yPos);
-    rulerPosition == RulerPosition.top
-        ? path.lineTo(position.dx, position.dy)
-        : path.lineTo(position.dx, position.dy - gaugeHeight);
 
-    path.lineTo(position.dx + (pointerWidth / 2), yPos);
+    var animVal = (valueInPX * linearGauge.getAnimationValue) + start;
+    print(animVal);
+    path.moveTo(((animVal) - (pointerWidth / 2)), yPos);
+    rulerPosition == RulerPosition.top
+        ? path.lineTo(animVal, position.dy)
+        : path.lineTo(animVal, position.dy - gaugeHeight);
+
+    path.lineTo(((animVal) + (pointerWidth / 2)), yPos);
     canvas.drawPath(path, paint);
 
     if (showLabel) {
