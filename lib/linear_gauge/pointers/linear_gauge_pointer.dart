@@ -168,6 +168,11 @@ class Pointer {
   get getPointerShape => shape;
   set setPointerShape(PointerShape? shape) => shape = shape;
 
+  //*
+  // final double gaugeHeight;
+  // final RulerPosition rulerPosition;
+  // final GaugeOrientation gaugeOrientation;
+
   /// Method to draw the pointer on the canvas based on the pointer shape
   void drawPointer(
     PointerShape? shape,
@@ -176,515 +181,313 @@ class Pointer {
     double end,
     Offset offset,
     RenderLinearGauge linearGauge,
+    double off,
   ) {
+    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
+    GaugeOrientation gaugeOrientation = linearGauge.getGaugeOrientation;
+    final paint = Paint();
+    paint.color = color!;
+    double endValue = linearGauge.getEnd;
+    double startValue = linearGauge.getStart;
+    double totalWidth = end;
+
+    double valueInPX =
+        ((value! - startValue) / (endValue - startValue)) * totalWidth;
+    Offset hOffset = Offset(valueInPX + start, offset.dy);
+
+    // Offset vOffset = Offset(offset.dx + 100, valueInPX);
+    Offset vOffset = Offset(offset.dx, offset.dy - valueInPX);
+
+    offset =
+        gaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
     switch (shape) {
       case PointerShape.circle:
-        _drawCirclePointer(canvas, start, end, offset, linearGauge);
+        _layoutCircleOffsets(canvas, offset, linearGauge);
         break;
       case PointerShape.rectangle:
-        _drawRectangle(canvas, start, end, offset, linearGauge);
+        _layoutRectangleOffsets(canvas, offset, linearGauge);
         break;
       case PointerShape.triangle:
-        _drawTrianglePointer(canvas, start, end, offset, linearGauge);
+        _layoutTriangleOffsets(canvas, offset, linearGauge);
         break;
       case PointerShape.diamond:
-        _drawDiamondPointer(canvas, start, end, offset, linearGauge);
+        _layoutDiamondOffsets(canvas, offset, linearGauge);
         break;
       default:
         return;
     }
   }
 
-  // Method to draw the Label for Rectangle Pointer
-  void _drawLabelRectangle(
+  // Method to draw the Text for  Pointers
+  void _drawLabel(
     Canvas canvas,
-    TextSpan textSpan,
-    TextPainter textPainter,
     Offset offset,
     QuarterTurns quarterTurns,
     RulerPosition rulerPosition,
+    RenderLinearGauge linearGauge,
   ) {
-    double extraOffset = 4;
+    final TextPainter textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.center,
+    );
+    textPainter.text = TextSpan(
+        text:
+            value == null ? linearGauge.getValue.toString() : value.toString(),
+        style: labelStyle ??
+            TextStyle(
+              color: getPointerColor,
+              fontSize: 12,
+            ));
+    ;
+    textPainter.layout();
     Offset center;
+
     switch (quarterTurns) {
       case QuarterTurns.zero:
-        if (rulerPosition == RulerPosition.top) {
-          center = Offset(offset.dx, height! + extraOffset);
-        } else {
-          center = Offset(offset.dx, offset.dy);
-        }
+        center = offset;
         textPainter.paint(canvas, center);
         break;
-
       case QuarterTurns.two:
-        if (rulerPosition == RulerPosition.top) {
-          center = Offset(offset.dx + textPainter.width / 2,
-              height! + textPainter.height / 2 + extraOffset);
-        } else {
-          center = Offset(offset.dx + textPainter.width / 2,
-              -height! - textPainter.height / 2 - extraOffset);
-        }
+        center = Offset(offset.dx + textPainter.width / 2,
+            offset.dy + textPainter.height / 2);
         canvas.save();
         canvas.translate(center.dx, center.dy);
         canvas.rotate(180 * pi / 180);
         textPainter.paint(
-            canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+          canvas,
+          Offset(-textPainter.width / 2, -textPainter.height / 2),
+        );
         canvas.restore();
         break;
-
-      case QuarterTurns.one:
-        if (rulerPosition == RulerPosition.top) {
-          center = Offset(offset.dx + textPainter.width / 2,
-              textPainter.height + height! + extraOffset * 2);
-        } else {
-          center = Offset(
-              offset.dx + textPainter.width / 2, offset.dy + extraOffset);
-        }
+      default:
+        double extraOffset = 4;
+        center = rulerPosition == RulerPosition.top
+            ? Offset(offset.dx + textPainter.width / 2,
+                offset.dy + textPainter.height + extraOffset)
+            : Offset(
+                offset.dx + textPainter.width / 2, offset.dy + extraOffset);
         canvas.save();
         canvas.translate(center.dx, center.dy);
-        canvas.rotate(90 * pi / 180);
-        textPainter.paint(
-            canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
-        canvas.restore();
-        break;
-
-      case QuarterTurns.three:
-        if (rulerPosition == RulerPosition.top) {
-          center = Offset(offset.dx + textPainter.width / 2,
-              textPainter.height + height! + extraOffset * 2);
+        if (quarterTurns == QuarterTurns.three) {
+          canvas.rotate(-90 * pi / 180);
         } else {
-          center = Offset(
-              offset.dx + textPainter.width / 2,
-              offset.dy +
-                  textPainter.height / 2 -
-                  textPainter.height / 2 -
-                  extraOffset);
+          canvas.rotate(90 * pi / 180);
         }
-        canvas.save();
-        canvas.translate(center.dx, center.dy);
-
-        canvas.rotate(-90 * pi / 180);
-
         textPainter.paint(
-            canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+          canvas,
+          Offset(-textPainter.width / 2, -textPainter.height / 2),
+        );
         canvas.restore();
         break;
     }
   }
 
-  // Method to draw the Text for  Pointers
-  void _drawLabel(
+  void _layoutCircleOffsets(
     Canvas canvas,
-    TextSpan textSpan,
-    TextPainter textPainter,
-    Offset offset,
-    QuarterTurns quarterTurns,
-    RulerPosition rulerPosition,
-  ) {
-    textPainter.text = textSpan;
-    textPainter.layout();
-    Offset center;
-
-    if (quarterTurns == QuarterTurns.zero) {
-      center = offset;
-      textPainter.paint(canvas, center);
-    } else if (quarterTurns == QuarterTurns.two) {
-      center = Offset(offset.dx + textPainter.width / 2,
-          offset.dy + textPainter.height / 2);
-      canvas.save();
-      canvas.translate(center.dx, center.dy);
-      canvas.rotate(180 * pi / 180);
-      textPainter.paint(
-        canvas,
-        Offset(-textPainter.width / 2, -textPainter.height / 2),
-      );
-      canvas.restore();
-    } else {
-      double extraOffset = 4;
-      center = rulerPosition == RulerPosition.top
-          ? Offset(offset.dx + textPainter.width / 2,
-              offset.dy + textPainter.height + extraOffset)
-          : Offset(offset.dx + textPainter.width / 2, offset.dy + extraOffset);
-      canvas.save();
-      canvas.translate(center.dx, center.dy);
-      quarterTurns == QuarterTurns.three
-          ? canvas.rotate(-90 * pi / 180)
-          : canvas.rotate(90 * pi / 180);
-      textPainter.paint(
-        canvas,
-        Offset(-textPainter.width / 2, -textPainter.height / 2),
-      );
-      canvas.restore();
-    }
-  }
-
-  void _drawCirclePointer(
-    Canvas canvas,
-    double start,
-    double end,
     Offset offset,
     RenderLinearGauge linearGauge,
   ) {
-    Color pointerColor = color!;
-    double pointerWidth = width!;
     double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
-    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
+    GaugeOrientation orientation = linearGauge.getGaugeOrientation;
 
-    final paint = Paint();
-    paint.color = pointerColor;
-    late double yPos;
-    linearGauge.getPointer;
-
-    double endValue = linearGauge.getEnd;
-    double startValue = linearGauge.getStart;
-    double totalWidth = end;
-
-    //  width of the [Pointer]  in pixels based on the value
-    double valueInPX =
-        ((value! - startValue) / (endValue - startValue)) * totalWidth;
-    offset = Offset(valueInPX + start, offset.dy);
-
-    // Adjusting the position of the pointer based on the [RulerPosition]
-    switch (linearGauge.rulerPosition) {
+    switch (rulerPosition) {
       case RulerPosition.bottom:
-        yPos = offset.dy - ((pointerWidth / 2) + gaugeHeight);
-        break;
-      case RulerPosition.center:
-        yPos = offset.dy - ((pointerWidth / 2) + primaryRulerHeight / 2);
+        offset = Offset(offset.dx, offset.dy - width! - gaugeHeight);
+        _drawCircle(canvas, offset);
         break;
       case RulerPosition.top:
-        yPos = offset.dy + ((pointerWidth / 2));
+        offset = Offset(offset.dx, offset.dy + width!);
+        _drawCircle(canvas, offset);
         break;
-      default:
-        RulerPosition.bottom;
+      case RulerPosition.center:
+        offset = orientation == GaugeOrientation.horizontal
+            ? Offset(offset.dx, offset.dy - width! - gaugeHeight * 2)
+            : Offset(offset.dx - gaugeHeight, offset.dy);
+
+        _drawCircle(
+          canvas,
+          offset,
+        );
+        break;
+      case RulerPosition.left:
+        offset = Offset(offset.dx + width!, offset.dy);
+        _drawCircle(
+          canvas,
+          offset,
+        );
+        break;
+      case RulerPosition.right:
+        offset = Offset(offset.dx - width! - gaugeHeight, offset.dy);
+        _drawCircle(canvas, offset);
         break;
     }
+  }
 
-    final position = Offset(offset.dx, yPos);
-    canvas.drawCircle(position, pointerWidth / 2, paint);
+  _drawCircle(
+    Canvas canvas,
+    Offset offset,
+  ) {
+    final paint = Paint()..color = color!;
+    paint.color = color!;
 
-    // Drawing the TextLabel for the pointer
-    if (showLabel) {
-      final textSpan = TextSpan(
-        text:
-            value == null ? linearGauge.getValue.toString() : value.toString(),
-        style: labelStyle ??
-            TextStyle(
-              color: getPointerColor,
-              fontSize: 12,
-            ),
-      );
-
-      final textPainter = TextPainter(
-        text: textSpan,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      )..layout();
-
-      // Draw the text centered at the rotated canvas origin
-      switch (quarterTurns) {
-        case QuarterTurns.zero:
-          textPainter.text = textSpan;
-          textPainter.layout();
-          final textOffset = Offset(position.dx - textPainter.width / 2,
-              position.dy - textPainter.height / 2);
-          textPainter.paint(canvas, textOffset);
-          break;
-
-        case QuarterTurns.two:
-          textPainter.text = textSpan;
-          textPainter.layout();
-          final center = position;
-          canvas.save();
-          canvas.translate(center.dx, center.dy);
-          canvas.rotate(180 * pi / 180);
-          textPainter.paint(
-              canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
-          canvas.restore();
-          break;
-
-        case QuarterTurns.one:
-          textPainter.text = textSpan;
-          textPainter.layout();
-          final center = position;
-          canvas.save();
-          canvas.translate(center.dx, center.dy);
-          canvas.rotate(90 * pi / 180);
-          textPainter.paint(
-              canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
-          canvas.restore();
-          break;
-        case QuarterTurns.three:
-          textPainter.text = textSpan;
-          textPainter.layout();
-          final center = position;
-          canvas.save();
-          canvas.translate(center.dx, center.dy);
-          canvas.rotate(-90 * pi / 180);
-          textPainter.paint(
-              canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
-          canvas.restore();
-          break;
-        default:
-          QuarterTurns.zero;
-      }
-    }
+    canvas.drawCircle(offset, width!, paint);
   }
 
   // Drawing the Rectangle Pointer
-  void _drawRectangle(Canvas canvas, double start, double end, Offset offset,
-      RenderLinearGauge linearGauge) {
-    double pointerHeight = height!;
-    double pointerWidth = width!;
+  void _layoutRectangleOffsets(
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
     double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
-
-    final paint = Paint();
-    paint.color = color!;
-
-    double endValue = linearGauge.getEnd;
-    double startValue = linearGauge.getStart;
-    double totalWidth = end;
-
-    // width of the [Pointer]  in pixels based on the value
-    double valueInPX =
-        ((value! - startValue) / (endValue - startValue)) * totalWidth;
-
-    offset = Offset(valueInPX + start, offset.dy);
-
-    double yPos;
+    GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
     switch (rulerPosition) {
+      case RulerPosition.bottom:
+        offset = Offset(offset.dx, offset.dy - height! / 2 - gaugeHeight);
+        _drawRectangle(canvas, offset);
+        break;
       case RulerPosition.top:
-        yPos = offset.dy;
+        offset = Offset(offset.dx, offset.dy + height! / 2);
+        _drawRectangle(canvas, offset);
         break;
       case RulerPosition.center:
-        yPos = offset.dy - pointerHeight - (2 * gaugeHeight);
+        offset = rulerOrientation == GaugeOrientation.horizontal
+            ? Offset(offset.dx, offset.dy - gaugeHeight)
+            : Offset(offset.dx - gaugeHeight, offset.dy);
+        double angle =
+            rulerOrientation == GaugeOrientation.horizontal ? 180 : 90;
+        _drawRectangle(canvas, offset);
         break;
-      case RulerPosition.bottom:
-        yPos = offset.dy - gaugeHeight - pointerHeight;
+      case RulerPosition.left:
+        offset = Offset(offset.dx + width! / 2, offset.dy);
+        _drawRectangle(canvas, offset);
         break;
-      default:
-        yPos = offset.dy - gaugeHeight - pointerHeight;
+      case RulerPosition.right:
+        offset = Offset(offset.dx - width! / 2, offset.dy);
+        _drawRectangle(canvas, offset);
         break;
     }
+  }
 
-    double xPos = offset.dx - pointerWidth / 2;
-    // drawing the  rectangle
-    final position = Offset(xPos / 2, yPos);
-    final rectCenter =
-        Offset(xPos + pointerWidth / 2, yPos + pointerHeight / 2);
-    Rect pointerContainer =
-        Rect.fromLTWH(xPos, position.dy, pointerWidth, pointerHeight);
+  _drawRectangle(
+    Canvas canvas,
+    Offset offset,
+  ) {
+    final paint = Paint()..color = color!;
+    Rect rect = Rect.fromCenter(center: offset, width: width!, height: height!);
 
-    canvas.drawRect(pointerContainer, paint);
-
-    // Drawing the TextLabel for the pointer
-    if (showLabel) {
-      final textSpan = TextSpan(
-          text: value == null
-              ? linearGauge.getValue.toString()
-              : value.toString(),
-          style: labelStyle ??
-              TextStyle(
-                color: getPointerColor,
-                fontSize: 12,
-              ));
-
-      final textPainter = TextPainter(
-        text: textSpan,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      )..layout();
-      Offset textOffset;
-      rulerPosition == RulerPosition.top
-          ? textOffset = Offset(rectCenter.dx - textPainter.width / 2,
-              pointerHeight + textPainter.height / 2 - yPos)
-          : textOffset = Offset(
-              rectCenter.dx - textPainter.width / 2, yPos - textPainter.height);
-      _drawLabelRectangle(canvas, textSpan, textPainter, textOffset,
-          quarterTurns!, rulerPosition);
-    }
+    canvas.drawRect(rect, paint);
   }
 
   // Drawing the Triangle Pointer
-  void _drawTrianglePointer(Canvas canvas, double start, double end,
-      Offset offset, RenderLinearGauge linearGauge) {
-    double pointerHeight = height!;
-    double pointerWidth = width!;
+  void _layoutTriangleOffsets(
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
     double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
-    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
-    final paint = Paint();
-    paint.color = color!;
-
-    double endValue = linearGauge.getEnd;
-    double startValue = linearGauge.getStart;
-    double totalWidth = end;
-
-    double valueInPX =
-        ((value! - startValue) / (endValue - startValue)) * totalWidth;
-    offset = Offset(valueInPX + start, offset.dy);
-
-    late double yPos;
-    switch (rulerPosition) {
-      case RulerPosition.top:
-        yPos = gaugeHeight + pointerHeight;
-        break;
-      case RulerPosition.center:
-        yPos = -pointerHeight + primaryRulerHeight / 2;
-        break;
-      default:
-        yPos = -pointerHeight;
-        break;
-    }
-
-    final position = Offset(offset.dx, offset.dy);
-    final path = Path();
-    path.moveTo(position.dx - (pointerWidth / 2), yPos);
-    rulerPosition == RulerPosition.top
-        ? path.lineTo(position.dx, position.dy)
-        : path.lineTo(position.dx, position.dy - gaugeHeight);
-
-    path.lineTo(position.dx + (pointerWidth / 2), yPos);
-    canvas.drawPath(path, paint);
-
-    if (showLabel) {
-      final textSpan = TextSpan(
-        text:
-            value == null ? linearGauge.getValue.toString() : value.toString(),
-        style: labelStyle ??
-            TextStyle(
-              color: getPointerColor,
-              fontSize: 12,
-            ),
-      );
-
-      final textPainter = TextPainter(
-        text: textSpan,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      )..layout();
-
-      Offset textOffset;
-      switch (rulerPosition) {
-        case RulerPosition.bottom:
-          textOffset = Offset(
-            position.dx - textPainter.width / 2,
-            position.dy - pointerHeight - gaugeHeight - textPainter.height,
-          );
-          break;
-        case RulerPosition.top:
-          textOffset = Offset(
-            position.dx - textPainter.width / 2,
-            yPos,
-          );
-          break;
-        default:
-          textOffset = Offset(
-            position.dx - textPainter.width / 2,
-            yPos - position.dy - textPainter.height + gaugeHeight,
-          );
-          break;
-      }
-
-      _drawLabel(canvas, textSpan, textPainter, textOffset, quarterTurns!,
-          rulerPosition);
-    }
-  }
-
-  // Drawing the Diamond pointer
-  void _drawDiamondPointer(
-    Canvas canvas,
-    double start,
-    double end,
-    Offset offset,
-    RenderLinearGauge linearGauge,
-  ) {
-    double pointerWidth = width!;
-    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
-    RulerPosition rulerPosition = linearGauge.rulerPosition;
-    double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
-
-    double endValue = linearGauge.getEnd;
-    double startValue = linearGauge.getStart;
-    double totalWidth = end;
-
-    double valueInPX =
-        ((value! - startValue) / (endValue - startValue)) * totalWidth;
-    offset = Offset(valueInPX + start, offset.dy);
-
-    final paint = Paint();
-    paint.color = color!;
-
-    final position = Offset(offset.dx, offset.dy);
-    final path = Path();
+    GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
 
     switch (rulerPosition) {
       case RulerPosition.bottom:
-        path.moveTo(position.dx - (pointerWidth / 2), -pointerWidth);
-        path.lineTo(position.dx, position.dy - gaugeHeight);
-        path.lineTo(position.dx + (pointerWidth / 2), -pointerWidth);
-        path.lineTo(
-            position.dx, offset.dy - pointerWidth - pointerWidth - gaugeHeight);
-        path.close();
+        offset = Offset(offset.dx, offset.dy - gaugeHeight);
+        _drawTriangle(canvas, offset, 180);
+        break;
+      case RulerPosition.top:
+        offset = Offset(offset.dx, offset.dy);
+        _drawTriangle(canvas, offset, 0);
         break;
       case RulerPosition.center:
-        path.moveTo(position.dx - (pointerWidth / 2), -pointerWidth);
-        path.lineTo(position.dx, position.dy - primaryRulerHeight / 2);
-        path.lineTo(position.dx + (pointerWidth / 2), -pointerWidth);
-        path.lineTo(
-            position.dx, offset.dy - pointerWidth - pointerWidth - gaugeHeight);
-        path.close();
+        offset = rulerOrientation == GaugeOrientation.horizontal
+            ? Offset(offset.dx, offset.dy - gaugeHeight)
+            : Offset(offset.dx - gaugeHeight, offset.dy);
+        double angle =
+            rulerOrientation == GaugeOrientation.horizontal ? 180 : 90;
+        _drawTriangle(canvas, offset, angle);
         break;
-      default:
-        path.moveTo(position.dx - (pointerWidth / 2), offset.dy + pointerWidth);
-        path.lineTo(position.dx, position.dy);
-        path.lineTo(position.dx + (pointerWidth / 2), offset.dy + pointerWidth);
-        path.lineTo(
-            position.dx, offset.dy + pointerWidth + pointerWidth - gaugeHeight);
-        path.close();
+      case RulerPosition.left:
+        _drawTriangle(canvas, offset, -90);
+        break;
+      case RulerPosition.right:
+        offset = Offset(offset.dx - gaugeHeight, offset.dy);
+        _drawTriangle(canvas, offset, 90);
         break;
     }
+  }
+
+  void _drawTriangle(Canvas canvas, Offset vertex, double angle) {
+    final paint = Paint();
+    paint.color = color!;
+    final base = width! / 2;
+
+    final path = Path()..moveTo(vertex.dx, vertex.dy);
+    path.lineTo(vertex.dx - base, vertex.dy + height!);
+    path.lineTo(vertex.dx + base, vertex.dy + height!);
+    path.close();
+
+    canvas.save(); // Save the current canvas state
+    canvas.translate(
+        vertex.dx, vertex.dy); // Move the canvas origin to the vertex point
+    canvas
+        .rotate(pi * angle / 180); // Rotate the canvas around the vertex point
+    canvas.translate(-vertex.dx,
+        -vertex.dy); // Move the canvas origin back to the original location
+    canvas.drawPath(path, paint);
+    canvas.restore(); // Restore the previous canvas state
+
+    // canvas.drawPath(path, paint);
+  }
+
+  // Drawing the Diamond pointer
+  void _layoutDiamondOffsets(
+    Canvas canvas,
+    Offset offset,
+    RenderLinearGauge linearGauge,
+  ) {
+    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    RulerPosition rulerPosition = linearGauge.rulerPosition;
+    GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
+    switch (rulerPosition) {
+      case RulerPosition.bottom:
+        offset = Offset(offset.dx, offset.dy - gaugeHeight - height! / 2);
+        _drawDiamond(canvas, offset);
+        break;
+      case RulerPosition.top:
+        offset = Offset(offset.dx, offset.dy + height! / 2);
+        _drawDiamond(canvas, offset);
+        break;
+      case RulerPosition.center:
+        offset = rulerOrientation == GaugeOrientation.horizontal
+            ? Offset(offset.dx, offset.dy - gaugeHeight)
+            : Offset(offset.dx - gaugeHeight, offset.dy);
+
+        _drawDiamond(canvas, offset);
+        break;
+      case RulerPosition.left:
+        offset = Offset(offset.dx + width! / 2, offset.dy);
+        _drawDiamond(canvas, offset);
+        break;
+      case RulerPosition.right:
+        offset = Offset(offset.dx - gaugeHeight - width! / 2, offset.dy);
+        _drawDiamond(canvas, offset);
+        break;
+    }
+  }
+
+  _drawDiamond(
+    Canvas canvas,
+    Offset center,
+  ) {
+    final paint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.fill;
+
+    final path = Path();
+    path.moveTo(center.dx, center.dy - height! / 2);
+    path.lineTo(center.dx + width! / 2, center.dy);
+    path.lineTo(center.dx, center.dy + height! / 2);
+    path.lineTo(center.dx - width! / 2, center.dy);
+    path.close();
 
     canvas.drawPath(path, paint);
-
-    if (showLabel) {
-      final textSpan = TextSpan(
-          text: value == null
-              ? linearGauge.getValue.toString()
-              : value.toString(),
-          style: labelStyle ??
-              TextStyle(
-                color: getPointerColor,
-                fontSize: 12,
-              ));
-
-      final textPainter = TextPainter(
-        text: textSpan,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      )..layout();
-
-      Offset textOffset;
-      if (rulerPosition == RulerPosition.top) {
-        textOffset = Offset(
-            position.dx - textPainter.width / 2,
-            position.dy +
-                (pointerWidth * 2) -
-                textPainter.height / 2 +
-                gaugeHeight);
-      } else {
-        textOffset = Offset(
-            position.dx - textPainter.width / 2,
-            position.dy -
-                (pointerWidth * 2) -
-                textPainter.height -
-                gaugeHeight);
-      }
-
-      _drawLabel(canvas, textSpan, textPainter, textOffset, quarterTurns!,
-          rulerPosition);
-    }
   }
 
   // Drawing the Arrow pointer
