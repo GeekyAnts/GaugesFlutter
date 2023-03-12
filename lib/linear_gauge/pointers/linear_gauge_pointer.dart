@@ -344,6 +344,8 @@ class Pointer {
         ((value! - startValue) / (endValue - startValue)) * totalWidth;
     offset = Offset(valueInPX + start, offset.dy);
 
+    var animationVal = calculateAnimationValue(linearGauge, valueInPX, start);
+
     // Adjusting the position of the pointer based on the [RulerPosition]
     switch (linearGauge.rulerPosition) {
       case RulerPosition.bottom:
@@ -360,7 +362,7 @@ class Pointer {
         break;
     }
 
-    final position = Offset(offset.dx, yPos);
+    final position = Offset(animationVal, yPos);
     canvas.drawCircle(position, pointerWidth / 2, paint);
 
     // Drawing the TextLabel for the pointer
@@ -545,8 +547,7 @@ class Pointer {
     final position = offset;
     final path = Path();
 
-    var animVal = (valueInPX * linearGauge.getAnimationValue) + start;
-    print(animVal);
+    double animVal = calculateAnimationValue(linearGauge, valueInPX, start);
     path.moveTo(((animVal) - (pointerWidth / 2)), yPos);
     rulerPosition == RulerPosition.top
         ? path.lineTo(animVal, position.dy)
@@ -597,6 +598,14 @@ class Pointer {
       _drawLabel(canvas, textSpan, textPainter, textOffset, quarterTurns!,
           rulerPosition);
     }
+  }
+
+  double calculateAnimationValue(
+      RenderLinearGauge linearGauge, double valueInPX, double start) {
+    var animVal = linearGauge.getAnimationValue != null
+        ? (valueInPX * linearGauge.getAnimationValue!) + start
+        : valueInPX + start;
+    return animVal;
   }
 
   // Drawing the Diamond pointer

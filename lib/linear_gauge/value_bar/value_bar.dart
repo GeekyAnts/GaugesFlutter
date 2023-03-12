@@ -114,7 +114,9 @@ class ValueBar {
         ((value - startValue) / (endValue - startValue)) * totalWidth;
 
     /// Enable the animation for value bar
-    valueBarWidth = valueBarWidth * linearGauge.getAnimationValue;
+    valueBarWidth = linearGauge.getAnimationValue != null
+        ? valueBarWidth * linearGauge.getAnimationValue!
+        : valueBarWidth;
 
     final ValueBarPosition valueBarPosition = position;
     final getLinearGaugeBoxDecoration = linearGauge.getLinearGaugeBoxDecoration;

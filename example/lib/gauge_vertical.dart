@@ -17,7 +17,17 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
         child: LinearGauge(
           start: 100,
           end: 200,
-          pointers: const [Pointer(shape: PointerShape.triangle, value: 200)],
+          enableAnimation: true,
+          pointers: const [
+            Pointer(
+              shape: PointerShape.triangle,
+              value: 200,
+            ),
+            Pointer(
+              shape: PointerShape.circle,
+              value: 140,
+            ),
+          ],
           valueBar: [
             ValueBar(
               value: 200,

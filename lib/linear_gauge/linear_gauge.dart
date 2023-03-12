@@ -45,7 +45,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       valueBar: lGauge.valueBar!,
       inversedRulers: lGauge.rulers!.inverseRulers!,
       pointers: lGauge.pointers!,
-      animationValue: animationValue!,
+      animationValue: animationValue,
     );
   }
 
@@ -85,7 +85,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setValueBar = lGauge.valueBar!
       ..setInversedRulers = lGauge.rulers!.inverseRulers!
       ..setPointers = lGauge.pointers!
-      ..setAnimationValue = animationValue!;
+      ..setAnimationValue = animationValue;
   }
 }
 
@@ -124,6 +124,7 @@ class LinearGauge extends StatefulWidget {
     this.valueBarPosition = ValueBarPosition.center,
     this.valueBar = const [],
     this.pointers = const [],
+    this.enableAnimation = false,
   })  : assert(() {
           if (rulers != null) {
             if (gaugeOrientation == GaugeOrientation.horizontal) {
@@ -132,8 +133,10 @@ class LinearGauge extends StatefulWidget {
                   rulers.rulerPosition == RulerPosition.top) {
                 return true;
               } else {
-                assert(false,
-                    "Invalid ruler position. Rulers must be horizontal, positioned at top, bottom, or center.");
+                assert(
+                    false,
+                    'Invalid ruler position. Rulers must be horizontal,'
+                    'positioned at top, bottom, or center.');
               }
             } else {
               if (rulers.rulerPosition == RulerPosition.right ||
@@ -141,8 +144,10 @@ class LinearGauge extends StatefulWidget {
                   rulers.rulerPosition == RulerPosition.left) {
                 return true;
               } else {
-                assert(false,
-                    "Invalid ruler position. Rulers must be vertical, positioned at left, right, or center.");
+                assert(
+                    false,
+                    'Invalid ruler position. Rulers must be vertical,'
+                    'positioned at left, right, or center.');
               }
             }
           }
@@ -189,7 +194,8 @@ class LinearGauge extends StatefulWidget {
 
   ///
   ///
-  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
+  /// `linearGaugeBoxDecoration` sets the styles of Container using
+  /// [LinearGaugeBoxDecoration] decoration properties
   ///
   ///
   /// Example
@@ -241,7 +247,8 @@ class LinearGauge extends StatefulWidget {
 
   ///
   ///
-  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
+  /// `linearGaugeBoxDecoration` sets the styles of Container using
+  /// [LinearGaugeBoxDecoration] decoration properties
   ///
   ///
   /// Example
@@ -383,6 +390,18 @@ class LinearGauge extends StatefulWidget {
   ///
   final List<Pointer>? pointers;
 
+  ///
+  /// `enableAnimation` will enable animations for pointers and value bars.
+  ///  It's default to false.
+  ///
+  /// ```
+  /// const LinearGauge(
+  ///   enableAnimations:true;
+  /// )
+  /// ```
+  ///
+  final bool enableAnimation;
+
   @override
   State<LinearGauge> createState() => _LinearGauge();
 }
@@ -405,15 +424,19 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return _RLinearGauge(
-          lGauge: widget,
-          animationValue: _animation.value,
-        );
-      },
-    );
+    return widget.enableAnimation
+        ? AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return _RLinearGauge(
+                lGauge: widget,
+                animationValue: _animation.value,
+              );
+            },
+          )
+        : _RLinearGauge(
+            lGauge: widget,
+          );
   }
 
   @override

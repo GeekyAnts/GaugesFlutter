@@ -8,40 +8,40 @@ import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
 const _kDefaultLinearGaugeHeight = 200;
 
 class RenderLinearGauge extends RenderBox {
-  RenderLinearGauge(
-      {required Pointer pointer,
-      required double start,
-      required double end,
-      required double steps,
-      required bool showLinearGaugeContainer,
-      required GaugeOrientation gaugeOrientation,
-      required TextStyle textStyle,
-      required double primaryRulersWidth,
-      required double primaryRulersHeight,
-      required double secondaryRulersHeight,
-      required double secondaryRulersWidth,
-      required double labelTopMargin,
-      required Color primaryRulerColor,
-      required Color secondaryRulerColor,
-      required LinearGaugeBoxDecoration linearGaugeBoxDecoration,
-      required double secondaryRulerPerInterval,
-      required Color linearGaugeContainerBgColor,
-      required Color linearGaugeContainerValueColor,
-      required bool showLabel,
-      required RulerPosition rulerPosition,
-      required double labelOffset,
-      required bool showSecondaryRulers,
-      required bool showPrimaryRulers,
-      required double value,
-      required List<RangeLinearGauge> rangeLinearGauge,
-      required List<CustomRulerLabel> customLabels,
-      required double rulersOffset,
-      required ValueBarPosition valueBarPosition,
-      required List<ValueBar> valueBar,
-      required bool inversedRulers,
-      required List<Pointer> pointers,
-      required double animationValue})
-      : assert(start < end, "Start should be grater then end"),
+  RenderLinearGauge({
+    required Pointer pointer,
+    required double start,
+    required double end,
+    required double steps,
+    required bool showLinearGaugeContainer,
+    required GaugeOrientation gaugeOrientation,
+    required TextStyle textStyle,
+    required double primaryRulersWidth,
+    required double primaryRulersHeight,
+    required double secondaryRulersHeight,
+    required double secondaryRulersWidth,
+    required double labelTopMargin,
+    required Color primaryRulerColor,
+    required Color secondaryRulerColor,
+    required LinearGaugeBoxDecoration linearGaugeBoxDecoration,
+    required double secondaryRulerPerInterval,
+    required Color linearGaugeContainerBgColor,
+    required Color linearGaugeContainerValueColor,
+    required bool showLabel,
+    required RulerPosition rulerPosition,
+    required double labelOffset,
+    required bool showSecondaryRulers,
+    required bool showPrimaryRulers,
+    required double value,
+    required List<RangeLinearGauge> rangeLinearGauge,
+    required List<CustomRulerLabel> customLabels,
+    required double rulersOffset,
+    required ValueBarPosition valueBarPosition,
+    required List<ValueBar> valueBar,
+    required bool inversedRulers,
+    required List<Pointer> pointers,
+    required double? animationValue,
+  })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
         _steps = steps,
@@ -82,9 +82,9 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [_animationValue] parameter.
   ///
-  double get getAnimationValue => _animationValue;
-  double _animationValue;
-  set setAnimationValue(double animationValue) {
+  double? get getAnimationValue => _animationValue;
+  double? _animationValue;
+  set setAnimationValue(double? animationValue) {
     if (_animationValue == animationValue) return;
     _animationValue = animationValue;
     markNeedsPaint();
@@ -694,7 +694,9 @@ class RenderLinearGauge extends RenderBox {
       totalValOnPixel =
           (((getValue) - getStart) / (getEnd - getStart)) * totalWidth;
 
-      totalValOnPixel = totalValOnPixel * getAnimationValue;
+      totalValOnPixel = getAnimationValue != null
+          ? totalValOnPixel * getAnimationValue!
+          : totalValOnPixel;
       print(totalValOnPixel);
     }
 
