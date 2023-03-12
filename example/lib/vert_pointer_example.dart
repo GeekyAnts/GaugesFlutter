@@ -14,21 +14,22 @@ class VerticalPointerExample extends StatelessWidget {
         child: LinearGauge(
           pointers: [
             Pointer(
-                value: 50,
+                value: 60,
                 showLabel: true,
-                labelStyle: TextStyle(color: Colors.red),
-                color: Colors.green,
+                labelStyle:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                color: Colors.red,
                 shape: PointerShape.diamond,
-                quarterTurns: QuarterTurns.three,
-                width: 100,
-                height: 180),
+                quarterTurns: QuarterTurns.zero,
+                width: 80,
+                height: 18),
           ],
           gaugeOrientation: GaugeOrientation.vertical,
           rulers: const RulerStyle(
             rulersOffset: 10,
             labelOffset: 10,
             inverseRulers: false,
-            rulerPosition: RulerPosition.left,
+            rulerPosition: RulerPosition.center,
             secondaryRulerColor: Colors.red,
             primaryRulerColor: Colors.blue,
             showLabel: true,
