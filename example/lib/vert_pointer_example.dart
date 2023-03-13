@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
-class VerticalPointerExample extends StatelessWidget {
-  const VerticalPointerExample({super.key});
+class VerticalValueBarExample extends StatelessWidget {
+  const VerticalValueBarExample({super.key});
 
   @override
   Widget build(BuildContext context) {
