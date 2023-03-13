@@ -25,7 +25,9 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
 
+
     return VerticalValueBarExample();
+
 
   }
 }

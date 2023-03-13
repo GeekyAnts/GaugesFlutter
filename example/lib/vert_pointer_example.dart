@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
+
 class VerticalValueBarExample extends StatelessWidget {
   const VerticalValueBarExample({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: LinearGauge(
+
           start: 0,
           end: 200,
           valueBar: [
@@ -35,6 +38,7 @@ class VerticalValueBarExample extends StatelessWidget {
           rulers: const RulerStyle(
             inverseRulers: false,
             rulerPosition: RulerPosition.left,
+
           ),
         ),
       ),

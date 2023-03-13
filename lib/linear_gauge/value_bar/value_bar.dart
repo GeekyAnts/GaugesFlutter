@@ -135,6 +135,7 @@ class ValueBar {
     bool getInversedRulers = linearGauge.getInversedRulers;
     // Drawing Value Bar
     final gaugeContainer;
+
     if (gaugeOrientation == GaugeOrientation.horizontal) {
       double startValue = (!getInversedRulers) ? start : start + valueBarWidth;
       gaugeContainer = Rect.fromLTWH(startValue, totalValOffset, valueBarWidth,

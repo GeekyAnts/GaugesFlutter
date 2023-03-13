@@ -1004,6 +1004,15 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
             firstOffset;
 
+    var verticalFirstOffset =
+        _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]!;
+
+    Offset vert = verticalFirstOffset.first;
+    if (getGaugeOrientation == GaugeOrientation.horizontal) {
+      firstOff = vert;
+    } else {
+      firstOff = vert;
+    }
     // Drawing Pointers based on list of pointers added to the gauge
     for (int i = 0; i < getPointers.length; i++) {
       getPointers[i].drawPointer(
