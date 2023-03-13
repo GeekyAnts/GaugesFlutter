@@ -602,6 +602,7 @@ class Pointer {
 
   double calculateAnimationValue(
       RenderLinearGauge linearGauge, double valueInPX, double start) {
+    print(linearGauge.getAnimationValue);
     var animVal = linearGauge.getAnimationValue != null
         ? (valueInPX * linearGauge.getAnimationValue!) + start
         : valueInPX + start;

@@ -697,7 +697,6 @@ class RenderLinearGauge extends RenderBox {
       totalValOnPixel = getAnimationValue != null
           ? totalValOnPixel * getAnimationValue!
           : totalValOnPixel;
-      print(totalValOnPixel);
     }
 
     gaugeStart = start;
