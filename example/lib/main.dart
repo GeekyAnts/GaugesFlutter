@@ -24,6 +24,8 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
+
     return VerticalValueBarExample();
+
   }
 }
