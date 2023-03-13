@@ -28,7 +28,7 @@ class VerticalPointerExample extends StatelessWidget {
             Pointer(
               value: 40,
               shape: PointerShape.circle,
-              quarterTurns: QuarterTurns.one,
+              quarterTurns: QuarterTurns.zero,
               width: 50,
               showLabel: true,
               labelStyle: TextStyle(
@@ -43,7 +43,7 @@ class VerticalPointerExample extends StatelessWidget {
             // inverseRulers: true,
             // labelOffset: 10,
 
-            rulerPosition: RulerPosition.left,
+            rulerPosition: RulerPosition.center,
           ),
         ),
       ),

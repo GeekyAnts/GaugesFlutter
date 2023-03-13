@@ -298,8 +298,9 @@ class Pointer {
       // Draw the text centered at the rotated canvas origin
       switch (quarterTurns) {
         case QuarterTurns.zero:
-          final offsetAdjustment = Offset(-textWidth, -textHeight);
-          textPainter.paint(canvas, offset - offsetAdjustment);
+          final textOffset =
+              Offset(offset.dx - textWidth, offset.dy - textHeight);
+          textPainter.paint(canvas, textOffset);
           break;
 
         case QuarterTurns.two:
