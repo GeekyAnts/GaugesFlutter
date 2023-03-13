@@ -1002,8 +1002,14 @@ class RenderLinearGauge extends RenderBox {
     }
     // Drawing Pointers based on list of pointers added to the gauge
     for (int i = 0; i < getPointers.length; i++) {
-      getPointers[i].drawPointer(getPointers[i].shape, canvas, gaugeStart,
-          gaugeEnd, firstOff, this, getRulersOffset);
+      getPointers[i].drawPointer(
+        getPointers[i].shape,
+        canvas,
+        gaugeStart,
+        gaugeEnd,
+        firstOff,
+        this,
+      );
     }
 
     canvas.restore();

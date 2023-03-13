@@ -168,6 +168,12 @@ class Pointer {
   get getPointerShape => shape;
   set setPointerShape(PointerShape? shape) => shape = shape;
 
+  ///
+  /// Getters and Setters for `labelStyle`
+  ///
+  get getPointerLabelStyle => labelStyle;
+  set setPointerLabelStyle(TextStyle? labelStyle) => labelStyle = labelStyle;
+
   /// Method to draw the pointer on the canvas based on the pointer shape
   void drawPointer(
     PointerShape? shape,
@@ -176,7 +182,6 @@ class Pointer {
     double end,
     Offset offset,
     RenderLinearGauge linearGauge,
-    double off,
   ) {
     // double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
@@ -248,13 +253,9 @@ class Pointer {
     );
 
     textPainter.text = TextSpan(
-      text: value == null ? linearGauge.getValue.toString() : value.toString(),
-      style: labelStyle ??
-          TextStyle(
-            color: getPointerColor,
-            fontSize: 12,
-          ),
-    );
+        text:
+            value == null ? linearGauge.getValue.toString() : value.toString(),
+        style: labelStyle ?? TextStyle(color: getPointerColor, fontSize: 12.0));
 
     textPainter.layout();
     if (shape == PointerShape.circle) {
