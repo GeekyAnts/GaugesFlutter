@@ -40,6 +40,7 @@ class RenderLinearGauge extends RenderBox {
     required List<ValueBar> valueBar,
     required bool inversedRulers,
     required List<Pointer> pointers,
+    required double? animationValue,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -71,11 +72,23 @@ class RenderLinearGauge extends RenderBox {
         _inversedRulers = inversedRulers,
         _valueBarPosition = valueBarPosition,
         _valueBar = valueBar,
-        _pointers = pointers;
+        _pointers = pointers,
+        _animationValue = animationValue;
 
   // For getting Gauge Values
   double gaugeStart = 0;
   double gaugeEnd = 0;
+
+  ///
+  /// Getter and Setter for the [_animationValue] parameter.
+  ///
+  double? get getAnimationValue => _animationValue;
+  double? _animationValue;
+  set setAnimationValue(double? animationValue) {
+    if (_animationValue == animationValue) return;
+    _animationValue = animationValue;
+    markNeedsPaint();
+  }
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -679,7 +692,11 @@ class RenderLinearGauge extends RenderBox {
       totalValOnPixel = 0.0;
     } else {
       totalValOnPixel =
-          ((getValue - getStart) / (getEnd - getStart)) * totalWidth;
+          (((getValue) - getStart) / (getEnd - getStart)) * totalWidth;
+
+      totalValOnPixel = getAnimationValue != null
+          ? totalValOnPixel * getAnimationValue!
+          : totalValOnPixel;
     }
 
     gaugeStart = start;
@@ -766,7 +783,13 @@ class RenderLinearGauge extends RenderBox {
 
       // For loop for drawing value bar in [LinearGauge]
       for (int j = 0; j < getValueBar.length; j++) {
-        getValueBar[j].drawValueBar(canvas, start, end, totalWidth, this);
+        getValueBar[j].drawValueBar(
+          canvas,
+          start,
+          end,
+          totalWidth,
+          this,
+        );
       }
 
       /// For loop for calculating colors in [RangeLinearGauge]

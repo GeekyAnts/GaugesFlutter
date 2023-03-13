@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
 import 'linear_gauge_painter.dart';
 
-class LinearGauge extends LeafRenderObjectWidget {
+class LinearGauge extends StatefulWidget {
   ///
-  /// [LinearGauge] is a visualization of measurement widget with a linear scale values. Linear
-  /// Gauge as rich sets of config parameters which can be modified as per requirement
+  /// [LinearGauge] is a visualization of measurement widget with a linear scale
+  /// values.
+  /// LinearGauge as rich sets of config parameters which can be modified as per requirement
   ///
   /// `start` and `end` is responsible to paint the values as a label.
   ///
@@ -37,6 +37,7 @@ class LinearGauge extends LeafRenderObjectWidget {
     this.valueBarPosition = ValueBarPosition.center,
     this.valueBar = const [],
     this.pointers = const [],
+    this.enableAnimation = false,
   })  : assert(() {
           if (rulers != null) {
             if (gaugeOrientation == GaugeOrientation.horizontal) {
@@ -45,8 +46,10 @@ class LinearGauge extends LeafRenderObjectWidget {
                   rulers.rulerPosition == RulerPosition.top) {
                 return true;
               } else {
-                assert(false,
-                    "Invalid ruler position. Rulers must be horizontal, positioned at top, bottom, or center.");
+                assert(
+                    false,
+                    'Invalid ruler position. Rulers must be horizontal,'
+                    'positioned at top, bottom, or center.');
               }
             } else {
               if (rulers.rulerPosition == RulerPosition.right ||
@@ -54,8 +57,10 @@ class LinearGauge extends LeafRenderObjectWidget {
                   rulers.rulerPosition == RulerPosition.left) {
                 return true;
               } else {
-                assert(false,
-                    "Invalid ruler position. Rulers must be vertical, positioned at left, right, or center.");
+                assert(
+                    false,
+                    'Invalid ruler position. Rulers must be vertical,'
+                    'positioned at left, right, or center.');
               }
             }
           }
@@ -102,7 +107,8 @@ class LinearGauge extends LeafRenderObjectWidget {
 
   ///
   ///
-  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
+  /// `linearGaugeBoxDecoration` sets the styles of Container using
+  /// [LinearGaugeBoxDecoration] decoration properties
   ///
   ///
   /// Example
@@ -154,7 +160,8 @@ class LinearGauge extends LeafRenderObjectWidget {
 
   ///
   ///
-  /// `linearGaugeBoxDecoration` sets the styles of Container using [LinearGaugeBoxDecoration] decoration properties
+  /// `linearGaugeBoxDecoration` sets the styles of Container using
+  /// [LinearGaugeBoxDecoration] decoration properties
   ///
   ///
   /// Example
@@ -296,41 +303,105 @@ class LinearGauge extends LeafRenderObjectWidget {
   ///
   final List<Pointer>? pointers;
 
+  ///
+  /// `enableAnimation` will enable animations for pointers and value bars.
+  ///  It's default to false.
+  ///
+  /// ```
+  /// const LinearGauge(
+  ///   enableAnimations:true;
+  /// )
+  /// ```
+  ///
+  final bool enableAnimation;
+
+  @override
+  State<LinearGauge> createState() => _LinearGauge();
+}
+
+class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.bounceIn)
+      ..addStatusListener((status) {
+        setState(() {});
+      });
+    _controller.forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.enableAnimation
+        ? AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return _RLinearGauge(
+                lGauge: widget,
+                animationValue: _animation.value,
+              );
+            },
+          )
+        : _RLinearGauge(
+            lGauge: widget,
+          );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+class _RLinearGauge extends LeafRenderObjectWidget {
+  final LinearGauge lGauge;
+  final double? animationValue;
+
+  const _RLinearGauge({required this.lGauge, super.key, this.animationValue});
+
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
-      start: start!,
-      end: end!,
-      steps: steps!,
-      showLinearGaugeContainer: showLinearGaugeContainer!,
-      gaugeOrientation: gaugeOrientation!,
-      primaryRulersWidth: rulers!.primaryRulersWidth!,
-      primaryRulersHeight: rulers!.primaryRulersHeight!,
-      secondaryRulersHeight: rulers!.secondaryRulersHeight!,
-      secondaryRulersWidth: rulers!.secondaryRulersWidth!,
-      labelTopMargin: labelTopMargin!,
-      primaryRulerColor: rulers!.primaryRulerColor!,
-      secondaryRulerColor: rulers!.secondaryRulerColor!,
-      linearGaugeBoxDecoration: linearGaugeBoxDecoration!,
-      secondaryRulerPerInterval: rulers!.secondaryRulerPerInterval!,
-      linearGaugeContainerBgColor: linearGaugeBoxDecoration!.backgroundColor,
+      start: lGauge.start!,
+      end: lGauge.end!,
+      steps: lGauge.steps!,
+      showLinearGaugeContainer: lGauge.showLinearGaugeContainer!,
+      gaugeOrientation: lGauge.gaugeOrientation!,
+      primaryRulersWidth: lGauge.rulers!.primaryRulersWidth!,
+      primaryRulersHeight: lGauge.rulers!.primaryRulersHeight!,
+      secondaryRulersHeight: lGauge.rulers!.secondaryRulersHeight!,
+      secondaryRulersWidth: lGauge.rulers!.secondaryRulersWidth!,
+      labelTopMargin: lGauge.labelTopMargin!,
+      primaryRulerColor: lGauge.rulers!.primaryRulerColor!,
+      secondaryRulerColor: lGauge.rulers!.secondaryRulerColor!,
+      linearGaugeBoxDecoration: lGauge.linearGaugeBoxDecoration!,
+      secondaryRulerPerInterval: lGauge.rulers!.secondaryRulerPerInterval!,
+      linearGaugeContainerBgColor:
+          lGauge.linearGaugeBoxDecoration!.backgroundColor,
       linearGaugeContainerValueColor:
-          linearGaugeBoxDecoration!.linearGaugeValueColor!,
-      textStyle: rulers!.textStyle!,
-      showLabel: rulers!.showLabel!,
-      rulerPosition: rulers!.rulerPosition!,
-      labelOffset: rulers!.labelOffset!,
-      showSecondaryRulers: rulers!.showSecondaryRulers,
-      showPrimaryRulers: rulers!.showPrimaryRulers,
-      pointer: pointer!,
-      value: value!,
-      rangeLinearGauge: rangeLinearGauge!,
-      customLabels: customLabels!,
-      rulersOffset: rulers!.rulersOffset!,
-      valueBarPosition: valueBarPosition!,
-      valueBar: valueBar!,
-      inversedRulers: rulers!.inverseRulers!,
-      pointers: pointers!,
+          lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!,
+      textStyle: lGauge.rulers!.textStyle!,
+      showLabel: lGauge.rulers!.showLabel!,
+      rulerPosition: lGauge.rulers!.rulerPosition!,
+      labelOffset: lGauge.rulers!.labelOffset!,
+      showSecondaryRulers: lGauge.rulers!.showSecondaryRulers,
+      showPrimaryRulers: lGauge.rulers!.showPrimaryRulers,
+      pointer: lGauge.pointer!,
+      value: lGauge.value!,
+      rangeLinearGauge: lGauge.rangeLinearGauge!,
+      customLabels: lGauge.customLabels!,
+      rulersOffset: lGauge.rulers!.rulersOffset!,
+      valueBarPosition: lGauge.valueBarPosition!,
+      valueBar: lGauge.valueBar!,
+      inversedRulers: lGauge.rulers!.inverseRulers!,
+      pointers: lGauge.pointers!,
+      animationValue: animationValue,
     );
   }
 
@@ -338,37 +409,38 @@ class LinearGauge extends LeafRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, RenderLinearGauge renderObject) {
     renderObject
-      ..setCustomLabels = customLabels!
-      ..setGaugeOrientation = gaugeOrientation!
-      ..setLabelTopMargin = labelTopMargin!
-      ..setPrimaryRulerColor = rulers!.primaryRulerColor!
-      ..setPrimaryRulersHeight = rulers!.primaryRulersHeight!
-      ..setPrimaryRulersWidth = rulers!.primaryRulersWidth!
-      ..setSecondaryRulerColor = rulers!.secondaryRulerColor!
-      ..setSecondaryRulersHeight = rulers!.secondaryRulersHeight!
-      ..setSecondaryRulersWidth = rulers!.secondaryRulersWidth!
-      ..setShowLinearGaugeContainer = showLinearGaugeContainer!
-      ..setStart = start!
-      ..setEnd = end!
-      ..setSteps = steps!
-      ..setTextStyle = rulers!.textStyle!
-      ..setSecondaryRulerPerInterval = rulers!.secondaryRulerPerInterval!
+      ..setCustomLabels = lGauge.customLabels!
+      ..setGaugeOrientation = lGauge.gaugeOrientation!
+      ..setLabelTopMargin = lGauge.labelTopMargin!
+      ..setPrimaryRulerColor = lGauge.rulers!.primaryRulerColor!
+      ..setPrimaryRulersHeight = lGauge.rulers!.primaryRulersHeight!
+      ..setPrimaryRulersWidth = lGauge.rulers!.primaryRulersWidth!
+      ..setSecondaryRulerColor = lGauge.rulers!.secondaryRulerColor!
+      ..setSecondaryRulersHeight = lGauge.rulers!.secondaryRulersHeight!
+      ..setSecondaryRulersWidth = lGauge.rulers!.secondaryRulersWidth!
+      ..setShowLinearGaugeContainer = lGauge.showLinearGaugeContainer!
+      ..setStart = lGauge.start!
+      ..setEnd = lGauge.end!
+      ..setSteps = lGauge.steps!
+      ..setTextStyle = lGauge.rulers!.textStyle!
+      ..setSecondaryRulerPerInterval = lGauge.rulers!.secondaryRulerPerInterval!
       ..setLinearGaugeContainerBgColor =
-          linearGaugeBoxDecoration!.backgroundColor
+          lGauge.linearGaugeBoxDecoration!.backgroundColor
       ..setLinearGaugeContainerValueColor =
-          linearGaugeBoxDecoration!.linearGaugeValueColor!
-      ..setShowLabel = rulers!.showLabel!
-      ..setRulerPosition = rulers!.rulerPosition!
-      ..setLabelOffset = rulers!.labelOffset!
-      ..setShowSecondaryRulers = rulers!.showSecondaryRulers
-      ..setShowPrimaryRulers = rulers!.showPrimaryRulers
-      ..setValue = value!
-      ..setPointer = pointer
-      ..setRangeLinearGauge = rangeLinearGauge
-      ..setRulersOffset = rulers!.rulersOffset!
-      ..setValueBarPosition = valueBarPosition!
-      ..setValueBar = valueBar!
-      ..setInversedRulers = rulers!.inverseRulers!
-      ..setPointers = pointers!;
+          lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!
+      ..setShowLabel = lGauge.rulers!.showLabel!
+      ..setRulerPosition = lGauge.rulers!.rulerPosition!
+      ..setLabelOffset = lGauge.rulers!.labelOffset!
+      ..setShowSecondaryRulers = lGauge.rulers!.showSecondaryRulers
+      ..setShowPrimaryRulers = lGauge.rulers!.showPrimaryRulers
+      ..setValue = lGauge.value!
+      ..setPointer = lGauge.pointer
+      ..setRangeLinearGauge = lGauge.rangeLinearGauge
+      ..setRulersOffset = lGauge.rulers!.rulersOffset!
+      ..setValueBarPosition = lGauge.valueBarPosition!
+      ..setValueBar = lGauge.valueBar!
+      ..setInversedRulers = lGauge.rulers!.inverseRulers!
+      ..setPointers = lGauge.pointers!
+      ..setAnimationValue = animationValue;
   }
 }

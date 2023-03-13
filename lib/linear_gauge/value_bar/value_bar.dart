@@ -100,13 +100,8 @@ class ValueBar {
   /// Painter Method to Draw [ValueBar]
   ///
 
-  void drawValueBar(
-    Canvas canvas,
-    double start,
-    double end,
-    double totalWidth,
-    RenderLinearGauge linearGauge,
-  ) {
+  void drawValueBar(Canvas canvas, double start, double end, double totalWidth,
+      RenderLinearGauge linearGauge) {
     assert(value >= linearGauge.getStart && value <= linearGauge.getEnd,
         'Value should be between start and end values');
 
@@ -123,6 +118,10 @@ class ValueBar {
     double valueBarHeight =
         ((value - endValue) / (startValue - endValue)) * totalWidth;
 
+    valueBarWidth = linearGauge.getAnimationValue != null
+        ? valueBarWidth * (linearGauge.getAnimationValue!)
+        : valueBarWidth;
+
     final ValueBarPosition valueBarPosition = position;
     final getLinearGaugeBoxDecoration = linearGauge.getLinearGaugeBoxDecoration;
     final Paint linearGaugeContainerPaint = Paint();
@@ -138,12 +137,19 @@ class ValueBar {
 
     if (gaugeOrientation == GaugeOrientation.horizontal) {
       double startValue = (!getInversedRulers) ? start : start + valueBarWidth;
-      gaugeContainer = Rect.fromLTWH(startValue, totalValOffset, valueBarWidth,
-          getLinearGaugeBoxDecoration.height);
+      gaugeContainer = Rect.fromLTWH(
+        startValue,
+        totalValOffset,
+        valueBarWidth,
+        getLinearGaugeBoxDecoration.height,
+      );
     } else {
       double barTop = (!getInversedRulers) ? start + valueBarHeight : start;
       double barLeft = _getOffsetHeight(
-          position, height, offset); // adjust left position as needed
+        position,
+        height,
+        offset,
+      ); // adjust left position as needed
       gaugeContainer = Rect.fromLTWH(
         barLeft,
         barTop,

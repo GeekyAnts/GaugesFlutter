@@ -16,7 +16,7 @@ void main() {
       gaugeOrientation: GaugeOrientation.horizontal,
       labelTopMargin: 0.0,
       linearGaugeBoxDecoration: LinearGaugeBoxDecoration(),
-      rulers: RulerStyle(
+      rulers: const RulerStyle(
         primaryRulerColor: Colors.black54,
         primaryRulersWidth: 1.0,
         primaryRulersHeight: 15.0,
@@ -34,6 +34,7 @@ void main() {
       ),
     );
   });
+
   group(' Testing', () {
     test('RenderLinearGauge test getter and setter', () {
       TextStyle textStyle = const TextStyle(
