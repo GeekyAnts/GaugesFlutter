@@ -15,10 +15,9 @@ class MyRulerOffset extends StatelessWidget {
               height: 30,
               child: LinearGauge(
                 // value: 50,
-                rulers: const RulerStyle(
-                  rulerPosition: RulerPosition.bottom,
-                ),
+
                 valueBarPosition: ValueBarPosition.bottom,
+                rulers: RulerStyle(rulerPosition: RulerPosition.bottom),
               ),
             ),
           ],

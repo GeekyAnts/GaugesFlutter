@@ -764,7 +764,7 @@ class RenderLinearGauge extends RenderBox {
         gaugeContainer = Rect.fromLTWH(
           offset.dy,
           !getInversedRulers ? (start + end) : start,
-          getLinearGaugeBoxDecoration.height,
+          getLinearGaugeBoxDecoration.width,
           !getInversedRulers ? -totalValOnPixel : totalValOnPixel,
         );
       }
@@ -806,18 +806,31 @@ class RenderLinearGauge extends RenderBox {
 
         // Start of the ColorRange
 
-        double colorRangeStart = !getInversedRulers
-            ? (calculateValuePixelWidth(rangeLinearGauge![i].start) + start)
-            : ((start + end) -
-                calculateValuePixelWidth(rangeLinearGauge![i].start));
+        double colorRangeStart;
+        if (getGaugeOrientation == GaugeOrientation.horizontal) {
+          colorRangeStart = !getInversedRulers
+              ? (calculateValuePixelWidth(rangeLinearGauge![i].start) + start)
+              : ((start + end) -
+                  calculateValuePixelWidth(rangeLinearGauge![i].start));
 
-        _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
-        gaugeContainer = Rect.fromLTWH(
-          colorRangeStart,
-          offset.dy,
-          (!getInversedRulers) ? colorRangeWidth : -colorRangeWidth,
-          getLinearGaugeBoxDecoration.height,
-        );
+          gaugeContainer = Rect.fromLTWH(
+            colorRangeStart,
+            offset.dy,
+            !getInversedRulers ? colorRangeWidth : -colorRangeWidth,
+            getLinearGaugeBoxDecoration.height,
+          );
+        } else {
+          colorRangeStart = !getInversedRulers
+              ? ((start + end) -
+                  calculateValuePixelWidth(rangeLinearGauge![i].start))
+              : (calculateValuePixelWidth(rangeLinearGauge![i].start) + start);
+          gaugeContainer = Rect.fromLTWH(
+            offset.dy,
+            colorRangeStart,
+            getLinearGaugeBoxDecoration.width,
+            !getInversedRulers ? -colorRangeWidth : colorRangeWidth,
+          );
+        }
 
         _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
         canvas.drawRect(
@@ -1014,6 +1027,15 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
             firstOffset;
 
+    var verticalFirstOffset =
+        _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]!;
+
+    Offset vert = verticalFirstOffset.first;
+    if (getGaugeOrientation == GaugeOrientation.horizontal) {
+      firstOff = vert;
+    } else {
+      firstOff = vert;
+    }
     // Drawing Pointers based on list of pointers added to the gauge
     for (int i = 0; i < getPointers.length; i++) {
       getPointers[i].drawPointer(

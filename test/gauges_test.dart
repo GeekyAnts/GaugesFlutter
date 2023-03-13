@@ -4,9 +4,7 @@ import 'package:geekyants_flutter_gauges/gauges.dart';
 
 void main() {
   LinearGauge linearGauge = LinearGauge(
-    rulers: const RulerStyle(
-      rulerPosition: RulerPosition.bottom,
-    ),
+    rulers: RulerStyle(rulerPosition: RulerPosition.bottom),
   );
   setUp(() {
     linearGauge = LinearGauge(
