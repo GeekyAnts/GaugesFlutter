@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
 
 class MyVerticalGauge extends StatefulWidget {
   const MyVerticalGauge({super.key});
@@ -17,6 +16,7 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
         child: LinearGauge(
           start: 100,
           end: 200,
+          value: 190,
           enableAnimation: true,
           pointers: const [
             Pointer(
@@ -33,16 +33,6 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
               value: 170,
               color: Colors.orange,
             ),
-            ValueBar(
-              position: ValueBarPosition.top,
-              value: 160,
-              color: Colors.red,
-            ),
-            ValueBar(
-                position: ValueBarPosition.top,
-                value: 120,
-                color: Colors.green,
-                offset: 4),
           ],
           gaugeOrientation: GaugeOrientation.horizontal,
           rulers: const RulerStyle(

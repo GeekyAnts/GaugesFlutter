@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
 import 'linear_gauge_painter.dart';
 
 class LinearGauge extends StatefulWidget {
