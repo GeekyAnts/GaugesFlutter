@@ -28,6 +28,7 @@ class VerticalPointerExample extends StatelessWidget {
             Pointer(
               value: 40,
               shape: PointerShape.circle,
+              quarterTurns: QuarterTurns.one,
               width: 50,
               showLabel: true,
               labelStyle: TextStyle(

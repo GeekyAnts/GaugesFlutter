@@ -285,44 +285,37 @@ class Pointer {
 
       double textWidth = textPainter.width / 2;
       double textHeight = textPainter.height / 2;
+      // Rotated Text paint
+      void _paintRotated(Canvas canvas, TextPainter textPainter, Offset center,
+          double degrees) {
+        canvas.save();
+        canvas.translate(center.dx, center.dy);
+        canvas.rotate(degrees * pi / 180);
+        textPainter.paint(canvas, Offset(-textWidth, -textHeight));
+        canvas.restore();
+      }
+
       // Draw the text centered at the rotated canvas origin
       switch (quarterTurns) {
         case QuarterTurns.zero:
-          final textOffset =
-              Offset(offset.dx - textWidth, offset.dy - textHeight);
-          textPainter.paint(canvas, textOffset);
+          final offsetAdjustment = Offset(-textWidth, -textHeight);
+          textPainter.paint(canvas, offset - offsetAdjustment);
           break;
 
         case QuarterTurns.two:
-          final center = offset;
-          canvas.save();
-          canvas.translate(center.dx, center.dy);
-          canvas.rotate(180 * pi / 180);
-          textPainter.paint(canvas, Offset(-textWidth, -textHeight));
-          canvas.restore();
+          _paintRotated(canvas, textPainter, offset, 180);
           break;
 
         case QuarterTurns.one:
-          final center = offset;
-          canvas.save();
-          canvas.translate(center.dx, center.dy);
-          canvas.rotate(90 * pi / 180);
-          textPainter.paint(canvas, Offset(-textWidth, -textHeight));
-          canvas.restore();
+          _paintRotated(canvas, textPainter, offset, 90);
           break;
 
         case QuarterTurns.three:
-          final center = offset;
-          canvas.save();
-          canvas.translate(center.dx, center.dy);
-          canvas.rotate(-90 * pi / 180);
-          textPainter.paint(
-              canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
-          canvas.restore();
+          _paintRotated(canvas, textPainter, offset, -90);
           break;
 
         default:
-          QuarterTurns.zero;
+          break;
       }
     } else {
       double textWidth = textPainter.width / 2;
@@ -499,7 +492,6 @@ class Pointer {
     // Move the canvas origin to the vertex point
     canvas.translate(vertex.dx, vertex.dy);
     canvas.rotate(pi * angle / 180);
-    // Move the canvas origin back to the original point
     canvas.translate(-vertex.dx, -vertex.dy);
     canvas.drawPath(path, paint);
     // Restore the previous canvas state
@@ -571,7 +563,6 @@ class Pointer {
     double height = linearGauge.getPointer.height!;
     double width = linearGauge.getPointer.width!;
     double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
-    // double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
     final paint = Paint();
     paint.color = pointerColor;
