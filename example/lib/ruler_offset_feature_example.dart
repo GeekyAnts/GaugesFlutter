@@ -17,6 +17,7 @@ class MyRulerOffset extends StatelessWidget {
                 // value: 50,
 
                 valueBarPosition: ValueBarPosition.bottom,
+                rulers: RulerStyle(rulerPosition: RulerPosition.bottom),
               ),
             ),
           ],
