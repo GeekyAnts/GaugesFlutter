@@ -6,4 +6,4 @@ enum RulerPosition { top, center, bottom, right, left }
 
 enum QuarterTurns { zero, one, two, three }
 
-enum ValueBarPosition { top, center, bottom }
+enum ValueBarPosition { top, center, bottom, right, left }

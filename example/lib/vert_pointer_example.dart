@@ -1,54 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
-class VerticalPointerExample extends StatelessWidget {
-  const VerticalPointerExample({super.key});
+
+class VerticalValueBarExample extends StatelessWidget {
+  const VerticalValueBarExample({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: LinearGauge(
+
+          start: 0,
+          end: 200,
           valueBar: [
             ValueBar(
+              value: 150,
+              offset: 10,
+              position: ValueBarPosition.left,
+              color: Colors.red,
+            ),
+            ValueBar(
+              value: 150,
+              offset: 0,
+              position: ValueBarPosition.center,
+              color: Colors.red,
+            ),
+            ValueBar(
               value: 50,
+              offset: 10,
+              position: ValueBarPosition.right,
               color: Colors.red,
             ),
           ],
-          pointers: const [
-            Pointer(
-              value: 62.5,
-              showLabel: true,
-              labelStyle: TextStyle(
-                color: Colors.red,
-                fontWeight: FontWeight.bold,
-                height: 0,
-              ),
-              quarterTurns: QuarterTurns.three,
-              color: Colors.blue,
-              shape: PointerShape.diamond,
-              height: 100,
-              width: 70,
-            ),
-            Pointer(
-              value: 40,
-              shape: PointerShape.circle,
-              quarterTurns: QuarterTurns.zero,
-              width: 50,
-              showLabel: true,
-              labelStyle: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                height: 0,
-              ),
-            )
-          ],
           gaugeOrientation: GaugeOrientation.vertical,
           rulers: const RulerStyle(
-            // inverseRulers: true,
-            // labelOffset: 10,
+            inverseRulers: false,
+            rulerPosition: RulerPosition.left,
 
-            rulerPosition: RulerPosition.center,
           ),
         ),
       ),

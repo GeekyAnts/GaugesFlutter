@@ -2,7 +2,8 @@ import 'package:example/gauge_vertical.dart';
 import 'package:example/vert_pointer_example.dart';
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
+
+import 'multiple_pointer_example.dart';
 
 void main() {
   runApp(
@@ -23,6 +24,10 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return VerticalPointerExample();
+
+
+    return VerticalValueBarExample();
+
+
   }
 }

@@ -112,12 +112,16 @@ class ValueBar {
 
     // Start and End values of the Linear Gauge
     double endValue = linearGauge.getEnd;
+
     double startValue = linearGauge.getStart;
     GaugeOrientation gaugeOrientation = linearGauge.getGaugeOrientation;
 
     //  width of the value bar in pixels based on the value
     double valueBarWidth =
         ((value - startValue) / (endValue - startValue)) * totalWidth;
+
+    double valueBarHeight =
+        ((value - endValue) / (startValue - endValue)) * totalWidth;
 
     final ValueBarPosition valueBarPosition = position;
     final getLinearGaugeBoxDecoration = linearGauge.getLinearGaugeBoxDecoration;
@@ -126,13 +130,27 @@ class ValueBar {
 
     //For get Offset Height
     double height = linearGauge.getLinearGaugeBoxDecoration.height;
+    double width = getLinearGaugeBoxDecoration.width;
     double totalValOffset = _getOffsetHeight(valueBarPosition, height, offset);
-
+    bool getInversedRulers = linearGauge.getInversedRulers;
     // Drawing Value Bar
     final gaugeContainer;
 
-    gaugeContainer = Rect.fromLTWH(start, totalValOffset, valueBarWidth,
-        getLinearGaugeBoxDecoration.height);
+    if (gaugeOrientation == GaugeOrientation.horizontal) {
+      double startValue = (!getInversedRulers) ? start : start + valueBarWidth;
+      gaugeContainer = Rect.fromLTWH(startValue, totalValOffset, valueBarWidth,
+          getLinearGaugeBoxDecoration.height);
+    } else {
+      double barTop = (!getInversedRulers) ? start + valueBarHeight : start;
+      double barLeft = _getOffsetHeight(
+          position, height, offset); // adjust left position as needed
+      gaugeContainer = Rect.fromLTWH(
+        barLeft,
+        barTop,
+        width, // set width to half of the gauge width
+        valueBarWidth,
+      );
+    }
 
     canvas.drawRect(gaugeContainer, linearGaugeContainerPaint);
   }
@@ -147,7 +165,10 @@ class ValueBar {
         return -(height + valueBarOffset);
       case ValueBarPosition.bottom:
         return height + valueBarOffset;
-
+      case ValueBarPosition.left:
+        return -(height + valueBarOffset);
+      case ValueBarPosition.right:
+        return height + valueBarOffset;
       default:
         return 0;
     }
