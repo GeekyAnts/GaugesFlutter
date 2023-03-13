@@ -248,13 +248,13 @@ class Pointer {
     );
 
     textPainter.text = TextSpan(
-        text:
-            value == null ? linearGauge.getValue.toString() : value.toString(),
-        style: labelStyle ??
-            TextStyle(
-              color: getPointerColor,
-              fontSize: 12,
-            ));
+      text: value == null ? linearGauge.getValue.toString() : value.toString(),
+      style: labelStyle ??
+          TextStyle(
+            color: getPointerColor,
+            fontSize: 12,
+          ),
+    );
 
     textPainter.layout();
     if (shape == PointerShape.circle) {
@@ -278,16 +278,17 @@ class Pointer {
             offset = Offset(offset.dx - width!, offset.dy);
             break;
           default:
-            offset = Offset(offset.dx - width! - gaugeHeight * 2, offset.dy);
+            offset = Offset(offset.dx - width! - gaugeHeight, offset.dy);
         }
       }
 
+      double textWidth = textPainter.width / 2;
+      double textHeight = textPainter.height / 2;
       // Draw the text centered at the rotated canvas origin
       switch (quarterTurns) {
         case QuarterTurns.zero:
-          // textPainter.layout();
-          final textOffset = Offset(offset.dx - textPainter.width / 2,
-              offset.dy - textPainter.height / 2);
+          final textOffset =
+              Offset(offset.dx - textWidth, offset.dy - textHeight);
           textPainter.paint(canvas, textOffset);
           break;
 
@@ -296,8 +297,7 @@ class Pointer {
           canvas.save();
           canvas.translate(center.dx, center.dy);
           canvas.rotate(180 * pi / 180);
-          textPainter.paint(
-              canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+          textPainter.paint(canvas, Offset(-textWidth, -textHeight));
           canvas.restore();
           break;
 
@@ -306,10 +306,10 @@ class Pointer {
           canvas.save();
           canvas.translate(center.dx, center.dy);
           canvas.rotate(90 * pi / 180);
-          textPainter.paint(
-              canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
+          textPainter.paint(canvas, Offset(-textWidth, -textHeight));
           canvas.restore();
           break;
+
         case QuarterTurns.three:
           final center = offset;
           canvas.save();
@@ -319,39 +319,43 @@ class Pointer {
               canvas, Offset(-textPainter.width / 2, -textPainter.height / 2));
           canvas.restore();
           break;
+
         default:
           QuarterTurns.zero;
       }
     } else {
       double textWidth = textPainter.width / 2;
       double textHeight = textPainter.height / 2;
+
       switch (rulerPosition) {
         case RulerPosition.bottom:
-          offset = Offset(offset.dx - textPainter.width / 2,
-              -height! - textPainter.height - gaugeHeight);
+          var yAxisTurn =
+              quarterTurns == QuarterTurns.zero ? gaugeHeight : gaugeHeight * 2;
+          offset = Offset(offset.dx - textWidth,
+              -((yAxisTurn) + textHeight + height! + textHeight));
           break;
         case RulerPosition.top:
-          offset = Offset(offset.dx - textPainter.width / 2,
-              height! + textPainter.height / 2 - gaugeHeight);
+          offset =
+              Offset(offset.dx - textWidth, height! + textHeight - gaugeHeight);
           break;
         case RulerPosition.center:
           gaugeOrientation == GaugeOrientation.horizontal
-              ? offset = Offset(offset.dx - textPainter.width / 2,
-                  -height! - textPainter.height - gaugeHeight * 2)
-              : offset = Offset(-width! - textPainter.width - gaugeHeight * 2,
-                  offset.dy - textPainter.height / 2);
+              ? offset = Offset(offset.dx - textWidth,
+                  -(gaugeHeight + textHeight + height! + textHeight))
+              : offset = Offset(-width! - textPainter.width - gaugeHeight,
+                  offset.dy - textHeight);
           break;
         case RulerPosition.right:
-          offset = Offset(
-              -height! - textPainter.width, offset.dy - textPainter.height / 2);
+          offset =
+              Offset(-(width! + textPainter.width), offset.dy - textHeight);
           break;
         case RulerPosition.left:
-          offset = Offset(textPainter.width - textPainter.height / 2,
-              offset.dy - textPainter.height / 2);
+          offset = Offset((width! + gaugeHeight), offset.dy - textHeight);
           break;
 
         default:
       }
+
       double angle = getAngle();
       double x = offset.dx;
       double y = offset.dy;
@@ -385,8 +389,8 @@ class Pointer {
         break;
       case RulerPosition.center:
         offset = orientation == GaugeOrientation.horizontal
-            ? Offset(offset.dx, offset.dy - width! - gaugeHeight * 2)
-            : Offset(offset.dx - gaugeHeight - width! - gaugeHeight, offset.dy);
+            ? Offset(offset.dx, offset.dy - width! - gaugeHeight)
+            : Offset(offset.dx - gaugeHeight - width!, offset.dy);
         _drawCircle(canvas, offset);
         break;
       case RulerPosition.left:
@@ -423,8 +427,8 @@ class Pointer {
         break;
       case RulerPosition.center:
         offset = rulerOrientation == GaugeOrientation.horizontal
-            ? Offset(offset.dx, offset.dy - height!)
-            : Offset(offset.dx - width! / 2 - gaugeHeight * 2, offset.dy);
+            ? Offset(offset.dx, offset.dy - height! / 2 - gaugeHeight)
+            : Offset(offset.dx - width! / 2 - gaugeHeight, offset.dy);
         _drawRectangle(canvas, offset);
         break;
       case RulerPosition.left:
@@ -432,7 +436,7 @@ class Pointer {
         _drawRectangle(canvas, offset);
         break;
       case RulerPosition.right:
-        offset = Offset(offset.dx - width! / 2, offset.dy);
+        offset = Offset(offset.dx - width! / 2 - gaugeHeight, offset.dy);
         _drawRectangle(canvas, offset);
         break;
     }
@@ -440,6 +444,7 @@ class Pointer {
 
   _drawRectangle(Canvas canvas, Offset offset) {
     final paint = Paint()..color = color!;
+
     Rect rect = Rect.fromCenter(center: offset, width: width!, height: height!);
 
     canvas.drawRect(rect, paint);
@@ -520,8 +525,8 @@ class Pointer {
         break;
       case RulerPosition.center:
         offset = rulerOrientation == GaugeOrientation.horizontal
-            ? Offset(offset.dx, offset.dy - height!)
-            : Offset(offset.dx - height!, offset.dy);
+            ? Offset(offset.dx, offset.dy - gaugeHeight - height! / 2)
+            : Offset(offset.dx - gaugeHeight - width! / 2, offset.dy);
 
         _drawDiamond(canvas, offset);
         break;
@@ -598,7 +603,6 @@ class Pointer {
         return 180;
       case QuarterTurns.three:
         return 270;
-
       default:
         return 0;
     }
