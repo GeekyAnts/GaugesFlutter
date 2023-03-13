@@ -130,17 +130,9 @@ class ValueBar {
 
     // Drawing Value Bar
     final gaugeContainer;
-    if (gaugeOrientation == GaugeOrientation.horizontal) {
-      gaugeContainer = Rect.fromLTWH(start, totalValOffset, valueBarWidth,
-          getLinearGaugeBoxDecoration.height);
-    } else {
-      gaugeContainer = Rect.fromLTWH(
-        start - 12,
-        totalValOffset + 10,
-        getLinearGaugeBoxDecoration.height,
-        valueBarWidth,
-      );
-    }
+
+    gaugeContainer = Rect.fromLTWH(start, totalValOffset, valueBarWidth,
+        getLinearGaugeBoxDecoration.height);
 
     canvas.drawRect(gaugeContainer, linearGaugeContainerPaint);
   }

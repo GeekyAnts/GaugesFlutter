@@ -10,6 +10,12 @@ class VerticalPointerExample extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: LinearGauge(
+          valueBar: [
+            ValueBar(
+              value: 50,
+              color: Colors.red,
+            ),
+          ],
           pointers: const [
             Pointer(
               value: 62.5,
