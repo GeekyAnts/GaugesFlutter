@@ -113,6 +113,7 @@ class ValueBar {
     // Start and End values of the Linear Gauge
     double endValue = linearGauge.getEnd;
     double startValue = linearGauge.getStart;
+    GaugeOrientation gaugeOrientation = linearGauge.getGaugeOrientation;
 
     //  width of the value bar in pixels based on the value
     double valueBarWidth =
@@ -128,8 +129,19 @@ class ValueBar {
     double totalValOffset = _getOffsetHeight(valueBarPosition, height, offset);
 
     // Drawing Value Bar
-    final gaugeContainer = Rect.fromLTWH(start, totalValOffset, valueBarWidth,
-        getLinearGaugeBoxDecoration.height);
+    final gaugeContainer;
+    if (gaugeOrientation == GaugeOrientation.horizontal) {
+      gaugeContainer = Rect.fromLTWH(start, totalValOffset, valueBarWidth,
+          getLinearGaugeBoxDecoration.height);
+    } else {
+      gaugeContainer = Rect.fromLTWH(
+        start - 12,
+        totalValOffset + 10,
+        getLinearGaugeBoxDecoration.height,
+        valueBarWidth,
+      );
+    }
+
     canvas.drawRect(gaugeContainer, linearGaugeContainerPaint);
   }
 
@@ -143,6 +155,7 @@ class ValueBar {
         return -(height + valueBarOffset);
       case ValueBarPosition.bottom:
         return height + valueBarOffset;
+
       default:
         return 0;
     }
