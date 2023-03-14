@@ -20,7 +20,8 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
           enableAnimation: true,
           pointers: const [
             Pointer(
-              shape: PointerShape.triangle,
+              shape: PointerShape.circle,
+              pointerPosition: PointerPosition.right,
               value: 170,
               showLabel: false,
               labelStyle: TextStyle(
@@ -28,15 +29,9 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
               ),
             ),
           ],
-          valueBar: [
-            ValueBar(
-              value: 170,
-              color: Colors.orange,
-            ),
-          ],
           gaugeOrientation: GaugeOrientation.horizontal,
           rulers: const RulerStyle(
-            rulerPosition: RulerPosition.bottom,
+            rulerPosition: RulerPosition.center,
           ),
         ),
       ),

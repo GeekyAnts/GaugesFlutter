@@ -36,6 +36,7 @@ class Pointer {
     this.showLabel = true,
     this.quarterTurns = QuarterTurns.zero,
     this.labelStyle = const TextStyle(),
+    this.pointerPosition = PointerPosition.center,
   });
 
   ///
@@ -149,6 +150,11 @@ class Pointer {
   /// ),
   /// ```
   final TextStyle? labelStyle;
+
+  ///
+  /// Pointer Position on the [LinearGauge]  sets the position of position of `pointer` on the [LinearGauge]
+  ///
+  final PointerPosition? pointerPosition;
 
   ///
   /// Getters and Setters for `value`
@@ -370,29 +376,30 @@ class Pointer {
     RenderLinearGauge linearGauge,
   ) {
     double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
-    RulerPosition rulerPosition = linearGauge.rulerPosition;
+    PointerPosition rulerPosition = pointerPosition!;
     GaugeOrientation orientation = linearGauge.getGaugeOrientation;
 
     switch (rulerPosition) {
-      case RulerPosition.bottom:
+      case PointerPosition.top:
         offset = Offset(offset.dx, offset.dy - width! - gaugeHeight);
         _drawCircle(canvas, offset);
         break;
-      case RulerPosition.top:
+      case PointerPosition.bottom:
         offset = Offset(offset.dx, offset.dy + width!);
         _drawCircle(canvas, offset);
         break;
-      case RulerPosition.center:
+      case PointerPosition.center:
+        // offset = Offset(offset.dx - gaugeHeight / 2, offset.dy);
         offset = orientation == GaugeOrientation.horizontal
-            ? Offset(offset.dx, offset.dy - width! - gaugeHeight)
-            : Offset(offset.dx - gaugeHeight - width!, offset.dy);
+            ? Offset(offset.dx, offset.dy - gaugeHeight)
+            : Offset(offset.dx - gaugeHeight / 2, offset.dy);
         _drawCircle(canvas, offset);
         break;
-      case RulerPosition.left:
+      case PointerPosition.right:
         offset = Offset(offset.dx + width!, offset.dy);
         _drawCircle(canvas, offset);
         break;
-      case RulerPosition.right:
+      case PointerPosition.left:
         offset = Offset(offset.dx - width! - gaugeHeight, offset.dy);
         _drawCircle(canvas, offset);
         break;
