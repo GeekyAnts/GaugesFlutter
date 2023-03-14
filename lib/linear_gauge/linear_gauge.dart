@@ -38,6 +38,7 @@ class LinearGauge extends StatefulWidget {
     this.valueBar = const [],
     this.pointers = const [],
     this.enableAnimation = false,
+    this.extendLinearGauge = 0,
   })  : assert(() {
           if (rulers != null) {
             if (gaugeOrientation == GaugeOrientation.horizontal) {
@@ -104,6 +105,17 @@ class LinearGauge extends StatefulWidget {
   /// ```
   ///
   final double? steps;
+
+  ///
+  /// `extendLinearGauge` Sets the rulers & labels away from the ending points of [LinearGauge] Container
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///   extendLinearGauge : 10
+  /// ),
+  /// ```
+  ///
+  final double? extendLinearGauge;
 
   ///
   ///
@@ -368,41 +380,42 @@ class _RLinearGauge extends LeafRenderObjectWidget {
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
     return RenderLinearGauge(
-      start: lGauge.start!,
-      end: lGauge.end!,
-      steps: lGauge.steps!,
-      showLinearGaugeContainer: lGauge.showLinearGaugeContainer!,
-      gaugeOrientation: lGauge.gaugeOrientation!,
-      primaryRulersWidth: lGauge.rulers!.primaryRulersWidth!,
-      primaryRulersHeight: lGauge.rulers!.primaryRulersHeight!,
-      secondaryRulersHeight: lGauge.rulers!.secondaryRulersHeight!,
-      secondaryRulersWidth: lGauge.rulers!.secondaryRulersWidth!,
-      labelTopMargin: lGauge.labelTopMargin!,
-      primaryRulerColor: lGauge.rulers!.primaryRulerColor!,
-      secondaryRulerColor: lGauge.rulers!.secondaryRulerColor!,
-      linearGaugeBoxDecoration: lGauge.linearGaugeBoxDecoration!,
-      secondaryRulerPerInterval: lGauge.rulers!.secondaryRulerPerInterval!,
-      linearGaugeContainerBgColor:
-          lGauge.linearGaugeBoxDecoration!.backgroundColor,
-      linearGaugeContainerValueColor:
-          lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!,
-      textStyle: lGauge.rulers!.textStyle!,
-      showLabel: lGauge.rulers!.showLabel!,
-      rulerPosition: lGauge.rulers!.rulerPosition!,
-      labelOffset: lGauge.rulers!.labelOffset!,
-      showSecondaryRulers: lGauge.rulers!.showSecondaryRulers,
-      showPrimaryRulers: lGauge.rulers!.showPrimaryRulers,
-      pointer: lGauge.pointer!,
-      value: lGauge.value!,
-      rangeLinearGauge: lGauge.rangeLinearGauge!,
-      customLabels: lGauge.customLabels!,
-      rulersOffset: lGauge.rulers!.rulersOffset!,
-      valueBarPosition: lGauge.valueBarPosition!,
-      valueBar: lGauge.valueBar!,
-      inversedRulers: lGauge.rulers!.inverseRulers!,
-      pointers: lGauge.pointers!,
-      animationValue: animationValue,
-    );
+        start: lGauge.start!,
+        end: lGauge.end!,
+        steps: lGauge.steps!,
+        showLinearGaugeContainer: lGauge.showLinearGaugeContainer!,
+        gaugeOrientation: lGauge.gaugeOrientation!,
+        primaryRulersWidth: lGauge.rulers!.primaryRulersWidth!,
+        primaryRulersHeight: lGauge.rulers!.primaryRulersHeight!,
+        secondaryRulersHeight: lGauge.rulers!.secondaryRulersHeight!,
+        secondaryRulersWidth: lGauge.rulers!.secondaryRulersWidth!,
+        labelTopMargin: lGauge.labelTopMargin!,
+        primaryRulerColor: lGauge.rulers!.primaryRulerColor!,
+        secondaryRulerColor: lGauge.rulers!.secondaryRulerColor!,
+        linearGaugeBoxDecoration: lGauge.linearGaugeBoxDecoration!,
+        secondaryRulerPerInterval: lGauge.rulers!.secondaryRulerPerInterval!,
+        linearGaugeContainerBgColor:
+            lGauge.linearGaugeBoxDecoration!.backgroundColor,
+        linearGaugeContainerValueColor:
+            lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!,
+        textStyle: lGauge.rulers!.textStyle!,
+        showLabel: lGauge.rulers!.showLabel!,
+        rulerPosition: lGauge.rulers!.rulerPosition!,
+        labelOffset: lGauge.rulers!.labelOffset!,
+        showSecondaryRulers: lGauge.rulers!.showSecondaryRulers,
+        showPrimaryRulers: lGauge.rulers!.showPrimaryRulers,
+        pointer: lGauge.pointer!,
+        value: lGauge.value!,
+        rangeLinearGauge: lGauge.rangeLinearGauge!,
+        customLabels: lGauge.customLabels!,
+        rulersOffset: lGauge.rulers!.rulersOffset!,
+        valueBarPosition: lGauge.valueBarPosition!,
+        valueBar: lGauge.valueBar!,
+        inversedRulers: lGauge.rulers!.inverseRulers!,
+        pointers: lGauge.pointers!,
+        animationValue: animationValue,
+        thickness: lGauge.linearGaugeBoxDecoration!.thickness!,
+        extendLinearGauge: lGauge.extendLinearGauge!);
   }
 
   @override
@@ -441,6 +454,8 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setValueBar = lGauge.valueBar!
       ..setInversedRulers = lGauge.rulers!.inverseRulers!
       ..setPointers = lGauge.pointers!
-      ..setAnimationValue = animationValue;
+      ..setAnimationValue = animationValue
+      ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!
+      ..setExtendLinearGauge = lGauge.extendLinearGauge!;
   }
 }

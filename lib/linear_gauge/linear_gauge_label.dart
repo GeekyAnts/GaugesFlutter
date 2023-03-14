@@ -52,28 +52,38 @@ class LinearGaugeLabel {
     Size size,
     double end,
     double primaryRulersHeight,
-    LinearGaugeBoxDecoration linearGaugeBoxDecoration,
+    double thickness,
     double labelTopMargin,
     Pointer pointer,
     bool isCustomLabelsGiven,
     bool isRulersInversed,
     GaugeOrientation orientation,
+    double extendLinearGauge,
   ) {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
 
     if (orientation == GaugeOrientation.horizontal) {
-      a = Offset((startLabel.width / 2) + (pointer.width! / 2),
-          linearGaugeBoxDecoration.height);
-      b = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
-          linearGaugeBoxDecoration.height);
-    } else {
-      a = Offset((startLabel.height / 2) + (pointer.width! / 2),
-          linearGaugeBoxDecoration.width);
+      a = Offset(
+          (startLabel.width / 2) + (pointer.width! / 2) + extendLinearGauge,
+          thickness);
       b = Offset(
-        size.height - (endLabel.height / 2) - (pointer.width! / 2),
-        linearGaugeBoxDecoration.width,
+          size.width -
+              (endLabel.width / 2) -
+              (pointer.width! / 2) -
+              extendLinearGauge,
+          thickness);
+    } else {
+      a = Offset(
+          (startLabel.height / 2) + (pointer.width! / 2) + extendLinearGauge,
+          thickness);
+      b = Offset(
+        size.height -
+            (endLabel.height / 2) -
+            (pointer.width! / 2) -
+            extendLinearGauge,
+        thickness,
       );
       // this will allow to start from bottom
       Offset temp = a;
@@ -203,7 +213,7 @@ class LinearGaugeLabel {
                 secondaryRulerStartPoint = Offset(x, -rulersOffset);
 
                 secondaryRulerEndPoint =
-                    Offset(x, -(5 + height + rulersOffset));
+                    Offset(x, -(5 + height + rulersOffset - y));
                 break;
               case RulerPosition.center:
                 if (gaugeOrientation == GaugeOrientation.horizontal) {

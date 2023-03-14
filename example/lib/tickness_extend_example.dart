@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
-class MyVerticalGauge extends StatefulWidget {
-  const MyVerticalGauge({super.key});
+class ThicknessExtendExample extends StatefulWidget {
+  const ThicknessExtendExample({super.key});
 
   @override
-  State<MyVerticalGauge> createState() => _MyVerticalGaugeState();
+  State<ThicknessExtendExample> createState() => _ThicknessExtendExampleState();
 }
 
-class _MyVerticalGaugeState extends State<MyVerticalGauge> {
+class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,12 +17,13 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
           start: 100,
           end: 200,
           value: 190,
+          extendLinearGauge: 20,
           enableAnimation: true,
           linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 10),
           pointers: const [
             Pointer(
               shape: PointerShape.circle,
-              pointerPosition: PointerPosition.right,
+              pointerPosition: PointerPosition.center,
               value: 170,
               showLabel: false,
               labelStyle: TextStyle(
@@ -30,9 +31,9 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
               ),
             ),
           ],
-          gaugeOrientation: GaugeOrientation.horizontal,
+          gaugeOrientation: GaugeOrientation.vertical,
           rulers: const RulerStyle(
-            rulerPosition: RulerPosition.top,
+            rulerPosition: RulerPosition.left,
           ),
         ),
       ),
