@@ -28,3 +28,7 @@ migrate_working_dir/
 .dart_tool/
 .packages
 build/
+
+
+# don't check in golden failure output
+**/failures/*.png
