@@ -315,16 +315,6 @@ class LinearGauge extends StatefulWidget {
   ///
   final bool enableAnimation;
 
-  ///
-  /// `valueBarPosition` sets the position of the value bar from the [LinearGauge]
-  ///  default is to `valueBarPosition =`ValueBarPosition.center`
-  ///
-  /// ```
-  /// const LinearGauge(
-  ///   valueBarPosition: ValueBarPosition.center,
-  /// ),
-  /// ```
-
   @override
   State<LinearGauge> createState() => _LinearGauge();
 }
