@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
-class MyVerticalGauge extends StatefulWidget {
-  const MyVerticalGauge({super.key});
+class ThicknessExtendExample extends StatefulWidget {
+  const ThicknessExtendExample({super.key});
 
   @override
-  State<MyVerticalGauge> createState() => _MyVerticalGaugeState();
+  State<ThicknessExtendExample> createState() => _ThicknessExtendExampleState();
 }
 
-class _MyVerticalGaugeState extends State<MyVerticalGauge> {
+class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
