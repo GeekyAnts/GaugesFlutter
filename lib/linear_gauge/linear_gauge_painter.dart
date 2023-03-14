@@ -524,19 +524,19 @@ class RenderLinearGauge extends RenderBox {
             : getStart.toInt().toString());
 
     _linearGaugeLabel.generateOffSetsForLabel(
-      _startLabelSize,
-      _endLabelSize,
-      size,
-      getEnd,
-      getPrimaryRulersHeight,
-      getThickness,
-      getLabelTopMargin,
-      _pointer,
-      getCustomLabels!.isNotEmpty,
-      getInversedRulers,
-      getGaugeOrientation,
-      getExtendLinearGauge,
-    );
+        _startLabelSize,
+        _endLabelSize,
+        size,
+        getEnd,
+        getPrimaryRulersHeight,
+        getThickness,
+        getLabelTopMargin,
+        _pointer,
+        getCustomLabels!.isNotEmpty,
+        getInversedRulers,
+        getGaugeOrientation,
+        getExtendLinearGauge,
+        this);
   }
 
   void _drawLabels(
@@ -675,20 +675,28 @@ class RenderLinearGauge extends RenderBox {
     late double end;
     late double start;
 
+    double largestPointerWidth = getLargestPointerWidth();
+
     if (showLabel) {
       end = GaugeOrientation.horizontal == getGaugeOrientation
           ? size.width -
               ((_endLabelSize.width / 2) +
                   (_startLabelSize.width / 2) +
-                  (_pointer.width!))
+                  (largestPointerWidth))
           : (size.height -
               ((_endLabelSize.height / 2) +
                   (_startLabelSize.height / 2) +
-                  (_pointer.width!)));
+                  (largestPointerWidth)));
 
       start = GaugeOrientation.horizontal == getGaugeOrientation
-          ? (offset.dx + (_startLabelSize.width / 2) + (_pointer.width! / 2))
-          : (offset.dx + (_startLabelSize.height / 2) + (_pointer.width! / 2));
+          ? (offset.dx +
+              (_startLabelSize.width / 2) +
+              (largestPointerWidth / 2))
+          : (offset.dx +
+              (_startLabelSize.height / 2) +
+              (largestPointerWidth / 2));
+
+      print(start);
     } else {
       end = GaugeOrientation.horizontal == getGaugeOrientation
           ? size.width
@@ -866,6 +874,19 @@ class RenderLinearGauge extends RenderBox {
           _linearGaugeContainerValuePaint,
         );
       }
+    }
+  }
+
+  double getLargestPointerWidth() {
+    double largestPointerWidth;
+    if (getPointers.isNotEmpty) {
+      largestPointerWidth = getPointers
+          .reduce(
+              (current, next) => current.width! > next.width! ? current : next)
+          .width!;
+      return largestPointerWidth;
+    } else {
+      return 10;
     }
   }
 

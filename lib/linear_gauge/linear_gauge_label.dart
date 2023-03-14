@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_painter.dart';
 
 class LinearGaugeLabel {
   String? text;
@@ -59,10 +60,12 @@ class LinearGaugeLabel {
     bool isRulersInversed,
     GaugeOrientation orientation,
     double extendLinearGauge,
+    RenderLinearGauge linearGauge,
   ) {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
+    double largestPointerWidth = linearGauge.getLargestPointerWidth();
 
     if (orientation == GaugeOrientation.horizontal) {
       a = Offset(

@@ -20,6 +20,12 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return const MyVerticalGauge();
+    return Scaffold(
+      body: Column(
+        children: [
+          SizedBox(height: 700, child: const MyVerticalGauge()),
+        ],
+      ),
+    );
   }
 }
