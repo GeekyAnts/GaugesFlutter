@@ -42,6 +42,7 @@ class RenderLinearGauge extends RenderBox {
     required List<Pointer> pointers,
     required double? animationValue,
     required double thickness,
+    required double extendLinearGauge,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -75,7 +76,8 @@ class RenderLinearGauge extends RenderBox {
         _valueBar = valueBar,
         _pointers = pointers,
         _animationValue = animationValue,
-        _thickness = thickness;
+        _thickness = thickness,
+        _extendLinearGauge = extendLinearGauge;
 
   // For getting Gauge Values
   double gaugeStart = 0;
@@ -457,6 +459,17 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  ///
+  /// Getter and Setter for the [_extendLinearGauge] parameter.
+  ///
+  double get getExtendLinearGauge => _extendLinearGauge;
+  double _extendLinearGauge;
+  set setExtendLinearGauge(double val) {
+    if (_extendLinearGauge == val) return;
+    _extendLinearGauge = val;
+    markNeedsPaint();
+  }
+
   final Paint _linearGaugeContainerPaint = Paint();
   final Paint _primaryRulersPaint = Paint();
   final Paint _secondaryRulersPaint = Paint();
@@ -511,17 +524,19 @@ class RenderLinearGauge extends RenderBox {
             : getStart.toInt().toString());
 
     _linearGaugeLabel.generateOffSetsForLabel(
-        _startLabelSize,
-        _endLabelSize,
-        size,
-        getEnd,
-        getPrimaryRulersHeight,
-        getThickness,
-        getLabelTopMargin,
-        _pointer,
-        getCustomLabels!.isNotEmpty,
-        getInversedRulers,
-        getGaugeOrientation);
+      _startLabelSize,
+      _endLabelSize,
+      size,
+      getEnd,
+      getPrimaryRulersHeight,
+      getThickness,
+      getLabelTopMargin,
+      _pointer,
+      getCustomLabels!.isNotEmpty,
+      getInversedRulers,
+      getGaugeOrientation,
+      getExtendLinearGauge,
+    );
   }
 
   void _drawLabels(

@@ -58,19 +58,31 @@ class LinearGaugeLabel {
     bool isCustomLabelsGiven,
     bool isRulersInversed,
     GaugeOrientation orientation,
+    double extendLinearGauge,
   ) {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
 
     if (orientation == GaugeOrientation.horizontal) {
-      a = Offset((startLabel.width / 2) + (pointer.width! / 2), thickness);
+      a = Offset(
+          (startLabel.width / 2) + (pointer.width! / 2) + extendLinearGauge,
+          thickness);
       b = Offset(
-          size.width - (endLabel.width / 2) - (pointer.width! / 2), thickness);
+          size.width -
+              (endLabel.width / 2) -
+              (pointer.width! / 2) -
+              extendLinearGauge,
+          thickness);
     } else {
-      a = Offset((startLabel.height / 2) + (pointer.width! / 2), thickness);
+      a = Offset(
+          (startLabel.height / 2) + (pointer.width! / 2) + extendLinearGauge,
+          thickness);
       b = Offset(
-        size.height - (endLabel.height / 2) - (pointer.width! / 2),
+        size.height -
+            (endLabel.height / 2) -
+            (pointer.width! / 2) -
+            extendLinearGauge,
         thickness,
       );
       // this will allow to start from bottom
