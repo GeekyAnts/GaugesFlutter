@@ -52,7 +52,7 @@ class LinearGaugeLabel {
     Size size,
     double end,
     double primaryRulersHeight,
-    LinearGaugeBoxDecoration linearGaugeBoxDecoration,
+    double thickness,
     double labelTopMargin,
     Pointer pointer,
     bool isCustomLabelsGiven,
@@ -64,16 +64,14 @@ class LinearGaugeLabel {
     late Offset b;
 
     if (orientation == GaugeOrientation.horizontal) {
-      a = Offset((startLabel.width / 2) + (pointer.width! / 2),
-          linearGaugeBoxDecoration.height);
-      b = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
-          linearGaugeBoxDecoration.height);
+      a = Offset((startLabel.width / 2) + (pointer.width! / 2), thickness);
+      b = Offset(
+          size.width - (endLabel.width / 2) - (pointer.width! / 2), thickness);
     } else {
-      a = Offset((startLabel.height / 2) + (pointer.width! / 2),
-          linearGaugeBoxDecoration.width);
+      a = Offset((startLabel.height / 2) + (pointer.width! / 2), thickness);
       b = Offset(
         size.height - (endLabel.height / 2) - (pointer.width! / 2),
-        linearGaugeBoxDecoration.width,
+        thickness,
       );
       // this will allow to start from bottom
       Offset temp = a;
@@ -203,7 +201,7 @@ class LinearGaugeLabel {
                 secondaryRulerStartPoint = Offset(x, -rulersOffset);
 
                 secondaryRulerEndPoint =
-                    Offset(x, -(5 + height + rulersOffset));
+                    Offset(x, -(5 + height + rulersOffset - y));
                 break;
               case RulerPosition.center:
                 if (gaugeOrientation == GaugeOrientation.horizontal) {

@@ -128,9 +128,10 @@ class ValueBar {
     linearGaugeContainerPaint.color = color;
 
     //For get Offset Height
-    double height = linearGauge.getLinearGaugeBoxDecoration.height;
-    double width = getLinearGaugeBoxDecoration.width;
-    double totalValOffset = _getOffsetHeight(valueBarPosition, height, offset);
+    double thickness = linearGauge.getThickness;
+
+    double totalValOffset =
+        _getOffsetHeight(valueBarPosition, thickness, offset);
     bool getInversedRulers = linearGauge.getInversedRulers;
     // Drawing Value Bar
     final gaugeContainer;
@@ -141,19 +142,19 @@ class ValueBar {
         startValue,
         totalValOffset,
         valueBarWidth,
-        getLinearGaugeBoxDecoration.height,
+        thickness,
       );
     } else {
       double barTop = (!getInversedRulers) ? start + valueBarHeight : start;
       double barLeft = _getOffsetHeight(
         position,
-        height,
+        thickness,
         offset,
       ); // adjust left position as needed
       gaugeContainer = Rect.fromLTWH(
         barLeft,
         barTop,
-        width, // set width to half of the gauge width
+        thickness, // set width to half of the gauge width
         valueBarWidth,
       );
     }

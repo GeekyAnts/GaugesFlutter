@@ -18,6 +18,7 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
           end: 200,
           value: 190,
           enableAnimation: true,
+          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 10),
           pointers: const [
             Pointer(
               shape: PointerShape.circle,
@@ -31,7 +32,7 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
           ],
           gaugeOrientation: GaugeOrientation.horizontal,
           rulers: const RulerStyle(
-            rulerPosition: RulerPosition.center,
+            rulerPosition: RulerPosition.top,
           ),
         ),
       ),

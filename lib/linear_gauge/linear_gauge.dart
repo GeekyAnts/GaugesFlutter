@@ -402,6 +402,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       inversedRulers: lGauge.rulers!.inverseRulers!,
       pointers: lGauge.pointers!,
       animationValue: animationValue,
+      thickness: lGauge.linearGaugeBoxDecoration!.thickness!,
     );
   }
 
@@ -441,6 +442,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setValueBar = lGauge.valueBar!
       ..setInversedRulers = lGauge.rulers!.inverseRulers!
       ..setPointers = lGauge.pointers!
-      ..setAnimationValue = animationValue;
+      ..setAnimationValue = animationValue
+      ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!;
   }
 }

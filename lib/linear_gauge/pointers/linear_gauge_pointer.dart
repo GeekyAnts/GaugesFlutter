@@ -250,7 +250,7 @@ class Pointer {
     RulerPosition rulerPosition,
     RenderLinearGauge linearGauge,
   ) {
-    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    double gaugeThickness = linearGauge.getThickness;
     GaugeOrientation gaugeOrientation = linearGauge.getGaugeOrientation;
 
     final TextPainter textPainter = TextPainter(
@@ -268,13 +268,13 @@ class Pointer {
       if (gaugeOrientation == GaugeOrientation.horizontal) {
         switch (rulerPosition) {
           case RulerPosition.bottom:
-            offset = Offset(offset.dx, offset.dy - width! - gaugeHeight);
+            offset = Offset(offset.dx, offset.dy - width! - gaugeThickness);
             break;
           case RulerPosition.top:
             offset = Offset(offset.dx, offset.dy + width!);
             break;
           default:
-            offset = Offset(offset.dx, offset.dy - width! - gaugeHeight * 2);
+            offset = Offset(offset.dx, offset.dy - width! - gaugeThickness * 2);
         }
       } else {
         switch (rulerPosition) {
@@ -285,7 +285,7 @@ class Pointer {
             offset = Offset(offset.dx - width!, offset.dy);
             break;
           default:
-            offset = Offset(offset.dx - width! - gaugeHeight, offset.dy);
+            offset = Offset(offset.dx - width! - gaugeThickness, offset.dy);
         }
       }
 
@@ -330,20 +330,21 @@ class Pointer {
 
       switch (rulerPosition) {
         case RulerPosition.bottom:
-          var yAxisTurn =
-              quarterTurns == QuarterTurns.zero ? gaugeHeight : gaugeHeight * 2;
+          var yAxisTurn = quarterTurns == QuarterTurns.zero
+              ? gaugeThickness
+              : gaugeThickness * 2;
           offset = Offset(offset.dx - textWidth,
               -((yAxisTurn) + textHeight + height! + textHeight));
           break;
         case RulerPosition.top:
-          offset =
-              Offset(offset.dx - textWidth, height! + textHeight - gaugeHeight);
+          offset = Offset(
+              offset.dx - textWidth, height! + textHeight - gaugeThickness);
           break;
         case RulerPosition.center:
           gaugeOrientation == GaugeOrientation.horizontal
               ? offset = Offset(offset.dx - textWidth,
-                  -(gaugeHeight + textHeight + height! + textHeight))
-              : offset = Offset(-width! - textPainter.width - gaugeHeight,
+                  -(gaugeThickness + textHeight + height! + textHeight))
+              : offset = Offset(-width! - textPainter.width - gaugeThickness,
                   offset.dy - textHeight);
           break;
         case RulerPosition.right:
@@ -351,7 +352,7 @@ class Pointer {
               Offset(-(width! + textPainter.width), offset.dy - textHeight);
           break;
         case RulerPosition.left:
-          offset = Offset((width! + gaugeHeight), offset.dy - textHeight);
+          offset = Offset((width! + gaugeThickness), offset.dy - textHeight);
           break;
 
         default:
@@ -375,13 +376,13 @@ class Pointer {
     Offset offset,
     RenderLinearGauge linearGauge,
   ) {
-    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    double gaugeThickness = linearGauge.getThickness;
     PointerPosition rulerPosition = pointerPosition!;
     GaugeOrientation orientation = linearGauge.getGaugeOrientation;
 
     switch (rulerPosition) {
       case PointerPosition.top:
-        offset = Offset(offset.dx, offset.dy - width! - gaugeHeight);
+        offset = Offset(offset.dx, offset.dy - width! - gaugeThickness);
         _drawCircle(canvas, offset);
         break;
       case PointerPosition.bottom:
@@ -391,8 +392,8 @@ class Pointer {
       case PointerPosition.center:
         // offset = Offset(offset.dx - gaugeHeight / 2, offset.dy);
         offset = orientation == GaugeOrientation.horizontal
-            ? Offset(offset.dx, offset.dy - gaugeHeight)
-            : Offset(offset.dx - gaugeHeight / 2, offset.dy);
+            ? Offset(offset.dx, offset.dy - gaugeThickness)
+            : Offset(offset.dx - gaugeThickness / 2, offset.dy);
         _drawCircle(canvas, offset);
         break;
       case PointerPosition.right:
@@ -400,7 +401,7 @@ class Pointer {
         _drawCircle(canvas, offset);
         break;
       case PointerPosition.left:
-        offset = Offset(offset.dx - width! - gaugeHeight, offset.dy);
+        offset = Offset(offset.dx - width! - gaugeThickness, offset.dy);
         _drawCircle(canvas, offset);
         break;
     }
@@ -415,7 +416,7 @@ class Pointer {
   // Drawing the Rectangle Pointer
   void _layoutRectangleOffsets(
       Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
-    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    double gaugeHeight = linearGauge.getThickness;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
     GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
     switch (rulerPosition) {
@@ -455,7 +456,7 @@ class Pointer {
   // Drawing the Triangle Pointer
   void _layoutTriangleOffsets(
       Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
-    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    double gaugeHeight = linearGauge.getThickness;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
     GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
 
@@ -512,7 +513,7 @@ class Pointer {
     Offset offset,
     RenderLinearGauge linearGauge,
   ) {
-    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    double gaugeHeight = linearGauge.getThickness;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
     GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
     switch (rulerPosition) {
@@ -566,7 +567,7 @@ class Pointer {
     Offset offset,
     RenderLinearGauge linearGauge,
   ) {
-    double gaugeHeight = linearGauge.getLinearGaugeBoxDecoration.height;
+    double gaugeHeight = linearGauge.getThickness;
     Color pointerColor = linearGauge.getPointer.color!;
     double height = linearGauge.getPointer.height!;
     double width = linearGauge.getPointer.width!;
