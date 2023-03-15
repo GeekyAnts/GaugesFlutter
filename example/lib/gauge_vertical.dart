@@ -26,7 +26,7 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
           pointers: const [
             Pointer(
               color: Colors.red,
-              shape: PointerShape.triangle,
+              shape: PointerShape.circle,
               width: 30,
               height: 30,
               pointerPosition: PointerPosition.right,

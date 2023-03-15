@@ -67,22 +67,26 @@ class LinearGaugeLabel {
 
     if (orientation == GaugeOrientation.horizontal) {
       a = Offset(
-          (startLabel.width / 2) + (pointer.width! / 2) + extendLinearGauge,
+          (startLabel.width / 2) +
+              (largestPointerWidth / 2) +
+              extendLinearGauge,
           thickness);
       b = Offset(
           size.width -
               (endLabel.width / 2) -
-              (pointer.width! / 2) -
+              (largestPointerWidth / 2) -
               extendLinearGauge,
           thickness);
     } else {
       a = Offset(
-          (startLabel.height / 2) + (pointer.width! / 2) + extendLinearGauge,
+          (startLabel.height / 2) +
+              (largestPointerWidth / 2) +
+              extendLinearGauge,
           thickness);
       b = Offset(
         size.height -
             (endLabel.height / 2) -
-            (pointer.width! / 2) -
+            (largestPointerWidth / 2) -
             extendLinearGauge,
         thickness,
       );

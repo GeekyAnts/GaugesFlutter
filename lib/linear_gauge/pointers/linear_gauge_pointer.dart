@@ -412,7 +412,7 @@ class Pointer {
 
     switch (pointerPosition) {
       case PointerPosition.top:
-        offset = Offset(offset.dx, offset.dy - width! / 2 - gaugeHeight);
+        offset = Offset(offset.dx, offset.dy - width! / 2 - gaugeThickness);
         _drawCircle(canvas, offset, linearGauge);
         break;
       case PointerPosition.bottom:
@@ -431,7 +431,7 @@ class Pointer {
         _drawCircle(canvas, offset, linearGauge);
         break;
       case PointerPosition.left:
-        offset = Offset(offset.dx - width! / 2 - gaugeHeight, offset.dy);
+        offset = Offset(offset.dx - width! / 2 - gaugeThickness, offset.dy);
         _drawCircle(canvas, offset, linearGauge);
         break;
       default:
