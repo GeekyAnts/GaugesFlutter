@@ -33,7 +33,7 @@ class Pointer {
     this.color = Colors.red,
     this.width = 10.0,
     this.shape,
-    this.showLabel = true,
+    this.showLabel = false,
     this.quarterTurns = QuarterTurns.zero,
     this.labelStyle = const TextStyle(),
     this.pointerPosition = PointerPosition.center,
@@ -614,11 +614,11 @@ class Pointer {
     Offset center,
     RenderLinearGauge linearGauge,
   ) {
-    double x = calculateAnimationValue(linearGauge, center.dx, 0);
-    // double x = center.dx;
+    // double x = calculateAnimationValue(linearGauge, center.dx, 0);
+    double x = center.dx;
 
     final paint = Paint()
-      ..color = Colors.black
+      ..color = color!
       ..style = PaintingStyle.fill;
 
     final path = Path();
