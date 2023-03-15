@@ -16,10 +16,15 @@ class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
         child: LinearGauge(
           start: 100,
           end: 200,
-          value: 190,
           extendLinearGauge: 20,
+          valueBar: [
+            ValueBar(
+                value: 190,
+                valueBarThickness: 10,
+                position: ValueBarPosition.bottom)
+          ],
           enableAnimation: true,
-          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 10),
+          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 20),
           pointers: const [
             Pointer(
               shape: PointerShape.circle,
@@ -31,9 +36,9 @@ class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
               ),
             ),
           ],
-          gaugeOrientation: GaugeOrientation.vertical,
+          gaugeOrientation: GaugeOrientation.horizontal,
           rulers: const RulerStyle(
-            rulerPosition: RulerPosition.left,
+            rulerPosition: RulerPosition.top,
           ),
         ),
       ),

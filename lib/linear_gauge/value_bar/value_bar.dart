@@ -27,6 +27,7 @@ class ValueBar {
     this.offset = 0,
     this.position = ValueBarPosition.center,
     this.color = Colors.blue,
+    this.valueBarThickness = 4.0,
   });
 
   /// The `value` sets the value of the [ValueBar].
@@ -42,6 +43,19 @@ class ValueBar {
   /// ),
   /// ```
   final double value;
+
+  /// The `valueBarThickness` sets the thickness of the [ValueBar].
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///   valueBar: [
+  ///     ValueBar(
+  ///       valueBarThickness: 10,
+  ///       ),
+  ///     ]
+  /// ),
+  /// ```
+  final double valueBarThickness;
 
   ///
   /// The `offset` sets the offset of the [ValueBar] from the [LinearGauge].
@@ -128,10 +142,10 @@ class ValueBar {
     linearGaugeContainerPaint.color = color;
 
     //For get Offset Height
-    double thickness = linearGauge.getThickness;
+    double linearGaugeThickness = linearGauge.getThickness;
 
     double totalValOffset =
-        _getOffsetHeight(valueBarPosition, thickness, offset);
+        _getOffsetHeight(valueBarPosition, linearGaugeThickness, offset);
     bool getInversedRulers = linearGauge.getInversedRulers;
     // Drawing Value Bar
     final Rect gaugeContainer;
@@ -140,21 +154,21 @@ class ValueBar {
       double startValue = (!getInversedRulers) ? start : start + valueBarWidth;
       gaugeContainer = Rect.fromLTWH(
         startValue,
-        totalValOffset,
+        totalValOffset + (linearGaugeThickness - valueBarThickness) / 2,
         valueBarWidth,
-        thickness,
+        valueBarThickness,
       );
     } else {
       double barTop = (!getInversedRulers) ? start + valueBarHeight : start;
       double barLeft = _getOffsetHeight(
         position,
-        thickness,
+        linearGaugeThickness,
         offset,
       ); // adjust left position as needed
       gaugeContainer = Rect.fromLTWH(
-        barLeft,
+        barLeft + (linearGaugeThickness - valueBarThickness) / 2,
         barTop,
-        thickness, // set width to half of the gauge width
+        valueBarThickness, // set width to half of the gauge width
         valueBarWidth,
       );
     }
