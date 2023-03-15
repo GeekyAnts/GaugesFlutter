@@ -197,13 +197,21 @@ class Pointer {
     bool isInversedRulers = linearGauge.getInversedRulers;
 
     double valueInPX = !isInversedRulers
-        ? (value! - startValue) / (endValue - startValue) * totalWidth
-        : (value! - endValue) / (startValue - endValue) * totalWidth;
+        ? (value! - startValue) /
+            (endValue - startValue) *
+            (totalWidth - 2 * linearGauge.getExtendLinearGauge)
+        : (value! - endValue) /
+            (startValue - endValue) *
+            (totalWidth - 2 * linearGauge.getExtendLinearGauge);
 
-    Offset hOffset = Offset(valueInPX + start, offset.dy);
+    Offset hOffset =
+        Offset(valueInPX + start + linearGauge.getExtendLinearGauge, offset.dy);
 
     Offset vOffset = isInversedRulers
-        ? Offset(offset.dx, offset.dy + (end - valueInPX))
+        ? Offset(
+            offset.dx,
+            offset.dy +
+                (end - valueInPX - 2 * linearGauge.getExtendLinearGauge))
         : Offset(offset.dx, (offset.dy - valueInPX));
 
     offset =
