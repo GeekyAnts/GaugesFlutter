@@ -126,11 +126,11 @@ class ValueBar {
     GaugeOrientation gaugeOrientation = linearGauge.getGaugeOrientation;
 
     //  width of the value bar in pixels based on the value
-    double valueBarWidth =
-        ((value - startValue) / (endValue - startValue)) * totalWidth;
+    double valueBarWidth = ((value - startValue) / (endValue - startValue)) *
+        (totalWidth - 2 * linearGauge.getExtendLinearGauge);
 
-    double valueBarHeight =
-        ((value - endValue) / (startValue - endValue)) * totalWidth;
+    double valueBarHeight = ((value - endValue) / (startValue - endValue)) *
+        (totalWidth - 2 * linearGauge.getExtendLinearGauge);
 
     valueBarWidth = linearGauge.getAnimationValue != null
         ? valueBarWidth * (linearGauge.getAnimationValue!)
@@ -151,15 +151,19 @@ class ValueBar {
     final Rect gaugeContainer;
 
     if (gaugeOrientation == GaugeOrientation.horizontal) {
-      double startValue = (!getInversedRulers) ? start : start + valueBarWidth;
+      double startValue = (!getInversedRulers) ? start : (start + end);
       gaugeContainer = Rect.fromLTWH(
         startValue,
         totalValOffset + (linearGaugeThickness - valueBarThickness) / 2,
-        valueBarWidth,
+        !getInversedRulers
+            ? (valueBarWidth + linearGauge.getExtendLinearGauge)
+            : -(valueBarWidth + linearGauge.getExtendLinearGauge),
         valueBarThickness,
       );
     } else {
-      double barTop = (!getInversedRulers) ? start + valueBarHeight : start;
+      double barTop = (!getInversedRulers)
+          ? start + valueBarHeight
+          : start - linearGauge.getExtendLinearGauge;
       double barLeft = _getOffsetHeight(
         position,
         linearGaugeThickness,
@@ -167,9 +171,9 @@ class ValueBar {
       ); // adjust left position as needed
       gaugeContainer = Rect.fromLTWH(
         barLeft + (linearGaugeThickness - valueBarThickness) / 2,
-        barTop,
+        barTop + linearGauge.getExtendLinearGauge,
         valueBarThickness, // set width to half of the gauge width
-        valueBarWidth,
+        valueBarWidth + linearGauge.getExtendLinearGauge,
       );
     }
 
