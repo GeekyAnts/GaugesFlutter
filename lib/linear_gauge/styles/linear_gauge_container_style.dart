@@ -6,13 +6,13 @@ class LinearGaugeBoxDecoration {
   /// An immutable description of how to paint a box of [LinearGauge].
   ///
   /// [LinearGaugeBoxDecoration] allows to customize the style of [LinearGauge] container.
-  const LinearGaugeBoxDecoration(
-      {this.backgroundColor = Colors.grey,
-      this.height = 4.0,
-      this.linearGradient,
-      this.borderRadius,
-      this.linearGaugeValueColor = Colors.blue,
-      this.width = 4.0});
+  const LinearGaugeBoxDecoration({
+    this.backgroundColor = Colors.grey,
+    this.thickness = 4.0,
+    this.linearGradient,
+    this.borderRadius,
+    this.linearGaugeValueColor = Colors.blue,
+  });
 
   ///
   /// `color` Set the Color of the [LinearGauge] Container
@@ -27,31 +27,15 @@ class LinearGaugeBoxDecoration {
   final Color backgroundColor;
 
   ///
-  /// `height` Sets the height of the [LinearGauge] Container when the orientation in horizontal.
-  /// ** Note : When Gauge orientation in vertical this will be ignored since
-  /// ** we use `height` from [BoxConstraint].
+  /// `thickness` Sets the thickness of the [LinearGauge]
   /// ```dart
   ///  const LinearGauge(
   ///   linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-  ///     height:20.0
+  ///     thickness:20.0
   ///   ),
   // ),
   /// ```
-  final double height;
-
-  ///
-  /// `width` Sets the height of the [LinearGauge] Container when the orientation is vertical.
-  /// ** Note : When Gauge orientation in horizontal this will be ignored since
-  /// ** we use `width` from [BoxConstraint].
-  ///
-  /// ```dart
-  ///  const LinearGauge(
-  ///   linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-  ///     height:20.0
-  ///   ),
-  // ),
-  /// ```
-  final double width;
+  final double? thickness;
 
   ///
   /// `linearGradient` Sets the gradient background of the [LinearGauge] Container

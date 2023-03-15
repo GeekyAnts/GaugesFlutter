@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_painter.dart';
 
 class LinearGaugeLabel {
   String? text;
@@ -47,33 +48,47 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
-    Size startLabel,
-    Size endLabel,
-    Size size,
-    double end,
-    double primaryRulersHeight,
-    LinearGaugeBoxDecoration linearGaugeBoxDecoration,
-    double labelTopMargin,
-    Pointer pointer,
-    bool isCustomLabelsGiven,
-    bool isRulersInversed,
-    GaugeOrientation orientation,
-  ) {
+      Size startLabel,
+      Size endLabel,
+      Size size,
+      double end,
+      double primaryRulersHeight,
+      double thickness,
+      double labelTopMargin,
+      bool isCustomLabelsGiven,
+      bool isRulersInversed,
+      GaugeOrientation orientation,
+      double extendLinearGauge,
+      RenderLinearGauge linearGauge) {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
+    double largestPointerWidth = linearGauge.getLargestPointerWidth();
 
     if (orientation == GaugeOrientation.horizontal) {
-      a = Offset((startLabel.width / 2) + (pointer.width! / 2),
-          linearGaugeBoxDecoration.height);
-      b = Offset(size.width - (endLabel.width / 2) - (pointer.width! / 2),
-          linearGaugeBoxDecoration.height);
-    } else {
-      a = Offset((startLabel.height / 2) + (pointer.width! / 2),
-          linearGaugeBoxDecoration.width);
+      a = Offset(
+          (startLabel.width / 2) +
+              (largestPointerWidth / 2) +
+              extendLinearGauge,
+          thickness);
       b = Offset(
-        size.height - (endLabel.height / 2) - (pointer.width! / 2),
-        linearGaugeBoxDecoration.width,
+          size.width -
+              (endLabel.width / 2) -
+              (largestPointerWidth / 2) -
+              extendLinearGauge,
+          thickness);
+    } else {
+      a = Offset(
+          (startLabel.height / 2) +
+              (largestPointerWidth / 2) +
+              extendLinearGauge,
+          thickness);
+      b = Offset(
+        size.height -
+            (endLabel.height / 2) -
+            (largestPointerWidth / 2) -
+            extendLinearGauge,
+        thickness,
       );
       // this will allow to start from bottom
       Offset temp = a;
@@ -171,7 +186,6 @@ class LinearGaugeLabel {
     Paint secondaryRulersPaint,
     double height,
     RulerPosition rulerPosition,
-    Pointer pointer,
     List<RangeLinearGauge> rangeLinearGauge,
     double rulersOffset,
     GaugeOrientation gaugeOrientation,
@@ -203,7 +217,7 @@ class LinearGaugeLabel {
                 secondaryRulerStartPoint = Offset(x, -rulersOffset);
 
                 secondaryRulerEndPoint =
-                    Offset(x, -(5 + height + rulersOffset));
+                    Offset(x, -(5 + height + rulersOffset - y));
                 break;
               case RulerPosition.center:
                 if (gaugeOrientation == GaugeOrientation.horizontal) {
