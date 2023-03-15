@@ -192,6 +192,7 @@ class Pointer {
     assert(() {
       if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
         if (pointerPosition == PointerPosition.bottom ||
+            pointerPosition == PointerPosition.center ||
             pointerPosition == PointerPosition.top) {
           return true;
         } else {
@@ -202,6 +203,7 @@ class Pointer {
         }
       } else {
         if (pointerPosition == PointerPosition.right ||
+            pointerPosition == PointerPosition.center ||
             pointerPosition == PointerPosition.left) {
           return true;
         } else {
@@ -410,7 +412,7 @@ class Pointer {
 
     switch (pointerPosition) {
       case PointerPosition.top:
-        offset = Offset(offset.dx, offset.dy - width! / 2);
+        offset = Offset(offset.dx, offset.dy - width! / 2 - gaugeHeight);
         _drawCircle(canvas, offset, linearGauge);
         break;
       case PointerPosition.bottom:
@@ -429,7 +431,7 @@ class Pointer {
         _drawCircle(canvas, offset, linearGauge);
         break;
       case PointerPosition.left:
-        offset = Offset(offset.dx - width! / 2, offset.dy);
+        offset = Offset(offset.dx - width! / 2 - gaugeHeight, offset.dy);
         _drawCircle(canvas, offset, linearGauge);
         break;
       default:
@@ -438,8 +440,7 @@ class Pointer {
   }
 
   _drawCircle(Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
-    double animVal = calculateAnimationValue(linearGauge, offset.dx, 0);
-    Offset center = Offset(animVal, offset.dy);
+    Offset center = Offset(offset.dx, offset.dy);
     final paint = Paint()..color = color!;
     paint.color = color!;
     canvas.drawCircle(center, width! / 2, paint);
@@ -481,11 +482,7 @@ class Pointer {
 
   _drawRectangle(Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
     final paint = Paint()..color = color!;
-    // double animVal = calculateReverseAnimationValue(linearGauge, offset.dx, 0);
-    // double animVal =
-    //     calculateAnimationValue(linearGauge, offset.dx, linearGauge.gaugeStart);
-    double animVal = offset.dx;
-    offset = Offset(animVal, offset.dy);
+    offset = Offset(offset.dx, offset.dy);
     Rect rect = Rect.fromCenter(center: offset, width: width!, height: height!);
 
     canvas.drawRect(rect, paint);
@@ -530,14 +527,10 @@ class Pointer {
 
   void _drawTriangle(Canvas canvas, Offset vertex, double angle,
       RenderLinearGauge linearGauge) {
-    // double valuinpx = linearGauge.valueToPixel(vertex.dx);
-    print(vertex.dx - linearGauge.gaugeStart);
-    // double animVal = calculateReverseAnimationValue(linearGauge, vertex.dx, 0);
-    // double animVal = calculateReverseAnimationValue(linearGauge, 0, -913);
-    double animVal = vertex.dx;
-    print(vertex.dx);
-    print(linearGauge.valueToPixel(vertex.dx));
-    print(linearGauge.gaugeEnd);
+    // double animationValue =
+    //     calculateAnimationValue(linearGauge, vertex.dx, linearGauge.getStart);
+    double animationValue = vertex.dx;
+
     final paint = Paint();
     paint.color = color!;
     final base = width! / 2;
@@ -545,14 +538,15 @@ class Pointer {
     // path.moveTo(((animVal) - (pointerWidth / 2)), yPos);
     // vertex.dx = animVal;
 
-    final path = Path()..moveTo((animVal), vertex.dy);
-    path.lineTo((animVal) - base, vertex.dy + height!);
-    path.lineTo((animVal) + base, vertex.dy + height!);
-    path.close();
+    final path = Path()
+      ..moveTo((animationValue), vertex.dy)
+      ..lineTo((animationValue - base), vertex.dy + height!)
+      ..lineTo((animationValue + base), vertex.dy + height!)
+      ..close();
 
     canvas.save();
     // Move the canvas origin to the vertex point
-    canvas.translate(vertex.dx, vertex.dy);
+    canvas.translate(animationValue, vertex.dy);
     canvas.rotate(pi * angle / 180);
     canvas.translate(-vertex.dx, -vertex.dy);
     canvas.drawPath(path, paint);
@@ -608,15 +602,11 @@ class Pointer {
     return animVal;
   }
 
-  //! default method
   double calculateAnimationValue(
       RenderLinearGauge linearGauge, double valueInPX, double start) {
-    var animVal = linearGauge.getAnimationValue != null
-        ? ((linearGauge.size.width - (linearGauge.size.width - valueInPX)) *
-                linearGauge.getAnimationValue!) +
-            start
-        : linearGauge.size.width - valueInPX + start;
-    return animVal;
+    print(valueInPX * linearGauge.getAnimationValue!);
+
+    return valueInPX * linearGauge.getAnimationValue!;
   }
 
   _drawDiamond(
