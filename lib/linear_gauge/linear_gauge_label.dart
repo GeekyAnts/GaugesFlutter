@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_painter.dart';
 
 class LinearGaugeLabel {
   String? text;
@@ -47,41 +48,45 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
-    Size startLabel,
-    Size endLabel,
-    Size size,
-    double end,
-    double primaryRulersHeight,
-    double thickness,
-    double labelTopMargin,
-    Pointer pointer,
-    bool isCustomLabelsGiven,
-    bool isRulersInversed,
-    GaugeOrientation orientation,
-    double extendLinearGauge,
-  ) {
+      Size startLabel,
+      Size endLabel,
+      Size size,
+      double end,
+      double primaryRulersHeight,
+      double thickness,
+      double labelTopMargin,
+      bool isCustomLabelsGiven,
+      bool isRulersInversed,
+      GaugeOrientation orientation,
+      double extendLinearGauge,
+      RenderLinearGauge linearGauge) {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
+    double largestPointerWidth = linearGauge.getLargestPointerWidth();
 
     if (orientation == GaugeOrientation.horizontal) {
       a = Offset(
-          (startLabel.width / 2) + (pointer.width! / 2) + extendLinearGauge,
+          (startLabel.width / 2) +
+              (largestPointerWidth / 2) +
+              extendLinearGauge,
           thickness);
       b = Offset(
           size.width -
               (endLabel.width / 2) -
-              (pointer.width! / 2) -
+              (largestPointerWidth / 2) -
               extendLinearGauge,
           thickness);
     } else {
       a = Offset(
-          (startLabel.height / 2) + (pointer.width! / 2) + extendLinearGauge,
+          (startLabel.height / 2) +
+              (largestPointerWidth / 2) +
+              extendLinearGauge,
           thickness);
       b = Offset(
         size.height -
             (endLabel.height / 2) -
-            (pointer.width! / 2) -
+            (largestPointerWidth / 2) -
             extendLinearGauge,
         thickness,
       );
@@ -181,7 +186,6 @@ class LinearGaugeLabel {
     Paint secondaryRulersPaint,
     double height,
     RulerPosition rulerPosition,
-    Pointer pointer,
     List<RangeLinearGauge> rangeLinearGauge,
     double rulersOffset,
     GaugeOrientation gaugeOrientation,

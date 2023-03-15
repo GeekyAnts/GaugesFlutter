@@ -15,24 +15,33 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
       body: Center(
         child: LinearGauge(
           start: 100,
-          end: 200,
-          value: 190,
-          enableAnimation: true,
-          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 10),
+          end: 900,
+          enableAnimation: false,
+          valueBar: [
+            ValueBar(
+              value: 600,
+              position: ValueBarPosition.center,
+            )
+          ],
           pointers: const [
             Pointer(
+              color: Colors.red,
               shape: PointerShape.circle,
+              width: 30,
+              height: 30,
               pointerPosition: PointerPosition.right,
-              value: 170,
+              value: 600,
               showLabel: false,
               labelStyle: TextStyle(
                 color: Colors.black,
               ),
             ),
           ],
-          gaugeOrientation: GaugeOrientation.horizontal,
+          gaugeOrientation: GaugeOrientation.vertical,
           rulers: const RulerStyle(
-            rulerPosition: RulerPosition.top,
+            showLabel: true,
+            inverseRulers: true,
+            rulerPosition: RulerPosition.right,
           ),
         ),
       ),

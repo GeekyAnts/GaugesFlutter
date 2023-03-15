@@ -20,6 +20,8 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return const MyVerticalGauge();
+    return Scaffold(
+      body: const MyVerticalGauge(),
+    );
   }
 }
