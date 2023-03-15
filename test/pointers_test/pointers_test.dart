@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
-import 'testcases.dart';
+import 'test_cases.dart';
 
 void main() {
   group("Test the Pointer Functionality", () {
-    final testCases = colorTests;
+    final testCases = allTests;
 
     for (final testCase in testCases) {
       testGoldens(testCase['Do'] as String, (tester) async {

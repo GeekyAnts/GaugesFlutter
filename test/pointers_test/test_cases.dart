@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
-List valueTestCases = [
+List valueTests = [
   // Circle TestCases
   {
     'pointer': const Pointer(
@@ -607,4 +607,10 @@ List colorTests = [
     'name': 'diamond-color-blue',
     'Do': 'Diamond Pointer should be drawn at 50 value with with blue Color',
   },
+];
+
+List allTests = [
+  ...edgeCases,
+  ...colorTests,
+  ...valueTests,
 ];
