@@ -694,8 +694,6 @@ class RenderLinearGauge extends RenderBox {
           : (offset.dx +
               (_startLabelSize.height / 2) +
               (largestPointerWidth / 2));
-
-      print(start);
     } else {
       end = GaugeOrientation.horizontal == getGaugeOrientation
           ? size.width
@@ -1088,5 +1086,10 @@ class RenderLinearGauge extends RenderBox {
     }
 
     canvas.restore();
+  }
+
+  double valueToPixel(double value) {
+    final double pixel = ((value - getStart) / (getEnd - getStart)) * gaugeEnd;
+    return pixel;
   }
 }
