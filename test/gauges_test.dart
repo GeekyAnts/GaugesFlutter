@@ -15,7 +15,7 @@ void main() {
       showLinearGaugeContainer: true,
       gaugeOrientation: GaugeOrientation.horizontal,
       labelTopMargin: 0.0,
-      linearGaugeBoxDecoration: LinearGaugeBoxDecoration(),
+      linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(),
       rulers: const RulerStyle(
         primaryRulerColor: Colors.black54,
         primaryRulersWidth: 1.0,

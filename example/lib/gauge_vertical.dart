@@ -14,33 +14,22 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          start: 100,
-          end: 900,
+          start: 0,
+          end: 100,
           enableAnimation: false,
-          valueBar: [
-            ValueBar(
-              value: 600,
-              position: ValueBarPosition.center,
-            )
-          ],
           pointers: const [
             Pointer(
-              color: Colors.red,
-              shape: PointerShape.circle,
-              width: 30,
-              height: 30,
-              pointerPosition: PointerPosition.right,
-              value: 600,
-              showLabel: false,
-              labelStyle: TextStyle(
-                color: Colors.black,
-              ),
+              shape: PointerShape.diamond,
+              width: 20,
+              height: 150,
+              value: 100,
+              pointerPosition: PointerPosition.left,
             ),
           ],
           gaugeOrientation: GaugeOrientation.vertical,
           rulers: const RulerStyle(
             showLabel: true,
-            inverseRulers: true,
+            inverseRulers: false,
             rulerPosition: RulerPosition.right,
           ),
         ),
