@@ -604,8 +604,6 @@ class Pointer {
 
   double calculateAnimationValue(
       RenderLinearGauge linearGauge, double valueInPX, double start) {
-    print(valueInPX * linearGauge.getAnimationValue!);
-
     return valueInPX * linearGauge.getAnimationValue!;
   }
 
