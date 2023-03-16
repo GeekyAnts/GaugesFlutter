@@ -609,8 +609,77 @@ List colorTests = [
   },
 ];
 
+List valueLabelTests = [
+  // For value 50
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 50,
+      showLabel: true,
+      pointerPosition: PointerPosition.top,
+      labelStyle: TextStyle(
+        fontFamily: "Roboto",
+        color: Colors.black,
+      ),
+    ),
+    'name': 'value-50-label-triangle',
+    'Do': 'Should display value label for pointer',
+  },
+  // For Value 0
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 0,
+      showLabel: true,
+      pointerPosition: PointerPosition.top,
+      labelStyle: TextStyle(
+        fontFamily: "Roboto",
+        color: Colors.black,
+      ),
+    ),
+    'name': 'value-0-label-triangle',
+    'Do': 'Should display value label for pointer',
+  },
+  //For value 100
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 100,
+      showLabel: true,
+      pointerPosition: PointerPosition.top,
+      labelStyle: TextStyle(
+        fontFamily: "Roboto",
+        color: Colors.black,
+      ),
+    ),
+    'name': 'value-100-label-triangle',
+    'Do': 'Should display value label for pointer',
+  },
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 100,
+      showLabel: true,
+      pointerPosition: PointerPosition.top,
+      height: 100,
+      width: 100,
+      labelStyle: TextStyle(
+        fontFamily: "Roboto",
+        color: Colors.black,
+      ),
+    ),
+    'name': 'value-100-label-triangle-hw-100',
+    'Do': 'Should display value label for pointer',
+  }
+];
+
 List allTests = [
   ...edgeCases,
   ...colorTests,
   ...valueTests,
+  ...valueLabelTests
 ];
