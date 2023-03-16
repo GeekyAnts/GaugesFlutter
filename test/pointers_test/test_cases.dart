@@ -701,6 +701,538 @@ List valueLabelTests = [
     'Do': 'Should display value label for pointer',
   }
 ];
+List extendLinearGaugePointerTestsHorizontal = [
+  //circle center
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-circle-center-value-50',
+    'Do': 'Circle Pointer should be drawn at 50 value with center position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-circle-center-value-0',
+    'Do': 'Circle Pointer should be drawn at 0 value with center position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-circle-center-value-100',
+    'Do': 'Circle Pointer should be drawn at 100 value with center position',
+  },
+
+  //circle-bottom
+
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 50,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'extendLinearGauge-circle-bottom-value-50',
+    'Do': 'Circle Pointer should be drawn at 50 value with bottom position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'extendLinearGauge-circle-bottom-value-0',
+    'Do': 'Circle Pointer should be drawn at 0 value with bottom position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'extendLinearGauge-circle-bottom-value-100',
+    'Do': 'Circle Pointer should be drawn at 100 value with bottom position',
+  },
+
+  //circle-top
+
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 50,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'extendLinearGauge-circle-top-value-50',
+    'Do': 'Circle Pointer should be drawn at 50 value with top position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'extendLinearGauge-circle-top-value-0',
+    'Do': 'Circle Pointer should be drawn at 0 value with top position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'extendLinearGauge-circle-top-value-100',
+    'Do': 'Circle Pointer should be drawn at 100 value with top position',
+  },
+
+  {
+    'extendLinearGauge': 100.0,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.center,
+      inverseRulers: true,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 0,
+      width: 20,
+      height: 20,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'extendLinearGauge-circle-left-value-0-height-20-width-20-inverse',
+    'Do':
+        'Circle Pointer should be drawn at 0 value with left position and 20 height and 20 width for inverse',
+  },
+
+  //triangle with random values and positions
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 60,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'extendLinearGauge-triangle-top-value-60',
+    'Do': 'Triangle Pointer should be drawn at 60 value with top position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-triangle-center-value-0',
+    'Do': 'Triangle Pointer should be drawn at 0 value with center position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'extendLinearGauge-triangle-bottom-value-100',
+    'Do': 'Triangle Pointer should be drawn at 100 value with bottom position',
+  },
+
+  {
+    'extendLinearGauge': 100.0,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.center,
+      inverseRulers: true,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'extendLinearGauge-triangle-bottom-value-100-inverse',
+    'Do':
+        'Triangle Pointer should be drawn at 100 value with bottom position inverse',
+  },
+
+  //diamond with random values and positions
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 20,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'extendLinearGauge-diamond-top-value-20',
+    'Do': 'Diamond Pointer should be drawn at 20 value with top position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 80,
+      height: 30,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'extendLinearGauge-diamond-top-value-80-height-30',
+    'Do':
+        'Diamond Pointer should be drawn at 80 value with top position and height 30',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.center,
+      inverseRulers: true,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 80,
+      height: 30,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'extendLinearGauge-diamond-top-value-80-height-30-inverse',
+    'Do':
+        'Diamond Pointer should be drawn at 80 value with top position and height 30 inverse',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 0,
+      height: 30,
+      width: 20,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-diamond-center-value-0-height-30-width-20',
+    'Do':
+        'Diamond Pointer should be drawn at 0 value with center position and height 30 & width 20',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'extendLinearGauge-diamond-bottom-value-100',
+    'Do': 'Diamond Pointer should be drawn at 100 value with bottom position',
+  },
+  {
+    'extendLinearGauge': 10.0,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 90,
+      height: 40,
+      width: 30,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'extendLinearGauge-diamond-bottom-value-90-height-40-width-30',
+    'Do':
+        'Diamond Pointer should be drawn at 90 value with bottom position and 40 height & 30 width',
+  },
+  //rectangle with random values and positions
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 30,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'extendLinearGauge-rectangle-top-value-30',
+    'Do': 'Rectangle Pointer should be drawn at 30 value with top position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-rectangle-center-value-0',
+    'Do': 'Rectangle Pointer should be drawn at 0 value with center position',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.center,
+      inverseRulers: true,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-rectangle-center-value-0-inverse',
+    'Do':
+        'Rectangle Pointer should be drawn at 0 value with center position inverse',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 0,
+      height: 40,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-rectangle-center-value-0-height-40',
+    'Do':
+        'Rectangle Pointer should be drawn at 0 value with center position and height 40',
+  },
+  {
+    'extendLinearGauge': 50.0,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'extendLinearGauge-rectangle-bottom-value-100',
+    'Do': 'Rectangle Pointer should be drawn at 100 value with bottom position',
+  },
+];
+
+List extendLinearGaugePointerTestsVertical = [
+  //circle with random values and positions for vertical orientation
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-circle-center-value-50-vertical',
+    'Do':
+        'Circle Pointer should be drawn at 50 value with center position vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 0,
+      width: 20,
+      height: 20,
+      pointerPosition: PointerPosition.left,
+    ),
+    'name': 'extendLinearGauge-circle-left-value-0-height-20-width-20-vertical',
+    'Do':
+        'Circle Pointer should be drawn at 0 value with left position and 20 height and 20 width for vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 90,
+      pointerPosition: PointerPosition.right,
+    ),
+    'name': 'extendLinearGauge-circle-right-value-90-vertical',
+    'Do':
+        'Circle Pointer should be drawn at 90 value with right position for vertical',
+  },
+
+  //triangle with random values and positions for vertical orientation
+
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-triangle-center-value-50-vertical',
+    'Do':
+        'Triangle Pointer should be drawn at 50 value with center position vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 0,
+      width: 20,
+      height: 20,
+      pointerPosition: PointerPosition.left,
+    ),
+    'name':
+        'extendLinearGauge-triangle-left-value-0-height-20-width-20-vertical',
+    'Do':
+        'Triangle Pointer should be drawn at 0 value with left position and 20 height and 20 width for vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 30,
+      width: 20,
+      height: 20,
+      pointerPosition: PointerPosition.right,
+    ),
+    'name':
+        'extendLinearGauge-triangle-right-value-30-height-20-width-20-vertical',
+    'Do':
+        'Triangle Pointer should be drawn at 30 value with right position and 20 height and 20 width for vertical',
+  },
+  //diamond with random values and positions for vertical orientation
+
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-diamond-center-value-50-vertical',
+    'Do':
+        'Diamond Pointer should be drawn at 50 value with center position vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 0,
+      width: 40,
+      height: 40,
+      pointerPosition: PointerPosition.left,
+    ),
+    'name':
+        'extendLinearGauge-diamond-left-value-0-height-40-width-40-vertical',
+    'Do':
+        'Diamond Pointer should be drawn at 0 value with left position and 40 height and 40 width for vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 30,
+      width: 30,
+      height: 50,
+      pointerPosition: PointerPosition.right,
+    ),
+    'name':
+        'extendLinearGauge-diamond-right-value-30-height-50-width-30-vertical',
+    'Do':
+        'Diamond Pointer should be drawn at 30 value with right position and 50 height and 30 width for vertical',
+  },
+  //rectangle with random values and positions for vertical orientation
+
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-rectangle-center-value-50-vertical',
+    'Do':
+        'Rectangle Pointer should be drawn at 50 value with center position vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 0,
+      width: 40,
+      height: 40,
+      pointerPosition: PointerPosition.left,
+    ),
+    'name':
+        'extendLinearGauge-rectangle-left-value-0-height-40-width-40-vertical',
+    'Do':
+        'Rectangle Pointer should be drawn at 0 value with left position and 40 height and 40 width for vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 30,
+      width: 60,
+      height: 20,
+      pointerPosition: PointerPosition.right,
+    ),
+    'name':
+        'extendLinearGauge-rectangle-right-value-30-height-20-width-60-vertical',
+    'Do':
+        'Rectangle Pointer should be drawn at 30 value with right position and 20 height and 60 width for vertical',
+  },
+];
+
+List extendLinearGaugePointersAlltests = [
+  ...extendLinearGaugePointerTestsHorizontal,
+  ...extendLinearGaugePointerTestsVertical,
+];
 
 List allTests = [
   ...edgeCases,

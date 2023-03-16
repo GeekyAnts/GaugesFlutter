@@ -26,7 +26,7 @@ void main() {
   });
 
   group("Test the Pointer Functionality with extendLinearGauge", () {
-    final testCases = extendLinearGaugePointerTests;
+    final testCases = extendLinearGaugePointersAlltests;
 
     for (final testCase in testCases) {
       testGoldens(testCase['Do'] as String, (tester) async {
