@@ -560,6 +560,31 @@ List edgeCases = [
     'Do':
         'Pointer should be drawn at 0 value with with Diamond height 150 & width 20',
   },
+  {
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      width: 20,
+      height: 20,
+      value: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'rectangle-value-50-height-150-vertical',
+    'Do': 'Render Pointer in center',
+  },
+  {
+    'gaugeThickness': 20.0,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      width: 20,
+      height: 20,
+      value: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'rectangle-value-50-height-20-thickness',
+    'Do': 'Render Pointer in center with thickness',
+  },
 ];
 
 List colorTests = [
