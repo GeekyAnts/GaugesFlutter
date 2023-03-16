@@ -342,7 +342,6 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
     _animation = CurvedAnimation(parent: _controller, curve: Curves.ease)
       ..addStatusListener((status) {
-        print(_animation.value);
         setState(() {});
       });
     _controller.forward();

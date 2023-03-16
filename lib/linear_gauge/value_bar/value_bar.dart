@@ -134,7 +134,7 @@ class ValueBar {
         _getOffsetHeight(valueBarPosition, thickness, offset);
     bool getInversedRulers = linearGauge.getInversedRulers;
     // Drawing Value Bar
-    final gaugeContainer;
+    final Rect gaugeContainer;
 
     if (gaugeOrientation == GaugeOrientation.horizontal) {
       double startValue = (!getInversedRulers) ? start : start + valueBarWidth;
