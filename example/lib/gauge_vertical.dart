@@ -14,16 +14,21 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
+          linearGaugeBoxDecoration:
+              LinearGaugeBoxDecoration(thickness: 30, borderRadius: 300),
           start: 0,
           end: 100,
           enableAnimation: false,
           pointers: const [
             Pointer(
-              shape: PointerShape.triangle,
+              shape: PointerShape.circle,
               color: Colors.blue,
+              width: 50,
+              height: 20,
               value: 50,
               showLabel: true,
-              pointerPosition: PointerPosition.top,
+              pointerPosition: PointerPosition.bottom,
+              quarterTurns: QuarterTurns.zero,
               labelStyle: TextStyle(
                 fontFamily: "Roboto",
                 color: Colors.black,

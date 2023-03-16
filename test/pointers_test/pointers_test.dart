@@ -34,6 +34,7 @@ void main() {
           MyPointerTestLinearGauge(
             rulers: testCase['rulers'] as RulerStyle?,
             extendLinearGauge: testCase['extendLinearGauge'] as double?,
+            inverseRuler: testCase['inverse'] as bool?,
             rulerPosition: testCase['rulerPosition'] as RulerPosition?,
             pointer: testCase['pointer'] as Pointer?,
             gaugeOrientation: testCase['gaugeOrientation'] as GaugeOrientation?,
@@ -54,6 +55,7 @@ class MyPointerTestLinearGauge extends StatelessWidget {
   final Pointer? pointer;
   final RulerStyle? rulers;
 
+  final bool? inverseRuler;
   const MyPointerTestLinearGauge({
     super.key,
     this.extendLinearGauge,
@@ -62,6 +64,7 @@ class MyPointerTestLinearGauge extends StatelessWidget {
     this.rulerPosition,
     this.gaugeOrientation,
     this.thickness,
+    this.inverseRuler,
   });
 
   @override
@@ -81,14 +84,14 @@ class MyPointerTestLinearGauge extends StatelessWidget {
             extendLinearGauge: extendLinearGauge ?? 0,
             gaugeOrientation: gaugeOrientation ?? GaugeOrientation.horizontal,
             pointers: [pointer!],
-            rulers: rulers ??
-                const RulerStyle(
-                  rulerPosition: RulerPosition.center,
-                  textStyle: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: Colors.black,
-                  ),
-                ),
+            rulers: RulerStyle(
+              inverseRulers: inverseRuler ?? false,
+              rulerPosition: RulerPosition.center,
+              textStyle: const TextStyle(
+                fontFamily: 'Roboto',
+                color: Colors.black,
+              ),
+            ),
           ),
         ),
       ),

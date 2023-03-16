@@ -560,30 +560,109 @@ List edgeCases = [
     'Do':
         'Pointer should be drawn at 0 value with with Diamond height 150 & width 20',
   },
+
+  // Edge Cases Circle
   {
-    'gaugeOrientation': GaugeOrientation.horizontal,
+    'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
-      shape: PointerShape.rectangle,
+      shape: PointerShape.circle,
       width: 20,
-      height: 20,
-      value: 50,
-      pointerPosition: PointerPosition.center,
+      value: 100,
+      pointerPosition: PointerPosition.right,
     ),
-    'name': 'rectangle-value-50-height-150-vertical',
-    'Do': 'Render Pointer in center',
+    'name': 'circle-value-100-vertical-ruler-right-pointer',
+    'Do':
+        'Pointer should be drawn at 100 value with with Circle height 20 and PointerPosition.right',
   },
   {
-    'gaugeThickness': 20.0,
-    'gaugeOrientation': GaugeOrientation.horizontal,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      width: 20,
+      value: 100,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'circle-value-100-width-20-vertical-ruler-center-pointer',
+    'Do':
+        'Pointer should be drawn at 100 value with with Circle height 20 and PointerPosition.center',
+  },
+
+  // Edge Cases Rectangle
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
       shape: PointerShape.rectangle,
       width: 20,
-      height: 20,
-      value: 50,
+      value: 100,
+      pointerPosition: PointerPosition.right,
+    ),
+    'name': 'rectangle-value-100-vertical-ruler-right-pointer',
+    'Do':
+        'Pointer should be drawn at 100 value with with Rectangle height 20 and PointerPosition.right',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      width: 20,
+      value: 100,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'rectangle-value-50-height-20-thickness',
-    'Do': 'Render Pointer in center with thickness',
+    'name': 'rectangle-value-100-width-20-vertical-ruler-center-pointer',
+    'Do':
+        'Pointer should be drawn at 100 value with with Rectangle height 20 and PointerPosition.center',
+  },
+
+  // Edge Cases Triangle
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      width: 20,
+      value: 100,
+      pointerPosition: PointerPosition.right,
+    ),
+    'name': 'triangle-value-100-vertical-ruler-right-pointer',
+    'Do':
+        'Pointer should be drawn at 100 value with with Triangle height 20 and PointerPosition.right',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      width: 20,
+      value: 100,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'triangle-value-100-width-20-vertical-ruler-center-pointer',
+    'Do':
+        'Pointer should be drawn at 100 value with with Triangle height 20 and PointerPosition.center',
+  },
+
+  // Edge Cases Diamond
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      width: 20,
+      value: 100,
+      pointerPosition: PointerPosition.right,
+    ),
+    'name': 'diamond-value-100-vertical-ruler-right-pointer',
+    'Do':
+        'Pointer should be drawn at 100 value with with Diamond height 20 and PointerPosition.right',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      width: 20,
+      value: 100,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'diamond-value-100-width-20-vertical-ruler-center-pointer',
+    'Do':
+        'Pointer should be drawn at 100 value with with Diamond height 20 and PointerPosition.center',
   },
 ];
 
@@ -1327,9 +1406,154 @@ List extendLinearGaugePointersAlltests = [
   ...extendLinearGaugePointerTestsVertical,
 ];
 
+// Add a key value pair as 'inverse' : true to test the inverse pointer
+
+List inverseValueTests = [
+  //  Inverse Circle TestCases with PointerPosition
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 30,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'top-circle-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Circle shape  and pointerPosition.top and inverse rulers',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'center-circle-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Circle shape and pointerPosition.center and inverse rulers',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'bottom-circle-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with diamond shape and pointerPosition.bottom and inverse rulers',
+  },
+
+  // Inverse Rectangle TestCases with PointerPosition
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      value: 30,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'top-rectangle-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Rectangle shape  and pointerPosition.top and inverse rulers',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      value: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'center-rectangle-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Rectangle shape and pointerPosition.center and inverse rulers',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'bottom-rectangle-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Rectangle shape and pointerPosition.bottom and inverse rulers',
+  },
+
+  // Inverse Triangle TestCases with PointerPosition
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      value: 30,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'top-triangle-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Triangle shape  and pointerPosition.top and inverse rulers',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      value: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'center-triangle-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Triangle shape and pointerPosition.center and inverse rulers',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'bottom-triangle-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Triangle shape and pointerPosition.bottom and inverse rulers',
+  },
+
+  // Inverse Diamond TestCases with PointerPosition
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      value: 30,
+      pointerPosition: PointerPosition.top,
+    ),
+    'name': 'top-diamond-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Diamond shape  and pointerPosition.top and inverse rulers',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      value: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'center-diamond-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Diamond shape and pointerPosition.center and inverse rulers',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+    ),
+    'name': 'bottom-diamond-value-30-inverse',
+    'Do':
+        'Pointer should be drawn at 30 value with with Diamond shape and pointerPosition.bottom and inverse rulers',
+  },
+];
+
 List allTests = [
   ...edgeCases,
   ...colorTests,
   ...valueTests,
-  ...valueLabelTests
+  ...valueLabelTests,
+  ...inverseValueTests
 ];
