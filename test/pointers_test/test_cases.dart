@@ -1075,6 +1075,30 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.center,
+      inverseRulers: true,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 0,
+      width: 20,
+      height: 20,
+      pointerPosition: PointerPosition.left,
+    ),
+    'name':
+        'extendLinearGauge-circle-left-value-0-height-20-width-20-vertical-inverse',
+    'Do':
+        'Circle Pointer should be drawn inverse at 0 value with left position and 20 height and 20 width for vertical ',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
@@ -1119,6 +1143,30 @@ List extendLinearGaugePointerTestsVertical = [
   },
   {
     'extendLinearGauge': 100.0,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.center,
+      inverseRulers: true,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 0,
+      width: 20,
+      height: 20,
+      pointerPosition: PointerPosition.left,
+    ),
+    'name':
+        'extendLinearGauge-triangle-left-value-0-height-20-width-20-vertical-inverse',
+    'Do':
+        'Triangle Pointer should be drawn inverse at 0 value with left position and 20 height and 20 width for vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
       shape: PointerShape.triangle,
@@ -1147,6 +1195,27 @@ List extendLinearGaugePointerTestsVertical = [
     'name': 'extendLinearGauge-diamond-center-value-50-vertical',
     'Do':
         'Diamond Pointer should be drawn at 50 value with center position vertical',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.center,
+      inverseRulers: true,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'extendLinearGauge': 100.0,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'extendLinearGauge-diamond-center-value-50-vertical-inverse',
+    'Do':
+        'Diamond Pointer should be drawn inverse at 50 value with center position vertical',
   },
   {
     'extendLinearGauge': 100.0,
@@ -1226,6 +1295,30 @@ List extendLinearGaugePointerTestsVertical = [
         'extendLinearGauge-rectangle-right-value-30-height-20-width-60-vertical',
     'Do':
         'Rectangle Pointer should be drawn at 30 value with right position and 20 height and 60 width for vertical',
+  },
+  {
+    'extendLinearGauge': 100.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.center,
+      inverseRulers: true,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 30,
+      width: 60,
+      height: 20,
+      pointerPosition: PointerPosition.right,
+    ),
+    'name':
+        'extendLinearGauge-rectangle-right-value-30-height-20-width-60-vertical-inverse',
+    'Do':
+        'Rectangle Pointer should be drawn inverse at 30 value with right position and 20 height and 60 width for vertical',
   },
 ];
 
