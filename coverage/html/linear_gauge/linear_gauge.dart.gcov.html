@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-03-16 10:43:52</td>
+            <td class="headerValue">2023-03-16 18:18:39</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -82,7 +82,7 @@
 <a name="20"><span class="lineNum">      20 </span>            :   ///),</a>
 <a name="21"><span class="lineNum">      21 </span>            :   /// ```</a>
 <a name="22"><span class="lineNum">      22 </span>            :   ///</a>
-<a name="23"><span class="lineNum">      23 </span><span class="lineCov">          3 :   LinearGauge({</span></a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">          4 :   LinearGauge({</span></a>
 <a name="24"><span class="lineNum">      24 </span>            :     Key? key,</a>
 <a name="25"><span class="lineNum">      25 </span>            :     this.start = 0,</a>
 <a name="26"><span class="lineNum">      26 </span>            :     this.end = 100,</a>
@@ -101,11 +101,11 @@
 <a name="39"><span class="lineNum">      39 </span>            :     this.pointers = const [],</a>
 <a name="40"><span class="lineNum">      40 </span>            :     this.enableAnimation = false,</a>
 <a name="41"><span class="lineNum">      41 </span>            :     this.extendLinearGauge = 0,</a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          6 :   })  : assert(() {</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          8 :   })  : assert(() {</span></a>
 <a name="43"><span class="lineNum">      43 </span>            :           if (rulers != null) {</a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">          3 :             if (gaugeOrientation == GaugeOrientation.horizontal) {</span></a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          6 :               if (rulers.rulerPosition == RulerPosition.bottom ||</span></a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          2 :                   rulers.rulerPosition == RulerPosition.center ||</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">          4 :             if (gaugeOrientation == GaugeOrientation.horizontal) {</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          8 :               if (rulers.rulerPosition == RulerPosition.bottom ||</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          4 :                   rulers.rulerPosition == RulerPosition.center ||</span></a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 :                   rulers.rulerPosition == RulerPosition.top) {</span></a>
 <a name="48"><span class="lineNum">      48 </span>            :                 return true;</a>
 <a name="49"><span class="lineNum">      49 </span>            :               } else {</a>
@@ -115,8 +115,8 @@
 <a name="53"><span class="lineNum">      53 </span>            :                     'positioned at top, bottom, or center.');</a>
 <a name="54"><span class="lineNum">      54 </span>            :               }</a>
 <a name="55"><span class="lineNum">      55 </span>            :             } else {</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          2 :               if (rulers.rulerPosition == RulerPosition.right ||</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          2 :                   rulers.rulerPosition == RulerPosition.center ||</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          4 :               if (rulers.rulerPosition == RulerPosition.right ||</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          4 :                   rulers.rulerPosition == RulerPosition.center ||</span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :                   rulers.rulerPosition == RulerPosition.left) {</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :                 return true;</a>
 <a name="60"><span class="lineNum">      60 </span>            :               } else {</a>
@@ -128,8 +128,8 @@
 <a name="66"><span class="lineNum">      66 </span>            :             }</a>
 <a name="67"><span class="lineNum">      67 </span>            :           }</a>
 <a name="68"><span class="lineNum">      68 </span>            :           return true;</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          3 :         }()),</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          3 :         super(key: key);</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          4 :         }()),</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          4 :         super(key: key);</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
 <a name="72"><span class="lineNum">      72 </span>            :   ///</a>
 <a name="73"><span class="lineNum">      73 </span>            :   /// `start` Sets the starting label of the [LinearGauge] Container</a>
@@ -389,30 +389,30 @@
 <a name="327"><span class="lineNum">     327 </span>            :   ///</a>
 <a name="328"><span class="lineNum">     328 </span>            :   final bool enableAnimation;</a>
 <a name="329"><span class="lineNum">     329 </span>            : </a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineCov">          2 :   @override</span></a>
-<a name="331"><span class="lineNum">     331 </span><span class="lineCov">          2 :   State&lt;LinearGauge&gt; createState() =&gt; _LinearGauge();</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineCov">          3 :   @override</span></a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineCov">          3 :   State&lt;LinearGauge&gt; createState() =&gt; _LinearGauge();</span></a>
 <a name="332"><span class="lineNum">     332 </span>            : }</a>
 <a name="333"><span class="lineNum">     333 </span>            : </a>
 <a name="334"><span class="lineNum">     334 </span>            : class _LinearGauge extends State&lt;LinearGauge&gt; with TickerProviderStateMixin {</a>
 <a name="335"><span class="lineNum">     335 </span>            :   late AnimationController _controller;</a>
 <a name="336"><span class="lineNum">     336 </span>            :   late Animation&lt;double&gt; _animation;</a>
 <a name="337"><span class="lineNum">     337 </span>            : </a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          2 :   @override</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          3 :   @override</span></a>
 <a name="339"><span class="lineNum">     339 </span>            :   void initState() {</a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineCov">          2 :     super.initState();</span></a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineCov">          2 :     _controller =</span></a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineCov">          2 :         AnimationController(vsync: this, duration: const Duration(seconds: 2));</span></a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineCov">          6 :     _animation = CurvedAnimation(parent: _controller, curve: Curves.ease)</span></a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineCov">          4 :       ..addStatusListener((status) {</span></a>
-<a name="345"><span class="lineNum">     345 </span><span class="lineCov">          6 :         print(_animation.value);</span></a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineCov">          4 :         setState(() {});</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">          3 :     super.initState();</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">          3 :     _controller =</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">          3 :         AnimationController(vsync: this, duration: const Duration(seconds: 2));</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">          9 :     _animation = CurvedAnimation(parent: _controller, curve: Curves.ease)</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">          6 :       ..addStatusListener((status) {</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineCov">          9 :         print(_animation.value);</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">          6 :         setState(() {});</span></a>
 <a name="347"><span class="lineNum">     347 </span>            :       });</a>
-<a name="348"><span class="lineNum">     348 </span><span class="lineCov">          4 :     _controller.forward();</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineCov">          6 :     _controller.forward();</span></a>
 <a name="349"><span class="lineNum">     349 </span>            :   }</a>
 <a name="350"><span class="lineNum">     350 </span>            : </a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineCov">          2 :   @override</span></a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">          3 :   @override</span></a>
 <a name="352"><span class="lineNum">     352 </span>            :   Widget build(BuildContext context) {</a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineCov">          4 :     return widget.enableAnimation</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">          6 :     return widget.enableAnimation</span></a>
 <a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 :         ? AnimatedBuilder(</span></a>
 <a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :             animation: _animation,</span></a>
 <a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :             builder: (context, child) {</span></a>
@@ -422,15 +422,15 @@
 <a name="360"><span class="lineNum">     360 </span>            :               );</a>
 <a name="361"><span class="lineNum">     361 </span>            :             },</a>
 <a name="362"><span class="lineNum">     362 </span>            :           )</a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          2 :         : _RLinearGauge(</span></a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineCov">          2 :             lGauge: widget,</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          3 :         : _RLinearGauge(</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">          3 :             lGauge: widget,</span></a>
 <a name="365"><span class="lineNum">     365 </span>            :           );</a>
 <a name="366"><span class="lineNum">     366 </span>            :   }</a>
 <a name="367"><span class="lineNum">     367 </span>            : </a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineCov">          2 :   @override</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">          3 :   @override</span></a>
 <a name="369"><span class="lineNum">     369 </span>            :   void dispose() {</a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">          4 :     _controller.dispose();</span></a>
-<a name="371"><span class="lineNum">     371 </span><span class="lineCov">          2 :     super.dispose();</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineCov">          6 :     _controller.dispose();</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineCov">          3 :     super.dispose();</span></a>
 <a name="372"><span class="lineNum">     372 </span>            :   }</a>
 <a name="373"><span class="lineNum">     373 </span>            : }</a>
 <a name="374"><span class="lineNum">     374 </span>            : </a>
@@ -438,88 +438,88 @@
 <a name="376"><span class="lineNum">     376 </span>            :   final LinearGauge lGauge;</a>
 <a name="377"><span class="lineNum">     377 </span>            :   final double? animationValue;</a>
 <a name="378"><span class="lineNum">     378 </span>            : </a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          2 :   const _RLinearGauge({required this.lGauge, super.key, this.animationValue});</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          3 :   const _RLinearGauge({required this.lGauge, super.key, this.animationValue});</span></a>
 <a name="380"><span class="lineNum">     380 </span>            : </a>
-<a name="381"><span class="lineNum">     381 </span><span class="lineCov">          2 :   @override</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineCov">          3 :   @override</span></a>
 <a name="382"><span class="lineNum">     382 </span>            :   RenderLinearGauge createRenderObject(BuildContext context) {</a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineCov">          2 :     return RenderLinearGauge(</span></a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineCov">          4 :         start: lGauge.start!,</span></a>
-<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          4 :         end: lGauge.end!,</span></a>
-<a name="386"><span class="lineNum">     386 </span><span class="lineCov">          4 :         steps: lGauge.steps!,</span></a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineCov">          4 :         showLinearGaugeContainer: lGauge.showLinearGaugeContainer!,</span></a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineCov">          4 :         gaugeOrientation: lGauge.gaugeOrientation!,</span></a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineCov">          6 :         primaryRulersWidth: lGauge.rulers!.primaryRulersWidth!,</span></a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineCov">          6 :         primaryRulersHeight: lGauge.rulers!.primaryRulersHeight!,</span></a>
-<a name="391"><span class="lineNum">     391 </span><span class="lineCov">          6 :         secondaryRulersHeight: lGauge.rulers!.secondaryRulersHeight!,</span></a>
-<a name="392"><span class="lineNum">     392 </span><span class="lineCov">          6 :         secondaryRulersWidth: lGauge.rulers!.secondaryRulersWidth!,</span></a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          4 :         labelTopMargin: lGauge.labelTopMargin!,</span></a>
-<a name="394"><span class="lineNum">     394 </span><span class="lineCov">          6 :         primaryRulerColor: lGauge.rulers!.primaryRulerColor!,</span></a>
-<a name="395"><span class="lineNum">     395 </span><span class="lineCov">          6 :         secondaryRulerColor: lGauge.rulers!.secondaryRulerColor!,</span></a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineCov">          4 :         linearGaugeBoxDecoration: lGauge.linearGaugeBoxDecoration!,</span></a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineCov">          6 :         secondaryRulerPerInterval: lGauge.rulers!.secondaryRulerPerInterval!,</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">          3 :     return RenderLinearGauge(</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">          6 :         start: lGauge.start!,</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          6 :         end: lGauge.end!,</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">          6 :         steps: lGauge.steps!,</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">          6 :         showLinearGaugeContainer: lGauge.showLinearGaugeContainer!,</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineCov">          6 :         gaugeOrientation: lGauge.gaugeOrientation!,</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">          9 :         primaryRulersWidth: lGauge.rulers!.primaryRulersWidth!,</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineCov">          9 :         primaryRulersHeight: lGauge.rulers!.primaryRulersHeight!,</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineCov">          9 :         secondaryRulersHeight: lGauge.rulers!.secondaryRulersHeight!,</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineCov">          9 :         secondaryRulersWidth: lGauge.rulers!.secondaryRulersWidth!,</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          6 :         labelTopMargin: lGauge.labelTopMargin!,</span></a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineCov">          9 :         primaryRulerColor: lGauge.rulers!.primaryRulerColor!,</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineCov">          9 :         secondaryRulerColor: lGauge.rulers!.secondaryRulerColor!,</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineCov">          6 :         linearGaugeBoxDecoration: lGauge.linearGaugeBoxDecoration!,</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">          9 :         secondaryRulerPerInterval: lGauge.rulers!.secondaryRulerPerInterval!,</span></a>
 <a name="398"><span class="lineNum">     398 </span>            :         linearGaugeContainerBgColor:</a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">          6 :             lGauge.linearGaugeBoxDecoration!.backgroundColor,</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">          9 :             lGauge.linearGaugeBoxDecoration!.backgroundColor,</span></a>
 <a name="400"><span class="lineNum">     400 </span>            :         linearGaugeContainerValueColor:</a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineCov">          6 :             lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!,</span></a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineCov">          6 :         textStyle: lGauge.rulers!.textStyle!,</span></a>
-<a name="403"><span class="lineNum">     403 </span><span class="lineCov">          6 :         showLabel: lGauge.rulers!.showLabel!,</span></a>
-<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          6 :         rulerPosition: lGauge.rulers!.rulerPosition!,</span></a>
-<a name="405"><span class="lineNum">     405 </span><span class="lineCov">          6 :         labelOffset: lGauge.rulers!.labelOffset!,</span></a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineCov">          6 :         showSecondaryRulers: lGauge.rulers!.showSecondaryRulers,</span></a>
-<a name="407"><span class="lineNum">     407 </span><span class="lineCov">          6 :         showPrimaryRulers: lGauge.rulers!.showPrimaryRulers,</span></a>
-<a name="408"><span class="lineNum">     408 </span><span class="lineCov">          4 :         pointer: lGauge.pointer!,</span></a>
-<a name="409"><span class="lineNum">     409 </span><span class="lineCov">          4 :         value: lGauge.value!,</span></a>
-<a name="410"><span class="lineNum">     410 </span><span class="lineCov">          4 :         rangeLinearGauge: lGauge.rangeLinearGauge!,</span></a>
-<a name="411"><span class="lineNum">     411 </span><span class="lineCov">          4 :         customLabels: lGauge.customLabels!,</span></a>
-<a name="412"><span class="lineNum">     412 </span><span class="lineCov">          6 :         rulersOffset: lGauge.rulers!.rulersOffset!,</span></a>
-<a name="413"><span class="lineNum">     413 </span><span class="lineCov">          4 :         valueBarPosition: lGauge.valueBarPosition!,</span></a>
-<a name="414"><span class="lineNum">     414 </span><span class="lineCov">          4 :         valueBar: lGauge.valueBar!,</span></a>
-<a name="415"><span class="lineNum">     415 </span><span class="lineCov">          6 :         inversedRulers: lGauge.rulers!.inverseRulers!,</span></a>
-<a name="416"><span class="lineNum">     416 </span><span class="lineCov">          4 :         pointers: lGauge.pointers!,</span></a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineCov">          2 :         animationValue: animationValue,</span></a>
-<a name="418"><span class="lineNum">     418 </span><span class="lineCov">          6 :         thickness: lGauge.linearGaugeBoxDecoration!.thickness!,</span></a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineCov">          4 :         extendLinearGauge: lGauge.extendLinearGauge!);</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">          9 :             lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!,</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineCov">          9 :         textStyle: lGauge.rulers!.textStyle!,</span></a>
+<a name="403"><span class="lineNum">     403 </span><span class="lineCov">          9 :         showLabel: lGauge.rulers!.showLabel!,</span></a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          9 :         rulerPosition: lGauge.rulers!.rulerPosition!,</span></a>
+<a name="405"><span class="lineNum">     405 </span><span class="lineCov">          9 :         labelOffset: lGauge.rulers!.labelOffset!,</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineCov">          9 :         showSecondaryRulers: lGauge.rulers!.showSecondaryRulers,</span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineCov">          9 :         showPrimaryRulers: lGauge.rulers!.showPrimaryRulers,</span></a>
+<a name="408"><span class="lineNum">     408 </span><span class="lineCov">          6 :         pointer: lGauge.pointer!,</span></a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineCov">          6 :         value: lGauge.value!,</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineCov">          6 :         rangeLinearGauge: lGauge.rangeLinearGauge!,</span></a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineCov">          6 :         customLabels: lGauge.customLabels!,</span></a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineCov">          9 :         rulersOffset: lGauge.rulers!.rulersOffset!,</span></a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineCov">          6 :         valueBarPosition: lGauge.valueBarPosition!,</span></a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineCov">          6 :         valueBar: lGauge.valueBar!,</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineCov">          9 :         inversedRulers: lGauge.rulers!.inverseRulers!,</span></a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineCov">          6 :         pointers: lGauge.pointers!,</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">          3 :         animationValue: animationValue,</span></a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineCov">          9 :         thickness: lGauge.linearGaugeBoxDecoration!.thickness!,</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineCov">          6 :         extendLinearGauge: lGauge.extendLinearGauge!);</span></a>
 <a name="420"><span class="lineNum">     420 </span>            :   }</a>
 <a name="421"><span class="lineNum">     421 </span>            : </a>
-<a name="422"><span class="lineNum">     422 </span><span class="lineCov">          1 :   @override</span></a>
+<a name="422"><span class="lineNum">     422 </span><span class="lineCov">          2 :   @override</span></a>
 <a name="423"><span class="lineNum">     423 </span>            :   void updateRenderObject(</a>
 <a name="424"><span class="lineNum">     424 </span>            :       BuildContext context, RenderLinearGauge renderObject) {</a>
 <a name="425"><span class="lineNum">     425 </span>            :     renderObject</a>
-<a name="426"><span class="lineNum">     426 </span><span class="lineCov">          3 :       ..setCustomLabels = lGauge.customLabels!</span></a>
-<a name="427"><span class="lineNum">     427 </span><span class="lineCov">          3 :       ..setGaugeOrientation = lGauge.gaugeOrientation!</span></a>
-<a name="428"><span class="lineNum">     428 </span><span class="lineCov">          3 :       ..setLabelTopMargin = lGauge.labelTopMargin!</span></a>
-<a name="429"><span class="lineNum">     429 </span><span class="lineCov">          4 :       ..setPrimaryRulerColor = lGauge.rulers!.primaryRulerColor!</span></a>
-<a name="430"><span class="lineNum">     430 </span><span class="lineCov">          4 :       ..setPrimaryRulersHeight = lGauge.rulers!.primaryRulersHeight!</span></a>
-<a name="431"><span class="lineNum">     431 </span><span class="lineCov">          4 :       ..setPrimaryRulersWidth = lGauge.rulers!.primaryRulersWidth!</span></a>
-<a name="432"><span class="lineNum">     432 </span><span class="lineCov">          4 :       ..setSecondaryRulerColor = lGauge.rulers!.secondaryRulerColor!</span></a>
-<a name="433"><span class="lineNum">     433 </span><span class="lineCov">          4 :       ..setSecondaryRulersHeight = lGauge.rulers!.secondaryRulersHeight!</span></a>
-<a name="434"><span class="lineNum">     434 </span><span class="lineCov">          4 :       ..setSecondaryRulersWidth = lGauge.rulers!.secondaryRulersWidth!</span></a>
-<a name="435"><span class="lineNum">     435 </span><span class="lineCov">          3 :       ..setShowLinearGaugeContainer = lGauge.showLinearGaugeContainer!</span></a>
-<a name="436"><span class="lineNum">     436 </span><span class="lineCov">          3 :       ..setStart = lGauge.start!</span></a>
-<a name="437"><span class="lineNum">     437 </span><span class="lineCov">          3 :       ..setEnd = lGauge.end!</span></a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineCov">          3 :       ..setSteps = lGauge.steps!</span></a>
-<a name="439"><span class="lineNum">     439 </span><span class="lineCov">          4 :       ..setTextStyle = lGauge.rulers!.textStyle!</span></a>
-<a name="440"><span class="lineNum">     440 </span><span class="lineCov">          4 :       ..setSecondaryRulerPerInterval = lGauge.rulers!.secondaryRulerPerInterval!</span></a>
-<a name="441"><span class="lineNum">     441 </span><span class="lineCov">          1 :       ..setLinearGaugeContainerBgColor =</span></a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineCov">          3 :           lGauge.linearGaugeBoxDecoration!.backgroundColor</span></a>
-<a name="443"><span class="lineNum">     443 </span><span class="lineCov">          1 :       ..setLinearGaugeContainerValueColor =</span></a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineCov">          3 :           lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!</span></a>
-<a name="445"><span class="lineNum">     445 </span><span class="lineCov">          4 :       ..setShowLabel = lGauge.rulers!.showLabel!</span></a>
-<a name="446"><span class="lineNum">     446 </span><span class="lineCov">          4 :       ..setRulerPosition = lGauge.rulers!.rulerPosition!</span></a>
-<a name="447"><span class="lineNum">     447 </span><span class="lineCov">          4 :       ..setLabelOffset = lGauge.rulers!.labelOffset!</span></a>
-<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          4 :       ..setShowSecondaryRulers = lGauge.rulers!.showSecondaryRulers</span></a>
-<a name="449"><span class="lineNum">     449 </span><span class="lineCov">          4 :       ..setShowPrimaryRulers = lGauge.rulers!.showPrimaryRulers</span></a>
-<a name="450"><span class="lineNum">     450 </span><span class="lineCov">          3 :       ..setValue = lGauge.value!</span></a>
-<a name="451"><span class="lineNum">     451 </span><span class="lineCov">          3 :       ..setPointer = lGauge.pointer</span></a>
-<a name="452"><span class="lineNum">     452 </span><span class="lineCov">          3 :       ..setRangeLinearGauge = lGauge.rangeLinearGauge</span></a>
-<a name="453"><span class="lineNum">     453 </span><span class="lineCov">          4 :       ..setRulersOffset = lGauge.rulers!.rulersOffset!</span></a>
-<a name="454"><span class="lineNum">     454 </span><span class="lineCov">          3 :       ..setValueBarPosition = lGauge.valueBarPosition!</span></a>
-<a name="455"><span class="lineNum">     455 </span><span class="lineCov">          3 :       ..setValueBar = lGauge.valueBar!</span></a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineCov">          4 :       ..setInversedRulers = lGauge.rulers!.inverseRulers!</span></a>
-<a name="457"><span class="lineNum">     457 </span><span class="lineCov">          3 :       ..setPointers = lGauge.pointers!</span></a>
-<a name="458"><span class="lineNum">     458 </span><span class="lineCov">          2 :       ..setAnimationValue = animationValue</span></a>
-<a name="459"><span class="lineNum">     459 </span><span class="lineCov">          4 :       ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!</span></a>
-<a name="460"><span class="lineNum">     460 </span><span class="lineCov">          3 :       ..setExtendLinearGauge = lGauge.extendLinearGauge!;</span></a>
+<a name="426"><span class="lineNum">     426 </span><span class="lineCov">          6 :       ..setCustomLabels = lGauge.customLabels!</span></a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineCov">          6 :       ..setGaugeOrientation = lGauge.gaugeOrientation!</span></a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineCov">          6 :       ..setLabelTopMargin = lGauge.labelTopMargin!</span></a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineCov">          8 :       ..setPrimaryRulerColor = lGauge.rulers!.primaryRulerColor!</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineCov">          8 :       ..setPrimaryRulersHeight = lGauge.rulers!.primaryRulersHeight!</span></a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineCov">          8 :       ..setPrimaryRulersWidth = lGauge.rulers!.primaryRulersWidth!</span></a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineCov">          8 :       ..setSecondaryRulerColor = lGauge.rulers!.secondaryRulerColor!</span></a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineCov">          8 :       ..setSecondaryRulersHeight = lGauge.rulers!.secondaryRulersHeight!</span></a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineCov">          8 :       ..setSecondaryRulersWidth = lGauge.rulers!.secondaryRulersWidth!</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineCov">          6 :       ..setShowLinearGaugeContainer = lGauge.showLinearGaugeContainer!</span></a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineCov">          6 :       ..setStart = lGauge.start!</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineCov">          6 :       ..setEnd = lGauge.end!</span></a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineCov">          6 :       ..setSteps = lGauge.steps!</span></a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineCov">          8 :       ..setTextStyle = lGauge.rulers!.textStyle!</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineCov">          8 :       ..setSecondaryRulerPerInterval = lGauge.rulers!.secondaryRulerPerInterval!</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineCov">          2 :       ..setLinearGaugeContainerBgColor =</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineCov">          6 :           lGauge.linearGaugeBoxDecoration!.backgroundColor</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineCov">          2 :       ..setLinearGaugeContainerValueColor =</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">          6 :           lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineCov">          8 :       ..setShowLabel = lGauge.rulers!.showLabel!</span></a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineCov">          8 :       ..setRulerPosition = lGauge.rulers!.rulerPosition!</span></a>
+<a name="447"><span class="lineNum">     447 </span><span class="lineCov">          8 :       ..setLabelOffset = lGauge.rulers!.labelOffset!</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          8 :       ..setShowSecondaryRulers = lGauge.rulers!.showSecondaryRulers</span></a>
+<a name="449"><span class="lineNum">     449 </span><span class="lineCov">          8 :       ..setShowPrimaryRulers = lGauge.rulers!.showPrimaryRulers</span></a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineCov">          6 :       ..setValue = lGauge.value!</span></a>
+<a name="451"><span class="lineNum">     451 </span><span class="lineCov">          6 :       ..setPointer = lGauge.pointer</span></a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineCov">          6 :       ..setRangeLinearGauge = lGauge.rangeLinearGauge</span></a>
+<a name="453"><span class="lineNum">     453 </span><span class="lineCov">          8 :       ..setRulersOffset = lGauge.rulers!.rulersOffset!</span></a>
+<a name="454"><span class="lineNum">     454 </span><span class="lineCov">          6 :       ..setValueBarPosition = lGauge.valueBarPosition!</span></a>
+<a name="455"><span class="lineNum">     455 </span><span class="lineCov">          6 :       ..setValueBar = lGauge.valueBar!</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineCov">          8 :       ..setInversedRulers = lGauge.rulers!.inverseRulers!</span></a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineCov">          6 :       ..setPointers = lGauge.pointers!</span></a>
+<a name="458"><span class="lineNum">     458 </span><span class="lineCov">          4 :       ..setAnimationValue = animationValue</span></a>
+<a name="459"><span class="lineNum">     459 </span><span class="lineCov">          8 :       ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!</span></a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineCov">          6 :       ..setExtendLinearGauge = lGauge.extendLinearGauge!;</span></a>
 <a name="461"><span class="lineNum">     461 </span>            :   }</a>
 <a name="462"><span class="lineNum">     462 </span>            : }</a>
 </pre>

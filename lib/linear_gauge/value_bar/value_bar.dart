@@ -27,6 +27,7 @@ class ValueBar {
     this.offset = 0,
     this.position = ValueBarPosition.center,
     this.color = Colors.blue,
+    this.valueBarThickness = 4.0,
   });
 
   /// The `value` sets the value of the [ValueBar].
@@ -42,6 +43,19 @@ class ValueBar {
   /// ),
   /// ```
   final double value;
+
+  /// The `valueBarThickness` sets the thickness of the [ValueBar].
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///   valueBar: [
+  ///     ValueBar(
+  ///       valueBarThickness: 10,
+  ///       ),
+  ///     ]
+  /// ),
+  /// ```
+  final double valueBarThickness;
 
   ///
   /// The `offset` sets the offset of the [ValueBar] from the [LinearGauge].
@@ -112,11 +126,11 @@ class ValueBar {
     GaugeOrientation gaugeOrientation = linearGauge.getGaugeOrientation;
 
     //  width of the value bar in pixels based on the value
-    double valueBarWidth =
-        ((value - startValue) / (endValue - startValue)) * totalWidth;
+    double valueBarWidth = ((value - startValue) / (endValue - startValue)) *
+        (totalWidth - 2 * linearGauge.getExtendLinearGauge);
 
-    double valueBarHeight =
-        ((value - endValue) / (startValue - endValue)) * totalWidth;
+    double valueBarHeight = ((value - endValue) / (startValue - endValue)) *
+        (totalWidth - 2 * linearGauge.getExtendLinearGauge);
 
     valueBarWidth = linearGauge.getAnimationValue != null
         ? valueBarWidth * (linearGauge.getAnimationValue!)
@@ -128,34 +142,38 @@ class ValueBar {
     linearGaugeContainerPaint.color = color;
 
     //For get Offset Height
-    double thickness = linearGauge.getThickness;
+    double linearGaugeThickness = linearGauge.getThickness;
 
     double totalValOffset =
-        _getOffsetHeight(valueBarPosition, thickness, offset);
+        _getOffsetHeight(valueBarPosition, linearGaugeThickness, offset);
     bool getInversedRulers = linearGauge.getInversedRulers;
     // Drawing Value Bar
     final Rect gaugeContainer;
 
     if (gaugeOrientation == GaugeOrientation.horizontal) {
-      double startValue = (!getInversedRulers) ? start : start + valueBarWidth;
+      double startValue = (!getInversedRulers) ? start : (start + end);
       gaugeContainer = Rect.fromLTWH(
         startValue,
-        totalValOffset,
-        valueBarWidth,
-        thickness,
+        totalValOffset + (linearGaugeThickness - valueBarThickness) / 2,
+        !getInversedRulers
+            ? (valueBarWidth + linearGauge.getExtendLinearGauge)
+            : -(valueBarWidth + linearGauge.getExtendLinearGauge),
+        valueBarThickness,
       );
     } else {
-      double barTop = (!getInversedRulers) ? start + valueBarHeight : start;
+      double barTop = (!getInversedRulers)
+          ? start + valueBarHeight
+          : start - linearGauge.getExtendLinearGauge;
       double barLeft = _getOffsetHeight(
         position,
-        thickness,
+        linearGaugeThickness,
         offset,
       ); // adjust left position as needed
       gaugeContainer = Rect.fromLTWH(
-        barLeft,
-        barTop,
-        thickness, // set width to half of the gauge width
-        valueBarWidth,
+        barLeft + (linearGaugeThickness - valueBarThickness) / 2,
+        barTop + linearGauge.getExtendLinearGauge,
+        valueBarThickness, // set width to half of the gauge width
+        valueBarWidth + linearGauge.getExtendLinearGauge,
       );
     }
 

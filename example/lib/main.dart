@@ -1,4 +1,5 @@
 import 'package:example/gauge_vertical.dart';
+import 'package:example/tickness_extend_example.dart';
 import 'package:flutter/material.dart';
 
 void main() {
