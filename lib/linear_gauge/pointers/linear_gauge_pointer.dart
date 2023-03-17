@@ -37,6 +37,7 @@ class Pointer {
     this.quarterTurns = QuarterTurns.zero,
     this.labelStyle = const TextStyle(),
     this.pointerPosition = PointerPosition.center,
+    this.pointerAlignment = PointerAlignment.center,
   });
 
   ///
@@ -152,9 +153,21 @@ class Pointer {
   final TextStyle? labelStyle;
 
   ///
-  /// Pointer Position on the [LinearGauge]  sets the position of position of `pointer` on the [LinearGauge]
+  /// Pointer Position on the [LinearGauge]  sets the position of `pointer` on the [LinearGauge]
   ///
   final PointerPosition? pointerPosition;
+
+  ///
+  /// Pointer Alignment on the [LinearGauge]  sets the alignment of `pointer` on the [LinearGauge]
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///  pointer: Pointer(
+  /// pointerAlignment :PointerAlignment.start,
+  /// ),
+  /// ),
+  /// ```
+  final PointerAlignment? pointerAlignment;
 
   ///
   ///  Setter for `value`
@@ -419,6 +432,25 @@ class Pointer {
     Offset center = Offset(offset.dx, offset.dy);
     final paint = Paint()..color = color!;
     paint.color = color!;
+
+    switch (pointerAlignment) {
+      case PointerAlignment.start:
+        center =
+            (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+                ? Offset(center.dx - width! / 2, center.dy)
+                : Offset(center.dx, center.dy - width! / 2);
+        break;
+      case PointerAlignment.end:
+        center =
+            (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+                ? Offset(center.dx + width! / 2, center.dy)
+                : Offset(center.dx, center.dy + width! / 2);
+
+        break;
+      default:
+        center = center;
+        break;
+    }
     canvas.drawCircle(center, width! / 2, paint);
   }
 
@@ -459,6 +491,25 @@ class Pointer {
   _drawRectangle(Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
     final paint = Paint()..color = color!;
     offset = Offset(offset.dx, offset.dy);
+
+    switch (pointerAlignment) {
+      case PointerAlignment.start:
+        offset =
+            (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+                ? Offset(offset.dx - width! / 2, offset.dy)
+                : Offset(offset.dx, offset.dy - height! / 2);
+        break;
+      case PointerAlignment.end:
+        offset =
+            (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+                ? Offset(offset.dx + width! / 2, offset.dy)
+                : Offset(offset.dx, offset.dy + height! / 2);
+
+        break;
+      default:
+        offset = offset;
+        break;
+    }
     Rect rect = Rect.fromCenter(center: offset, width: width!, height: height!);
 
     canvas.drawRect(rect, paint);
@@ -513,11 +564,43 @@ class Pointer {
     // path.moveTo(((animVal) - (pointerWidth / 2)), yPos);
     // vertex.dx = animVal;
 
+    switch (pointerAlignment) {
+      case PointerAlignment.start:
+        if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
+          animationValue = animationValue - base / 2;
+        } else {
+          vertex = Offset(vertex.dx, vertex.dy - base);
+        }
+        break;
+      case PointerAlignment.end:
+        (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+            ? (animationValue = animationValue + base / 2)
+            : (vertex = Offset(vertex.dx, vertex.dy + base));
+
+        break;
+      default:
+        break;
+    }
+
     final path = Path()
       ..moveTo((animationValue), vertex.dy)
       ..lineTo((animationValue - base), vertex.dy + height!)
       ..lineTo((animationValue + base), vertex.dy + height!)
       ..close();
+
+// this if statement setup things for pointer alignment
+//the need of this is due to the involvement of angles in drawing triangle
+    if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
+      if ((pointerAlignment == PointerAlignment.start) &&
+          ((pointerPosition == PointerPosition.top) ||
+              (pointerPosition == PointerPosition.center))) {
+        animationValue -= base;
+      } else if ((pointerAlignment == PointerAlignment.end) &&
+          ((pointerPosition == PointerPosition.top) ||
+              (pointerPosition == PointerPosition.center))) {
+        animationValue += base;
+      }
+    }
 
     canvas.save();
     // Move the canvas origin to the vertex point
@@ -594,6 +677,22 @@ class Pointer {
     final paint = Paint()
       ..color = color!
       ..style = PaintingStyle.fill;
+
+    switch (pointerAlignment) {
+      case PointerAlignment.start:
+        (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+            ? (x = x - width! / 2)
+            : (center = Offset(center.dx, center.dy - height! / 2));
+        break;
+      case PointerAlignment.end:
+        (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+            ? (x = x + width! / 2)
+            : (center = Offset(center.dx, center.dy + height! / 2));
+
+        break;
+      default:
+        break;
+    }
 
     final path = Path();
     path.moveTo(x, center.dy - height! / 2);

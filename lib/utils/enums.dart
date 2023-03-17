@@ -9,3 +9,5 @@ enum QuarterTurns { zero, one, two, three }
 enum ValueBarPosition { top, center, bottom, right, left }
 
 enum PointerPosition { top, center, bottom, right, left }
+
+enum PointerAlignment { start, center, end }
