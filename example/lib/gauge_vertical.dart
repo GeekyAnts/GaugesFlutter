@@ -14,16 +14,18 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
+          enableAnimation: true,
           valueBar: [
             ValueBar(
-              value: 50,
+              value: 30,
               offset: 50,
               position: ValueBarPosition.top,
             ),
           ],
-          gaugeOrientation: GaugeOrientation.vertical,
+          gaugeOrientation: GaugeOrientation.horizontal,
           rulers: const RulerStyle(
-            rulerPosition: RulerPosition.center,
+            inverseRulers: false,
+            rulerPosition: RulerPosition.top,
           ),
         ),
       ),

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-03-16 18:06:10</td>
+            <td class="headerValue">2023-03-16 19:21:34</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -577,13 +577,13 @@
 <a name="515"><span class="lineNum">     515 </span><span class="lineCov">          3 :         textStyle: getTextStyle,</span></a>
 <a name="516"><span class="lineNum">     516 </span><span class="lineCov">          3 :         value: !getInversedRulers</span></a>
 <a name="517"><span class="lineNum">     517 </span><span class="lineCov">          9 :             ? getStart.toInt().toString()</span></a>
-<a name="518"><span class="lineNum">     518 </span><span class="lineCov">          3 :             : getEnd.toInt().toString());</span></a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineCov">          6 :             : getEnd.toInt().toString());</span></a>
 <a name="519"><span class="lineNum">     519 </span>            : </a>
 <a name="520"><span class="lineNum">     520 </span><span class="lineCov">          9 :     _endLabelSize = _linearGaugeLabel.getLabelSize(</span></a>
 <a name="521"><span class="lineNum">     521 </span><span class="lineCov">          3 :         textStyle: getTextStyle,</span></a>
 <a name="522"><span class="lineNum">     522 </span><span class="lineCov">          3 :         value: !getInversedRulers</span></a>
 <a name="523"><span class="lineNum">     523 </span><span class="lineCov">          9 :             ? getEnd.toInt().toString()</span></a>
-<a name="524"><span class="lineNum">     524 </span><span class="lineCov">          3 :             : getStart.toInt().toString());</span></a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineCov">          6 :             : getStart.toInt().toString());</span></a>
 <a name="525"><span class="lineNum">     525 </span>            : </a>
 <a name="526"><span class="lineNum">     526 </span><span class="lineCov">          6 :     _linearGaugeLabel.generateOffSetsForLabel(</span></a>
 <a name="527"><span class="lineNum">     527 </span><span class="lineCov">          3 :         _startLabelSize,</span></a>
@@ -850,9 +850,9 @@
 <a name="788"><span class="lineNum">     788 </span><span class="lineCov">          9 :       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;</span></a>
 <a name="789"><span class="lineNum">     789 </span><span class="lineCov">          6 :       if (getGaugeOrientation == GaugeOrientation.horizontal) {</span></a>
 <a name="790"><span class="lineNum">     790 </span><span class="lineCov">          3 :         gaugeContainer = Rect.fromLTWH(</span></a>
-<a name="791"><span class="lineNum">     791 </span><span class="lineCov">          4 :           !getInversedRulers ? start : (start + end),</span></a>
+<a name="791"><span class="lineNum">     791 </span><span class="lineCov">          5 :           !getInversedRulers ? start : (start + end),</span></a>
 <a name="792"><span class="lineNum">     792 </span><span class="lineCov">          3 :           offset.dy,</span></a>
-<a name="793"><span class="lineNum">     793 </span><span class="lineCov">          4 :           !getInversedRulers ? totalValOnPixel : -totalValOnPixel,</span></a>
+<a name="793"><span class="lineNum">     793 </span><span class="lineCov">          5 :           !getInversedRulers ? totalValOnPixel : -totalValOnPixel,</span></a>
 <a name="794"><span class="lineNum">     794 </span><span class="lineCov">          3 :           getThickness,</span></a>
 <a name="795"><span class="lineNum">     795 </span>            :         );</a>
 <a name="796"><span class="lineNum">     796 </span>            :       } else {</a>
@@ -1117,7 +1117,7 @@
 <a name="1055"><span class="lineNum">    1055 </span>            : </a>
 <a name="1056"><span class="lineNum">    1056 </span><span class="lineCov">          3 :     var firstOffset = (!getInversedRulers)</span></a>
 <a name="1057"><span class="lineNum">    1057 </span><span class="lineCov">          6 :         ? Offset(_valueInPixel, 0.0)</span></a>
-<a name="1058"><span class="lineNum">    1058 </span><span class="lineCov">          3 :         : -Offset(_valueInPixel, 0.0);</span></a>
+<a name="1058"><span class="lineNum">    1058 </span><span class="lineCov">          6 :         : -Offset(_valueInPixel, 0.0);</span></a>
 <a name="1059"><span class="lineNum">    1059 </span><span class="lineCov">          6 :     if (_pointer.value == null) {</span></a>
 <a name="1060"><span class="lineNum">    1060 </span><span class="lineCov">          6 :       _pointer.setPointerValue = value;</span></a>
 <a name="1061"><span class="lineNum">    1061 </span>            :     }</a>

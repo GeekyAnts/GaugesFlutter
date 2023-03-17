@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">35</td>
             <td class="headerCovTableEntry">36</td>
-            <td class="headerCovTableEntryMed">77.8 %</td>
+            <td class="headerCovTableEntryHi">97.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-03-16 18:06:10</td>
+            <td class="headerValue">2023-03-16 19:21:34</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -199,7 +199,7 @@
 <a name="137"><span class="lineNum">     137 </span>            :     final Rect gaugeContainer;</a>
 <a name="138"><span class="lineNum">     138 </span>            : </a>
 <a name="139"><span class="lineNum">     139 </span><span class="lineCov">          1 :     if (gaugeOrientation == GaugeOrientation.horizontal) {</span></a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :       double startValue = (!getInversedRulers) ? start : start + valueBarWidth;</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">          1 :       double startValue = (!getInversedRulers) ? start : start + valueBarWidth;</span></a>
 <a name="141"><span class="lineNum">     141 </span><span class="lineCov">          1 :       gaugeContainer = Rect.fromLTWH(</span></a>
 <a name="142"><span class="lineNum">     142 </span>            :         startValue,</a>
 <a name="143"><span class="lineNum">     143 </span>            :         totalValOffset,</a>
@@ -232,12 +232,12 @@
 <a name="170"><span class="lineNum">     170 </span>            :         return 0.0;</a>
 <a name="171"><span class="lineNum">     171 </span><span class="lineCov">          1 :       case ValueBarPosition.top:</span></a>
 <a name="172"><span class="lineNum">     172 </span><span class="lineCov">          2 :         return -(height + valueBarOffset);</span></a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :       case ValueBarPosition.bottom:</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :         return height + valueBarOffset;</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :       case ValueBarPosition.left:</span></a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :         return -(height + valueBarOffset);</span></a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :       case ValueBarPosition.right:</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :         return height + valueBarOffset;</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          1 :       case ValueBarPosition.bottom:</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          1 :         return height + valueBarOffset;</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">          1 :       case ValueBarPosition.left:</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          2 :         return -(height + valueBarOffset);</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          1 :       case ValueBarPosition.right:</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          1 :         return height + valueBarOffset;</span></a>
 <a name="179"><span class="lineNum">     179 </span>            :       default:</a>
 <a name="180"><span class="lineNum">     180 </span>            :         return 0;</a>
 <a name="181"><span class="lineNum">     181 </span>            :     }</a>

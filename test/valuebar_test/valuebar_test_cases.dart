@@ -71,15 +71,14 @@ List valueBar = [
     'Do':
         'ValueBar with value 50 should be displayed in horizontal with offset 50',
   },
+
   {
     'valueBar': ValueBar(
       value: 50,
-      offset: 50,
       position: ValueBarPosition.bottom,
     ),
-    'name': 'valuebar-value-50-horizontal-offset-50-top',
-    'Do':
-        'ValueBar with value 50 should be displayed in horizontal with offset 50',
+    'name': 'valuebar-value-50-horizontal-bottom',
+    'Do': 'ValueBar with value 50 should be displayed in horizontal',
   },
 
   // With Offset - Vertical
@@ -87,21 +86,31 @@ List valueBar = [
     'gaugeOrientation': GaugeOrientation.vertical,
     'valueBar': ValueBar(
       value: 50,
-      offset: 10,
-      position: ValueBarPosition.top,
+      position: ValueBarPosition.right,
     ),
-    'name': 'valuebar-value-50-vertical-offset-10-left',
-    'Do':
-        'ValueBar with value 50 should be displayed in vertical with offset 10',
+    'name': 'valuebar-value-50-position-right-ruler-right',
+    'Do': 'ValueBar with value 50 should be displayed in vertical',
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'valueBar': ValueBar(
       value: 50,
-      offset: 50,
+      position: ValueBarPosition.left,
+    ),
+    'name': 'valuebar-value-50-position-left-ruler-vertical',
+    'Do': 'ValueBar with value 50 in vertical with Position Left',
+  },
+
+  // Inverse Ruler
+  {
+    'rulerInverse': true,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'valueBar': ValueBar(
+      value: 50,
       position: ValueBarPosition.top,
     ),
-    'name': 'valuebar-value-50-vertical-offset-50-left',
-    'Do': ' in vertical with offset 50',
+    'name': 'inverse-ruler-valuebar-value-50-horizontal-top',
+    'Do':
+        'ValueBar with value 50 should be displayed in horizontal in Inverse Ruler',
   }
 ];
