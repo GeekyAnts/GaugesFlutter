@@ -1,11 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_painter.dart';
 
 void main() {
-  LinearGauge linearGauge = LinearGauge(
-    rulers: RulerStyle(rulerPosition: RulerPosition.bottom),
-  );
+  late LinearGauge linearGauge;
   setUp(() {
     linearGauge = LinearGauge(
       start: 0,
@@ -15,6 +16,12 @@ void main() {
       showLinearGaugeContainer: true,
       gaugeOrientation: GaugeOrientation.horizontal,
       labelTopMargin: 0.0,
+      pointers: const [
+        Pointer(
+          shape: PointerShape.triangle,
+          pointerPosition: PointerPosition.bottom,
+        )
+      ],
       linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(),
       rulers: const RulerStyle(
         primaryRulerColor: Colors.black54,

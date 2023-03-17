@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
-import 'test_cases.dart';
+import 'pointer_test_cases.dart';
 
 void main() {
   group("Test the Pointer Functionality", () {
@@ -13,6 +13,7 @@ void main() {
       testGoldens(testCase['Do'] as String, (tester) async {
         await tester.pumpWidgetBuilder(
           MyPointerTestLinearGauge(
+            inverseRuler: testCase['inverse'] as bool?,
             thickness: testCase['gaugeThickness'] as double?,
             rulerPosition: testCase['rulerPosition'] as RulerPosition?,
             pointer: testCase['pointer'] as Pointer?,
@@ -34,6 +35,7 @@ void main() {
           MyPointerTestLinearGauge(
             rulers: testCase['rulers'] as RulerStyle?,
             extendLinearGauge: testCase['extendLinearGauge'] as double?,
+            inverseRuler: testCase['inverse'] as bool?,
             rulerPosition: testCase['rulerPosition'] as RulerPosition?,
             pointer: testCase['pointer'] as Pointer?,
             gaugeOrientation: testCase['gaugeOrientation'] as GaugeOrientation?,
@@ -54,6 +56,7 @@ class MyPointerTestLinearGauge extends StatelessWidget {
   final Pointer? pointer;
   final RulerStyle? rulers;
 
+  final bool? inverseRuler;
   const MyPointerTestLinearGauge({
     super.key,
     this.extendLinearGauge,
@@ -62,6 +65,7 @@ class MyPointerTestLinearGauge extends StatelessWidget {
     this.rulerPosition,
     this.gaugeOrientation,
     this.thickness,
+    this.inverseRuler,
   });
 
   @override
@@ -82,9 +86,10 @@ class MyPointerTestLinearGauge extends StatelessWidget {
             gaugeOrientation: gaugeOrientation ?? GaugeOrientation.horizontal,
             pointers: [pointer!],
             rulers: rulers ??
-                const RulerStyle(
+                RulerStyle(
+                  inverseRulers: inverseRuler ?? false,
                   rulerPosition: RulerPosition.center,
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontFamily: 'Roboto',
                     color: Colors.black,
                   ),

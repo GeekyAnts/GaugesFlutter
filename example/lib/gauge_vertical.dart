@@ -14,27 +14,18 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          start: 0,
-          end: 100,
-          enableAnimation: false,
-          pointers: const [
-            Pointer(
-              shape: PointerShape.triangle,
-              color: Colors.blue,
-              value: 50,
-              showLabel: true,
-              pointerPosition: PointerPosition.top,
-              labelStyle: TextStyle(
-                fontFamily: "Roboto",
-                color: Colors.black,
-              ),
+          enableAnimation: true,
+          valueBar: [
+            ValueBar(
+              value: 30,
+              offset: 50,
+              position: ValueBarPosition.top,
             ),
           ],
           gaugeOrientation: GaugeOrientation.horizontal,
           rulers: const RulerStyle(
-            showLabel: true,
             inverseRulers: false,
-            rulerPosition: RulerPosition.bottom,
+            rulerPosition: RulerPosition.top,
           ),
         ),
       ),
