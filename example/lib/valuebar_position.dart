@@ -15,9 +15,11 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
+          start: -50,
+          end: 100,
           valueBar: [
             ValueBar(
-              value: 90,
+              value: -50,
               position: ValueBarPosition.center,
               color: Colors.indigo,
             ),
@@ -45,7 +47,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
               color: Colors.green,
             ),
           ],
-          rulers: RulerStyle(rulerPosition: RulerPosition.left),
+          rulers: RulerStyle(rulerPosition: RulerPosition.top),
         ),
       ),
     );
