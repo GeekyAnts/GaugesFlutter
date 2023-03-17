@@ -32,3 +32,4 @@ build/
 
 # don't check in golden failure output
 **/failures/*.png
+coverage/
