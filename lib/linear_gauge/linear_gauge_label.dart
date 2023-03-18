@@ -63,30 +63,28 @@ class LinearGaugeLabel {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
-    double largestPointerWidth = linearGauge.getLargestPointerWidth();
+    double largestPointerSize = linearGauge.getLargestPointerSize();
 
     if (orientation == GaugeOrientation.horizontal) {
       a = Offset(
-          (startLabel.width / 2) +
-              (largestPointerWidth / 2) +
-              extendLinearGauge,
+          (startLabel.width / 2) + (largestPointerSize / 2) + extendLinearGauge,
           thickness);
       b = Offset(
           size.width -
               (endLabel.width / 2) -
-              (largestPointerWidth / 2) -
+              (largestPointerSize / 2) -
               extendLinearGauge,
           thickness);
     } else {
       a = Offset(
           (startLabel.height / 2) +
-              (largestPointerWidth / 2) +
+              (largestPointerSize / 2) +
               extendLinearGauge,
           thickness);
       b = Offset(
         size.height -
             (endLabel.height / 2) -
-            (largestPointerWidth / 2) -
+            (largestPointerSize / 2) -
             extendLinearGauge,
         thickness,
       );
