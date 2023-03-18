@@ -1550,10 +1550,308 @@ List inverseValueTests = [
   },
 ];
 
+List pointerAlignmentTestsHorizontal = [
+  // for circle
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.start,
+    ),
+    'name': 'align-start-bottom-circle-value-30-align',
+    'Do':
+        'Pointer should be drawn at 30 value with circle shape and pointerPosition.bottom and start alignment',
+  },
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.center,
+    ),
+    'name': 'align-center-bottom-circle-value-30-align',
+    'Do':
+        'Pointer should be drawn at 30 value with circle shape and pointerPosition.bottom and center alignment',
+  },
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-bottom-circle-value-30-align',
+    'Do':
+        'Pointer should be drawn at 30 value with circle shape and pointerPosition.bottom and end alignment',
+  },
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 60,
+      width: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-bottom-circle-value-60-width-30',
+    'Do':
+        'Pointer should be drawn at 60 value with 30 width circle shape and pointerPosition.bottom and end alignment',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 60,
+      pointerPosition: PointerPosition.top,
+      pointerAlignment: PointerAlignment.start,
+    ),
+    'name': 'align-start-inverse-top-circle-value-60',
+    'Do':
+        'Pointer should be drawn inversely at 60 value with circle shape and pointerPosition.top and start alignment',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 60,
+      pointerPosition: PointerPosition.top,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-inverse-top-circle-value-60',
+    'Do':
+        'Pointer should be drawn inversely at 60 value circle shape and pointerPosition.top and end alignment',
+  },
+  // for rectangle
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.start,
+    ),
+    'name': 'align-start-bottom-rectangle-value-30',
+    'Do':
+        'Pointer should be drawn at 30 value with rectangle shape and pointerPosition.bottom and start alignment',
+  },
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      value: 60,
+      width: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-bottom-rectangle-value-60-width-30',
+    'Do':
+        'Pointer should be drawn at 60 value with 30 width rectangle shape and pointerPosition.bottom and end alignment',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      value: 60,
+      pointerPosition: PointerPosition.top,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-inverse-top-rectangle-value-60',
+    'Do':
+        'Pointer should be drawn inversely at 60 value rectangle shape and pointerPosition.top and end alignment',
+  },
+  //for triangle
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.start,
+    ),
+    'name': 'align-start-bottom-triangle-value-30',
+    'Do':
+        'Pointer should be drawn at 30 value with triangle shape and pointerPosition.bottom and start alignment',
+  },
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      value: 60,
+      width: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-bottom-triangle-value-60-width-30',
+    'Do':
+        'Pointer should be drawn at 60 value with 30 width triangle shape and pointerPosition.bottom and end alignment',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      value: 60,
+      pointerPosition: PointerPosition.top,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-inverse-top-triangle-value-60',
+    'Do':
+        'Pointer should be drawn inversely at 60 value triangle shape and pointerPosition.top and end alignment',
+  },
+  //for diamond
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      value: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.start,
+    ),
+    'name': 'align-start-bottom-diamond-value-30',
+    'Do':
+        'Pointer should be drawn at 30 value with diamond shape and pointerPosition.bottom and start alignment',
+  },
+  {
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      value: 60,
+      width: 30,
+      pointerPosition: PointerPosition.bottom,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-bottom-diamond-value-60-width-30',
+    'Do':
+        'Pointer should be drawn at 60 value with 30 width diamond shape and pointerPosition.bottom and end alignment',
+  },
+  {
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      value: 60,
+      pointerPosition: PointerPosition.top,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-inverse-top-diamond-value-60',
+    'Do':
+        'Pointer should be drawn inversely at 60 value diamond shape and pointerPosition.top and end alignment',
+  },
+];
+
+List pointerAlignmentTestsVertical = [
+  //for circles
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 20,
+      pointerPosition: PointerPosition.left,
+      pointerAlignment: PointerAlignment.start,
+    ),
+    'name': 'align-start-left-circle-value-20-vertical',
+    'Do':
+        'Pointer should be drawn vertically at 20 value with circle shape and pointerPosition.left and start alignment',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 20,
+      pointerPosition: PointerPosition.left,
+      pointerAlignment: PointerAlignment.center,
+    ),
+    'name': 'align-center-left-circle-value-20-vertical',
+    'Do':
+        'Pointer should be drawn vertically at 20 value with circle shape and pointerPosition.left and center alignment',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 20,
+      pointerPosition: PointerPosition.left,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-left-circle-value-20-vertical',
+    'Do':
+        'Pointer should be drawn vertically at 20 value with circle shape and pointerPosition.left and end alignment',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 60,
+      width: 30,
+      height: 30,
+      pointerPosition: PointerPosition.right,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-right-circle-value-60-width-30-vertical',
+    'Do':
+        'Pointer should be drawn vertically at 60 value with 30 width circle shape and pointerPosition.right and end alignment',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      value: 60,
+      pointerPosition: PointerPosition.left,
+      pointerAlignment: PointerAlignment.start,
+    ),
+    'name': 'align-start-inverse-left-circle-value-60-vertical',
+    'Do':
+        'Pointer should be drawn vertically inversely at 60 value circle shape and pointerPosition.left and start alignment',
+  },
+
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      value: 60,
+      width: 50,
+      height: 30,
+      pointerPosition: PointerPosition.right,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name': 'align-end-right-rectangle-value-60-width-50-vertical',
+    'Do':
+        'Pointer should be drawn vertically at 60 value with 50 width and 30 height rectangle shape and pointerPosition.right and end alignment',
+  },
+
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      value: 90,
+      width: 30,
+      height: 50,
+      pointerPosition: PointerPosition.right,
+      pointerAlignment: PointerAlignment.start,
+    ),
+    'name': 'align-end-inverse-right-diamond-value-60-width-50-vertical',
+    'Do':
+        'Pointer should be drawn vertically inversely at 90 value with 30 width and 50 height diamond shape and pointerPosition.right and start alignment',
+  },
+
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'inverse': true,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      value: 10,
+      width: 50,
+      height: 50,
+      pointerPosition: PointerPosition.center,
+      pointerAlignment: PointerAlignment.end,
+    ),
+    'name':
+        'align-end-inverse-center-triangle-value-10-width-50-height-50-vertical',
+    'Do':
+        'Pointer should be drawn vertically inversely at 10 value with 50 width and 50 height triangle shape and pointerPosition.center and end alignment',
+  },
+];
+
 List allTests = [
   ...edgeCases,
   ...colorTests,
   ...valueTests,
   ...valueLabelTests,
-  ...inverseValueTests
+  ...inverseValueTests,
+  ...pointerAlignmentTestsHorizontal,
+  ...pointerAlignmentTestsVertical,
 ];
