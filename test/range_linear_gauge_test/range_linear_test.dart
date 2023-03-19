@@ -9,12 +9,15 @@ import 'range_linear_test_cases.dart';
 
 void main() {
   group("Test the ValueBar Functionality", () {
-    final testCases = edgeCases;
+    final testCases = allTests;
 
     for (final testCase in testCases) {
       testGoldens(testCase['Do'] as String, (tester) async {
         await tester.pumpWidgetBuilder(
           MyRangeLinearGauge(
+            start: testCase['start'] as double?,
+            end: testCase['end'] as double?,
+            extendLinearGauge: testCase['extendLinearGauge'] as double?,
             thickness: testCase['gaugeThickness'] as double?,
             inverseRulers: testCase['inverse'] as bool?,
             gaugeOrientation: testCase['gaugeOrientation'] as GaugeOrientation?,
@@ -30,14 +33,20 @@ void main() {
 }
 
 class MyRangeLinearGauge extends StatelessWidget {
+  final double? start;
+  final double? end;
   final List<RangeLinearGauge>? rangeLinearGaugeList;
+  final double? extendLinearGauge;
   final GaugeOrientation? gaugeOrientation;
   final bool? inverseRulers;
   final double? thickness;
 
   const MyRangeLinearGauge({
     super.key,
+    this.start,
+    this.end,
     this.rangeLinearGaugeList,
+    this.extendLinearGauge,
     this.gaugeOrientation,
     this.inverseRulers,
     this.thickness,
@@ -55,6 +64,9 @@ class MyRangeLinearGauge extends StatelessWidget {
         ),
         body: Center(
           child: LinearGauge(
+            start: start ?? 0,
+            end: end ?? 100,
+            extendLinearGauge: extendLinearGauge ?? 0.0,
             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
               thickness: thickness ?? 4.0,
             ),

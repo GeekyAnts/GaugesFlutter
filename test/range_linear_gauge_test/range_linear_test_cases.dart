@@ -132,33 +132,49 @@ List edgeCases = [
         color: Colors.red,
       ),
     ],
-    'name': 'range-linear-gauge-start-value-greater-than-end-value',
+    'name': 'range-linear-gauge-start-50-end-0-red-only',
     'Do': 'Start> End Linear Gauge should not be drawn',
   },
-  // Start Value is equal to End Value
   {
+    'gaugeOrientation': GaugeOrientation.vertical,
     'rangeLinear': [
       RangeLinearGauge(
         end: 0,
-        start: 0,
+        start: 50,
         color: Colors.red,
       ),
     ],
-    'name': 'range-linear-gauge-start-value-equal-to-end-value',
-    'Do': 'Start= End Linear Gauge should not be drawn',
+    'name': 'range-linear-gauge-start-50-end-0-red-only-vertical',
+    'Do': 'Start> End Linear Gauge should  be drawn vertical',
   },
+  // Start Value is equal to End Value
 
   {
     'rangeLinear': [
       RangeLinearGauge(
         end: 20,
-        start: 40,
+        start: 20,
         color: Colors.red,
       ),
     ],
     'name': 'range-linear-gauge-start-value-equal-to-end-value',
-    'Do': 'Start= End Linear Gauge should not be drawn',
+    'Do': 'Start= End Linear Gauge should  be drawn at the start',
   },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'rangeLinear': [
+      RangeLinearGauge(
+        end: 20,
+        start: 20,
+        color: Colors.red,
+      ),
+    ],
+    'name': 'range-linear-gauge-start-value-equal-to-end-value-vertical',
+    'Do': 'Start= End Linear Gauge should  be drawn at the start vertical',
+  },
+];
+
+List gaugeThickness = [
   {
     'gaugeThickness': 30.0,
     'rangeLinear': [
@@ -168,7 +184,176 @@ List edgeCases = [
         color: Colors.red,
       ),
     ],
-    'name': 'range-linear-gauge-thickness-30',
-    'Do': 'RangeLinearGauge should be drawn fully with thickness 30 ',
+    'name': 'range-linear-gauge-thickness-30-red-only',
+    'Do': 'RangeLinearGauge should be drawn fully with thickness 30',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'gaugeThickness': 30.0,
+    'rangeLinear': [
+      RangeLinearGauge(
+        end: 0,
+        start: 100,
+        color: Colors.red,
+      ),
+    ],
+    'name': 'range-linear-gauge-thickness-30-vertical-red-only',
+    'Do':
+        'RangeLinearGauge should be drawn fully with thickness 30 with vertical ',
   }
+];
+
+// Extend Linear Gauge
+List extendLinearGauge = [
+  {
+    'extendLinearGauge': 50.0,
+    'rangeLinear': [
+      RangeLinearGauge(
+        end: 0,
+        start: 50,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        end: 50,
+        start: 80,
+        color: Colors.green,
+      ),
+      RangeLinearGauge(
+        end: 80,
+        start: 100,
+        color: Colors.blue,
+      ),
+    ],
+    'name': 'range-linear-gauge-extend',
+    'Do': 'RangeLinearGauge should be drawn with rgb and extend 50',
+  },
+  {
+    'extendLinearGauge': 50.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'rangeLinear': [
+      RangeLinearGauge(
+        end: 0,
+        start: 50,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        end: 50,
+        start: 80,
+        color: Colors.green,
+      ),
+      RangeLinearGauge(
+        end: 80,
+        start: 100,
+        color: Colors.blue,
+      ),
+    ],
+    'name': 'range-linear-gauge-extend-vertical',
+    'Do': 'RangeLinearGauge should be drawn with rgb-vertical and extend 50',
+  },
+];
+
+List startAndEndTest = [
+  {
+    'start': 100.0,
+    'end': 500.0,
+    'rangeLinear': [
+      RangeLinearGauge(
+        start: 100,
+        end: 300,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        start: 300,
+        end: 400,
+        color: Colors.blue,
+      ),
+      RangeLinearGauge(
+        start: 400,
+        end: 500,
+        color: Colors.green,
+      ),
+    ],
+    'name': 'range-linear-gauge-start-100-end-500-rgb',
+    'Do': 'RangeLinearGauge should be drawn fully with thickness 30 ',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'start': 100.0,
+    'end': 500.0,
+    'rangeLinear': [
+      RangeLinearGauge(
+        start: 100,
+        end: 300,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        start: 300,
+        end: 400,
+        color: Colors.blue,
+      ),
+      RangeLinearGauge(
+        start: 400,
+        end: 500,
+        color: Colors.green,
+      ),
+    ],
+    'name': 'range-linear-gauge-start-100-end-500-rgb-vertical',
+    'Do': 'RangeLinearGauge should be drawn fully with thickness 30 vertical',
+  },
+  {
+    'start': -500.0,
+    'end': 500.0,
+    'rangeLinear': [
+      RangeLinearGauge(
+        start: -500,
+        end: 0,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        start: 0,
+        end: 300,
+        color: Colors.blue,
+      ),
+      RangeLinearGauge(
+        start: 300,
+        end: 500,
+        color: Colors.blue,
+      ),
+    ],
+    'name': 'range-linear-gauge-start-negative-500-end-500-rgb',
+    'Do':
+        'RangeLinearGauge should be drawn with rgb and start negative 500 and end 500',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'start': -500.0,
+    'end': 500.0,
+    'rangeLinear': [
+      RangeLinearGauge(
+        start: -500,
+        end: 0,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        start: 0,
+        end: 300,
+        color: Colors.blue,
+      ),
+      RangeLinearGauge(
+        start: 300,
+        end: 500,
+        color: Colors.blue,
+      ),
+    ],
+    'name': 'range-linear-gauge-start-negative-500-end-500-rgb-vertical',
+    'Do':
+        'RangeLinearGauge should be drawn with rgb and start negative 500 and end 500 vertical',
+  },
+];
+
+List allTests = [
+  ...edgeCases,
+  ...gaugeThickness,
+  ...extendLinearGauge,
+  ...startAndEndTest,
 ];
