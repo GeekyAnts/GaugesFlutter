@@ -679,9 +679,9 @@ class RenderLinearGauge extends RenderBox {
               (largestPointerWidth / 2));
     } else {
       end = GaugeOrientation.horizontal == getGaugeOrientation
-          ? size.width
-          : size.height;
-      start = offset.dx;
+          ? size.width - (largestPointerWidth)
+          : size.height - (largestPointerWidth / 2);
+      start = offset.dx + (largestPointerWidth / 2);
     }
 
     late Rect gaugeContainer;

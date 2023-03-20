@@ -668,6 +668,63 @@ List edgeCases = [
   },
 ];
 
+List showLabelTests = [
+  // {
+  //   'showLabel': false,
+  //   'gaugeOrientation': GaugeOrientation.horizontal,
+  //   'pointer': const Pointer(
+  //     shape: PointerShape.triangle,
+  //     color: Colors.blue,
+  //     value: 0,
+  //     pointerPosition: PointerPosition.center,
+  //   ),
+  //   'name': 'triangle-value-0-show-label-false',
+  //   'Do':
+  //       'Pointer should be drawn at 0 value with  Triangle with showLabel false',
+  // },
+
+  {
+    'showLabel': false,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 50,
+      width: 50,
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showlabel',
+    'Do': 'show Label Pointer',
+  },
+
+  // Vertical
+  // {
+  //   'gaugeOrientation': GaugeOrientation.vertical,
+  //   'showLabel': false,
+  //   'pointer': const Pointer(
+  //     shape: PointerShape.triangle,
+  //     color: Colors.blue,
+  //     value: 0,
+  //     pointerPosition: PointerPosition.center,
+  //   ),
+  //   'name': 'triangle-value-0-show-label-false-vertical',
+  //   'Do':
+  //       'Vertical Pointer should be drawn at 0 value with  Triangle with showLabel false',
+  // },
+  // {
+  //   'showLabel': true,
+  //   'pointer': const Pointer(
+  //     shape: PointerShape.triangle,
+  //     color: Colors.blue,
+  //     value: 0,
+  //     pointerPosition: PointerPosition.top,
+  //   ),
+  //   'name': 'triangle-value-0-show-label-true',
+  //   'Do':
+  //       'Pointer should be drawn at 0 value with  Triangle with showLabel
+];
+
 List colorTests = [
   //Circle
   {
@@ -1856,4 +1913,5 @@ List allTests = [
   ...inverseValueTests,
   ...pointerAlignmentTestsHorizontal,
   ...pointerAlignmentTestsVertical,
+  ...showLabelTests,
 ];
