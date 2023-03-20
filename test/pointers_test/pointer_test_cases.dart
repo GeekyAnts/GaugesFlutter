@@ -426,7 +426,8 @@ List edgeCases = [
       pointerPosition: PointerPosition.left,
     ),
     'name': 'rectangle-value-0-width-150-vertical',
-    'Do': 'Pointer should be drawn at 0 value with with Rectangle width 150',
+    'Do':
+        'Pointer should be drawn at 0 value with with Rectangle width 150 vertical',
   },
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
@@ -438,7 +439,7 @@ List edgeCases = [
       pointerPosition: PointerPosition.top,
     ),
     'name': 'rectangle-value-0-height-150',
-    'Do': 'Pointer should be drawn at 0 value with with Rectangle width 150',
+    'Do': 'Pointer should be drawn at 0 value with with Rectangle height 150',
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
@@ -450,7 +451,8 @@ List edgeCases = [
       pointerPosition: PointerPosition.left,
     ),
     'name': 'rectangle-value-0-height-150-vertical',
-    'Do': 'Pointer should be drawn at 0 value with with Rectangle width 150',
+    'Do':
+        'Pointer should be drawn at 0 value with with Rectangle height 150 vertical',
   },
 
   // Triangle TestCases

@@ -674,7 +674,7 @@ class RenderLinearGauge extends RenderBox {
     late double end;
     late double start;
 
-    double largestPointerWidth = getLargestPointerWidth();
+    double largestPointerWidth = getLargestPointerSize();
 
     if (showLabel) {
       end = GaugeOrientation.horizontal == getGaugeOrientation
@@ -874,14 +874,24 @@ class RenderLinearGauge extends RenderBox {
     }
   }
 
-  double getLargestPointerWidth() {
-    double largestPointerWidth;
+  double getLargestPointerSize() {
     if (getPointers.isNotEmpty) {
-      largestPointerWidth = getPointers
-          .reduce(
-              (current, next) => current.width! > next.width! ? current : next)
-          .width!;
-      return largestPointerWidth;
+      Pointer largestPointer = getPointers.reduce(
+          (current, next) => getGaugeOrientation == GaugeOrientation.vertical
+              ? current.height! > next.height!
+                  ? current
+                  : next
+              : current.width! > next.width!
+                  ? current
+                  : next);
+
+      if ((largestPointer.shape == PointerShape.rectangle ||
+              largestPointer.shape == PointerShape.diamond) &&
+          getGaugeOrientation == GaugeOrientation.vertical) {
+        return largestPointer.height!;
+      } else {
+        return largestPointer.width!;
+      }
     } else {
       return 10;
     }
