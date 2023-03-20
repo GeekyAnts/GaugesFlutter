@@ -918,7 +918,7 @@ List showLabelTests = [
     'Do': 'Inverse Pointer should be drawn at 0 value with showLabel false ',
   },
   {
-    'inverse': false,
+    'inverse': true,
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
     'pointer': const Pointer(
