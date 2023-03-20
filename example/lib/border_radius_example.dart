@@ -16,6 +16,13 @@ class _BorderRadiusExampleState extends State<BorderRadiusExample> {
         child: LinearGauge(
           enableAnimation: true,
           extendLinearGauge: 9,
+          valueBar: [
+            ValueBar(
+                value: 20,
+                valueBarThickness: 20,
+                borderRadius: 10,
+                edgeStyle: LinearEdgeStyle.startCurve)
+          ],
           linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
             thickness: 20,
             borderRadius: 10,

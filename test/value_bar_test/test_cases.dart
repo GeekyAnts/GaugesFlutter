@@ -473,6 +473,134 @@ List extendLinearGauge = [
   },
 ];
 
+List borderRadiusHorizontal = [
+  {
+    'extendLinearGauge': 10.0,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.top,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(
+        value: 50,
+        borderRadius: 10,
+        valueBarThickness: 20,
+        edgeStyle: LinearEdgeStyle.startCurve,
+      ),
+    ],
+    'name': 'start-edge-border-radius-value-bar',
+    'Do': 'ValueBar should be drawn with starting edge of 50 border radius',
+  },
+  {
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.top,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(
+        value: 80,
+        borderRadius: 10,
+        valueBarThickness: 10,
+        edgeStyle: LinearEdgeStyle.endCurve,
+      ),
+    ],
+    'name': 'end-edge-border-radius-value-bar',
+    'Do': 'ValueBar should be drawn with ending edge of 80 border radius',
+  },
+  {
+    'extendLinearGauge': 10.0,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.top,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(
+        value: 20,
+        borderRadius: 10,
+        edgeStyle: LinearEdgeStyle.bothCurve,
+      ),
+    ],
+    'name': 'both-edge-border-radius-value-bar',
+    'Do': 'ValueBar should be drawn with both edge of 20 border radius',
+  }
+];
+List borderRadiusVertical = [
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'extendLinearGauge': 10.0,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.left,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(
+        value: 20,
+        borderRadius: 5,
+        valueBarThickness: 40,
+        edgeStyle: LinearEdgeStyle.startCurve,
+      ),
+    ],
+    'name': 'start-edge-border-radius-value-bar-vertical',
+    'Do':
+        'ValueBar should be drawn vertically with starting edge of 5 border radius',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.right,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(
+        value: 20,
+        borderRadius: 10,
+        valueBarThickness: 10,
+        edgeStyle: LinearEdgeStyle.endCurve,
+      ),
+    ],
+    'name': 'end-edge-border-radius-value-bar-vertical',
+    'Do':
+        'ValueBar should be drawn vertically with ending edge of 10 border radius',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'extendLinearGauge': 10.0,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.right,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(
+        value: 20,
+        borderRadius: 10,
+        valueBarThickness: 25,
+        edgeStyle: LinearEdgeStyle.bothCurve,
+      ),
+    ],
+    'name': 'both-edge-border-radius-value-bar-vertical',
+    'Do':
+        'ValueBar should be drawn vertically with both edge of 10 border radius',
+  }
+];
+
 List allTests = [
   ...valueTestsHorizontal,
   ...valueTestsVertical,
@@ -480,4 +608,6 @@ List allTests = [
   ...multipleValueBarVertical,
   ...gaugeThickness,
   ...extendLinearGauge,
+  ...borderRadiusHorizontal,
+  ...borderRadiusVertical,
 ];

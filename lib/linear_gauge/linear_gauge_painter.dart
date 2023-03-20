@@ -745,41 +745,7 @@ class RenderLinearGauge extends RenderBox {
     }
 
     if (getLinearGaugeBoxDecoration.borderRadius != null) {
-      var rectangularBox;
-      switch (getLinearGaugeBoxDecoration.edgeStyle) {
-        case LinearEdgeStyle.startCurve:
-          rectangularBox = RRect.fromRectAndCorners(
-            gaugeContainer,
-            topLeft: Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
-            bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
-                ? Radius.circular(getLinearGaugeBoxDecoration.borderRadius!)
-                : Radius.zero,
-            topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
-                ? Radius.zero
-                : Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
-          );
-          break;
-        case LinearEdgeStyle.endCurve:
-          rectangularBox = RRect.fromRectAndCorners(
-            gaugeContainer,
-            topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
-                ? Radius.circular(getLinearGaugeBoxDecoration.borderRadius!)
-                : Radius.zero,
-            bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
-                ? Radius.zero
-                : Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
-            bottomRight:
-                Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
-          );
-          break;
-
-        default:
-          rectangularBox = RRect.fromRectAndRadius(
-            gaugeContainer,
-            Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
-          );
-          break;
-      }
+      var rectangularBox = _getRoundedContainer(gaugeContainer: gaugeContainer);
       canvas.drawRRect(rectangularBox, _linearGaugeContainerPaint);
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
@@ -811,6 +777,21 @@ class RenderLinearGauge extends RenderBox {
           Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
         ),
         _linearGaugeContainerValuePaint,
+      );
+
+      _drawValueBars(
+        canvas: canvas,
+        start: start,
+        totalWidth: totalWidth,
+        end: end,
+      );
+      _drawRangeBars(
+        start: start,
+        end: end,
+        canvas: canvas,
+        totalWidth: totalWidth,
+        gaugeContainer: gaugeContainer,
+        offset: offset,
       );
     } else {
       canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
@@ -844,64 +825,134 @@ class RenderLinearGauge extends RenderBox {
         _linearGaugeContainerValuePaint,
       );
 
-      // For loop for drawing value bar in [LinearGauge]
-      for (int j = 0; j < getValueBar.length; j++) {
-        getValueBar[j].drawValueBar(
-          canvas,
-          start,
-          end,
-          totalWidth,
-          this,
-        );
-      }
-
-      /// For loop for calculating colors in [RangeLinearGauge]
-      for (int i = 0; i < rangeLinearGauge!.length; i++) {
-        // Method to cal exact width
-        double calculateValuePixelWidth(double value) {
-          return ((value - getStart) / (getEnd - getStart)) * totalWidth;
-        }
-
-        // width of the colorRange
-        double colorRangeWidth =
-            calculateValuePixelWidth(rangeLinearGauge![i].end) -
-                calculateValuePixelWidth(rangeLinearGauge![i].start);
-
-        // Start of the ColorRange
-
-        double colorRangeStart;
-        if (getGaugeOrientation == GaugeOrientation.horizontal) {
-          colorRangeStart = !getInversedRulers
-              ? (calculateValuePixelWidth(rangeLinearGauge![i].start) + start)
-              : ((start + end) -
-                  calculateValuePixelWidth(rangeLinearGauge![i].start));
-
-          gaugeContainer = Rect.fromLTWH(
-            colorRangeStart,
-            offset.dy,
-            !getInversedRulers ? colorRangeWidth : -colorRangeWidth,
-            getThickness,
-          );
-        } else {
-          colorRangeStart = !getInversedRulers
-              ? ((start + end) -
-                  calculateValuePixelWidth(rangeLinearGauge![i].start))
-              : (calculateValuePixelWidth(rangeLinearGauge![i].start) + start);
-          gaugeContainer = Rect.fromLTWH(
-            offset.dy,
-            colorRangeStart,
-            getThickness,
-            !getInversedRulers ? -colorRangeWidth : colorRangeWidth,
-          );
-        }
-
-        _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
-        canvas.drawRect(
-          gaugeContainer,
-          _linearGaugeContainerValuePaint,
-        );
-      }
+      _drawValueBars(
+        canvas: canvas,
+        start: start,
+        totalWidth: totalWidth,
+        end: end,
+      );
+      _drawRangeBars(
+        start: start,
+        end: end,
+        canvas: canvas,
+        totalWidth: totalWidth,
+        gaugeContainer: gaugeContainer,
+        offset: offset,
+      );
     }
+  }
+
+  void _drawValueBars(
+      {required Canvas canvas,
+      required double start,
+      required double end,
+      required double totalWidth}) {
+    // For loop for drawing value bar in [LinearGauge]
+    for (int j = 0; j < getValueBar.length; j++) {
+      getValueBar[j].drawValueBar(
+        canvas,
+        start,
+        end,
+        totalWidth,
+        this,
+      );
+    }
+  }
+
+  void _drawRangeBars({
+    required Canvas canvas,
+    required double start,
+    required double end,
+    required double totalWidth,
+    required Offset offset,
+    required Rect gaugeContainer,
+  }) {
+    /// For loop for calculating colors in [RangeLinearGauge]
+    for (int i = 0; i < rangeLinearGauge!.length; i++) {
+      // Method to cal exact width
+      double calculateValuePixelWidth(double value) {
+        return ((value - getStart) / (getEnd - getStart)) * totalWidth;
+      }
+
+      // width of the colorRange
+      double colorRangeWidth =
+          calculateValuePixelWidth(rangeLinearGauge![i].end) -
+              calculateValuePixelWidth(rangeLinearGauge![i].start);
+
+      // Start of the ColorRange
+
+      double colorRangeStart;
+      if (getGaugeOrientation == GaugeOrientation.horizontal) {
+        colorRangeStart = !getInversedRulers
+            ? (calculateValuePixelWidth(rangeLinearGauge![i].start) + start)
+            : ((start + end) -
+                calculateValuePixelWidth(rangeLinearGauge![i].start));
+
+        gaugeContainer = Rect.fromLTWH(
+          colorRangeStart,
+          offset.dy,
+          !getInversedRulers ? colorRangeWidth : -colorRangeWidth,
+          getThickness,
+        );
+      } else {
+        colorRangeStart = !getInversedRulers
+            ? ((start + end) -
+                calculateValuePixelWidth(rangeLinearGauge![i].start))
+            : (calculateValuePixelWidth(rangeLinearGauge![i].start) + start);
+        gaugeContainer = Rect.fromLTWH(
+          offset.dy,
+          colorRangeStart,
+          getThickness,
+          !getInversedRulers ? -colorRangeWidth : colorRangeWidth,
+        );
+      }
+
+      _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
+      canvas.drawRect(
+        gaugeContainer,
+        _linearGaugeContainerValuePaint,
+      );
+    }
+  }
+
+  RRect _getRoundedContainer({required Rect gaugeContainer}) {
+    var rectangularBox;
+    switch (getLinearGaugeBoxDecoration.edgeStyle) {
+      case LinearEdgeStyle.startCurve:
+        rectangularBox = RRect.fromRectAndCorners(
+          gaugeContainer,
+          topLeft: Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+          bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
+              ? Radius.circular(getLinearGaugeBoxDecoration.borderRadius!)
+              : Radius.zero,
+          topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
+              ? Radius.zero
+              : Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+        );
+        break;
+      case LinearEdgeStyle.endCurve:
+        rectangularBox = RRect.fromRectAndCorners(
+          gaugeContainer,
+          topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
+              ? Radius.circular(getLinearGaugeBoxDecoration.borderRadius!)
+              : Radius.zero,
+          bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
+              ? Radius.zero
+              : Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+          bottomRight:
+              Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+        );
+        break;
+
+      default:
+        rectangularBox = RRect.fromRectAndRadius(
+          gaugeContainer,
+          Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+        );
+        break;
+    }
+
+    return rectangularBox;
   }
 
   double getLargestPointerSize() {
