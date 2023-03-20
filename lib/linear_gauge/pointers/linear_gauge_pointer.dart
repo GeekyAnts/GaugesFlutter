@@ -28,11 +28,11 @@ class Pointer {
 
   const Pointer({
     Key? key,
-    this.value,
+    required this.value,
     this.height = 10.0,
     this.color = Colors.red,
     this.width = 10.0,
-    this.shape,
+    required this.shape,
     this.showLabel = false,
     this.quarterTurns = QuarterTurns.zero,
     this.labelStyle = const TextStyle(),
@@ -711,9 +711,10 @@ class Pointer {
     RenderLinearGauge linearGauge,
   ) {
     double gaugeThickness = linearGauge.getThickness;
-    Color pointerColor = linearGauge.getPointer.color!;
-    double height = linearGauge.getPointer.height!;
-    double width = linearGauge.getPointer.width!;
+
+    Color pointerColor = color!;
+    double pointerHeight = height!;
+    double pointerWidth = width!;
     double primaryRulerHeight = linearGauge.getPrimaryRulersHeight;
     RulerPosition rulerPosition = linearGauge.rulerPosition;
     final paint = Paint();
@@ -724,15 +725,15 @@ class Pointer {
     // late double yPos;
 
     if (rulerPosition == RulerPosition.bottom) {
-      path.moveTo(position.dx - (width / 2), -height);
+      path.moveTo(position.dx - (pointerWidth / 2), -pointerHeight);
       path.lineTo(position.dx, position.dy - gaugeThickness);
-      path.lineTo(position.dx + (width / 2), -height);
+      path.lineTo(position.dx + (pointerWidth / 2), -pointerHeight);
       path.lineTo(
           position.dx, position.dy - primaryRulerHeight + gaugeThickness);
     } else {
-      path.moveTo(position.dx - (width / 2), height);
+      path.moveTo(position.dx - (pointerWidth / 2), pointerHeight);
       path.lineTo(position.dx, position.dy - gaugeThickness);
-      path.lineTo(position.dx + (width / 2), height);
+      path.lineTo(position.dx + (pointerWidth / 2), pointerHeight);
       path.lineTo(position.dx, position.dy - primaryRulerHeight);
     }
     canvas.drawPath(path, paint);
