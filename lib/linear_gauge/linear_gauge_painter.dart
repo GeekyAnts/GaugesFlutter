@@ -647,10 +647,12 @@ class RenderLinearGauge extends RenderBox {
 
   void _paintGaugeContainer(Canvas canvas, Size size) {
     if (rangeLinearGauge!.isNotEmpty) {
-      assert(rangeLinearGauge!.last.end <= getEnd,
-          'The end value of the range should be less than the end value of the gauge.');
-      assert(rangeLinearGauge!.first.start >= getStart,
+      assert(rangeLinearGauge!.every((element) => element.start >= getStart),
           'The start value of the range should be less than the start value of the gauge.');
+      assert(rangeLinearGauge!.every((element) => element.end <= getEnd),
+          'The end value of the range should be less than the end value of the gauge.');
+      assert(rangeLinearGauge!.every((element) => element.start <= element.end),
+          'The start value of the range should be less than the end value of the range.');
     }
 
     Offset offset = const Offset(0, 0);
