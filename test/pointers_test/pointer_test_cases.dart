@@ -873,7 +873,7 @@ List showLabelTests = [
     'Do': 'Pointer should be drawn at 100 value with showLabel true ',
   },
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
       height: 30,
