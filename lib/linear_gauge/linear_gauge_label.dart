@@ -98,18 +98,9 @@ class LinearGaugeLabel {
           thickness,
         );
       } else {
-        a = Offset(
-            (startLabel.height / 2) +
-                (largestPointerSize / 2) +
-                extendLinearGauge,
+        a = Offset((largestPointerSize / 2) + extendLinearGauge, thickness);
+        b = Offset(size.height - extendLinearGauge - largestPointerSize / 2,
             thickness);
-        b = Offset(
-          size.height -
-              (endLabel.height / 2) -
-              (largestPointerSize / 2) -
-              extendLinearGauge,
-          thickness,
-        );
       }
 
       // this will allow to start from bottom

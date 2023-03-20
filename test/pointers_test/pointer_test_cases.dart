@@ -669,20 +669,34 @@ List edgeCases = [
 ];
 
 List showLabelTests = [
-  // {
-  //   'showLabel': false,
-  //   'gaugeOrientation': GaugeOrientation.horizontal,
-  //   'pointer': const Pointer(
-  //     shape: PointerShape.triangle,
-  //     color: Colors.blue,
-  //     value: 0,
-  //     pointerPosition: PointerPosition.center,
-  //   ),
-  //   'name': 'triangle-value-0-show-label-false',
-  //   'Do':
-  //       'Pointer should be drawn at 0 value with  Triangle with showLabel false',
-  // },
-
+  {
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'showLabel': false,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 0,
+      height: 50,
+      width: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-false-triangle-value-0',
+    'Do': 'Pointer should be drawn at 0 value with showLabel false',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'showLabel': false,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 100,
+      height: 50,
+      width: 50,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-false-triangle-value-100',
+    'Do': 'Pointer should be drawn at 100 value with showLabel false ',
+  },
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
@@ -694,35 +708,262 @@ List showLabelTests = [
       value: 0,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showlabel',
-    'Do': 'show Label Pointer',
+    'name': 'showLabel-false-triangle-value-0-vertical',
+    'Do': 'Pointer should be drawn at 0 value with showLabel false - vertical',
+  },
+  {
+    'showLabel': false,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 50,
+      width: 50,
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-false-triangle-value-100-vertical',
+    'Do':
+        'Pointer should be drawn at 100 value with showLabel false - vertical',
   },
 
-  // Vertical
-  // {
-  //   'gaugeOrientation': GaugeOrientation.vertical,
-  //   'showLabel': false,
-  //   'pointer': const Pointer(
-  //     shape: PointerShape.triangle,
-  //     color: Colors.blue,
-  //     value: 0,
-  //     pointerPosition: PointerPosition.center,
-  //   ),
-  //   'name': 'triangle-value-0-show-label-false-vertical',
-  //   'Do':
-  //       'Vertical Pointer should be drawn at 0 value with  Triangle with showLabel false',
-  // },
-  // {
-  //   'showLabel': true,
-  //   'pointer': const Pointer(
-  //     shape: PointerShape.triangle,
-  //     color: Colors.blue,
-  //     value: 0,
-  //     pointerPosition: PointerPosition.top,
-  //   ),
-  //   'name': 'triangle-value-0-show-label-true',
-  //   'Do':
-  //       'Pointer should be drawn at 0 value with  Triangle with showLabel
+  // Shape Circle
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 0,
+      height: 30,
+      width: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-circle-value-0',
+    'Do': 'Pointer should be drawn at 0 value with showLabel true ',
+  },
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 100,
+      height: 30,
+      width: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-circle-value-100',
+    'Do': 'Pointer should be drawn at 100 value with showLabel true ',
+  },
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 30,
+      width: 30,
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-circle-value-0-vertical',
+    'Do': 'Pointer should be drawn at 0 value with showLabel true - vertical',
+  },
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 30,
+      width: 30,
+      shape: PointerShape.circle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-circle-value-100-vertical',
+    'Do': 'Pointer should be drawn at 100 value with showLabel true - vertical',
+  },
+
+  // shape Rectangle
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 0,
+      height: 30,
+      width: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-rectangle-value-0',
+    'Do': 'Pointer should be drawn at 0 value with showLabel true ',
+  },
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 100,
+      height: 30,
+      width: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-rectangle-value-100',
+    'Do': 'Pointer should be drawn at 100 value with showLabel true ',
+  },
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 30,
+      width: 30,
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-rectangle-value-0-vertical',
+    'Do': 'Pointer should be drawn at 0 value with showLabel true - vertical',
+  },
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 30,
+      width: 30,
+      shape: PointerShape.rectangle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-rectangle-value-100-vertical',
+    'Do': 'Pointer should be drawn at 100 value with showLabel true - vertical',
+  },
+
+  //Shape Diamond
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 0,
+      height: 30,
+      width: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-diamond-value-0',
+    'Do': 'Pointer should be drawn at 0 value with showLabel true ',
+  },
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 100,
+      height: 30,
+      width: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-diamond-value-100',
+    'Do': 'Pointer should be drawn at 100 value with showLabel true ',
+  },
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 30,
+      width: 30,
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-diamond-value-0-vertical',
+    'Do': 'Pointer should be drawn at 0 value with showLabel true - vertical',
+  },
+  {
+    'showLabel': true,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 30,
+      width: 30,
+      shape: PointerShape.diamond,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'showLabel-true-diamond-value-100-vertical',
+    'Do': 'Pointer should be drawn at 100 value with showLabel true - vertical',
+  },
+
+  // Inverse with Triangle Shape
+  {
+    'showLabel': false,
+    'inverse': true,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 0,
+      height: 30,
+      width: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'inverse-showLabel-false-triangle-value-0',
+    'Do': 'Inverse Pointer should be drawn at 0 value with showLabel false ',
+  },
+  {
+    'inverse': true,
+    'showLabel': false,
+    'gaugeOrientation': GaugeOrientation.horizontal,
+    'pointer': const Pointer(
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 100,
+      height: 30,
+      width: 30,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'inverse-showLabel-false-triangle-value-100',
+    'Do': 'Inverse Pointer should be drawn at 100 value with showLabel false ',
+  },
+  {
+    'inverse': true,
+    'showLabel': false,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 30,
+      width: 30,
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 0,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'inverse-showLabel-false-triangle-value-0-vertical',
+    'Do':
+        'Inverse Pointer should be drawn at 0 value with showLabel false - vertical',
+  },
+  {
+    'inverse': true,
+    'showLabel': false,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'pointer': const Pointer(
+      height: 30,
+      width: 30,
+      shape: PointerShape.triangle,
+      color: Colors.blue,
+      value: 100,
+      pointerPosition: PointerPosition.center,
+    ),
+    'name': 'inverse-showLabel-false-triangle-value-100-vertical',
+    'Do':
+        'Inverse Pointer should be drawn at 100 value with showLabel true - vertical',
+  },
 ];
 
 List colorTests = [
