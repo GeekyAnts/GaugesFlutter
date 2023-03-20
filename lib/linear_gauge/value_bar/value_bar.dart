@@ -28,6 +28,8 @@ class ValueBar {
     this.position = ValueBarPosition.center,
     this.color = Colors.blue,
     this.valueBarThickness = 4.0,
+    this.edgeStyle = LinearEdgeStyle.bothCurve,
+    this.borderRadius,
   });
 
   /// The `value` sets the value of the [ValueBar].
@@ -111,6 +113,43 @@ class ValueBar {
   Color color;
 
   ///
+  /// `borderRadius` Set corners to soft edges/rounded  of the ValueBar
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+  ///              linearGradient: LinearGradient(
+  ///                colors: [Colors.blue, Colors.pink],
+  ///                borderRadius: 10.0,
+  ///              ),
+  ///            ),
+  ///          ),
+  /// ```
+  final double? borderRadius;
+
+  ///
+  /// `edgeStyle` Set the style of the edges of the ValueBar.
+  ///
+  /// default is to `edgeStyle =`LinearEdgeStyle.bothCurve`
+  ///
+  ///
+  ///  Note : It tells to which edge of the valuebar to apply the supplied
+  ///         borderRadius. It has no use if borderRadius is not supplied or is zero.
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///  valueBar: [
+  ///   ValueBar(
+  ///     value: 50,
+  ///     borderRadius:10,
+  ///     edgeStyle:LinearEdgeStyle.bothCurve,
+  ///         ),
+  ///       ],
+  ///   ),
+  /// ```
+  LinearEdgeStyle edgeStyle;
+
+  ///
   /// Painter Method to Draw [ValueBar]
   ///
 
@@ -177,7 +216,15 @@ class ValueBar {
       );
     }
 
-    canvas.drawRect(gaugeContainer, linearGaugeContainerPaint);
+    if (borderRadius != null) {
+      var rectangularBox = _getRoundedContainer(
+        gaugeContainer: gaugeContainer,
+        linearGauge: linearGauge,
+      );
+      canvas.drawRRect(rectangularBox, linearGaugeContainerPaint);
+    } else {
+      canvas.drawRect(gaugeContainer, linearGaugeContainerPaint);
+    }
   }
 
   // Calculating Offset Height for Value Bar
@@ -197,5 +244,51 @@ class ValueBar {
       default:
         return 0;
     }
+  }
+
+  RRect _getRoundedContainer({
+    required Rect gaugeContainer,
+    required var linearGauge,
+  }) {
+    var rectangularBox;
+    switch (edgeStyle) {
+      case LinearEdgeStyle.startCurve:
+        rectangularBox = RRect.fromRectAndCorners(
+          gaugeContainer,
+          topLeft: Radius.circular(borderRadius!),
+          bottomLeft:
+              (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+                  ? Radius.circular(borderRadius!)
+                  : Radius.zero,
+          topRight:
+              (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+                  ? Radius.zero
+                  : Radius.circular(borderRadius!),
+        );
+        break;
+      case LinearEdgeStyle.endCurve:
+        rectangularBox = RRect.fromRectAndCorners(
+          gaugeContainer,
+          topRight:
+              (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+                  ? Radius.circular(borderRadius!)
+                  : Radius.zero,
+          bottomLeft:
+              (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+                  ? Radius.zero
+                  : Radius.circular(borderRadius!),
+          bottomRight: Radius.circular(borderRadius!),
+        );
+        break;
+
+      default:
+        rectangularBox = RRect.fromRectAndRadius(
+          gaugeContainer,
+          Radius.circular(borderRadius!),
+        );
+        break;
+    }
+
+    return rectangularBox;
   }
 }

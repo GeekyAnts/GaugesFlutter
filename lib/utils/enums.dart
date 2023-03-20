@@ -11,3 +11,5 @@ enum ValueBarPosition { top, center, bottom, right, left }
 enum PointerPosition { top, center, bottom, right, left }
 
 enum PointerAlignment { start, center, end }
+
+enum LinearEdgeStyle { bothCurve, startCurve, endCurve }
