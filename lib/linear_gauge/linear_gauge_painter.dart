@@ -845,7 +845,8 @@ class RenderLinearGauge extends RenderBox {
     for (int i = 0; i < rangeLinearGauge!.length; i++) {
       // Method to cal exact width
       double calculateValuePixelWidth(double value) {
-        return ((value - getStart) / (getEnd - getStart)) * totalWidth;
+        return ((value - getStart) / (getEnd - getStart)) *
+            (totalWidth - 2 * getExtendLinearGauge);
       }
 
       // width of the colorRange
@@ -858,9 +859,22 @@ class RenderLinearGauge extends RenderBox {
       double colorRangeStart;
       if (getGaugeOrientation == GaugeOrientation.horizontal) {
         colorRangeStart = !getInversedRulers
-            ? (calculateValuePixelWidth(rangeLinearGauge![i].start) + start)
+            ? (calculateValuePixelWidth(rangeLinearGauge![i].start) +
+                start +
+                getExtendLinearGauge)
             : ((start + end) -
-                calculateValuePixelWidth(rangeLinearGauge![i].start));
+                calculateValuePixelWidth(rangeLinearGauge![i].start) -
+                getExtendLinearGauge);
+
+        if (i == 0) {
+          if (!getInversedRulers) {
+            colorRangeStart = colorRangeStart - getExtendLinearGauge;
+            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+          } else {
+            colorRangeStart = colorRangeStart + getExtendLinearGauge;
+            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+          }
+        }
 
         gaugeContainer = Rect.fromLTWH(
           colorRangeStart,
@@ -871,8 +885,21 @@ class RenderLinearGauge extends RenderBox {
       } else {
         colorRangeStart = !getInversedRulers
             ? ((start + end) -
-                calculateValuePixelWidth(rangeLinearGauge![i].start))
-            : (calculateValuePixelWidth(rangeLinearGauge![i].start) + start);
+                calculateValuePixelWidth(rangeLinearGauge![i].start) -
+                getExtendLinearGauge)
+            : (calculateValuePixelWidth(rangeLinearGauge![i].start) +
+                start +
+                getExtendLinearGauge);
+
+        if (i == 0) {
+          if (!getInversedRulers) {
+            colorRangeStart = colorRangeStart + getExtendLinearGauge;
+            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+          } else {
+            colorRangeStart = colorRangeStart - getExtendLinearGauge;
+            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+          }
+        }
         gaugeContainer = Rect.fromLTWH(
           offset.dy,
           colorRangeStart,

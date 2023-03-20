@@ -14,10 +14,23 @@ class _MyVerticalRangeState extends State<MyVerticalRange> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          value: 10,
+          extendLinearGauge: 20,
           rangeLinearGauge: [
-            RangeLinearGauge(color: Colors.red, start: 10, end: 20),
-            RangeLinearGauge(color: Colors.amber, start: 20, end: 30),
+            RangeLinearGauge(
+              start: 0,
+              end: 50,
+              color: Colors.red,
+            ),
+            RangeLinearGauge(
+              end: 50,
+              start: 80,
+              color: Colors.green,
+            ),
+            RangeLinearGauge(
+              end: 80,
+              start: 100,
+              color: Colors.blue,
+            ),
           ],
           gaugeOrientation: GaugeOrientation.vertical,
           rulers: const RulerStyle(
