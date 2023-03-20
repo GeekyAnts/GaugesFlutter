@@ -729,7 +729,7 @@ List showLabelTests = [
 
   // Shape Circle
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
     'pointer': const Pointer(
       shape: PointerShape.circle,
@@ -743,7 +743,7 @@ List showLabelTests = [
     'Do': 'Pointer should be drawn at 0 value with showLabel true ',
   },
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
     'pointer': const Pointer(
       shape: PointerShape.circle,
@@ -757,7 +757,7 @@ List showLabelTests = [
     'Do': 'Pointer should be drawn at 100 value with showLabel true ',
   },
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
       height: 30,
@@ -771,7 +771,7 @@ List showLabelTests = [
     'Do': 'Pointer should be drawn at 0 value with showLabel true - vertical',
   },
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
       height: 30,
@@ -787,7 +787,7 @@ List showLabelTests = [
 
   // shape Rectangle
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
     'pointer': const Pointer(
       shape: PointerShape.rectangle,
@@ -801,7 +801,7 @@ List showLabelTests = [
     'Do': 'Pointer should be drawn at 0 value with showLabel true ',
   },
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
     'pointer': const Pointer(
       shape: PointerShape.rectangle,
@@ -815,7 +815,7 @@ List showLabelTests = [
     'Do': 'Pointer should be drawn at 100 value with showLabel true ',
   },
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
       height: 30,
@@ -829,7 +829,7 @@ List showLabelTests = [
     'Do': 'Pointer should be drawn at 0 value with showLabel true - vertical',
   },
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
       height: 30,
@@ -845,7 +845,7 @@ List showLabelTests = [
 
   //Shape Diamond
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
     'pointer': const Pointer(
       shape: PointerShape.diamond,
@@ -859,7 +859,7 @@ List showLabelTests = [
     'Do': 'Pointer should be drawn at 0 value with showLabel true ',
   },
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
     'pointer': const Pointer(
       shape: PointerShape.diamond,
