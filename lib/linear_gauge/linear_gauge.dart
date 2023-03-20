@@ -456,6 +456,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setPointers = lGauge.pointers!
       ..setAnimationValue = animationValue
       ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!
-      ..setExtendLinearGauge = lGauge.extendLinearGauge!;
+      ..setExtendLinearGauge = lGauge.extendLinearGauge!
+      ..setLinearGaugeBoxDecoration = lGauge.linearGaugeBoxDecoration;
   }
 }

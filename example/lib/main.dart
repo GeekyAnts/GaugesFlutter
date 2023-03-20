@@ -1,3 +1,4 @@
+import 'package:example/border_radius_example.dart';
 import 'package:example/gauge_vertical.dart';
 import 'package:example/pointer_alignment_example.dart';
 import 'package:example/tickness_extend_example.dart';
@@ -24,7 +25,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const MyValueBarPosition(),
+      body: const BorderRadiusExample(),
     );
   }
 }
