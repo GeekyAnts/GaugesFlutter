@@ -739,7 +739,7 @@ List showLabelTests = [
       width: 30,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-circle-value-0',
+    'name': 'showLabel-false-circle-value-0',
     'Do': 'Pointer should be drawn at 0 value with showLabel true ',
   },
   {
@@ -753,7 +753,7 @@ List showLabelTests = [
       width: 30,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-circle-value-100',
+    'name': 'showLabel-false-circle-value-100',
     'Do': 'Pointer should be drawn at 100 value with showLabel true ',
   },
   {
@@ -767,7 +767,7 @@ List showLabelTests = [
       value: 0,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-circle-value-0-vertical',
+    'name': 'showLabel-false-circle-value-0-vertical',
     'Do': 'Pointer should be drawn at 0 value with showLabel true - vertical',
   },
   {
@@ -781,7 +781,7 @@ List showLabelTests = [
       value: 100,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-circle-value-100-vertical',
+    'name': 'showLabel-false-circle-value-100-vertical',
     'Do': 'Pointer should be drawn at 100 value with showLabel true - vertical',
   },
 
@@ -797,7 +797,7 @@ List showLabelTests = [
       width: 30,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-rectangle-value-0',
+    'name': 'showLabel-false-rectangle-value-0',
     'Do': 'Pointer should be drawn at 0 value with showLabel true ',
   },
   {
@@ -811,7 +811,7 @@ List showLabelTests = [
       width: 30,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-rectangle-value-100',
+    'name': 'showLabel-false-rectangle-value-100',
     'Do': 'Pointer should be drawn at 100 value with showLabel true ',
   },
   {
@@ -825,7 +825,7 @@ List showLabelTests = [
       value: 0,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-rectangle-value-0-vertical',
+    'name': 'showLabel-false-rectangle-value-0-vertical',
     'Do': 'Pointer should be drawn at 0 value with showLabel true - vertical',
   },
   {
@@ -839,7 +839,7 @@ List showLabelTests = [
       value: 100,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-rectangle-value-100-vertical',
+    'name': 'showLabel-false-rectangle-value-100-vertical',
     'Do': 'Pointer should be drawn at 100 value with showLabel true - vertical',
   },
 
@@ -855,7 +855,7 @@ List showLabelTests = [
       width: 30,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-diamond-value-0',
+    'name': 'showLabel-false-diamond-value-0',
     'Do': 'Pointer should be drawn at 0 value with showLabel true ',
   },
   {
@@ -869,7 +869,7 @@ List showLabelTests = [
       width: 30,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-diamond-value-100',
+    'name': 'showLabel-false-diamond-value-100',
     'Do': 'Pointer should be drawn at 100 value with showLabel true ',
   },
   {
@@ -883,11 +883,11 @@ List showLabelTests = [
       value: 0,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-diamond-value-0-vertical',
+    'name': 'showLabel-false-diamond-value-0-vertical',
     'Do': 'Pointer should be drawn at 0 value with showLabel true - vertical',
   },
   {
-    'showLabel': true,
+    'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
     'pointer': const Pointer(
       height: 30,
@@ -897,7 +897,7 @@ List showLabelTests = [
       value: 100,
       pointerPosition: PointerPosition.center,
     ),
-    'name': 'showLabel-true-diamond-value-100-vertical',
+    'name': 'showLabel-false-diamond-value-100-vertical',
     'Do': 'Pointer should be drawn at 100 value with showLabel true - vertical',
   },
 
