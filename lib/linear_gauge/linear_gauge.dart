@@ -30,7 +30,6 @@ class LinearGauge extends StatefulWidget {
     this.showLinearGaugeContainer = true,
     this.linearGaugeBoxDecoration = const LinearGaugeBoxDecoration(),
     this.labelTopMargin = 0.0,
-    this.pointer = const Pointer(),
     required this.rulers,
     this.rangeLinearGauge = const [],
     this.customLabels = const [],
@@ -215,22 +214,6 @@ class LinearGauge extends StatefulWidget {
   final RulerStyle? rulers;
 
   ///
-  /// `pointer` sets the styles of pointer using [Pointer]  properties
-  ///
-  /// Example
-  /// ```dart
-  /// const LinearGauge(
-  ///            pointer: Pointer(
-  ///             color: Colors.green,
-  ///            width: 10.0,
-  ///           shape: PointerShape.circle,
-  ///           height: 10.0,
-  ///           ),
-  /// ```
-  ///
-  final Pointer? pointer;
-
-  ///
   /// `customLabels` allows for the creation of custom tick labels on the gauge's scale,
   ///  enabling the display of non-standard values or units, and allowing for more specific
   ///  labelling of the gauge's range
@@ -404,7 +387,6 @@ class _RLinearGauge extends LeafRenderObjectWidget {
         labelOffset: lGauge.rulers!.labelOffset!,
         showSecondaryRulers: lGauge.rulers!.showSecondaryRulers,
         showPrimaryRulers: lGauge.rulers!.showPrimaryRulers,
-        pointer: lGauge.pointer!,
         value: lGauge.value!,
         rangeLinearGauge: lGauge.rangeLinearGauge!,
         customLabels: lGauge.customLabels!,
@@ -447,7 +429,6 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setShowSecondaryRulers = lGauge.rulers!.showSecondaryRulers
       ..setShowPrimaryRulers = lGauge.rulers!.showPrimaryRulers
       ..setValue = lGauge.value!
-      ..setPointer = lGauge.pointer
       ..setRangeLinearGauge = lGauge.rangeLinearGauge
       ..setRulersOffset = lGauge.rulers!.rulersOffset!
       ..setValueBarPosition = lGauge.valueBarPosition!

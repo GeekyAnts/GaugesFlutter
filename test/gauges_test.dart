@@ -18,6 +18,7 @@ void main() {
       labelTopMargin: 0.0,
       pointers: const [
         Pointer(
+          value: 0,
           shape: PointerShape.triangle,
           pointerPosition: PointerPosition.bottom,
         )

@@ -3,13 +3,9 @@ import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_label.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/value_bar/value_bar.dart';
-
-const _kDefaultLinearGaugeHeight = 200;
 
 class RenderLinearGauge extends RenderBox {
   RenderLinearGauge({
-    required Pointer pointer,
     required double start,
     required double end,
     required double steps,
@@ -67,7 +63,6 @@ class RenderLinearGauge extends RenderBox {
         _showSecondaryRulers = showSecondaryRulers,
         _showPrimaryRulers = showPrimaryRulers,
         _value = value,
-        _pointer = pointer,
         _rangeLinearGauge = rangeLinearGauge,
         _customLabels = customLabels,
         _rulersOffset = rulersOffset,
@@ -215,18 +210,6 @@ class RenderLinearGauge extends RenderBox {
     if (_secondaryRulersWidth == secondaryRulersWidth) return;
 
     _secondaryRulersWidth = secondaryRulersWidth;
-    markNeedsPaint();
-  }
-
-  ///
-  /// Getter and Setter for the [_pointer] parameter.
-  ///
-  Pointer get getPointer => _pointer;
-  Pointer _pointer;
-
-  set setPointer(linearGaugeIndicator) {
-    _pointer = linearGaugeIndicator;
-
     markNeedsPaint();
   }
 
@@ -734,15 +717,6 @@ class RenderLinearGauge extends RenderBox {
 
     gaugeStart = start;
     gaugeEnd = end;
-    // if pointer value is null then draw the value in the gauge container
-    if (_pointer.value == null) {
-      _valueInPixel = totalValOnPixel;
-    } else {
-      double pointerValue = _pointer.value ?? getValue;
-      double pointerValueInPx =
-          ((pointerValue - getStart) / (getEnd - getStart)) * totalWidth;
-      _valueInPixel = pointerValueInPx;
-    }
 
     if (getLinearGaugeBoxDecoration.borderRadius != null) {
       canvas.drawRRect(
@@ -1061,14 +1035,9 @@ class RenderLinearGauge extends RenderBox {
       }
     }
 
-    double value = getPointer.value ?? _valueInPixel;
-
     var firstOffset = (!getInversedRulers)
         ? Offset(_valueInPixel, 0.0)
         : -Offset(_valueInPixel, 0.0);
-    if (_pointer.value == null) {
-      _pointer.setPointerValue = value;
-    }
 
     var firstOff =
         _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
