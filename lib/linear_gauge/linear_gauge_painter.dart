@@ -842,6 +842,7 @@ class RenderLinearGauge extends RenderBox {
     required Rect gaugeContainer,
   }) {
     /// For loop for calculating colors in [RangeLinearGauge]
+    /// 2 is hardcoded beacuse extend is happeing from both the end of the gauge
     for (int i = 0; i < rangeLinearGauge!.length; i++) {
       // Method to cal exact width
       double calculateValuePixelWidth(double value) {
