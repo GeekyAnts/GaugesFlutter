@@ -727,6 +727,11 @@ class RenderLinearGauge extends RenderBox {
 
     gaugeStart = start;
     gaugeEnd = end;
+    if (getLinearGaugeBoxDecoration.linearGradient != null) {
+      _linearGaugeContainerPaint.shader = getLinearGaugeBoxDecoration
+          .linearGradient!
+          .createShader(gaugeContainer);
+    }
 
     if (getLinearGaugeBoxDecoration.borderRadius != null) {
       var rectangularBox = _getRoundedContainer(gaugeContainer: gaugeContainer);
@@ -750,11 +755,6 @@ class RenderLinearGauge extends RenderBox {
         );
       }
 
-      if (getLinearGaugeBoxDecoration.linearGradient != null) {
-        _linearGaugeContainerValuePaint.shader = getLinearGaugeBoxDecoration
-            .linearGradient!
-            .createShader(gaugeContainer);
-      }
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           gaugeContainer,
