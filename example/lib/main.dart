@@ -1,6 +1,7 @@
 import 'package:example/border_radius_example.dart';
 import 'package:example/gauge_vertical.dart';
 import 'package:example/pointer_alignment_example.dart';
+import 'package:example/range_vertical.dart';
 import 'package:example/tickness_extend_example.dart';
 import 'package:example/valuebar_position.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const BorderRadiusExample(),
+      body: const MyVerticalRange(),
     );
   }
 }

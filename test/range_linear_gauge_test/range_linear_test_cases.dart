@@ -209,6 +209,42 @@ List extendLinearGauge = [
     'extendLinearGauge': 50.0,
     'rangeLinear': [
       RangeLinearGauge(
+        end: 50,
+        start: 0,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        end: 50,
+        start: 100,
+        color: Colors.green,
+      ),
+    ],
+    'name': 'range-linear-gauge-0-to-50-to-100-extend-50',
+    'Do':
+        'RangeLinearGauge should be drawn 0-to-50-to-100 with rg and extend 50',
+  },
+  {
+    'extendLinearGauge': 50.0,
+    'rangeLinear': [
+      RangeLinearGauge(
+        end: 50,
+        start: 20,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        end: 50,
+        start: 100,
+        color: Colors.green,
+      ),
+    ],
+    'name': 'range-linear-gauge-20-to-50-to-100-extend-50',
+    'Do':
+        'RangeLinearGauge should be drawn 20-to-50-to-100 with rg and extend 50',
+  },
+  {
+    'extendLinearGauge': 50.0,
+    'rangeLinear': [
+      RangeLinearGauge(
         end: 0,
         start: 50,
         color: Colors.red,
@@ -249,6 +285,44 @@ List extendLinearGauge = [
     ],
     'name': 'range-linear-gauge-extend-vertical',
     'Do': 'RangeLinearGauge should be drawn with rgb-vertical and extend 50',
+  },
+  {
+    'extendLinearGauge': 50.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'rangeLinear': [
+      RangeLinearGauge(
+        end: 50,
+        start: 0,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        end: 50,
+        start: 100,
+        color: Colors.green,
+      ),
+    ],
+    'name': 'range-linear-gauge-0-to-50-to-100-extend-50-vertical',
+    'Do':
+        'RangeLinearGauge should be drawn vertically 0-to-50-to-100 with rg and extend 50',
+  },
+  {
+    'extendLinearGauge': 50.0,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'rangeLinear': [
+      RangeLinearGauge(
+        end: 50,
+        start: 20,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        end: 50,
+        start: 100,
+        color: Colors.green,
+      ),
+    ],
+    'name': 'range-linear-gauge-20-to-50-to-100-extend-50-vertical',
+    'Do':
+        'RangeLinearGauge should be drawn vertically 20-to-50-to-100 with rg and extend 50',
   },
 ];
 

@@ -14,21 +14,31 @@ class _MyVerticalRangeState extends State<MyVerticalRange> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          value: 10,
+          extendLinearGauge: 20,
           rangeLinearGauge: [
-            RangeLinearGauge(color: Colors.red, start: 10, end: 20),
-            RangeLinearGauge(color: Colors.amber, start: 20, end: 30),
+            RangeLinearGauge(
+              start: 0,
+              end: 20,
+              color: Colors.red,
+            ),
+            RangeLinearGauge(
+              end: 20,
+              start: 30,
+              color: Colors.green,
+            ),
           ],
-          gaugeOrientation: GaugeOrientation.vertical,
+          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 10),
+          gaugeOrientation: GaugeOrientation.horizontal,
           rulers: const RulerStyle(
             rulersOffset: 10,
             labelOffset: 10,
-            inverseRulers: false,
+            inverseRulers: true,
             rulerPosition: RulerPosition.center,
             showLabel: true,
           ),
           // customLabels: [
           //   CustomRulerLabel(text: "10%", value: 10),
+          //   CustomRulerLabel(text: "15%", value: 15),
           //   CustomRulerLabel(text: "20%", value: 20),
           //   CustomRulerLabel(text: "25%", value: 25),
           //   CustomRulerLabel(text: "30%", value: 30),
