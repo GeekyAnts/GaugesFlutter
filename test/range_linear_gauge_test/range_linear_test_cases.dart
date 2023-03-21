@@ -468,9 +468,88 @@ List startAndEndTest = [
   },
 ];
 
+List borderRadius = [
+  {
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.top,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'rangeLinear': [
+      RangeLinearGauge(
+        start: 10,
+        end: 30,
+        color: Colors.orange[800]!,
+        borderRadius: 10,
+        edgeStyle: LinearEdgeStyle.startCurve,
+      ),
+      RangeLinearGauge(
+        start: 30,
+        end: 60,
+        color: Colors.blue,
+        borderRadius: 10,
+        edgeStyle: LinearEdgeStyle.bothCurve,
+      ),
+      RangeLinearGauge(
+        start: 60,
+        end: 90,
+        color: Colors.green[800]!,
+        borderRadius: 10,
+        edgeStyle: LinearEdgeStyle.endCurve,
+      ),
+    ],
+    'linearGaugeBoxDecoration': const LinearGaugeBoxDecoration(
+      thickness: 20.0,
+    ),
+    'name': 'range-linear-gauge-border-radius',
+    'Do': 'RangeLinearGauge should be drawn with border radius',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.left,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'rangeLinear': [
+      RangeLinearGauge(
+        start: 10,
+        end: 30,
+        color: Colors.orange[800]!,
+        borderRadius: 10,
+        edgeStyle: LinearEdgeStyle.startCurve,
+      ),
+      RangeLinearGauge(
+        start: 40,
+        end: 50,
+        color: Colors.blue,
+        borderRadius: 10,
+        edgeStyle: LinearEdgeStyle.bothCurve,
+      ),
+      RangeLinearGauge(
+        start: 60,
+        end: 90,
+        color: Colors.green[800]!,
+        borderRadius: 10,
+        edgeStyle: LinearEdgeStyle.endCurve,
+      ),
+    ],
+    'linearGaugeBoxDecoration': const LinearGaugeBoxDecoration(
+      thickness: 20.0,
+    ),
+    'name': 'range-linear-gauge-border-radius-vertical',
+    'Do': 'RangeLinearGauge should be drawn  vertically with border radius',
+  },
+];
+
 List allTests = [
   ...edgeCases,
   ...gaugeThickness,
   ...extendLinearGauge,
   ...startAndEndTest,
+  ...borderRadius,
 ];
