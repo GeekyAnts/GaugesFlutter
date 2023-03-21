@@ -184,13 +184,13 @@ List extendLinearGauge = [
     'extendLinearGauge': 50.0,
     'rangeLinear': [
       RangeLinearGauge(
-        end: 50,
         start: 0,
+        end: 50,
         color: Colors.red,
       ),
       RangeLinearGauge(
-        end: 100,
         start: 50,
+        end: 100,
         color: Colors.green,
       ),
     ],
@@ -202,8 +202,8 @@ List extendLinearGauge = [
     'extendLinearGauge': 50.0,
     'rangeLinear': [
       RangeLinearGauge(
-        end: 20,
-        start: 50,
+        start: 20,
+        end: 50,
         color: Colors.red,
       ),
       RangeLinearGauge(
