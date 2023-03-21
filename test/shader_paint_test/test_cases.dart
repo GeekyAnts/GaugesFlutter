@@ -16,6 +16,8 @@ List shaderPaintHorizontal = [
       borderRadius: 30,
       thickness: 20,
       linearGradient: LinearGradient(
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
         colors: [Colors.orange, Colors.red, Colors.green],
       ),
     ),
@@ -123,6 +125,8 @@ List shaderValuePaintHorizontal = [
         valueBarThickness: 20,
         borderRadius: 20,
         linearGradient: const LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
           colors: [
             Colors.orange,
             Colors.red,
