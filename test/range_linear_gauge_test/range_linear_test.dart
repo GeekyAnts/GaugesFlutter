@@ -22,11 +22,9 @@ void main() {
             inverseRulers: testCase['inverse'] as bool?,
             gaugeOrientation: testCase['gaugeOrientation'] as GaugeOrientation?,
             fillExtend: testCase['fillExtend'] as bool?,
-
             rulers: testCase['rulers'] as RulerStyle?,
             linearGaugeBoxDecoration: testCase['linearGaugeBoxDecoration']
                 as LinearGaugeBoxDecoration?,
-
             rangeLinearGaugeList:
                 testCase['rangeLinear'] as List<RangeLinearGauge>?,
           ),
@@ -50,7 +48,6 @@ class MyRangeLinearGauge extends StatelessWidget {
   final LinearGaugeBoxDecoration? linearGaugeBoxDecoration;
   final RulerStyle? rulers;
 
-
   const MyRangeLinearGauge({
     super.key,
     this.start,
@@ -63,7 +60,6 @@ class MyRangeLinearGauge extends StatelessWidget {
     this.fillExtend,
     this.linearGaugeBoxDecoration,
     this.rulers,
-
   });
 
   @override

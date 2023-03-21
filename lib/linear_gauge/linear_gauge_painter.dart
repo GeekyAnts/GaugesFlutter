@@ -1587,7 +1587,6 @@ class RenderLinearGauge extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-
     double parentWidgetSize;
 
     final double actualParentWidth = constraints.maxWidth;
@@ -1606,9 +1605,6 @@ class RenderLinearGauge extends RenderBox {
     }
 
     return constraints.constrain(_axisActualSize);
-
-    
-
   }
 
   @override

@@ -18,7 +18,6 @@ class _MyShadersState extends State<MyShaders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,28 +62,6 @@ class _MyShadersState extends State<MyShaders> {
             ),
           ),
         ],
-=======
-      body: Center(
-        child: LinearGauge(
-          start: 0,
-          end: 100,
-          value: 40,
-          linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
-              thickness: 30,
-              borderRadius: 30,
-              edgeStyle: LinearEdgeStyle.bothCurve,
-              // backgroundColor: Colors.green.shade100,
-              linearGradient: LinearGradient(
-                colors: [Colors.orange, Colors.red, Colors.green],
-              )),
-          rulers: const RulerStyle(
-            showLabel: false,
-            showPrimaryRulers: false,
-            rulerPosition: RulerPosition.bottom,
-            showSecondaryRulers: false,
-          ),
-        ),
->>>>>>> 8df83e9 (Added shader support for lg bg)
       ),
     );
   }
