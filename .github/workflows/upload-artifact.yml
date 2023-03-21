@@ -1,0 +1,5 @@
+- name: Upload Golden Test Artifacts
+  uses: actions/upload-artifact@v2
+  with:
+    name: golden-images
+    path: path/to/golden/images
