@@ -11,6 +11,9 @@ on:
     
 jobs:
   build:
+    permissions:
+      contents: read
+      pull-requests: write
     # This job will run on ubuntu virtual machine
     runs-on: ubuntu-latest
     steps:
