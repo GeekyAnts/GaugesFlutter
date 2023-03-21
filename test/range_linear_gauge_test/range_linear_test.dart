@@ -21,6 +21,7 @@ void main() {
             thickness: testCase['gaugeThickness'] as double?,
             inverseRulers: testCase['inverse'] as bool?,
             gaugeOrientation: testCase['gaugeOrientation'] as GaugeOrientation?,
+            fillExtend: testCase['fillExtend'] as bool?,
             rangeLinearGaugeList:
                 testCase['rangeLinear'] as List<RangeLinearGauge>?,
           ),
@@ -40,6 +41,7 @@ class MyRangeLinearGauge extends StatelessWidget {
   final GaugeOrientation? gaugeOrientation;
   final bool? inverseRulers;
   final double? thickness;
+  final bool? fillExtend;
 
   const MyRangeLinearGauge({
     super.key,
@@ -50,6 +52,7 @@ class MyRangeLinearGauge extends StatelessWidget {
     this.gaugeOrientation,
     this.inverseRulers,
     this.thickness,
+    this.fillExtend,
   });
 
   @override
@@ -66,6 +69,7 @@ class MyRangeLinearGauge extends StatelessWidget {
           child: LinearGauge(
             start: start ?? 0,
             end: end ?? 100,
+            fillExtend: fillExtend ?? false,
             extendLinearGauge: extendLinearGauge ?? 0.0,
             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
               thickness: thickness ?? 4.0,
