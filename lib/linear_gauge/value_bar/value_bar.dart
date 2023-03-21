@@ -22,15 +22,15 @@ class ValueBar {
   /// ```
   ///
 
-  ValueBar({
-    required this.value,
-    this.offset = 0,
-    this.position = ValueBarPosition.center,
-    this.color = Colors.blue,
-    this.valueBarThickness = 4.0,
-    this.edgeStyle = LinearEdgeStyle.bothCurve,
-    this.borderRadius,
-  });
+  ValueBar(
+      {required this.value,
+      this.offset = 0,
+      this.position = ValueBarPosition.center,
+      this.color = Colors.blue,
+      this.valueBarThickness = 4.0,
+      this.edgeStyle = LinearEdgeStyle.bothCurve,
+      this.borderRadius,
+      this.linearGradient});
 
   /// The `value` sets the value of the [ValueBar].
   ///
@@ -150,6 +150,23 @@ class ValueBar {
   LinearEdgeStyle edgeStyle;
 
   ///
+  /// `linearGradient` Sets the gradient background of the [ValueBar] Container
+  ///  * NOTE : If `linearGradient` is given in [ValueBar] the `color` property will be ignored
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///  valueBar: [
+  ///   ValueBar(
+  ///     linearGradient: LinearGradient(
+  ///        colors: [Colors.blue, Colors.pink],
+  ///      ),
+  ///    ),
+  ///   ],
+  ///  ),
+  /// ```
+  final LinearGradient? linearGradient;
+
+  ///
   /// Painter Method to Draw [ValueBar]
   ///
 
@@ -174,7 +191,7 @@ class ValueBar {
     valueBarWidth = linearGauge.getAnimationValue != null
         ? valueBarWidth * (linearGauge.getAnimationValue!)
         : valueBarWidth;
-
+    final Rect gaugeContainer;
     final ValueBarPosition valueBarPosition = position;
     final getLinearGaugeBoxDecoration = linearGauge.getLinearGaugeBoxDecoration;
     final Paint linearGaugeContainerPaint = Paint();
@@ -187,7 +204,6 @@ class ValueBar {
         _getOffsetHeight(valueBarPosition, linearGaugeThickness, offset);
     bool getInversedRulers = linearGauge.getInversedRulers;
     // Drawing Value Bar
-    final Rect gaugeContainer;
 
     if (gaugeOrientation == GaugeOrientation.horizontal) {
       double startValue = (!getInversedRulers) ? start : (start + end);
@@ -214,6 +230,11 @@ class ValueBar {
         valueBarThickness, // set width to half of the gauge width
         valueBarWidth + linearGauge.getExtendLinearGauge,
       );
+    }
+
+    if (linearGradient != null) {
+      linearGaugeContainerPaint.shader =
+          linearGradient!.createShader(gaugeContainer);
     }
 
     if (borderRadius != null) {
