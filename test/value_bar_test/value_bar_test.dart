@@ -19,6 +19,7 @@ void main() {
             valueBar: testCase['valueBar'] as List<ValueBar>?,
             rulers: testCase['rulers'] as RulerStyle?,
             extendLinearGauge: testCase['extendLinearGauge'] as double?,
+            fillExtend: testCase['fillExtend'] as bool?,
           ),
           surfaceSize: const Size(1200, 900),
         );
@@ -34,14 +35,17 @@ class MyValuBarTestLinearGauge extends StatelessWidget {
   final RulerStyle? rulers;
   final List<ValueBar>? valueBar;
   final LinearGaugeBoxDecoration? linearGaugeBoxDecoration;
+  final bool? fillExtend;
 
-  const MyValuBarTestLinearGauge(
-      {super.key,
-      this.extendLinearGauge,
-      this.rulers,
-      this.gaugeOrientation,
-      this.valueBar,
-      this.linearGaugeBoxDecoration});
+  const MyValuBarTestLinearGauge({
+    super.key,
+    this.extendLinearGauge,
+    this.rulers,
+    this.gaugeOrientation,
+    this.valueBar,
+    this.linearGaugeBoxDecoration,
+    this.fillExtend,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +59,7 @@ class MyValuBarTestLinearGauge extends StatelessWidget {
         ),
         body: Center(
           child: LinearGauge(
+            fillExtend: fillExtend ?? false,
             linearGaugeBoxDecoration: linearGaugeBoxDecoration ??
                 const LinearGaugeBoxDecoration(
                   thickness: 4.0,

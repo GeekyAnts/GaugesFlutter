@@ -191,12 +191,23 @@ class ValueBar {
 
     if (gaugeOrientation == GaugeOrientation.horizontal) {
       double startValue = (!getInversedRulers) ? start : (start + end);
+
+      if (!linearGauge.getFillExtend) {
+        startValue = !getInversedRulers
+            ? (startValue + linearGauge.getExtendLinearGauge)
+            : (startValue - linearGauge.getExtendLinearGauge);
+      } else {
+        if (linearGauge.getEnd == value) {
+          valueBarWidth += 2 * linearGauge.getExtendLinearGauge;
+        } else {
+          valueBarWidth += linearGauge.getExtendLinearGauge;
+        }
+      }
+
       gaugeContainer = Rect.fromLTWH(
         startValue,
         totalValOffset + (linearGaugeThickness - valueBarThickness) / 2,
-        !getInversedRulers
-            ? (valueBarWidth + linearGauge.getExtendLinearGauge)
-            : -(valueBarWidth + linearGauge.getExtendLinearGauge),
+        !getInversedRulers ? valueBarWidth : -valueBarWidth,
         valueBarThickness,
       );
     } else {
@@ -208,11 +219,30 @@ class ValueBar {
         linearGaugeThickness,
         offset,
       ); // adjust left position as needed
+
+      if (!linearGauge.getFillExtend) {
+        barTop = !getInversedRulers
+            ? (barTop + linearGauge.getExtendLinearGauge)
+            : (barTop + 2 * linearGauge.getExtendLinearGauge);
+      } else {
+        barTop = barTop + linearGauge.getExtendLinearGauge;
+
+        if (linearGauge.getEnd == value) {
+          barTop = !getInversedRulers
+              ? (barTop - linearGauge.getExtendLinearGauge)
+              : (barTop);
+
+          valueBarWidth += 2 * linearGauge.getExtendLinearGauge;
+        } else {
+          valueBarWidth += linearGauge.getExtendLinearGauge;
+        }
+      }
+
       gaugeContainer = Rect.fromLTWH(
         barLeft + (linearGaugeThickness - valueBarThickness) / 2,
-        barTop + linearGauge.getExtendLinearGauge,
+        barTop,
         valueBarThickness, // set width to half of the gauge width
-        valueBarWidth + linearGauge.getExtendLinearGauge,
+        valueBarWidth,
       );
     }
 
