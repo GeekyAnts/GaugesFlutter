@@ -1,44 +1,37 @@
-name: Flutter CI
-
-# This workflow is triggered on pushes to the repository.
+name: PR
 
 on:
-  push:
-    branches:
-    - main
-    
-# on: push    # Default will running for every branch.
-    
+  workflow_dispatch:
+  pull_request:
+    branches: [ main , develop ]
+
 jobs:
-  build:
-    permissions:
-      contents: read
-      pull-requests: write
-    # This job will run on ubuntu virtual machine
-    runs-on: ubuntu-latest
+  check:
+    name: PR
+
+    runs-on: macos-12
+
     steps:
-    
-    # Setup Java environment in order to build the Android app.
-    - uses: actions/checkout@v1
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '12.x'
-    
-    # Setup the flutter environment.
-    - uses: subosito/flutter-action@v1
-      with:
-        channel: 'stable' # 'dev', 'alpha', default to: 'stable'
-        # flutter-version: '1.12.x' # you can also specify exact version of flutter
-    
-    # Get flutter dependencies.
-    - run: flutter pub get
-    
-    # Check for any formatting issues in the code.
-   # - run: flutter format --set-exit-if-changed .
-    
-    
-    # Run widget tests for our flutter project.
-    - run: flutter test
-    
-    # Pub dry run.
-    - run: flutter pub publish --dry-run 
+      - uses: actions/checkout@v3
+
+      - name: 👮 Setup fvm
+        uses: kuhnroyal/flutter-fvm-config-action@v1
+
+      - name: 🖥️ Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.7.7'
+         
+
+      - name: ⬇️ Install dependencies
+        run: dart pub get
+
+      - name: 🛠 Disable font smoothing
+        run: defaults -currentHost write -g AppleFontSmoothing -int 0
+
+      - name: 🧪 Test
+        run: flutter test
+
+      - name: 🛠 Enable font smoothing
+        run: defaults -currentHost write -g AppleFontSmoothing -int 3
