@@ -14,8 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: 👮 Setup fvm
-        uses: kuhnroyal/flutter-fvm-config-action@v1
 
       - name: 🖥️ Setup Flutter
         uses: subosito/flutter-action@v2
