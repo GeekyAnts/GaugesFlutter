@@ -866,7 +866,7 @@ class RenderLinearGauge extends RenderBox {
                 calculateValuePixelWidth(rangeLinearGauge![i].start) -
                 getExtendLinearGauge);
 
-        if (i == 0) {
+        if (i == 0 && rangeLinearGauge!.first.start == getStart) {
           if (!getInversedRulers) {
             colorRangeStart = colorRangeStart - getExtendLinearGauge;
             colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
@@ -891,7 +891,7 @@ class RenderLinearGauge extends RenderBox {
                 start +
                 getExtendLinearGauge);
 
-        if (i == 0) {
+        if (i == 0 && rangeLinearGauge!.first.start == getStart) {
           if (!getInversedRulers) {
             colorRangeStart = colorRangeStart + getExtendLinearGauge;
             colorRangeWidth = colorRangeWidth + getExtendLinearGauge;

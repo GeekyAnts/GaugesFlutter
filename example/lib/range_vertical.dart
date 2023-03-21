@@ -18,30 +18,27 @@ class _MyVerticalRangeState extends State<MyVerticalRange> {
           rangeLinearGauge: [
             RangeLinearGauge(
               start: 0,
-              end: 50,
+              end: 20,
               color: Colors.red,
             ),
             RangeLinearGauge(
-              end: 50,
-              start: 80,
+              end: 20,
+              start: 30,
               color: Colors.green,
             ),
-            RangeLinearGauge(
-              end: 80,
-              start: 100,
-              color: Colors.blue,
-            ),
           ],
-          gaugeOrientation: GaugeOrientation.vertical,
+          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 10),
+          gaugeOrientation: GaugeOrientation.horizontal,
           rulers: const RulerStyle(
             rulersOffset: 10,
             labelOffset: 10,
-            inverseRulers: false,
+            inverseRulers: true,
             rulerPosition: RulerPosition.center,
             showLabel: true,
           ),
           // customLabels: [
           //   CustomRulerLabel(text: "10%", value: 10),
+          //   CustomRulerLabel(text: "15%", value: 15),
           //   CustomRulerLabel(text: "20%", value: 20),
           //   CustomRulerLabel(text: "25%", value: 25),
           //   CustomRulerLabel(text: "30%", value: 30),
