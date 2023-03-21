@@ -39,6 +39,13 @@ class LinearGauge extends StatefulWidget {
     this.enableAnimation = false,
     this.extendLinearGauge = 0,
   })  : assert(() {
+          if (customLabels!.isNotEmpty) {
+            assert(customLabels.length >= 2,
+                "At least two CustomRulerLabel should be added");
+
+            assert((customLabels.first.value! < customLabels.last.value!),
+                "Start should be less then end");
+          }
           if (rulers != null) {
             if (gaugeOrientation == GaugeOrientation.horizontal) {
               if (rulers.rulerPosition == RulerPosition.bottom ||
