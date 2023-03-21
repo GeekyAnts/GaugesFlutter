@@ -497,14 +497,22 @@ class RenderLinearGauge extends RenderBox {
     _startLabelSize = _linearGaugeLabel.getLabelSize(
         textStyle: getTextStyle,
         value: !getInversedRulers
-            ? getStart.toInt().toString()
-            : getEnd.toInt().toString());
+            ? getCustomLabels!.isEmpty
+                ? getStart.toInt().toString()
+                : getCustomLabels!.first.text
+            : getCustomLabels!.isEmpty
+                ? getEnd.toInt().toString()
+                : getCustomLabels!.last.text);
 
     _endLabelSize = _linearGaugeLabel.getLabelSize(
         textStyle: getTextStyle,
         value: !getInversedRulers
-            ? getEnd.toInt().toString()
-            : getStart.toInt().toString());
+            ? getCustomLabels!.isEmpty
+                ? getEnd.toInt().toString()
+                : getCustomLabels!.last.text
+            : getCustomLabels!.isEmpty
+                ? getStart.toInt().toString()
+                : getCustomLabels!.first.text);
 
     _linearGaugeLabel.generateOffSetsForLabel(
         _startLabelSize,
