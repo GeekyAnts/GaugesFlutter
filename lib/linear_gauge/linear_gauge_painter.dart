@@ -890,12 +890,17 @@ class RenderLinearGauge extends RenderBox {
                 calculateValuePixelWidth(rangeLinearGauge![i].start) -
                 getExtendLinearGauge);
 
-        if (i == 0 && rangeLinearGauge!.first.start == getStart) {
-          if (!getInversedRulers) {
-            colorRangeStart = colorRangeStart - getExtendLinearGauge;
-            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-          } else {
-            colorRangeStart = colorRangeStart + getExtendLinearGauge;
+        if (getFillExtend) {
+          if (rangeLinearGauge![i].start == getStart) {
+            if (!getInversedRulers) {
+              colorRangeStart = colorRangeStart - getExtendLinearGauge;
+              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+            } else {
+              colorRangeStart = colorRangeStart + getExtendLinearGauge;
+              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+            }
+          }
+          if (rangeLinearGauge![i].end == getEnd) {
             colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
           }
         }
@@ -915,12 +920,17 @@ class RenderLinearGauge extends RenderBox {
                 start +
                 getExtendLinearGauge);
 
-        if (i == 0 && rangeLinearGauge!.first.start == getStart) {
-          if (!getInversedRulers) {
-            colorRangeStart = colorRangeStart + getExtendLinearGauge;
-            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-          } else {
-            colorRangeStart = colorRangeStart - getExtendLinearGauge;
+        if (getFillExtend) {
+          if (rangeLinearGauge![i].start == getStart) {
+            if (!getInversedRulers) {
+              colorRangeStart = colorRangeStart + getExtendLinearGauge;
+              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+            } else {
+              colorRangeStart = colorRangeStart - getExtendLinearGauge;
+              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+            }
+          }
+          if (rangeLinearGauge![i].end == getEnd) {
             colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
           }
         }
