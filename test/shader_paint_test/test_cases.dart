@@ -19,7 +19,7 @@ List shaderPaintHorizontal = [
         colors: [Colors.orange, Colors.red, Colors.green],
       ),
     ),
-    'name': 'value-bar-value-0-with-shader',
+    'name': 'value-bar-value-0-with-shader-Horizontal',
     'Do': 'Horizontal - Should draw value with Shaders BG of LinearGauge',
   },
 ];
