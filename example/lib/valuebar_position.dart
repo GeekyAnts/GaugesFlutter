@@ -15,39 +15,20 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          start: -50,
+          gaugeOrientation: GaugeOrientation.vertical,
+          start: 0,
           end: 100,
-          valueBar: [
-            ValueBar(
-              value: -50,
-              position: ValueBarPosition.center,
-              color: Colors.indigo,
-            ),
-            ValueBar(
-              value: 50,
-              position: ValueBarPosition.bottom,
-              color: Colors.purple,
-            ),
-            ValueBar(
-              value: 50,
-              offset: 8,
-              position: ValueBarPosition.top,
-              color: Colors.red,
-            ),
-            ValueBar(
-              value: 30,
-              offset: 4,
-              position: ValueBarPosition.top,
-              color: Colors.orange,
-            ),
-            ValueBar(
-              value: 29,
-              offset: 0,
-              position: ValueBarPosition.top,
-              color: Colors.green,
-            ),
+          pointers: [
+            Pointer(
+              value: 100,
+              shape: PointerShape.triangle,
+              height: 50,
+              width: 50,
+              pointerPosition: PointerPosition.center,
+            )
           ],
-          rulers: RulerStyle(rulerPosition: RulerPosition.top),
+          rulers:
+              RulerStyle(rulerPosition: RulerPosition.center, showLabel: true),
         ),
       ),
     );

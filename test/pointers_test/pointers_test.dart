@@ -13,6 +13,7 @@ void main() {
       testGoldens(testCase['Do'] as String, (tester) async {
         await tester.pumpWidgetBuilder(
           MyPointerTestLinearGauge(
+            showLabel: testCase['showLabel'] as bool?,
             inverseRuler: testCase['inverse'] as bool?,
             thickness: testCase['gaugeThickness'] as double?,
             rulerPosition: testCase['rulerPosition'] as RulerPosition?,
@@ -50,6 +51,7 @@ void main() {
 
 class MyPointerTestLinearGauge extends StatelessWidget {
   final RulerPosition? rulerPosition;
+  final bool? showLabel;
   final double? thickness;
   final double? extendLinearGauge;
   final GaugeOrientation? gaugeOrientation;
@@ -59,6 +61,7 @@ class MyPointerTestLinearGauge extends StatelessWidget {
   final bool? inverseRuler;
   const MyPointerTestLinearGauge({
     super.key,
+    this.showLabel,
     this.extendLinearGauge,
     this.rulers,
     this.pointer,
@@ -87,6 +90,7 @@ class MyPointerTestLinearGauge extends StatelessWidget {
             pointers: [pointer!],
             rulers: rulers ??
                 RulerStyle(
+                  showLabel: showLabel ?? true,
                   inverseRulers: inverseRuler ?? false,
                   rulerPosition: RulerPosition.center,
                   textStyle: const TextStyle(

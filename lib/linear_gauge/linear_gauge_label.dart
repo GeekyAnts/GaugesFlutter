@@ -66,28 +66,43 @@ class LinearGaugeLabel {
     double largestPointerSize = linearGauge.getLargestPointerSize();
 
     if (orientation == GaugeOrientation.horizontal) {
-      a = Offset(
-          (startLabel.width / 2) + (largestPointerSize / 2) + extendLinearGauge,
-          thickness);
-      b = Offset(
-          size.width -
-              (endLabel.width / 2) -
+      if (linearGauge.showLabel) {
+        a = Offset(
+            (startLabel.width / 2) +
+                (largestPointerSize / 2) +
+                extendLinearGauge,
+            thickness);
+        b = Offset(
+            size.width -
+                (endLabel.width / 2) -
+                (largestPointerSize / 2) -
+                extendLinearGauge,
+            thickness);
+      } else {
+        a = Offset((largestPointerSize / 2) + extendLinearGauge, thickness);
+        b = Offset(size.width - (largestPointerSize / 2) - extendLinearGauge,
+            thickness);
+      }
+    } else {
+      if (linearGauge.showLabel) {
+        a = Offset(
+            (startLabel.height / 2) +
+                (largestPointerSize / 2) +
+                extendLinearGauge,
+            thickness);
+        b = Offset(
+          size.height -
+              (endLabel.height / 2) -
               (largestPointerSize / 2) -
               extendLinearGauge,
-          thickness);
-    } else {
-      a = Offset(
-          (startLabel.height / 2) +
-              (largestPointerSize / 2) +
-              extendLinearGauge,
-          thickness);
-      b = Offset(
-        size.height -
-            (endLabel.height / 2) -
-            (largestPointerSize / 2) -
-            extendLinearGauge,
-        thickness,
-      );
+          thickness,
+        );
+      } else {
+        a = Offset((largestPointerSize / 2) + extendLinearGauge, thickness);
+        b = Offset(size.height - extendLinearGauge - largestPointerSize / 2,
+            thickness);
+      }
+
       // this will allow to start from bottom
       Offset temp = a;
       a = b;
