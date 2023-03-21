@@ -16,7 +16,12 @@ List shaderPaintHorizontal = [
       borderRadius: 30,
       thickness: 20,
       linearGradient: LinearGradient(
-        colors: [Colors.orange, Colors.red, Colors.green],
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+        colors: [
+          Colors.orange,
+          Colors.red,
+        ],
       ),
     ),
     'name': 'value-bar-value-0-with-shader-Horizontal',
@@ -42,7 +47,10 @@ List shaderPaintVertical = [
       linearGradient: LinearGradient(
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter,
-        colors: [Colors.orange, Colors.red, Colors.green],
+        colors: [
+          Colors.orange,
+          Colors.red,
+        ],
       ),
     ),
     'name': 'value-bar-value-0-with-shader-vertical',
@@ -123,6 +131,8 @@ List shaderValuePaintHorizontal = [
         valueBarThickness: 20,
         borderRadius: 20,
         linearGradient: const LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
           colors: [
             Colors.orange,
             Colors.red,
