@@ -203,6 +203,7 @@ class LinearGaugeLabel {
     double rulersOffset,
     GaugeOrientation gaugeOrientation,
     double linearGaugeHeight,
+    RenderLinearGauge linearGauge,
   ) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     Iterable<String> keys = primaryRulers.keys;
@@ -227,10 +228,15 @@ class LinearGaugeLabel {
             switch (rulerPosition) {
               case RulerPosition.top:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(x, -rulersOffset);
+                secondaryRulerStartPoint = Offset(
+                    x,
+                    -rulersOffset +
+                        (linearGauge.size.height - linearGaugeHeight));
 
-                secondaryRulerEndPoint =
-                    Offset(x, -(5 + height + rulersOffset - y));
+                secondaryRulerEndPoint = Offset(
+                    x,
+                    -(5 + height + rulersOffset - y) +
+                        (linearGauge.size.height - linearGaugeHeight));
                 break;
               case RulerPosition.center:
                 if (gaugeOrientation == GaugeOrientation.horizontal) {
