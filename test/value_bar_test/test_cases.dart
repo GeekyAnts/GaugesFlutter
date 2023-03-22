@@ -471,6 +471,76 @@ List extendLinearGauge = [
     'Do':
         'Inverse Vertical ValueBar should be drawn till 100 value with 50 extendedLinearGauge',
   },
+  {
+    'extendLinearGauge': 50.0,
+    'fillExtend': true,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.top,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(value: 100),
+    ],
+    'name': 'fillExtend-extendLinearGauge-value-bar-value-100',
+    'Do':
+        'ValueBar with fillExtend true should be drawn till 100 value with 50 extendedLinearGauge',
+  },
+  {
+    'extendLinearGauge': 50.0,
+    'fillExtend': true,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.bottom,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(value: 50),
+    ],
+    'name': 'fillExtend-extendLinearGauge-value-bar-value-50',
+    'Do':
+        'ValueBar with fillExtend true should be drawn till 50 value with 50 extendedLinearGauge',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'extendLinearGauge': 50.0,
+    'fillExtend': true,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.left,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(value: 100),
+    ],
+    'name': 'fillExtend-extendLinearGauge-value-bar-value-100-vertical',
+    'Do':
+        'Vertical ValueBar with fillExtend true should be drawn till 100 value with 50 extendedLinearGauge',
+  },
+  {
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'extendLinearGauge': 50.0,
+    'fillExtend': true,
+    'rulers': const RulerStyle(
+      rulerPosition: RulerPosition.right,
+      textStyle: TextStyle(
+        fontFamily: 'Roboto',
+        color: Colors.black,
+      ),
+    ),
+    'valueBar': [
+      ValueBar(value: 50),
+    ],
+    'name': 'fillExtend-extendLinearGauge-value-bar-value-50-vertical',
+    'Do':
+        'Vertical ValueBar with fillExtend true should be drawn till 50 value with 50 extendedLinearGauge',
+  },
 ];
 
 List borderRadiusHorizontal = [

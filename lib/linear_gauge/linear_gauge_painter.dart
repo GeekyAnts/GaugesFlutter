@@ -39,6 +39,7 @@ class RenderLinearGauge extends RenderBox {
     required double? animationValue,
     required double thickness,
     required double extendLinearGauge,
+    required bool fillExtend,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -72,7 +73,8 @@ class RenderLinearGauge extends RenderBox {
         _pointers = pointers,
         _animationValue = animationValue,
         _thickness = thickness,
-        _extendLinearGauge = extendLinearGauge;
+        _extendLinearGauge = extendLinearGauge,
+        _fillExtend = fillExtend;
 
   // For getting Gauge Values
   double gaugeStart = 0;
@@ -450,6 +452,17 @@ class RenderLinearGauge extends RenderBox {
   set setExtendLinearGauge(double val) {
     if (_extendLinearGauge == val) return;
     _extendLinearGauge = val;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [fillExtend] parameter.
+  ///
+  bool get getFillExtend => _fillExtend;
+  bool _fillExtend;
+  set setFillExtend(bool val) {
+    if (_fillExtend == val) return;
+    _fillExtend = val;
     markNeedsPaint();
   }
 
@@ -877,12 +890,17 @@ class RenderLinearGauge extends RenderBox {
                 calculateValuePixelWidth(rangeLinearGauge![i].start) -
                 getExtendLinearGauge);
 
-        if (i == 0 && rangeLinearGauge!.first.start == getStart) {
-          if (!getInversedRulers) {
-            colorRangeStart = colorRangeStart - getExtendLinearGauge;
-            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-          } else {
-            colorRangeStart = colorRangeStart + getExtendLinearGauge;
+        if (getFillExtend) {
+          if (rangeLinearGauge![i].start == getStart) {
+            if (!getInversedRulers) {
+              colorRangeStart = colorRangeStart - getExtendLinearGauge;
+              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+            } else {
+              colorRangeStart = colorRangeStart + getExtendLinearGauge;
+              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+            }
+          }
+          if (rangeLinearGauge![i].end == getEnd) {
             colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
           }
         }
@@ -902,12 +920,17 @@ class RenderLinearGauge extends RenderBox {
                 start +
                 getExtendLinearGauge);
 
-        if (i == 0 && rangeLinearGauge!.first.start == getStart) {
-          if (!getInversedRulers) {
-            colorRangeStart = colorRangeStart + getExtendLinearGauge;
-            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-          } else {
-            colorRangeStart = colorRangeStart - getExtendLinearGauge;
+        if (getFillExtend) {
+          if (rangeLinearGauge![i].start == getStart) {
+            if (!getInversedRulers) {
+              colorRangeStart = colorRangeStart + getExtendLinearGauge;
+              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+            } else {
+              colorRangeStart = colorRangeStart - getExtendLinearGauge;
+              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
+            }
+          }
+          if (rangeLinearGauge![i].end == getEnd) {
             colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
           }
         }

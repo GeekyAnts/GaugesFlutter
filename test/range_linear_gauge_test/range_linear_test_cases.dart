@@ -240,6 +240,49 @@ List extendLinearGauge = [
   },
   {
     'extendLinearGauge': 50.0,
+    'fillExtend': true,
+    'rangeLinear': [
+      RangeLinearGauge(
+        start: 0,
+        end: 50,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        start: 50,
+        end: 80,
+        color: Colors.green,
+      ),
+      RangeLinearGauge(
+        start: 80,
+        end: 100,
+        color: Colors.blue,
+      ),
+    ],
+    'name': 'fill-extend-range-linear-gauge-extend',
+    'Do':
+        'RangeLinearGauge with fill extend should be drawn with rgb and extend 50',
+  },
+  {
+    'extendLinearGauge': 50.0,
+    'fillExtend': true,
+    'rangeLinear': [
+      RangeLinearGauge(
+        start: 0,
+        end: 50,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        start: 50,
+        end: 80,
+        color: Colors.green,
+      ),
+    ],
+    'name': 'fill-extend-range-linear-gauge-0to-50-to-80-extend',
+    'Do':
+        'RangeLinearGauge 0 to 50 to 80  with fill extend should be drawn with rgb and extend 50',
+  },
+  {
+    'extendLinearGauge': 50.0,
     'gaugeOrientation': GaugeOrientation.vertical,
     'rangeLinear': [
       RangeLinearGauge(
@@ -260,6 +303,31 @@ List extendLinearGauge = [
     ],
     'name': 'range-linear-gauge-extend-vertical',
     'Do': 'RangeLinearGauge should be drawn with rgb-vertical and extend 50',
+  },
+  {
+    'extendLinearGauge': 50.0,
+    'fillExtend': true,
+    'gaugeOrientation': GaugeOrientation.vertical,
+    'rangeLinear': [
+      RangeLinearGauge(
+        start: 0,
+        end: 50,
+        color: Colors.red,
+      ),
+      RangeLinearGauge(
+        start: 50,
+        end: 80,
+        color: Colors.green,
+      ),
+      RangeLinearGauge(
+        start: 80,
+        end: 100,
+        color: Colors.blue,
+      ),
+    ],
+    'name': 'fill-extend-range-linear-gauge-extend-vertical',
+    'Do':
+        'RangeLinearGauge with fill extend should be drawn with rgb-vertical and extend 50',
   },
   {
     'extendLinearGauge': 50.0,

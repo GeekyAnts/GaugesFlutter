@@ -22,26 +22,14 @@ class _MyShadersState extends State<MyShaders> {
         child: LinearGauge(
           start: 0,
           end: 100,
-          valueBar: [
-            ValueBar(
-              value: 20,
-              borderRadius: 30,
-              valueBarThickness: 30,
-              linearGradient: const LinearGradient(
-                colors: [Colors.blue, Colors.purple],
-              ),
-            )
-          ],
+          value: 40,
           linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
               thickness: 30,
               borderRadius: 30,
               edgeStyle: LinearEdgeStyle.bothCurve,
               // backgroundColor: Colors.green.shade100,
               linearGradient: LinearGradient(
-                colors: [
-                  Colors.orange,
-                  Colors.red,
-                ],
+                colors: [Colors.orange, Colors.red, Colors.green],
               )),
           rulers: const RulerStyle(
             showLabel: false,

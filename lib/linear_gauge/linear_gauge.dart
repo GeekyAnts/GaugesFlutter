@@ -38,6 +38,7 @@ class LinearGauge extends StatefulWidget {
     this.pointers = const [],
     this.enableAnimation = false,
     this.extendLinearGauge = 0,
+    this.fillExtend = false,
   })  : assert(() {
           if (customLabels!.isNotEmpty) {
             assert(customLabels.length >= 2,
@@ -317,6 +318,20 @@ class LinearGauge extends StatefulWidget {
   ///
   final bool enableAnimation;
 
+  ///
+  /// `fillExtend` Sets the fill of extendedLinearGauge
+  ///  according to nearest range or value bar color.
+  ///  It's default to false.
+  ///
+  /// ```
+  /// const LinearGauge(
+  ///   extendLinearGauge:10,
+  ///   fillExtend:true;
+  /// )
+  /// ```
+  ///
+  final bool fillExtend;
+
   @override
   State<LinearGauge> createState() => _LinearGauge();
 }
@@ -404,7 +419,8 @@ class _RLinearGauge extends LeafRenderObjectWidget {
         pointers: lGauge.pointers!,
         animationValue: animationValue,
         thickness: lGauge.linearGaugeBoxDecoration!.thickness!,
-        extendLinearGauge: lGauge.extendLinearGauge!);
+        extendLinearGauge: lGauge.extendLinearGauge!,
+        fillExtend: lGauge.fillExtend);
   }
 
   @override
@@ -445,6 +461,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setAnimationValue = animationValue
       ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!
       ..setExtendLinearGauge = lGauge.extendLinearGauge!
-      ..setLinearGaugeBoxDecoration = lGauge.linearGaugeBoxDecoration;
+      ..setLinearGaugeBoxDecoration = lGauge.linearGaugeBoxDecoration
+      ..setFillExtend = lGauge.fillExtend;
   }
 }
