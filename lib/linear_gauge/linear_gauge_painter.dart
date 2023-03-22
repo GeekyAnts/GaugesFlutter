@@ -472,7 +472,7 @@ class RenderLinearGauge extends RenderBox {
   final Paint _linearGaugeContainerValuePaint = Paint();
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
-  late Size _startLabelSize, _endLabelSize;
+  late Size _startLabelSize, _endLabelSize, _axisActualSize;
 
   double _valueInPixel = 0;
 
@@ -481,6 +481,7 @@ class RenderLinearGauge extends RenderBox {
       double screenSize = getGaugeOrientation == GaugeOrientation.horizontal
           ? 3 * size.width
           : 3 * size.height;
+
       final double count = math.max(screenSize / 100, 1.0);
       double interval = (getEnd - getStart) / (screenSize / 100);
       final List<double> intervalDivisions = <double>[10, 5, 2, 1];
@@ -609,7 +610,8 @@ class RenderLinearGauge extends RenderBox {
           -(getPrimaryRulersHeight +
               getLabelOffset +
               getRulersOffset +
-              labelSize.height +
+              labelSize.height -
+              (size.height - getThickness) +
               2),
         );
         break;
@@ -709,9 +711,12 @@ class RenderLinearGauge extends RenderBox {
 
     late Rect gaugeContainer;
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
+      double thickness = (rulerPosition == RulerPosition.top)
+          ? (size.height - getThickness)
+          : 0;
       gaugeContainer = Rect.fromLTWH(
         start,
-        offset.dy,
+        offset.dy + thickness,
         end,
         getThickness,
       );
@@ -1036,9 +1041,10 @@ class RenderLinearGauge extends RenderBox {
         case RulerPosition.top:
           //y co-ordinate will be simply inverted on negative side by adding -ve sign
           //no need to adjust y co-ordinate by adding the height of gauge container
-          y = -(value[1].dy + getRulersOffset);
+          y = -(value[1].dy + getRulersOffset - (size.height - getThickness));
           x = value[1].dx;
-          primaryRulerStartPoint = Offset(value[0].dx, -getRulersOffset);
+          primaryRulerStartPoint = Offset(
+              value[0].dx, -getRulersOffset + (size.height - getThickness));
           break;
         case RulerPosition.center:
           if (getGaugeOrientation == GaugeOrientation.horizontal) {
@@ -1108,7 +1114,8 @@ class RenderLinearGauge extends RenderBox {
         rangeLinearGauge!,
         getRulersOffset,
         getGaugeOrientation,
-        getThickness);
+        getThickness,
+        this);
   }
 
   void _setPrimaryRulersPaint() {
@@ -1130,16 +1137,43 @@ class RenderLinearGauge extends RenderBox {
     size = computeDryLayout(constraints);
   }
 
+  getLinearGaugeThickness() {
+    double linearGaugeContainerThickness =
+        getLinearGaugeBoxDecoration.thickness!;
+    double getEffectiveRulersHeight =
+        math.max(getPrimaryRulersHeight, getSecondaryRulersHeight);
+
+    double labelThickness = _linearGaugeLabel
+        .getLabelSize(textStyle: getTextStyle, value: getStart.toString())
+        .height;
+
+    return linearGaugeContainerThickness +
+        getEffectiveRulersHeight +
+        labelThickness;
+  }
+
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final desiredWidth = getGaugeOrientation == GaugeOrientation.vertical
-        ? constraints.minWidth
-        : constraints.maxWidth;
-    final desiredHeight = getGaugeOrientation == GaugeOrientation.horizontal
-        ? constraints.minHeight
-        : constraints.maxHeight;
-    final desiredSize = Size(desiredWidth, desiredHeight);
-    return constraints.constrain(desiredSize);
+    double parentWidgetSize;
+    print(constraints);
+
+    final double actualParentWidth = constraints.maxWidth;
+    final double actualParentHeight = constraints.maxHeight;
+
+    if (getGaugeOrientation == GaugeOrientation.horizontal) {
+      parentWidgetSize = actualParentWidth;
+    } else {
+      parentWidgetSize = actualParentHeight;
+    }
+    final widgetThickness = getLinearGaugeThickness();
+    if (getGaugeOrientation == GaugeOrientation.horizontal) {
+      _axisActualSize = Size(parentWidgetSize, widgetThickness);
+    } else {
+      _axisActualSize = Size(widgetThickness, parentWidgetSize);
+    }
+    print(_axisActualSize);
+
+    return constraints.constrain(_axisActualSize);
   }
 
   @override
