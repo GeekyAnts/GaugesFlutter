@@ -747,7 +747,11 @@ class RenderLinearGauge extends RenderBox {
     }
 
     if (getLinearGaugeBoxDecoration.borderRadius != null) {
-      var rectangularBox = _getRoundedContainer(gaugeContainer: gaugeContainer);
+      var rectangularBox = _getRoundedContainer(
+        gaugeContainer: gaugeContainer,
+        borderRadius: getLinearGaugeBoxDecoration.borderRadius,
+        edgeStyle: getLinearGaugeBoxDecoration.edgeStyle,
+      );
       canvas.drawRRect(rectangularBox, _linearGaugeContainerPaint);
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
@@ -864,6 +868,8 @@ class RenderLinearGauge extends RenderBox {
     required Offset offset,
     required Rect gaugeContainer,
   }) {
+    var roundedGaugeContainer;
+
     /// For loop for calculating colors in [RangeLinearGauge]
     /// 2 is hardcoded beacuse extend is happeing from both the end of the gauge
     for (int i = 0; i < rangeLinearGauge!.length; i++) {
@@ -943,46 +949,61 @@ class RenderLinearGauge extends RenderBox {
       }
 
       _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
-      canvas.drawRect(
-        gaugeContainer,
-        _linearGaugeContainerValuePaint,
-      );
+      if (rangeLinearGauge![i].borderRadius != null) {
+        roundedGaugeContainer = _getRoundedContainer(
+          gaugeContainer: gaugeContainer,
+          borderRadius: rangeLinearGauge![i].borderRadius,
+          edgeStyle: rangeLinearGauge![i].edgeStyle,
+        );
+        canvas.drawRRect(
+          roundedGaugeContainer,
+          _linearGaugeContainerValuePaint,
+        );
+      } else {
+        canvas.drawRect(
+          gaugeContainer,
+          _linearGaugeContainerValuePaint,
+        );
+      }
     }
   }
 
-  RRect _getRoundedContainer({required Rect gaugeContainer}) {
+  RRect _getRoundedContainer({
+    required Rect gaugeContainer,
+    required borderRadius,
+    required edgeStyle,
+  }) {
     var rectangularBox;
-    switch (getLinearGaugeBoxDecoration.edgeStyle) {
+    switch (edgeStyle) {
       case LinearEdgeStyle.startCurve:
         rectangularBox = RRect.fromRectAndCorners(
           gaugeContainer,
-          topLeft: Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+          topLeft: Radius.circular(borderRadius!),
           bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
-              ? Radius.circular(getLinearGaugeBoxDecoration.borderRadius!)
+              ? Radius.circular(borderRadius!)
               : Radius.zero,
           topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
               ? Radius.zero
-              : Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+              : Radius.circular(borderRadius!),
         );
         break;
       case LinearEdgeStyle.endCurve:
         rectangularBox = RRect.fromRectAndCorners(
           gaugeContainer,
           topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
-              ? Radius.circular(getLinearGaugeBoxDecoration.borderRadius!)
+              ? Radius.circular(borderRadius!)
               : Radius.zero,
           bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
               ? Radius.zero
-              : Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
-          bottomRight:
-              Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+              : Radius.circular(borderRadius!),
+          bottomRight: Radius.circular(borderRadius!),
         );
         break;
 
       default:
         rectangularBox = RRect.fromRectAndRadius(
           gaugeContainer,
-          Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+          Radius.circular(borderRadius!),
         );
         break;
     }

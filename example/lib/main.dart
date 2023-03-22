@@ -27,7 +27,8 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const FillExtendExample(),
+      body: const BorderRadiusExample(),
+
     );
   }
 }

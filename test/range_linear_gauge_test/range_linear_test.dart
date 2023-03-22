@@ -22,6 +22,11 @@ void main() {
             inverseRulers: testCase['inverse'] as bool?,
             gaugeOrientation: testCase['gaugeOrientation'] as GaugeOrientation?,
             fillExtend: testCase['fillExtend'] as bool?,
+
+            rulers: testCase['rulers'] as RulerStyle?,
+            linearGaugeBoxDecoration: testCase['linearGaugeBoxDecoration']
+                as LinearGaugeBoxDecoration?,
+
             rangeLinearGaugeList:
                 testCase['rangeLinear'] as List<RangeLinearGauge>?,
           ),
@@ -42,6 +47,9 @@ class MyRangeLinearGauge extends StatelessWidget {
   final bool? inverseRulers;
   final double? thickness;
   final bool? fillExtend;
+  final LinearGaugeBoxDecoration? linearGaugeBoxDecoration;
+  final RulerStyle? rulers;
+
 
   const MyRangeLinearGauge({
     super.key,
@@ -53,6 +61,9 @@ class MyRangeLinearGauge extends StatelessWidget {
     this.inverseRulers,
     this.thickness,
     this.fillExtend,
+    this.linearGaugeBoxDecoration,
+    this.rulers,
+
   });
 
   @override
@@ -71,19 +82,21 @@ class MyRangeLinearGauge extends StatelessWidget {
             end: end ?? 100,
             fillExtend: fillExtend ?? false,
             extendLinearGauge: extendLinearGauge ?? 0.0,
-            linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-              thickness: thickness ?? 4.0,
-            ),
+            linearGaugeBoxDecoration: linearGaugeBoxDecoration ??
+                LinearGaugeBoxDecoration(
+                  thickness: thickness ?? 4.0,
+                ),
             gaugeOrientation: gaugeOrientation ?? GaugeOrientation.horizontal,
             rangeLinearGauge: rangeLinearGaugeList,
-            rulers: RulerStyle(
-              inverseRulers: inverseRulers ?? false,
-              rulerPosition: RulerPosition.center,
-              textStyle: const TextStyle(
-                fontFamily: 'Roboto',
-                color: Colors.black,
-              ),
-            ),
+            rulers: rulers ??
+                RulerStyle(
+                  inverseRulers: inverseRulers ?? false,
+                  rulerPosition: RulerPosition.center,
+                  textStyle: const TextStyle(
+                    fontFamily: 'Roboto',
+                    color: Colors.black,
+                  ),
+                ),
           ),
         ),
       ),
