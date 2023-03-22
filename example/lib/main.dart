@@ -5,14 +5,17 @@ import 'package:example/pointer_alignment_example.dart';
 import 'package:example/range_vertical.dart';
 import 'package:example/shaders.dart';
 import 'package:example/tickness_extend_example.dart';
+import 'package:example/useCase/showcase_app/home.dart';
 import 'package:example/valuebar_position.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyGaugeExample(),
+      home: HomePage(
+        selectedItem: 0,
+      ),
     ),
   );
 }
