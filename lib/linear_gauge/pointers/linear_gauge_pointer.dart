@@ -583,9 +583,11 @@ class Pointer {
     }
 
     final path = Path()
-      ..moveTo((animationValue), vertex.dy)
-      ..lineTo((animationValue - base), vertex.dy + height!)
-      ..lineTo((animationValue + base), vertex.dy + height!)
+      ..moveTo((animationValue), vertex.dy - linearGauge.getPointerSpace)
+      ..lineTo((animationValue - base),
+          vertex.dy + height! - linearGauge.getPointerSpace)
+      ..lineTo((animationValue + base),
+          vertex.dy + height! - linearGauge.getPointerSpace)
       ..close();
 
 // this if statement setup things for pointer alignment

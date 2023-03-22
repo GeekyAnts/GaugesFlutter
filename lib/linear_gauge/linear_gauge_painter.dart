@@ -466,6 +466,12 @@ class RenderLinearGauge extends RenderBox {
     markNeedsPaint();
   }
 
+  ///
+  /// Getter and Setter for the [_pointerSpace] parameter.
+  ///
+  double get getPointerSpace => _pointerSpace;
+  late double _pointerSpace;
+
   final Paint _linearGaugeContainerPaint = Paint();
   final Paint _primaryRulersPaint = Paint();
   final Paint _secondaryRulersPaint = Paint();
@@ -633,11 +639,16 @@ class RenderLinearGauge extends RenderBox {
         }
         break;
       case RulerPosition.bottom:
+        print(_pointerSpace);
         double labelOffset =
             (getLabelTopMargin == 0.0) ? getLabelOffset : getLabelTopMargin;
         labelPosition = Offset(
           (list[0].dx - (labelSize.width / 2)),
-          (list[0].dy + getPrimaryRulersHeight + labelOffset + getRulersOffset),
+          (list[0].dy +
+              getPrimaryRulersHeight +
+              labelOffset +
+              getRulersOffset +
+              _pointerSpace),
         );
         break;
       case RulerPosition.right:
@@ -716,7 +727,7 @@ class RenderLinearGauge extends RenderBox {
           : 0;
       gaugeContainer = Rect.fromLTWH(
         start,
-        offset.dy + thickness,
+        offset.dy + thickness + getPointerSpace,
         end,
         getThickness,
       );
@@ -997,14 +1008,7 @@ class RenderLinearGauge extends RenderBox {
 
   double getLargestPointerSize() {
     if (getPointers.isNotEmpty) {
-      Pointer largestPointer = getPointers.reduce(
-          (current, next) => getGaugeOrientation == GaugeOrientation.vertical
-              ? current.height! > next.height!
-                  ? current
-                  : next
-              : current.width! > next.width!
-                  ? current
-                  : next);
+      Pointer largestPointer = getLargestPointer(getPointers);
 
       if ((largestPointer.shape == PointerShape.rectangle ||
               largestPointer.shape == PointerShape.diamond) &&
@@ -1016,6 +1020,18 @@ class RenderLinearGauge extends RenderBox {
     } else {
       return 10;
     }
+  }
+
+  Pointer getLargestPointer(List<Pointer> pointers) {
+    Pointer largestPointer = pointers.reduce(
+        (current, next) => getGaugeOrientation == GaugeOrientation.vertical
+            ? current.height! > next.height!
+                ? current
+                : next
+            : current.width! > next.width!
+                ? current
+                : next);
+    return largestPointer;
   }
 
   void _drawPrimaryRulers(Canvas canvas) {
@@ -1066,10 +1082,10 @@ class RenderLinearGauge extends RenderBox {
         case RulerPosition.bottom:
           //there is need to adjust y co-ordinate by adding the height of gauge container
           //bcz line will start drawing from behind of gauge container
-          y = value[1].dy + getThickness + getRulersOffset;
+          y = value[1].dy + getThickness + getRulersOffset + _pointerSpace;
           x = value[1].dx;
-          primaryRulerStartPoint =
-              Offset(value[0].dx, value[0].dy + getRulersOffset);
+          primaryRulerStartPoint = Offset(
+              value[0].dx, value[0].dy + getRulersOffset + _pointerSpace);
           break;
         case RulerPosition.right:
           if (GaugeOrientation.vertical == getGaugeOrientation) {
@@ -1137,15 +1153,29 @@ class RenderLinearGauge extends RenderBox {
     size = computeDryLayout(constraints);
   }
 
+  List<Pointer> getPointersByPosition(
+      List<Pointer> pointerList, PointerPosition position) {
+    List<Pointer> result = [];
+    for (Pointer pointer in pointerList) {
+      if (pointer.pointerPosition == position) {
+        result.add(pointer);
+      }
+    }
+    return result;
+  }
+
   getLinearGaugeThickness() {
     double linearGaugeContainerThickness =
         getLinearGaugeBoxDecoration.thickness!;
     double getEffectiveRulersHeight =
         math.max(getPrimaryRulersHeight, getSecondaryRulersHeight);
-
     double labelThickness = _linearGaugeLabel
         .getLabelSize(textStyle: getTextStyle, value: getStart.toString())
         .height;
+
+    List<Pointer> filteredPointers =
+        getPointersByPosition(getPointers, PointerPosition.top);
+    _pointerSpace = getLargestPointer(filteredPointers).height!;
 
     return linearGaugeContainerThickness +
         getEffectiveRulersHeight +
@@ -1171,7 +1201,6 @@ class RenderLinearGauge extends RenderBox {
     } else {
       _axisActualSize = Size(widgetThickness, parentWidgetSize);
     }
-    print(_axisActualSize);
 
     return constraints.constrain(_axisActualSize);
   }

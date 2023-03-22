@@ -258,9 +258,15 @@ class LinearGaugeLabel {
               case RulerPosition.bottom:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
 
-                secondaryRulerStartPoint = Offset(x, y + rulersOffset);
+                secondaryRulerStartPoint = Offset(
+                  x,
+                  y + rulersOffset + linearGauge.getPointerSpace,
+                );
 
-                secondaryRulerEndPoint = Offset(x, 5 + height + rulersOffset);
+                secondaryRulerEndPoint = Offset(
+                  x,
+                  5 + height + rulersOffset + linearGauge.getPointerSpace,
+                );
 
                 break;
               case RulerPosition.right:
