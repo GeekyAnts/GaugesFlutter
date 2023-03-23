@@ -236,7 +236,6 @@ class _ValueBarPlayGroundState extends State<ValueBarPlayGround> {
             '⚠️ Invalid Pointer Position',
           ),
           backgroundColor: Colors.red,
-          showCloseIcon: true,
         ),
       );
     }

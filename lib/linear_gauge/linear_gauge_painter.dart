@@ -1587,7 +1587,6 @@ class RenderLinearGauge extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-<<<<<<< HEAD
     double parentWidgetSize;
 
     final double actualParentWidth = constraints.maxWidth;
@@ -1606,17 +1605,6 @@ class RenderLinearGauge extends RenderBox {
     }
 
     return constraints.constrain(_axisActualSize);
-=======
-    final desiredWidth = getGaugeOrientation == GaugeOrientation.vertical
-        ? constraints.minWidth
-        : constraints.maxWidth;
-    final desiredHeight = getGaugeOrientation == GaugeOrientation.horizontal
-        ? constraints.minHeight
-        : constraints.maxHeight;
-    final desiredSize = Size(desiredWidth, desiredHeight);
-    print(desiredSize);
-    return constraints.constrain(desiredSize);
->>>>>>> c1fabb2 (Add: ShowCase App)
   }
 
   @override
