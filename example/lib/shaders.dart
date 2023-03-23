@@ -18,25 +18,39 @@ class _MyShadersState extends State<MyShaders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: LinearGauge(
-          pointers: const [
-            Pointer(
-              value: 40,
-              shape: PointerShape.triangle,
-              pointerPosition: PointerPosition.top,
-            )
-          ],
-          start: 0,
-          end: 100,
-          linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
-            thickness: 30,
-            // backgroundColor: Colors.green.shade100,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            color: Colors.pink.shade100,
+            child: LinearGauge(
+              pointers: const [
+                Pointer(
+                  value: 100,
+                  height: 120,
+                  shape: PointerShape.rectangle,
+                  pointerPosition: PointerPosition.top,
+                ),
+                Pointer(
+                  value: 10,
+                  height: 160,
+                  shape: PointerShape.triangle,
+                  pointerPosition: PointerPosition.top,
+                ),
+              ],
+              start: 0,
+              end: 100,
+              linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
+                thickness: 4,
+                // backgroundColor: Colors.green.shade100,
+              ),
+              rulers: const RulerStyle(
+                rulerPosition: RulerPosition.top,
+                primaryRulersHeight: 20,
+              ),
+            ),
           ),
-          rulers: const RulerStyle(
-            rulerPosition: RulerPosition.bottom,
-          ),
-        ),
+        ],
       ),
     );
   }
