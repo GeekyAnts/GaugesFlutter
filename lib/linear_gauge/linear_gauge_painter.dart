@@ -1116,10 +1116,13 @@ class RenderLinearGauge extends RenderBox {
       Offset a = Offset(x!, y!);
       _primaryRulersPaint.color = primaryRulerColor!;
 
-      canvas.drawLine(primaryRulerStartPoint!, a, _primaryRulersPaint);
       if (showLabel) {
         _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
             _linearGaugeLabel.getListOfLabel[count].value!, value);
+      }
+
+      if (showPrimaryRulers) {
+        canvas.drawLine(primaryRulerStartPoint!, a, _primaryRulersPaint);
       }
       count++;
     });
@@ -1175,7 +1178,6 @@ class RenderLinearGauge extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-<<<<<<< HEAD
     double parentWidgetSize;
     print(constraints);
 
@@ -1196,17 +1198,6 @@ class RenderLinearGauge extends RenderBox {
     print(_axisActualSize);
 
     return constraints.constrain(_axisActualSize);
-=======
-    final desiredWidth = getGaugeOrientation == GaugeOrientation.vertical
-        ? constraints.minWidth
-        : constraints.maxWidth;
-    final desiredHeight = getGaugeOrientation == GaugeOrientation.horizontal
-        ? constraints.minHeight
-        : constraints.maxHeight;
-    final desiredSize = Size(desiredWidth, desiredHeight);
-    print(desiredSize);
-    return constraints.constrain(desiredSize);
->>>>>>> c1fabb2 (Add: ShowCase App)
   }
 
   @override
@@ -1230,9 +1221,7 @@ class RenderLinearGauge extends RenderBox {
       }
     }
 
-    if (showPrimaryRulers) {
-      _drawPrimaryRulers(canvas);
-    }
+    _drawPrimaryRulers(canvas);
 
     if (showSecondaryRulers) {
       _drawSecondaryRulers(canvas);
