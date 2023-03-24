@@ -85,8 +85,7 @@ class RenderLinearGauge extends RenderBox {
       pointerMaxOfBottomAndCenter,
       pointerMaxOfTopAndCenter = 0;
   double? rightPointerHeight,
-      leftPointerWidth,
-      centerPointerWidth,
+      leftPointerHeight,
       pointerMaxOfRightAndCenter,
       pointerMaxOfLeftAndCenter = 0;
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
@@ -1261,8 +1260,7 @@ class RenderLinearGauge extends RenderBox {
 
         if (pointerMaxOfTopAndCenter! <
             ((getEffectiveRulersHeight / 2) + labelThickness)) {
-          yAxisForGaugeContainer =
-              (getEffectiveRulersHeight / 2) + pointerMaxOfTopAndCenter!;
+          yAxisForGaugeContainer = (getEffectiveRulersHeight / 2);
           pointerMaxOfTopAndCenter = 0;
         } else {
           yAxisForGaugeContainer = pointerMaxOfTopAndCenter!;
@@ -1272,7 +1270,7 @@ class RenderLinearGauge extends RenderBox {
             ((getEffectiveRulersHeight / 2) + labelThickness)) {
           pointerMaxOfBottomAndCenter = 0;
 
-          getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
+          // getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
         } else {
           if (pointerMaxOfTopAndCenter == 0) {
             getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
@@ -1300,7 +1298,7 @@ class RenderLinearGauge extends RenderBox {
         xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
         if (pointerMaxOfRightAndCenter! <
             (getEffectiveRulersWidth + labelThickness)) {
-          pointerMaxOfLeftAndCenter = 0;
+          pointerMaxOfRightAndCenter = 0;
         } else {
           getEffectiveRulersWidth = 0;
           labelThickness = 0;
@@ -1317,8 +1315,32 @@ class RenderLinearGauge extends RenderBox {
           getEffectiveRulersWidth = 0;
           labelThickness = 0;
         }
-      }
+      } else if (rulerPosition == RulerPosition.center) {
+        xAxisForGaugeContainer = 0;
 
+        if (pointerMaxOfLeftAndCenter! <
+            ((getEffectiveRulersWidth / 2) + labelThickness)) {
+          xAxisForGaugeContainer = (getEffectiveRulersWidth / 2);
+          pointerMaxOfLeftAndCenter = 0;
+        } else {
+          xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
+          //getEffectiveRulersWidth = (getEffectiveRulersWidth / 2);
+        }
+        if (pointerMaxOfRightAndCenter! <
+            ((getEffectiveRulersWidth / 2) + labelThickness)) {
+          pointerMaxOfRightAndCenter = 0;
+
+          //getEffectiveRulersWidth = getEffectiveRulersWidth / 2;
+        } else {
+          if (xAxisForGaugeContainer == 0) {
+            getEffectiveRulersWidth = getEffectiveRulersWidth / 2;
+            labelThickness = 0;
+          } else {
+            getEffectiveRulersWidth = 0;
+            labelThickness = 0;
+          }
+        }
+      }
       return labelThickness +
           getEffectiveRulersWidth +
           pointerMaxOfLeftAndCenter! +
@@ -1361,8 +1383,8 @@ class RenderLinearGauge extends RenderBox {
 
   void _initMaxWidthPointerFromLeftAndCenter(
       double linearGaugeContainerThickness) {
-    pointerMaxOfLeftAndCenter = math.max((leftPointerWidth!),
-        ((centerPointerWidth! / 2) - (linearGaugeContainerThickness / 2)));
+    pointerMaxOfLeftAndCenter = math.max((leftPointerHeight!),
+        ((centerPointerHeight! / 2) - (linearGaugeContainerThickness / 2)));
   }
 
   void _initMaxHeightPointerFromTopAndCenter(
@@ -1374,22 +1396,28 @@ class RenderLinearGauge extends RenderBox {
   void _initMaxWidthPointerFromRightAndCenter(
       double linearGaugeContainerThickness) {
     pointerMaxOfRightAndCenter = math.max((rightPointerHeight!),
-        ((centerPointerWidth! / 2) - (linearGaugeContainerThickness / 2)));
+        ((centerPointerHeight! / 2) - (linearGaugeContainerThickness / 2)));
   }
 
   void _layoutCenterPointers(List<Pointer> centerPointers) {
+    centerPointers = getPointersByPosition(getPointers, PointerPosition.center);
+
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
-      centerPointers =
-          getPointersByPosition(getPointers, PointerPosition.center);
       centerPointerHeight = centerPointers.isNotEmpty
           ? getLargestPointerForLayout(centerPointers)?.height ?? 0
           : 0;
     } else {
-      centerPointers =
-          getPointersByPosition(getPointers, PointerPosition.center);
-      centerPointerWidth = centerPointers.isNotEmpty
-          ? getLargestPointerForLayout(centerPointers)?.width ?? 0
-          : 0;
+      if (centerPointers.isNotEmpty) {
+        var lPointer = getLargestPointerForLayout(centerPointers);
+        if (lPointer?.shape == PointerShape.rectangle ||
+            lPointer?.shape == PointerShape.diamond) {
+          centerPointerHeight = lPointer?.width;
+        } else {
+          centerPointerHeight = lPointer?.height;
+        }
+      } else {
+        centerPointerHeight = 0;
+      }
     }
   }
 
@@ -1402,9 +1430,21 @@ class RenderLinearGauge extends RenderBox {
 
   void _layoutLeftPointers(List<Pointer> leftPointers) {
     leftPointers = getPointersByPosition(getPointers, PointerPosition.left);
-    leftPointerWidth = leftPointers.isNotEmpty
-        ? getLargestPointerForLayout(leftPointers)?.width ?? 0
-        : 0;
+    if (leftPointers.isNotEmpty) {
+      var lPointer = getLargestPointerForLayout(leftPointers);
+      if (lPointer?.shape == PointerShape.rectangle ||
+          lPointer?.shape == PointerShape.diamond) {
+        leftPointerHeight = lPointer?.width;
+      } else {
+        leftPointerHeight = lPointer?.height;
+      }
+    } else {
+      leftPointerHeight = 0;
+    }
+
+    // leftPointerHeight = leftPointers.isNotEmpty
+    //     ? getLargestPointerForLayout(leftPointers)?. ?? 0
+    //     : 0;
   }
 
   void _layoutTopPointers(List<Pointer> topPointers) {
@@ -1416,9 +1456,20 @@ class RenderLinearGauge extends RenderBox {
 
   void _layoutRightPointers(List<Pointer> rightPointers) {
     rightPointers = getPointersByPosition(getPointers, PointerPosition.right);
-    rightPointerHeight = rightPointers.isNotEmpty
-        ? getLargestPointerForLayout(rightPointers)?.height ?? 0
-        : 0;
+    if (rightPointers.isNotEmpty) {
+      var lPointer = getLargestPointerForLayout(rightPointers);
+      if (lPointer?.shape == PointerShape.rectangle ||
+          lPointer?.shape == PointerShape.diamond) {
+        rightPointerHeight = lPointer?.width;
+      } else {
+        rightPointerHeight = lPointer?.height;
+      }
+    } else {
+      rightPointerHeight = 0;
+    }
+    // rightPointerHeight = rightPointers.isNotEmpty
+    //     ? getLargestPointerForLayout(rightPointers)?.height ?? 0
+    //     : 0;
   }
 
   @override
