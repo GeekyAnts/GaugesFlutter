@@ -918,7 +918,9 @@ class RenderLinearGauge extends RenderBox {
 
         gaugeContainer = Rect.fromLTWH(
           colorRangeStart,
-          offset.dy,
+          rulerPosition == RulerPosition.top
+              ? size.height - offset.dy - getThickness
+              : offset.dy,
           !getInversedRulers ? colorRangeWidth : -colorRangeWidth,
           getThickness,
         );
@@ -1175,7 +1177,6 @@ class RenderLinearGauge extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-<<<<<<< HEAD
     double parentWidgetSize;
     print(constraints);
 
@@ -1196,17 +1197,6 @@ class RenderLinearGauge extends RenderBox {
     print(_axisActualSize);
 
     return constraints.constrain(_axisActualSize);
-=======
-    final desiredWidth = getGaugeOrientation == GaugeOrientation.vertical
-        ? constraints.minWidth
-        : constraints.maxWidth;
-    final desiredHeight = getGaugeOrientation == GaugeOrientation.horizontal
-        ? constraints.minHeight
-        : constraints.maxHeight;
-    final desiredSize = Size(desiredWidth, desiredHeight);
-    print(desiredSize);
-    return constraints.constrain(desiredSize);
->>>>>>> c1fabb2 (Add: ShowCase App)
   }
 
   @override
