@@ -206,7 +206,9 @@ class ValueBar {
 
       gaugeContainer = Rect.fromLTWH(
         startValue,
-        totalValOffset + (linearGaugeThickness - valueBarThickness) / 2,
+        totalValOffset +
+            (linearGaugeThickness - valueBarThickness) / 2 +
+            linearGauge.yAxisForGaugeContainer,
         !getInversedRulers ? valueBarWidth : -valueBarWidth,
         valueBarThickness,
       );
@@ -239,7 +241,9 @@ class ValueBar {
       }
 
       gaugeContainer = Rect.fromLTWH(
-        barLeft + (linearGaugeThickness - valueBarThickness) / 2,
+        barLeft +
+            (linearGaugeThickness - valueBarThickness) / 2 +
+            linearGauge.xAxisForGaugeContainer,
         barTop,
         valueBarThickness, // set width to half of the gauge width
         valueBarWidth,

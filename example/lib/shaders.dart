@@ -21,13 +21,21 @@ class _MyShadersState extends State<MyShaders> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height,
+            // height: MediaQuery.of(context).size.height,
             color: Colors.pink.shade100,
             child: LinearGauge(
-              gaugeOrientation: GaugeOrientation.vertical,
+              gaugeOrientation: GaugeOrientation.horizontal,
+              enableAnimation: true,
+              valueBar: [
+                ValueBar(
+                  value: 20,
+                  position: ValueBarPosition.top,
+                  offset: 30.0,
+                )
+              ],
               pointers: const [
                 Pointer(
                   value: 10,
@@ -36,9 +44,8 @@ class _MyShadersState extends State<MyShaders> {
                 ),
                 Pointer(
                   value: 10,
-                  height: 200,
                   shape: PointerShape.triangle,
-                  pointerPosition: PointerPosition.right,
+                  pointerPosition: PointerPosition.bottom,
                 ),
               ],
               start: 0,
@@ -48,9 +55,10 @@ class _MyShadersState extends State<MyShaders> {
                 // backgroundColor: Colors.green.shade100,
               ),
               rulers: const RulerStyle(
-                rulerPosition: RulerPosition.center,
-                primaryRulersHeight: 20,
-              ),
+                  rulerPosition: RulerPosition.bottom,
+                  primaryRulersHeight: 20,
+                  rulersOffset: 20,
+                  labelOffset: 30),
             ),
           ),
         ],

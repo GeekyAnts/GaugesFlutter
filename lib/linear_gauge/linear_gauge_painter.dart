@@ -84,6 +84,11 @@ class RenderLinearGauge extends RenderBox {
       centerPointerHeight,
       pointerMaxOfBottomAndCenter,
       pointerMaxOfTopAndCenter = 0;
+  double? topValueBarOffset,
+      bottomValueBarOffset,
+      centerValueBarOffset,
+      valueBarMaxOfBottomAndCenter,
+      valueBarMaxOfTopAndCenter = 0;
   double? rightPointerHeight,
       leftPointerHeight,
       pointerMaxOfRightAndCenter,
@@ -784,7 +789,11 @@ class RenderLinearGauge extends RenderBox {
     }
 
     if (getLinearGaugeBoxDecoration.borderRadius != null) {
-      var rectangularBox = _getRoundedContainer(gaugeContainer: gaugeContainer);
+      var rectangularBox = _getRoundedContainer(
+        gaugeContainer: gaugeContainer,
+        borderRadius: getLinearGaugeBoxDecoration.borderRadius,
+        edgeStyle: getLinearGaugeBoxDecoration.edgeStyle,
+      );
       canvas.drawRRect(rectangularBox, _linearGaugeContainerPaint);
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
@@ -901,6 +910,8 @@ class RenderLinearGauge extends RenderBox {
     required Offset offset,
     required Rect gaugeContainer,
   }) {
+    var roundedGaugeContainer;
+
     /// For loop for calculating colors in [RangeLinearGauge]
     /// 2 is hardcoded beacuse extend is happeing from both the end of the gauge
     for (int i = 0; i < rangeLinearGauge!.length; i++) {
@@ -980,46 +991,61 @@ class RenderLinearGauge extends RenderBox {
       }
 
       _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
-      canvas.drawRect(
-        gaugeContainer,
-        _linearGaugeContainerValuePaint,
-      );
+      if (rangeLinearGauge![i].borderRadius != null) {
+        roundedGaugeContainer = _getRoundedContainer(
+          gaugeContainer: gaugeContainer,
+          borderRadius: rangeLinearGauge![i].borderRadius,
+          edgeStyle: rangeLinearGauge![i].edgeStyle,
+        );
+        canvas.drawRRect(
+          roundedGaugeContainer,
+          _linearGaugeContainerValuePaint,
+        );
+      } else {
+        canvas.drawRect(
+          gaugeContainer,
+          _linearGaugeContainerValuePaint,
+        );
+      }
     }
   }
 
-  RRect _getRoundedContainer({required Rect gaugeContainer}) {
+  RRect _getRoundedContainer({
+    required Rect gaugeContainer,
+    required borderRadius,
+    required edgeStyle,
+  }) {
     var rectangularBox;
-    switch (getLinearGaugeBoxDecoration.edgeStyle) {
+    switch (edgeStyle) {
       case LinearEdgeStyle.startCurve:
         rectangularBox = RRect.fromRectAndCorners(
           gaugeContainer,
-          topLeft: Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+          topLeft: Radius.circular(borderRadius!),
           bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
-              ? Radius.circular(getLinearGaugeBoxDecoration.borderRadius!)
+              ? Radius.circular(borderRadius!)
               : Radius.zero,
           topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
               ? Radius.zero
-              : Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+              : Radius.circular(borderRadius!),
         );
         break;
       case LinearEdgeStyle.endCurve:
         rectangularBox = RRect.fromRectAndCorners(
           gaugeContainer,
           topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
-              ? Radius.circular(getLinearGaugeBoxDecoration.borderRadius!)
+              ? Radius.circular(borderRadius!)
               : Radius.zero,
           bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
               ? Radius.zero
-              : Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
-          bottomRight:
-              Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+              : Radius.circular(borderRadius!),
+          bottomRight: Radius.circular(borderRadius!),
         );
         break;
 
       default:
         rectangularBox = RRect.fromRectAndRadius(
           gaugeContainer,
-          Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+          Radius.circular(borderRadius!),
         );
         break;
     }
@@ -1048,27 +1074,21 @@ class RenderLinearGauge extends RenderBox {
   }
 
   Pointer? getLargestPointer(List<Pointer>? pointers) {
-    Pointer? largestPointer;
-    pointers?.reduce((current, next) {
-      if (GaugeOrientation.vertical == getGaugeOrientation) {
-        if (current.height! > next.height!) {
-          largestPointer = current;
-          return largestPointer!;
-        } else {
-          largestPointer = next;
-          return largestPointer!;
-        }
-      } else {
-        if (current.width! > next.width!) {
-          largestPointer = current;
-          return largestPointer!;
-        } else {
-          largestPointer = next;
-          return largestPointer!;
-        }
-      }
-    });
+    Pointer? largestPointer = pointers?.reduce(
+        (current, next) => getGaugeOrientation == GaugeOrientation.vertical
+            ? current.height! > next.height!
+                ? current
+                : next
+            : current.width! > next.width!
+                ? current
+                : next);
     return largestPointer;
+  }
+
+  ValueBar? getLargestValueBarOffset(List<ValueBar>? valueBars) {
+    ValueBar? largestValueBarWithOffset = valueBars?.reduce(
+        (current, next) => current.offset > next.offset ? current : next);
+    return largestValueBarWithOffset;
   }
 
   Pointer? getLargestPointerForLayout(List<Pointer>? pointers) {
@@ -1237,128 +1257,213 @@ class RenderLinearGauge extends RenderBox {
         getLinearGaugeBoxDecoration.thickness!;
 
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
-      double getEffectiveRulersHeight = getMaxRulerHeight();
-      double labelThickness = getLabelHeight();
-      _layoutTopPointers(topPointers);
-      _layoutBottomPointers(bottomPointers);
-      _layoutCenterPointers(centerPointers);
-      _initMaxHeightPointerFromTopAndCenter(linearGaugeContainerThickness);
-      _initMaxHeightPointerFromBottomAndCenter(linearGaugeContainerThickness);
-
-      if (rulerPosition == RulerPosition.top) {
-        /// This statement add the ruler and label when pointer height is less
-        /// ruler and label
-        yAxisForGaugeContainer = getEffectiveRulersHeight + labelThickness;
-        if (pointerMaxOfTopAndCenter! <
-            (getEffectiveRulersHeight + labelThickness)) {
-          pointerMaxOfTopAndCenter = 0;
-        } else {
-          yAxisForGaugeContainer = pointerMaxOfTopAndCenter!;
-          getEffectiveRulersHeight = 0;
-          labelThickness = 0;
-        }
-      } else if (rulerPosition == RulerPosition.bottom) {
-        yAxisForGaugeContainer = pointerMaxOfTopAndCenter!;
-        if (pointerMaxOfBottomAndCenter! <
-            (getEffectiveRulersHeight + labelThickness)) {
-          pointerMaxOfBottomAndCenter = 0;
-        } else {
-          getEffectiveRulersHeight = 0;
-          labelThickness = 0;
-        }
-        //yAxisForGaugeContainer += pointerMaxOfBottomAndCenter!;
-      } else if (rulerPosition == RulerPosition.center) {
-        yAxisForGaugeContainer = 0;
-
-        if (pointerMaxOfTopAndCenter! <
-            ((getEffectiveRulersHeight / 2) + labelThickness)) {
-          yAxisForGaugeContainer = (getEffectiveRulersHeight / 2);
-          pointerMaxOfTopAndCenter = 0;
-        } else {
-          yAxisForGaugeContainer = pointerMaxOfTopAndCenter!;
-          //getEffectiveRulersHeight = (getEffectiveRulersHeight / 2);
-        }
-        if (pointerMaxOfBottomAndCenter! <
-            ((getEffectiveRulersHeight / 2) + labelThickness)) {
-          pointerMaxOfBottomAndCenter = 0;
-
-          // getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
-        } else {
-          if (pointerMaxOfTopAndCenter == 0) {
-            getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
-            labelThickness = 0;
-          } else {
-            getEffectiveRulersHeight = 0;
-            labelThickness = 0;
-          }
-        }
-      }
-      return labelThickness +
-          getEffectiveRulersHeight +
-          pointerMaxOfTopAndCenter! +
-          pointerMaxOfBottomAndCenter! +
-          getThickness;
+      return layoutHorizontalGauge(topPointers, bottomPointers, centerPointers,
+          linearGaugeContainerThickness);
     } else {
-      double getEffectiveRulersWidth = getMaxRulerHeight();
-      double labelThickness = getLabelWidth();
-      _layoutRightPointers(rightPointers);
-      _layoutLeftPointers(leftPointers);
-      _layoutCenterPointers(centerPointers);
-      _initMaxWidthPointerFromRightAndCenter(linearGaugeContainerThickness);
-      _initMaxWidthPointerFromLeftAndCenter(linearGaugeContainerThickness);
-      if (rulerPosition == RulerPosition.right) {
+      return layoutVerticalGauge(rightPointers, leftPointers, centerPointers,
+          linearGaugeContainerThickness);
+    }
+  }
+
+  double layoutVerticalGauge(
+      List<Pointer> rightPointers,
+      List<Pointer> leftPointers,
+      List<Pointer> centerPointers,
+      double linearGaugeContainerThickness) {
+    double getEffectiveRulersWidth = getMaxRulerHeight();
+    double labelThickness = getLabelWidth();
+    double rulersOffset = getRulersOffset;
+    double labelsOffset = getLabelOffset;
+    _layoutRightPointers(rightPointers);
+    _layoutLeftPointers(leftPointers);
+    _layoutCenterPointers(centerPointers);
+    _initMaxWidthPointerFromRightAndCenter(linearGaugeContainerThickness);
+    _initMaxWidthPointerFromLeftAndCenter(linearGaugeContainerThickness);
+    if (rulerPosition == RulerPosition.right) {
+      xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
+      if (pointerMaxOfRightAndCenter! <
+          (getEffectiveRulersWidth + labelThickness)) {
+        pointerMaxOfRightAndCenter = 0;
+      } else {
+        getEffectiveRulersWidth = 0;
+        labelThickness = 0;
+        rulersOffset = 0;
+        labelsOffset = 0;
+      }
+      if (getSecondaryRulersHeight >
+          (getPrimaryRulersHeight + labelThickness)) {
+        labelThickness = 0;
+      }
+    } else if (rulerPosition == RulerPosition.left) {
+      /// This statement add the ruler and label when pointer height is less
+      /// ruler and label
+      xAxisForGaugeContainer = getEffectiveRulersWidth +
+          labelThickness +
+          rulersOffset +
+          labelsOffset;
+      if (pointerMaxOfLeftAndCenter! <
+          (getEffectiveRulersWidth + labelThickness)) {
+        pointerMaxOfLeftAndCenter = 0;
+      } else {
         xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
-        if (pointerMaxOfRightAndCenter! <
-            (getEffectiveRulersWidth + labelThickness)) {
-          pointerMaxOfRightAndCenter = 0;
+        getEffectiveRulersWidth = 0;
+        labelThickness = 0;
+        rulersOffset = 0;
+        labelsOffset = 0;
+      }
+      if (getSecondaryRulersHeight >
+          (getPrimaryRulersHeight + labelThickness)) {
+        xAxisForGaugeContainer -= labelThickness;
+        labelThickness = 0;
+      }
+    } else if (rulerPosition == RulerPosition.center) {
+      xAxisForGaugeContainer = 0;
+      // When rulers are center there is no effect of offset so setting to 0;
+      rulersOffset = 0;
+      labelsOffset = 0;
+      if (pointerMaxOfLeftAndCenter! <
+          ((getEffectiveRulersWidth / 2) + labelThickness)) {
+        xAxisForGaugeContainer = (getEffectiveRulersWidth / 2);
+        pointerMaxOfLeftAndCenter = 0;
+      } else {
+        xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
+        //getEffectiveRulersHeight = (getEffectiveRulersHeight / 2);
+      }
+      // if (getThickness / 2 <= getEffectiveRulersWidth / 2) {
+      //   effectiveGaugeThickness = getThickness / 2;
+      //   xAxisForGaugeContainer -= effectiveGaugeThickness;
+      // } else {
+      //   xAxisForGaugeContainer -= getEffectiveRulersWidth / 2;
+      //   getEffectiveRulersWidth = 0;
+      // }
+      if (pointerMaxOfRightAndCenter! <
+          ((getEffectiveRulersWidth / 2) + labelThickness)) {
+        pointerMaxOfRightAndCenter = 0;
+
+        if (pointerMaxOfLeftAndCenter != 0) {
+          getEffectiveRulersWidth = getEffectiveRulersWidth / 2;
+        }
+      } else {
+        if (pointerMaxOfLeftAndCenter == 0) {
+          getEffectiveRulersWidth = getEffectiveRulersWidth / 2;
+          labelThickness = 0;
         } else {
           getEffectiveRulersWidth = 0;
-          labelThickness = 0;
-        }
-      } else if (rulerPosition == RulerPosition.left) {
-        /// This statement add the ruler and label when pointer height is less
-        /// ruler and label
-        xAxisForGaugeContainer = getEffectiveRulersWidth + labelThickness;
-        if (pointerMaxOfLeftAndCenter! <
-            (getEffectiveRulersWidth + labelThickness)) {
-          pointerMaxOfLeftAndCenter = 0;
-        } else {
-          xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
-          getEffectiveRulersWidth = 0;
-          labelThickness = 0;
-        }
-      } else if (rulerPosition == RulerPosition.center) {
-        xAxisForGaugeContainer = 0;
 
-        if (pointerMaxOfLeftAndCenter! <
-            ((getEffectiveRulersWidth / 2) + labelThickness)) {
-          xAxisForGaugeContainer = (getEffectiveRulersWidth / 2);
-          pointerMaxOfLeftAndCenter = 0;
-        } else {
-          xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
-          //getEffectiveRulersHeight = (getEffectiveRulersHeight / 2);
-        }
-        if (pointerMaxOfRightAndCenter! <
-            ((getEffectiveRulersWidth / 2) + labelThickness)) {
-          pointerMaxOfRightAndCenter = 0;
-
-          // getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
-        } else {
-          if (pointerMaxOfLeftAndCenter == 0) {
-            getEffectiveRulersWidth = getEffectiveRulersWidth / 2;
-            labelThickness = 0;
-          } else {
-            getEffectiveRulersWidth = 0;
-            labelThickness = 0;
-          }
+          labelThickness = 0;
         }
       }
-      return labelThickness +
-          getEffectiveRulersWidth +
-          pointerMaxOfLeftAndCenter! +
-          pointerMaxOfRightAndCenter! +
-          getThickness;
+      if (getSecondaryRulersHeight >
+          (getPrimaryRulersHeight + labelThickness)) {
+        labelThickness = 0;
+      }
     }
+    return labelThickness +
+        getEffectiveRulersWidth +
+        pointerMaxOfLeftAndCenter! +
+        pointerMaxOfRightAndCenter! +
+        getThickness +
+        rulersOffset +
+        rulersOffset;
+    ;
+  }
+
+  double layoutHorizontalGauge(
+      List<Pointer> topPointers,
+      List<Pointer> bottomPointers,
+      List<Pointer> centerPointers,
+      double linearGaugeContainerThickness) {
+    double getEffectiveRulersHeight = getMaxRulerHeight();
+    double labelThickness = getLabelHeight();
+    double rulersOffset = getRulersOffset;
+    double labelsOffset = getLabelOffset;
+    _layoutTopPointers(topPointers);
+    _layoutBottomPointers(bottomPointers);
+    _layoutCenterPointers(centerPointers);
+    _initMaxHeightPointerFromTopAndCenter(linearGaugeContainerThickness);
+    _initMaxHeightPointerFromBottomAndCenter(linearGaugeContainerThickness);
+
+    if (rulerPosition == RulerPosition.top) {
+      /// This statement add the ruler and label when pointer height is less
+      /// ruler and label
+      yAxisForGaugeContainer = getEffectiveRulersHeight +
+          labelThickness +
+          rulersOffset +
+          labelsOffset;
+      if (pointerMaxOfTopAndCenter! <
+          (getEffectiveRulersHeight + labelThickness)) {
+        pointerMaxOfTopAndCenter = 0;
+      } else {
+        yAxisForGaugeContainer = pointerMaxOfTopAndCenter!;
+        getEffectiveRulersHeight = 0;
+        labelThickness = 0;
+        rulersOffset = 0;
+
+        labelsOffset = 0;
+      }
+      if (getSecondaryRulersHeight >
+          (getPrimaryRulersHeight + labelThickness)) {
+        yAxisForGaugeContainer -= labelThickness;
+        labelThickness = 0;
+      }
+    } else if (rulerPosition == RulerPosition.bottom) {
+      yAxisForGaugeContainer = pointerMaxOfTopAndCenter!;
+      if (pointerMaxOfBottomAndCenter! <
+          (getEffectiveRulersHeight + labelThickness)) {
+        pointerMaxOfBottomAndCenter = 0;
+      } else {
+        getEffectiveRulersHeight = 0;
+        labelThickness = 0;
+        rulersOffset = 0;
+        labelsOffset = 0;
+      }
+      if (getSecondaryRulersHeight >
+          (getPrimaryRulersHeight + labelThickness)) {
+        labelThickness = 0;
+      }
+      //yAxisForGaugeContainer += pointerMaxOfBottomAndCenter!;
+    } else if (rulerPosition == RulerPosition.center) {
+      yAxisForGaugeContainer = 0;
+      rulersOffset = 0;
+      labelsOffset = 0;
+      if (pointerMaxOfTopAndCenter! <
+          ((getEffectiveRulersHeight / 2) + labelThickness)) {
+        yAxisForGaugeContainer = (getEffectiveRulersHeight / 2);
+        pointerMaxOfTopAndCenter = 0;
+      } else {
+        yAxisForGaugeContainer = pointerMaxOfTopAndCenter!;
+        //getEffectiveRulersHeight = (getEffectiveRulersHeight / 2);
+      }
+      if (pointerMaxOfBottomAndCenter! <
+          ((getEffectiveRulersHeight / 2) + labelThickness)) {
+        pointerMaxOfBottomAndCenter = 0;
+
+        if (pointerMaxOfTopAndCenter != 0) {
+          getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
+        }
+
+        // getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
+      } else {
+        if (pointerMaxOfTopAndCenter == 0) {
+          getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
+          labelThickness = 0;
+        } else {
+          getEffectiveRulersHeight = 0;
+          labelThickness = 0;
+        }
+      }
+      if (getSecondaryRulersHeight >
+          (getPrimaryRulersHeight + labelThickness)) {
+        labelThickness = 0;
+      }
+    }
+    return labelThickness +
+        getEffectiveRulersHeight +
+        pointerMaxOfTopAndCenter! +
+        pointerMaxOfBottomAndCenter! +
+        getThickness +
+        rulersOffset +
+        labelsOffset;
   }
 
   double getMaxRulerHeight() {
@@ -1453,10 +1558,6 @@ class RenderLinearGauge extends RenderBox {
     } else {
       leftPointerHeight = 0;
     }
-
-    // leftPointerHeight = leftPointers.isNotEmpty
-    //     ? getLargestPointerForLayout(leftPointers)?. ?? 0
-    //     : 0;
   }
 
   void _layoutTopPointers(List<Pointer> topPointers) {
