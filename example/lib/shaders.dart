@@ -31,9 +31,14 @@ class _MyShadersState extends State<MyShaders> {
               pointers: const [
                 Pointer(
                   value: 10,
-                  height: 200,
                   shape: PointerShape.circle,
                   pointerPosition: PointerPosition.center,
+                ),
+                Pointer(
+                  value: 10,
+                  height: 200,
+                  shape: PointerShape.triangle,
+                  pointerPosition: PointerPosition.right,
                 ),
               ],
               start: 0,

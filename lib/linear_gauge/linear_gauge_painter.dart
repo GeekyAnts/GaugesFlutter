@@ -1048,14 +1048,26 @@ class RenderLinearGauge extends RenderBox {
   }
 
   Pointer? getLargestPointer(List<Pointer>? pointers) {
-    Pointer? largestPointer = pointers?.reduce(
-        (current, next) => getGaugeOrientation == GaugeOrientation.vertical
-            ? current.height! > next.height!
-                ? current
-                : next
-            : current.width! > next.width!
-                ? current
-                : next);
+    Pointer? largestPointer;
+    pointers?.reduce((current, next) {
+      if (GaugeOrientation.vertical == getGaugeOrientation) {
+        if (current.height! > next.height!) {
+          largestPointer = current;
+          return largestPointer!;
+        } else {
+          largestPointer = next;
+          return largestPointer!;
+        }
+      } else {
+        if (current.width! > next.width!) {
+          largestPointer = current;
+          return largestPointer!;
+        } else {
+          largestPointer = next;
+          return largestPointer!;
+        }
+      }
+    });
     return largestPointer;
   }
 
@@ -1324,15 +1336,15 @@ class RenderLinearGauge extends RenderBox {
           pointerMaxOfLeftAndCenter = 0;
         } else {
           xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
-          //getEffectiveRulersWidth = (getEffectiveRulersWidth / 2);
+          //getEffectiveRulersHeight = (getEffectiveRulersHeight / 2);
         }
         if (pointerMaxOfRightAndCenter! <
             ((getEffectiveRulersWidth / 2) + labelThickness)) {
           pointerMaxOfRightAndCenter = 0;
 
-          //getEffectiveRulersWidth = getEffectiveRulersWidth / 2;
+          // getEffectiveRulersHeight = getEffectiveRulersHeight / 2;
         } else {
-          if (xAxisForGaugeContainer == 0) {
+          if (pointerMaxOfLeftAndCenter == 0) {
             getEffectiveRulersWidth = getEffectiveRulersWidth / 2;
             labelThickness = 0;
           } else {
