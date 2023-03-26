@@ -229,54 +229,74 @@ class LinearGaugeLabel {
               case RulerPosition.top:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
                 secondaryRulerStartPoint = Offset(
-                    x,
-                    -rulersOffset +
-                        (linearGauge.size.height - linearGaugeHeight));
+                    x, -rulersOffset + linearGauge.yAxisForGaugeContainer);
 
                 secondaryRulerEndPoint = Offset(
                     x,
-                    -(5 + height + rulersOffset - y) +
-                        (linearGauge.size.height - linearGaugeHeight));
+                    -(height + rulersOffset - y) +
+                        linearGauge.yAxisForGaugeContainer);
                 break;
               case RulerPosition.center:
                 if (gaugeOrientation == GaugeOrientation.horizontal) {
                   //the staring point is shifted half of the secondary ruler height from the
                   //center of the gauge container
                   secondaryRulerStartPoint = Offset(
-                      x, (y / 2) - ((5 + height - linearGaugeHeight) / 2));
+                      x,
+                      (y / 2) -
+                          ((height - linearGaugeHeight) / 2) +
+                          linearGauge.yAxisForGaugeContainer);
                   //the y co-ordinate of the ending point is halved from it's original position
-                  secondaryRulerEndPoint = Offset(x, (5 + height) / 2);
+                  secondaryRulerEndPoint = Offset(
+                      x, (height) / 2 + linearGauge.yAxisForGaugeContainer);
                 } else {
                   //the staring point is shifted half of the secondary ruler height from the
                   //center of the gauge container
                   secondaryRulerStartPoint = Offset(
-                      (x / 2) - ((5 + height - linearGaugeHeight) / 2), y);
+                      (x / 2) -
+                          ((height - linearGaugeHeight) / 2) +
+                          linearGauge.xAxisForGaugeContainer,
+                      y);
                   //the y co-ordinate of the ending point is halved from it's original position
-                  secondaryRulerEndPoint = Offset((5 + height) / 2, y);
+                  secondaryRulerEndPoint = Offset(
+                      (((height) / 2) + linearGauge.xAxisForGaugeContainer), y);
                 }
                 break;
               case RulerPosition.bottom:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
 
-                secondaryRulerStartPoint = Offset(x, y + rulersOffset);
+                secondaryRulerStartPoint = Offset(
+                  x,
+                  y + rulersOffset + linearGauge.yAxisForGaugeContainer,
+                );
 
-                secondaryRulerEndPoint = Offset(x, 5 + height + rulersOffset);
+                secondaryRulerEndPoint = Offset(
+                  x,
+                  height + rulersOffset + linearGauge.yAxisForGaugeContainer,
+                );
 
                 break;
               case RulerPosition.right:
 
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(x + rulersOffset, y);
+                secondaryRulerStartPoint = Offset(
+                    x + rulersOffset + linearGauge.xAxisForGaugeContainer, y);
 
-                secondaryRulerEndPoint = Offset(rulersOffset + height + 5, (y));
+                secondaryRulerEndPoint = Offset(
+                    rulersOffset + height + linearGauge.xAxisForGaugeContainer,
+                    (y));
 
                 break;
               case RulerPosition.left:
 
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(-rulersOffset, y);
-                secondaryRulerEndPoint =
-                    Offset(-(rulersOffset + height + 5 - x), y);
+                secondaryRulerStartPoint = Offset(
+                    -rulersOffset + linearGauge.xAxisForGaugeContainer, y);
+                secondaryRulerEndPoint = Offset(
+                    -(rulersOffset +
+                        height -
+                        x -
+                        linearGauge.xAxisForGaugeContainer),
+                    y);
 
                 break;
             }
