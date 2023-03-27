@@ -183,8 +183,8 @@ class ValueBar {
     //For get Offset Height
     double linearGaugeThickness = linearGauge.getThickness;
 
-    double totalValOffset =
-        _getOffsetHeight(valueBarPosition, linearGaugeThickness, offset);
+    double totalValOffset = _getOffsetHeight(
+        valueBarPosition, linearGaugeThickness, offset, linearGauge);
     bool getInversedRulers = linearGauge.getInversedRulers;
     // Drawing Value Bar
     final Rect gaugeContainer;
@@ -204,11 +204,17 @@ class ValueBar {
         }
       }
 
+      var topOffset = totalValOffset;
+
+      if (position == ValueBarPosition.center) {
+        topOffset = totalValOffset +
+            (linearGaugeThickness - valueBarThickness) / 2 +
+            linearGauge.yAxisForGaugeContainer;
+      }
+
       gaugeContainer = Rect.fromLTWH(
         startValue,
-        totalValOffset +
-            (linearGaugeThickness - valueBarThickness) / 2 +
-            linearGauge.yAxisForGaugeContainer,
+        topOffset,
         !getInversedRulers ? valueBarWidth : -valueBarWidth,
         valueBarThickness,
       );
@@ -220,6 +226,7 @@ class ValueBar {
         position,
         linearGaugeThickness,
         offset,
+        linearGauge,
       ); // adjust left position as needed
 
       if (!linearGauge.getFillExtend) {
@@ -240,10 +247,16 @@ class ValueBar {
         }
       }
 
-      gaugeContainer = Rect.fromLTWH(
-        barLeft +
+      var startOffset = barLeft;
+
+      if (position == ValueBarPosition.center) {
+        startOffset = barLeft +
             (linearGaugeThickness - valueBarThickness) / 2 +
-            linearGauge.xAxisForGaugeContainer,
+            linearGauge.xAxisForGaugeContainer;
+      }
+
+      gaugeContainer = Rect.fromLTWH(
+        startOffset,
         barTop,
         valueBarThickness, // set width to half of the gauge width
         valueBarWidth,
@@ -262,17 +275,19 @@ class ValueBar {
   }
 
   // Calculating Offset Height for Value Bar
-  double _getOffsetHeight(
-      ValueBarPosition position, double height, double valueBarOffset) {
+  double _getOffsetHeight(ValueBarPosition position, double height,
+      double valueBarOffset, RenderLinearGauge linearGauge) {
     switch (position) {
       case ValueBarPosition.center:
         return 0.0;
       case ValueBarPosition.top:
-        return -(height + valueBarOffset);
+        return (linearGauge.yAxisForGaugeContainer -
+            valueBarThickness -
+            offset);
       case ValueBarPosition.bottom:
-        return height + valueBarOffset;
+        return height + valueBarOffset + linearGauge.yAxisForGaugeContainer;
       case ValueBarPosition.left:
-        return -(height + valueBarOffset);
+        return -valueBarOffset;
       case ValueBarPosition.right:
         return height + valueBarOffset;
       default:
