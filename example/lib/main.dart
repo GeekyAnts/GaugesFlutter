@@ -13,9 +13,7 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(
-        selectedItem: 1,
-      ),
+      home: MyGaugeExample(),
     ),
   );
 }
