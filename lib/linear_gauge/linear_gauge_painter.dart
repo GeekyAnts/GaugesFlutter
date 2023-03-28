@@ -588,7 +588,7 @@ class RenderLinearGauge extends RenderBox {
         }
       }
       // Return a default style if no range color is found
-      return getTextStyle.color;
+      return getTextStyle.color ?? Colors.black;
     }
 
     final ui.TextStyle labelTextStyle = ui.TextStyle(
@@ -1358,8 +1358,13 @@ class RenderLinearGauge extends RenderBox {
         rulersOffset = 0;
         labelsOffset = 0;
       }
-      if (getSecondaryRulersHeight >
-          (getPrimaryRulersHeight + labelThickness)) {
+      if (labelsOffset + getPrimaryRulersHeight + labelThickness >=
+          getSecondaryRulersHeight) {
+        if (getSecondaryRulersHeight == getEffectiveRulersWidth) {
+          getEffectiveRulersWidth = getPrimaryRulersHeight;
+        }
+      } else {
+        labelsOffset = 0;
         labelThickness = 0;
       }
     } else if (rulerPosition == RulerPosition.left) {
@@ -1388,16 +1393,25 @@ class RenderLinearGauge extends RenderBox {
         rulersOffset = 0;
         labelsOffset = 0;
       }
-      if (getSecondaryRulersHeight >
-          (getPrimaryRulersHeight + labelThickness)) {
+      if (labelsOffset + getPrimaryRulersHeight + labelThickness >=
+          getSecondaryRulersHeight) {
+        if (getSecondaryRulersHeight == getEffectiveRulersWidth) {
+          xAxisForGaugeContainer = xAxisForGaugeContainer -
+              (getEffectiveRulersWidth - getPrimaryRulersHeight);
+
+          getEffectiveRulersWidth = getPrimaryRulersHeight;
+        }
+      } else {
         xAxisForGaugeContainer -= labelThickness;
+        xAxisForGaugeContainer -= labelsOffset;
+
+        labelsOffset = 0;
         labelThickness = 0;
       }
     } else if (rulerPosition == RulerPosition.center) {
       xAxisForGaugeContainer = 0;
       // When rulers are center there is no effect of offset so setting to 0;
       rulersOffset = 0;
-      labelsOffset = 0;
 
       if (valueBarMaxOfLeftAndCenter! <= pointerMaxOfLeftAndCenter!) {
         valueBarMaxOfLeftAndCenter = 0;
@@ -1437,8 +1451,15 @@ class RenderLinearGauge extends RenderBox {
           labelThickness = 0;
         }
       }
-      if (getSecondaryRulersHeight >
-          (getPrimaryRulersHeight + labelThickness)) {
+      if (labelsOffset + getPrimaryRulersHeight / 2 + labelThickness >=
+          getSecondaryRulersHeight / 2) {
+        if (getSecondaryRulersHeight == getEffectiveRulersWidth) {
+          getEffectiveRulersWidth =
+              (getEffectiveRulersWidth / 2 - getPrimaryRulersHeight / 2) +
+                  getPrimaryRulersHeight;
+        }
+      } else {
+        labelsOffset = 0;
         labelThickness = 0;
       }
     }
@@ -1448,10 +1469,9 @@ class RenderLinearGauge extends RenderBox {
         pointerMaxOfRightAndCenter! +
         valueBarMaxOfLeftAndCenter! +
         valueBarMaxOfRightAndCenter! +
+        labelsOffset +
         getThickness +
-        rulersOffset +
         rulersOffset;
-    ;
   }
 
   double layoutHorizontalGauge(
@@ -1509,9 +1529,20 @@ class RenderLinearGauge extends RenderBox {
 
         labelsOffset = 0;
       }
-      if (getSecondaryRulersHeight >
-          (getPrimaryRulersHeight + labelThickness)) {
+
+      if (labelsOffset + getPrimaryRulersHeight + labelThickness >=
+          getSecondaryRulersHeight) {
+        if (getSecondaryRulersHeight == getEffectiveRulersHeight) {
+          yAxisForGaugeContainer = yAxisForGaugeContainer -
+              (getEffectiveRulersHeight - getPrimaryRulersHeight);
+
+          getEffectiveRulersHeight = getPrimaryRulersHeight;
+        }
+      } else {
         yAxisForGaugeContainer -= labelThickness;
+        yAxisForGaugeContainer -= labelsOffset;
+
+        labelsOffset = 0;
         labelThickness = 0;
       }
     } else if (rulerPosition == RulerPosition.bottom) {
@@ -1522,14 +1553,6 @@ class RenderLinearGauge extends RenderBox {
       } else {
         yAxisForGaugeContainer = valueBarMaxOfTopAndCenter!;
         pointerMaxOfTopAndCenter = 0;
-      }
-
-      // 2-3 pixel bug to be fixed in future
-      if (getSecondaryRulersHeight >
-          (getPrimaryRulersHeight +
-              labelThickness +
-              valueBarMaxOfBottomAndCenter)) {
-        labelThickness = 0;
       }
 
       if (valueBarMaxOfBottomAndCenter! <=
@@ -1549,11 +1572,20 @@ class RenderLinearGauge extends RenderBox {
         rulersOffset = 0;
         labelsOffset = 0;
       }
+
+      if (labelsOffset + getPrimaryRulersHeight + labelThickness >=
+          getSecondaryRulersHeight) {
+        if (getSecondaryRulersHeight == getEffectiveRulersHeight) {
+          getEffectiveRulersHeight = getPrimaryRulersHeight;
+        }
+      } else {
+        labelsOffset = 0;
+        labelThickness = 0;
+      }
       //yAxisForGaugeContainer += pointerMaxOfBottomAndCenter!;
     } else if (rulerPosition == RulerPosition.center) {
       yAxisForGaugeContainer = 0;
       rulersOffset = 0;
-      labelsOffset = 0;
 
       if (valueBarMaxOfTopAndCenter! <= pointerMaxOfTopAndCenter!) {
         valueBarMaxOfTopAndCenter = 0;
@@ -1594,8 +1626,16 @@ class RenderLinearGauge extends RenderBox {
           labelThickness = 0;
         }
       }
-      if (getSecondaryRulersHeight >
-          (getPrimaryRulersHeight + labelThickness)) {
+
+      if (labelsOffset + getPrimaryRulersHeight / 2 + labelThickness >=
+          getSecondaryRulersHeight / 2) {
+        if (getSecondaryRulersHeight == getEffectiveRulersHeight) {
+          getEffectiveRulersHeight =
+              (getEffectiveRulersHeight / 2 - getPrimaryRulersHeight / 2) +
+                  getPrimaryRulersHeight;
+        }
+      } else {
+        labelsOffset = 0;
         labelThickness = 0;
       }
     }

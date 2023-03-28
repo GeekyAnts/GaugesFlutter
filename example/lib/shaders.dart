@@ -30,27 +30,27 @@ class _MyShadersState extends State<MyShaders> {
               child: LinearGauge(
                 gaugeOrientation: GaugeOrientation.vertical,
                 // enableAnimation: true,
-                valueBar: [
-                  ValueBar(
-                    value: 20,
-                    position: ValueBarPosition.right,
-                    valueBarThickness: 180,
-                    offset: 100.0,
-                  )
-                ],
+                // valueBar: [
+                //   ValueBar(
+                //     value: 20,
+                //     position: ValueBarPosition.bottom,
+                //     valueBarThickness: 180,
+                //     offset: 100.0,
+                //   )
+                // ],
                 pointers: const [
-                  Pointer(
-                    value: 10,
-                    shape: PointerShape.circle,
-                    pointerPosition: PointerPosition.left,
-                    height: 10,
-                  ),
-                  Pointer(
-                    value: 10,
-                    height: 300,
-                    shape: PointerShape.triangle,
-                    pointerPosition: PointerPosition.right,
-                  ),
+                  // Pointer(
+                  //   value: 10,
+                  //   shape: PointerShape.circle,
+                  //   pointerPosition: PointerPosition.top,
+                  //   height: 10,
+                  // ),
+                  // Pointer(
+                  //   value: 10,
+                  //   height: 100,
+                  //   shape: PointerShape.triangle,
+                  //   pointerPosition: PointerPosition.top,
+                  // ),
                 ],
                 start: 0,
                 end: 100,
@@ -60,10 +60,13 @@ class _MyShadersState extends State<MyShaders> {
                 ),
                 rulers: const RulerStyle(
                   rulerPosition: RulerPosition.center,
-                  // primaryRulersHeight: 20,
-                  // secondaryRulersHeight: 190
+                  primaryRulersHeight: 120,
+                  secondaryRulersHeight: 220,
+                  textStyle: TextStyle(
+                    fontSize: 12,
+                  ),
                   // rulersOffset: 20,
-                  // labelOffset: 30
+                  labelOffset: 100,
                 ),
               ),
             ),
