@@ -1497,8 +1497,22 @@ class RenderLinearGauge extends RenderBox {
       yAxisForGaugeContainer = 0;
       rulersOffset = 0;
       labelsOffset = 0;
-      if (pointerMaxOfTopAndCenter! <
-          ((getEffectiveRulersHeight / 2) + labelThickness)) {
+
+      if (valueBarMaxOfTopAndCenter! <= pointerMaxOfTopAndCenter!) {
+        valueBarMaxOfTopAndCenter = 0;
+      } else {
+        pointerMaxOfTopAndCenter = valueBarMaxOfTopAndCenter;
+        valueBarMaxOfTopAndCenter = 0;
+      }
+
+      if (valueBarMaxOfBottomAndCenter! <= pointerMaxOfBottomAndCenter!) {
+        valueBarMaxOfBottomAndCenter = 0;
+      } else {
+        pointerMaxOfBottomAndCenter = valueBarMaxOfBottomAndCenter;
+        valueBarMaxOfBottomAndCenter = 0;
+      }
+
+      if (pointerMaxOfTopAndCenter! <= ((getEffectiveRulersHeight / 2))) {
         yAxisForGaugeContainer = (getEffectiveRulersHeight / 2);
         pointerMaxOfTopAndCenter = 0;
       } else {

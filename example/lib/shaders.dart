@@ -18,10 +18,10 @@ class _MyShadersState extends State<MyShaders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             // height: MediaQuery.of(context).size.height,
@@ -32,8 +32,9 @@ class _MyShadersState extends State<MyShaders> {
               valueBar: [
                 ValueBar(
                   value: 20,
-                  position: ValueBarPosition.top,
-                  offset: 30.0,
+                  position: ValueBarPosition.center,
+                  valueBarThickness: 40,
+                  // offset: 40.0,
                 )
               ],
               pointers: const [
@@ -41,11 +42,13 @@ class _MyShadersState extends State<MyShaders> {
                   value: 10,
                   shape: PointerShape.circle,
                   pointerPosition: PointerPosition.center,
+                  height: 10,
                 ),
                 Pointer(
                   value: 10,
+                  height: 100,
                   shape: PointerShape.triangle,
-                  pointerPosition: PointerPosition.bottom,
+                  pointerPosition: PointerPosition.center,
                 ),
               ],
               start: 0,
@@ -55,10 +58,12 @@ class _MyShadersState extends State<MyShaders> {
                 // backgroundColor: Colors.green.shade100,
               ),
               rulers: const RulerStyle(
-                  rulerPosition: RulerPosition.bottom,
-                  primaryRulersHeight: 20,
-                  rulersOffset: 20,
-                  labelOffset: 30),
+                rulerPosition: RulerPosition.center,
+                // primaryRulersHeight: 20,
+                // secondaryRulersHeight: 90
+                // rulersOffset: 20,
+                // labelOffset: 30
+              ),
             ),
           ),
         ],
