@@ -1398,6 +1398,20 @@ class RenderLinearGauge extends RenderBox {
       // When rulers are center there is no effect of offset so setting to 0;
       rulersOffset = 0;
       labelsOffset = 0;
+
+      if (valueBarMaxOfLeftAndCenter! <= pointerMaxOfLeftAndCenter!) {
+        valueBarMaxOfLeftAndCenter = 0;
+      } else {
+        pointerMaxOfLeftAndCenter = valueBarMaxOfLeftAndCenter!;
+        valueBarMaxOfLeftAndCenter = 0;
+      }
+      if (valueBarMaxOfRightAndCenter! <= pointerMaxOfRightAndCenter!) {
+        valueBarMaxOfRightAndCenter = 0;
+      } else {
+        pointerMaxOfRightAndCenter = valueBarMaxOfRightAndCenter!;
+        valueBarMaxOfRightAndCenter = 0;
+      }
+
       if (pointerMaxOfLeftAndCenter! <
           ((getEffectiveRulersWidth / 2) + labelThickness)) {
         xAxisForGaugeContainer = (getEffectiveRulersWidth / 2);

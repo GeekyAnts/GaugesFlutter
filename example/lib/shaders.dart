@@ -22,18 +22,18 @@ class _MyShadersState extends State<MyShaders> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              // height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height,
               color: Colors.pink.shade100,
               child: LinearGauge(
-                gaugeOrientation: GaugeOrientation.horizontal,
+                gaugeOrientation: GaugeOrientation.vertical,
                 // enableAnimation: true,
                 valueBar: [
                   ValueBar(
                     value: 20,
-                    position: ValueBarPosition.center,
+                    position: ValueBarPosition.right,
                     valueBarThickness: 180,
                     offset: 100.0,
                   )
@@ -42,14 +42,14 @@ class _MyShadersState extends State<MyShaders> {
                   Pointer(
                     value: 10,
                     shape: PointerShape.circle,
-                    pointerPosition: PointerPosition.center,
+                    pointerPosition: PointerPosition.left,
                     height: 10,
                   ),
                   Pointer(
                     value: 10,
-                    height: 100,
+                    height: 300,
                     shape: PointerShape.triangle,
-                    pointerPosition: PointerPosition.center,
+                    pointerPosition: PointerPosition.right,
                   ),
                 ],
                 start: 0,
@@ -59,7 +59,7 @@ class _MyShadersState extends State<MyShaders> {
                   // backgroundColor: Colors.green.shade100,
                 ),
                 rulers: const RulerStyle(
-                  rulerPosition: RulerPosition.bottom,
+                  rulerPosition: RulerPosition.center,
                   // primaryRulersHeight: 20,
                   // secondaryRulersHeight: 190
                   // rulersOffset: 20,
