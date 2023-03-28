@@ -87,7 +87,11 @@ class RenderLinearGauge extends RenderBox {
   double? topValueBarOffset,
       bottomValueBarOffset,
       centerValueBarOffset,
+      leftValueBarOffset,
+      rightValueBarOffset,
       valueBarMaxOfBottomAndCenter,
+      valueBarMaxOfLeftAndCenter,
+      valueBarMaxOfRightAndCenter,
       valueBarMaxOfTopAndCenter = 0;
   double? rightPointerHeight,
       leftPointerHeight,
@@ -1274,31 +1278,47 @@ class RenderLinearGauge extends RenderBox {
         leftPointers = [],
         rightPointers = [];
 
-    List<ValueBar> topValueBars = [], bottomValueBars = [], centerValueBar = [];
+    List<ValueBar> topValueBars = [],
+        bottomValueBars = [],
+        centerValueBar = [],
+        leftValueBars = [],
+        rightValueBars = [];
 
     double linearGaugeContainerThickness =
         getLinearGaugeBoxDecoration.thickness!;
 
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
       return layoutHorizontalGauge(
-          topPointers,
-          bottomPointers,
-          centerPointers,
-          linearGaugeContainerThickness,
-          topValueBars,
-          bottomValueBars,
-          centerValueBar);
+        topPointers,
+        bottomPointers,
+        centerPointers,
+        linearGaugeContainerThickness,
+        topValueBars,
+        bottomValueBars,
+        centerValueBar,
+      );
     } else {
-      return layoutVerticalGauge(rightPointers, leftPointers, centerPointers,
-          linearGaugeContainerThickness);
+      return layoutVerticalGauge(
+        rightPointers,
+        leftPointers,
+        centerPointers,
+        linearGaugeContainerThickness,
+        leftValueBars,
+        rightValueBars,
+        centerValueBar,
+      );
     }
   }
 
   double layoutVerticalGauge(
-      List<Pointer> rightPointers,
-      List<Pointer> leftPointers,
-      List<Pointer> centerPointers,
-      double linearGaugeContainerThickness) {
+    List<Pointer> rightPointers,
+    List<Pointer> leftPointers,
+    List<Pointer> centerPointers,
+    double linearGaugeContainerThickness,
+    List<ValueBar> leftValueBars,
+    List<ValueBar> rightValueBars,
+    List<ValueBar> centerValueBars,
+  ) {
     double getEffectiveRulersWidth = getMaxRulerHeight();
     double labelThickness = getLabelWidth();
     double rulersOffset = getRulersOffset;
@@ -1308,10 +1328,29 @@ class RenderLinearGauge extends RenderBox {
     _layoutCenterPointers(centerPointers);
     _initMaxWidthPointerFromRightAndCenter(linearGaugeContainerThickness);
     _initMaxWidthPointerFromLeftAndCenter(linearGaugeContainerThickness);
+    _layoutLeftValueBar(leftValueBars);
+    _layoutRightValueBar(rightValueBars);
+    _layoutCenterValueBar(centerValueBars);
+    _initMaxValueBarFromLeftAndCenter(linearGaugeContainerThickness);
+    _initMaxValueBarFromRightAndCenter(linearGaugeContainerThickness);
+    spacingForGauge =
+        getEffectiveRulersWidth + labelThickness + rulersOffset + labelsOffset;
     if (rulerPosition == RulerPosition.right) {
+      if (valueBarMaxOfLeftAndCenter! <= pointerMaxOfLeftAndCenter!) {
+        valueBarMaxOfLeftAndCenter = 0;
+      } else {
+        pointerMaxOfLeftAndCenter = valueBarMaxOfLeftAndCenter!;
+        valueBarMaxOfLeftAndCenter = 0;
+      }
+      if (valueBarMaxOfRightAndCenter! <= pointerMaxOfRightAndCenter!) {
+        valueBarMaxOfRightAndCenter = 0;
+      } else {
+        pointerMaxOfRightAndCenter = valueBarMaxOfRightAndCenter!;
+        valueBarMaxOfRightAndCenter = 0;
+      }
       xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
-      if (pointerMaxOfRightAndCenter! <
-          (getEffectiveRulersWidth + labelThickness)) {
+
+      if (pointerMaxOfRightAndCenter! < spacingForGauge) {
         pointerMaxOfRightAndCenter = 0;
       } else {
         getEffectiveRulersWidth = 0;
@@ -1326,12 +1365,21 @@ class RenderLinearGauge extends RenderBox {
     } else if (rulerPosition == RulerPosition.left) {
       /// This statement add the ruler and label when pointer height is less
       /// ruler and label
-      xAxisForGaugeContainer = getEffectiveRulersWidth +
-          labelThickness +
-          rulersOffset +
-          labelsOffset;
-      if (pointerMaxOfLeftAndCenter! <
-          (getEffectiveRulersWidth + labelThickness)) {
+      xAxisForGaugeContainer = spacingForGauge;
+      if (valueBarMaxOfLeftAndCenter! <= pointerMaxOfLeftAndCenter!) {
+        valueBarMaxOfLeftAndCenter = 0;
+      } else {
+        pointerMaxOfLeftAndCenter = valueBarMaxOfLeftAndCenter!;
+        valueBarMaxOfLeftAndCenter = 0;
+      }
+      if (valueBarMaxOfRightAndCenter! <= pointerMaxOfRightAndCenter!) {
+        valueBarMaxOfRightAndCenter = 0;
+      } else {
+        pointerMaxOfRightAndCenter = valueBarMaxOfRightAndCenter!;
+        valueBarMaxOfRightAndCenter = 0;
+      }
+
+      if (pointerMaxOfLeftAndCenter! < spacingForGauge) {
         pointerMaxOfLeftAndCenter = 0;
       } else {
         xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
@@ -1358,13 +1406,6 @@ class RenderLinearGauge extends RenderBox {
         xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
         //getEffectiveRulersHeight = (getEffectiveRulersHeight / 2);
       }
-      // if (getThickness / 2 <= getEffectiveRulersWidth / 2) {
-      //   effectiveGaugeThickness = getThickness / 2;
-      //   xAxisForGaugeContainer -= effectiveGaugeThickness;
-      // } else {
-      //   xAxisForGaugeContainer -= getEffectiveRulersWidth / 2;
-      //   getEffectiveRulersWidth = 0;
-      // }
       if (pointerMaxOfRightAndCenter! <
           ((getEffectiveRulersWidth / 2) + labelThickness)) {
         pointerMaxOfRightAndCenter = 0;
@@ -1391,6 +1432,8 @@ class RenderLinearGauge extends RenderBox {
         getEffectiveRulersWidth +
         pointerMaxOfLeftAndCenter! +
         pointerMaxOfRightAndCenter! +
+        valueBarMaxOfLeftAndCenter! +
+        valueBarMaxOfRightAndCenter! +
         getThickness +
         rulersOffset +
         rulersOffset;
@@ -1608,6 +1651,17 @@ class RenderLinearGauge extends RenderBox {
         ((centerValueBarOffset! / 2) - (linearGaugeContainerThickness / 2)));
   }
 
+  void _initMaxValueBarFromLeftAndCenter(double linearGaugeContainerThickness) {
+    valueBarMaxOfLeftAndCenter = math.max((leftValueBarOffset!),
+        ((centerValueBarOffset! / 2) - (linearGaugeContainerThickness / 2)));
+  }
+
+  void _initMaxValueBarFromRightAndCenter(
+      double linearGaugeContainerThickness) {
+    valueBarMaxOfRightAndCenter = math.max((rightValueBarOffset!),
+        ((centerValueBarOffset! / 2) - (linearGaugeContainerThickness / 2)));
+  }
+
   void _initMaxWidthPointerFromRightAndCenter(
       double linearGaugeContainerThickness) {
     pointerMaxOfRightAndCenter = math.max((rightPointerHeight!),
@@ -1716,6 +1770,30 @@ class RenderLinearGauge extends RenderBox {
       centerValueBarOffset = centerLargestValueBar!.valueBarThickness;
     } else {
       centerValueBarOffset = 0;
+    }
+  }
+
+  void _layoutLeftValueBar(List<ValueBar> leftValueBars) {
+    leftValueBars = getValueBarByPosition(getValueBar, ValueBarPosition.left);
+    if (leftValueBars.isNotEmpty) {
+      ValueBar? leftLargestValueBar =
+          getLargestValueBarForLayout(leftValueBars);
+      leftValueBarOffset =
+          leftLargestValueBar!.valueBarThickness + leftLargestValueBar.offset;
+    } else {
+      leftValueBarOffset = 0;
+    }
+  }
+
+  void _layoutRightValueBar(List<ValueBar> rightValueBars) {
+    rightValueBars = getValueBarByPosition(getValueBar, ValueBarPosition.right);
+    if (rightValueBars.isNotEmpty) {
+      ValueBar? rightLargestValueBar =
+          getLargestValueBarForLayout(rightValueBars);
+      rightValueBarOffset =
+          rightLargestValueBar!.valueBarThickness + rightLargestValueBar.offset;
+    } else {
+      rightValueBarOffset = 0;
     }
   }
 

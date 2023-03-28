@@ -258,7 +258,9 @@ class ValueBar {
       gaugeContainer = Rect.fromLTWH(
         startOffset,
         barTop,
-        valueBarThickness, // set width to half of the gauge width
+        (position == ValueBarPosition.left)
+            ? -valueBarThickness
+            : valueBarThickness, // set width to half of the gauge width
         valueBarWidth,
       );
     }
@@ -287,9 +289,9 @@ class ValueBar {
       case ValueBarPosition.bottom:
         return height + valueBarOffset + linearGauge.yAxisForGaugeContainer;
       case ValueBarPosition.left:
-        return -valueBarOffset;
+        return linearGauge.xAxisForGaugeContainer - valueBarOffset;
       case ValueBarPosition.right:
-        return height + valueBarOffset;
+        return height + valueBarOffset + linearGauge.xAxisForGaugeContainer;
       default:
         return 0;
     }
