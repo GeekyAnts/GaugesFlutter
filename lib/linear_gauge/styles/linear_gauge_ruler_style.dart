@@ -6,7 +6,7 @@ class RulerStyle {
     this.primaryRulerColor = Colors.black54,
     this.primaryRulersWidth = 1.0,
     this.primaryRulersHeight = 15.0,
-    this.secondaryRulersHeight = 1.0,
+    this.secondaryRulersHeight = 10,
     this.secondaryRulersWidth = 1.0,
     this.secondaryRulerColor = Colors.grey,
     this.secondaryRulerPerInterval = 1.0,
