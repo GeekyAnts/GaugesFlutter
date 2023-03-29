@@ -1190,13 +1190,15 @@ class RenderLinearGauge extends RenderBox {
       Offset a = Offset(x, y);
       _primaryRulersPaint.color = primaryRulerColor!;
 
-      if (showPrimaryRulers) {
-        canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
-      }
 
+     
       if (showLabel) {
         _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
             _linearGaugeLabel.getListOfLabel[count].value!, value);
+      }
+
+      if (showPrimaryRulers) {
+        canvas.drawLine(primaryRulerStartPoint!, a, _primaryRulersPaint);
       }
       count++;
     });
@@ -1587,7 +1589,6 @@ class RenderLinearGauge extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-
     double parentWidgetSize;
 
     final double actualParentWidth = constraints.maxWidth;
