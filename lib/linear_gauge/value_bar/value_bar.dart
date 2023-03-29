@@ -206,7 +206,9 @@ class ValueBar {
 
       gaugeContainer = Rect.fromLTWH(
         startValue,
-        totalValOffset + (linearGaugeThickness - valueBarThickness) / 2,
+        totalValOffset +
+            (linearGaugeThickness - valueBarThickness) / 2 +
+            linearGauge.yAxisForGaugeContainer,
         !getInversedRulers ? valueBarWidth : -valueBarWidth,
         valueBarThickness,
       );
@@ -239,7 +241,9 @@ class ValueBar {
       }
 
       gaugeContainer = Rect.fromLTWH(
-        barLeft + (linearGaugeThickness - valueBarThickness) / 2,
+        barLeft +
+            (linearGaugeThickness - valueBarThickness) / 2 +
+            linearGauge.xAxisForGaugeContainer,
         barTop,
         valueBarThickness, // set width to half of the gauge width
         valueBarWidth,
@@ -280,35 +284,62 @@ class ValueBar {
     required Rect gaugeContainer,
     required var linearGauge,
   }) {
+    GaugeOrientation gaugeOrientation = linearGauge.getGaugeOrientation;
     var rectangularBox;
     switch (edgeStyle) {
       case LinearEdgeStyle.startCurve:
-        rectangularBox = RRect.fromRectAndCorners(
-          gaugeContainer,
-          topLeft: Radius.circular(borderRadius!),
-          bottomLeft:
-              (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-                  ? Radius.circular(borderRadius!)
-                  : Radius.zero,
-          topRight:
-              (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-                  ? Radius.zero
-                  : Radius.circular(borderRadius!),
-        );
+        gaugeOrientation == GaugeOrientation.horizontal
+            ? rectangularBox = RRect.fromRectAndCorners(
+                gaugeContainer,
+                topLeft: Radius.circular(borderRadius!),
+                bottomLeft: (linearGauge.getGaugeOrientation ==
+                        GaugeOrientation.horizontal)
+                    ? Radius.circular(borderRadius!)
+                    : Radius.zero,
+                topRight: (linearGauge.getGaugeOrientation ==
+                        GaugeOrientation.horizontal)
+                    ? Radius.zero
+                    : Radius.circular(borderRadius!),
+              )
+            : rectangularBox = RRect.fromRectAndCorners(
+                gaugeContainer,
+                topRight: (linearGauge.getGaugeOrientation ==
+                        GaugeOrientation.horizontal)
+                    ? Radius.circular(borderRadius!)
+                    : Radius.zero,
+                bottomLeft: (linearGauge.getGaugeOrientation ==
+                        GaugeOrientation.horizontal)
+                    ? Radius.zero
+                    : Radius.circular(borderRadius!),
+                bottomRight: Radius.circular(borderRadius!),
+              );
         break;
       case LinearEdgeStyle.endCurve:
-        rectangularBox = RRect.fromRectAndCorners(
-          gaugeContainer,
-          topRight:
-              (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-                  ? Radius.circular(borderRadius!)
-                  : Radius.zero,
-          bottomLeft:
-              (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-                  ? Radius.zero
-                  : Radius.circular(borderRadius!),
-          bottomRight: Radius.circular(borderRadius!),
-        );
+        gaugeOrientation == GaugeOrientation.horizontal
+            ? rectangularBox = RRect.fromRectAndCorners(
+                gaugeContainer,
+                topRight: (linearGauge.getGaugeOrientation ==
+                        GaugeOrientation.horizontal)
+                    ? Radius.circular(borderRadius!)
+                    : Radius.zero,
+                bottomLeft: (linearGauge.getGaugeOrientation ==
+                        GaugeOrientation.horizontal)
+                    ? Radius.zero
+                    : Radius.circular(borderRadius!),
+                bottomRight: Radius.circular(borderRadius!),
+              )
+            : rectangularBox = RRect.fromRectAndCorners(
+                gaugeContainer,
+                topLeft: Radius.circular(borderRadius!),
+                bottomLeft: (linearGauge.getGaugeOrientation ==
+                        GaugeOrientation.horizontal)
+                    ? Radius.circular(borderRadius!)
+                    : Radius.zero,
+                topRight: (linearGauge.getGaugeOrientation ==
+                        GaugeOrientation.horizontal)
+                    ? Radius.zero
+                    : Radius.circular(borderRadius!),
+              );
         break;
 
       default:
