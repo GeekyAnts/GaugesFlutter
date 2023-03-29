@@ -1336,6 +1336,13 @@ class RenderLinearGauge extends RenderBox {
     spacingForGauge =
         getEffectiveRulersWidth + labelThickness + rulersOffset + labelsOffset;
     if (rulerPosition == RulerPosition.right) {
+      if (getSecondaryRulersHeight >
+          getPrimaryRulersHeight +
+              labelThickness +
+              labelsOffset +
+              rulersOffset) {
+        spacingForGauge = getSecondaryRulersHeight;
+      }
       if (valueBarMaxOfLeftAndCenter! <= pointerMaxOfLeftAndCenter!) {
         valueBarMaxOfLeftAndCenter = 0;
       } else {
@@ -1371,6 +1378,13 @@ class RenderLinearGauge extends RenderBox {
       /// This statement add the ruler and label when pointer height is less
       /// ruler and label
       xAxisForGaugeContainer = spacingForGauge;
+      if (getSecondaryRulersHeight >
+          getPrimaryRulersHeight +
+              labelThickness +
+              labelsOffset +
+              rulersOffset) {
+        spacingForGauge = getSecondaryRulersHeight;
+      }
       if (valueBarMaxOfLeftAndCenter! <= pointerMaxOfLeftAndCenter!) {
         valueBarMaxOfLeftAndCenter = 0;
       } else {
@@ -1505,6 +1519,14 @@ class RenderLinearGauge extends RenderBox {
       /// ruler and label
       yAxisForGaugeContainer = spacingForGauge;
 
+      if (getSecondaryRulersHeight >
+          getPrimaryRulersHeight +
+              labelThickness +
+              labelsOffset +
+              rulersOffset) {
+        spacingForGauge = getSecondaryRulersHeight;
+      }
+
       if (valueBarMaxOfTopAndCenter! <= pointerMaxOfTopAndCenter!) {
         valueBarMaxOfTopAndCenter = 0;
       } else {
@@ -1546,6 +1568,13 @@ class RenderLinearGauge extends RenderBox {
         labelThickness = 0;
       }
     } else if (rulerPosition == RulerPosition.bottom) {
+      if (getSecondaryRulersHeight >
+          getPrimaryRulersHeight +
+              labelThickness +
+              labelsOffset +
+              rulersOffset) {
+        spacingForGauge = getSecondaryRulersHeight;
+      }
       yAxisForGaugeContainer = pointerMaxOfTopAndCenter!;
 
       if (valueBarMaxOfTopAndCenter! <= pointerMaxOfTopAndCenter!) {

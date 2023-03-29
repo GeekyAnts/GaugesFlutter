@@ -22,19 +22,19 @@ class _MyShadersState extends State<MyShaders> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              height: MediaQuery.of(context).size.height,
+              // height: MediaQuery.of(context).size.height,
               color: Colors.pink.shade100,
               child: LinearGauge(
-                gaugeOrientation: GaugeOrientation.vertical,
+                gaugeOrientation: GaugeOrientation.horizontal,
                 // enableAnimation: true,
                 // valueBar: [
                 //   ValueBar(
                 //     value: 20,
-                //     position: ValueBarPosition.bottom,
-                //     valueBarThickness: 180,
+                //     position: ValueBarPosition.top,
+                //     valueBarThickness: 280,
                 //     offset: 100.0,
                 //   )
                 // ],
@@ -45,23 +45,23 @@ class _MyShadersState extends State<MyShaders> {
                   //   pointerPosition: PointerPosition.top,
                   //   height: 10,
                   // ),
-                  // Pointer(
-                  //   value: 10,
-                  //   height: 100,
-                  //   shape: PointerShape.triangle,
-                  //   pointerPosition: PointerPosition.top,
-                  // ),
+                  Pointer(
+                    value: 10,
+                    height: 320,
+                    shape: PointerShape.triangle,
+                    pointerPosition: PointerPosition.bottom,
+                  ),
                 ],
                 start: 0,
                 end: 100,
                 linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
-                  thickness: 4,
-                  // backgroundColor: Colors.green.shade100,
-                ),
+                    // thickness: 100,
+                    // backgroundColor: Colors.green.shade100,
+                    ),
                 rulers: const RulerStyle(
                   rulerPosition: RulerPosition.center,
-                  primaryRulersHeight: 120,
-                  secondaryRulersHeight: 220,
+                  primaryRulersHeight: 180,
+                  secondaryRulersHeight: 250,
                   textStyle: TextStyle(
                     fontSize: 12,
                   ),
