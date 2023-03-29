@@ -1422,11 +1422,20 @@ class RenderLinearGauge extends RenderBox {
             2 * (originalEffectiveRulerHeight - getPrimaryRulersHeight / 2);
       }
 
+      if (getSecondaryRulersHeight / 2 <=
+          getPrimaryRulersHeight / 2 + centerAdjustment) {
+        getEffectiveRulersWidth = getPrimaryRulersHeight / 2 + centerAdjustment;
+      }
+
       if (pointerMaxOfRightAndCenter! <= getEffectiveRulersWidth / 2) {
         pointerMaxOfRightAndCenter = 0;
 
         if (pointerMaxOfLeftAndCenter != 0) {
-          if (originalEffectiveRulerHeight != getEffectiveRulersWidth) {
+          if (getSecondaryRulersHeight / 2 <=
+              getPrimaryRulersHeight / 2 + centerAdjustment) {
+            getEffectiveRulersWidth =
+                getPrimaryRulersHeight / 2 + centerAdjustment;
+          } else if (originalEffectiveRulerHeight != getEffectiveRulersWidth) {
             getEffectiveRulersWidth =
                 originalEffectiveRulerHeight - getPrimaryRulersHeight / 2;
           } else {
@@ -1580,11 +1589,22 @@ class RenderLinearGauge extends RenderBox {
         getEffectiveRulersHeight =
             2 * (originalEffectiveRulerHeight - getPrimaryRulersHeight / 2);
       }
+
+      if (getSecondaryRulersHeight / 2 <=
+          getPrimaryRulersHeight / 2 + centerAdjustment) {
+        getEffectiveRulersHeight =
+            getPrimaryRulersHeight / 2 + centerAdjustment;
+      }
+
       if (pointerMaxOfBottomAndCenter! <= (getEffectiveRulersHeight / 2)) {
         pointerMaxOfBottomAndCenter = 0;
 
         if (pointerMaxOfTopAndCenter != 0) {
-          if (originalEffectiveRulerHeight != getEffectiveRulersHeight) {
+          if (getSecondaryRulersHeight / 2 <=
+              getPrimaryRulersHeight / 2 + centerAdjustment) {
+            getEffectiveRulersHeight =
+                getPrimaryRulersHeight / 2 + centerAdjustment;
+          } else if (originalEffectiveRulerHeight != getEffectiveRulersHeight) {
             getEffectiveRulersHeight =
                 originalEffectiveRulerHeight - getPrimaryRulersHeight / 2;
           } else {

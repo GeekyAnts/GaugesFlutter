@@ -33,8 +33,8 @@ class _MyShadersState extends State<MyShaders> {
                 valueBar: [
                   ValueBar(
                       value: 20,
-                      valueBarThickness: 150,
-                      position: ValueBarPosition.center),
+                      valueBarThickness: 250,
+                      position: ValueBarPosition.top),
                 ],
                 pointers: const [
                   // Pointer(
@@ -43,12 +43,12 @@ class _MyShadersState extends State<MyShaders> {
                   //   pointerPosition: PointerPosition.top,
                   //   height: 10,
                   // ),
-                  // Pointer(
-                  //   value: 10,
-                  //   height: 350,
-                  //   shape: PointerShape.triangle,
-                  //   pointerPosition: PointerPosition.right,
-                  // ),
+                  Pointer(
+                    value: 10,
+                    height: 350,
+                    shape: PointerShape.triangle,
+                    pointerPosition: PointerPosition.bottom,
+                  ),
                 ],
                 start: 0,
                 end: 100,
@@ -58,8 +58,8 @@ class _MyShadersState extends State<MyShaders> {
                 ),
                 rulers: const RulerStyle(
                   rulerPosition: RulerPosition.center,
-                  primaryRulersHeight: 100,
-                  // secondaryRulersHeight: 210,
+                  // primaryRulersHeight: 360,
+                  secondaryRulersHeight: 310,
                   textStyle: TextStyle(
                     fontSize: 12,
                   ),
