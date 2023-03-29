@@ -1606,9 +1606,6 @@ class RenderLinearGauge extends RenderBox {
     }
 
     return constraints.constrain(_axisActualSize);
-
-    
-
   }
 
   @override
