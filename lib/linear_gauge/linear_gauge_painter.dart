@@ -794,7 +794,10 @@ class RenderLinearGauge extends RenderBox {
         borderRadius: getLinearGaugeBoxDecoration.borderRadius,
         edgeStyle: getLinearGaugeBoxDecoration.edgeStyle,
       );
-      canvas.drawRRect(rectangularBox, _linearGaugeContainerPaint);
+
+      if (_showLinearGaugeContainer) {
+        canvas.drawRRect(rectangularBox, _linearGaugeContainerPaint);
+      }
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
 
@@ -814,13 +817,15 @@ class RenderLinearGauge extends RenderBox {
         );
       }
 
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(
-          gaugeContainer,
-          Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
-        ),
-        _linearGaugeContainerValuePaint,
-      );
+      if (_showLinearGaugeContainer) {
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            gaugeContainer,
+            Radius.circular(getLinearGaugeBoxDecoration.borderRadius!),
+          ),
+          _linearGaugeContainerValuePaint,
+        );
+      }
 
       _drawValueBars(
         canvas: canvas,
@@ -837,7 +842,9 @@ class RenderLinearGauge extends RenderBox {
         offset: offset,
       );
     } else {
-      canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
+      if (_showLinearGaugeContainer) {
+        canvas.drawRect(gaugeContainer, _linearGaugeContainerPaint);
+      }
 
       _linearGaugeContainerValuePaint.color = getLinearGaugeContainerValueColor;
       if (getGaugeOrientation == GaugeOrientation.horizontal) {
@@ -1190,8 +1197,6 @@ class RenderLinearGauge extends RenderBox {
       Offset a = Offset(x, y);
       _primaryRulersPaint.color = primaryRulerColor!;
 
-
-     
       if (showLabel) {
         _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
             _linearGaugeLabel.getListOfLabel[count].value!, value);
@@ -1624,9 +1629,7 @@ class RenderLinearGauge extends RenderBox {
 
     _calculateRulerPoints();
     if (rulerPosition == RulerPosition.center) {
-      if (getShowLinearGaugeContainer) {
-        _paintGaugeContainer(canvas, size);
-      }
+      _paintGaugeContainer(canvas, size);
     }
 
     _drawPrimaryRulers(canvas);
@@ -1636,9 +1639,7 @@ class RenderLinearGauge extends RenderBox {
     }
 
     if (rulerPosition != RulerPosition.center) {
-      if (getShowLinearGaugeContainer) {
-        _paintGaugeContainer(canvas, size);
-      }
+      _paintGaugeContainer(canvas, size);
     }
 
     var firstOffset = (!getInversedRulers)
