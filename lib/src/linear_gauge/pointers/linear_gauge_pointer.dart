@@ -1,31 +1,32 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_painter.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 
+/// A [Pointer] is a widget that is used to indicate the value of the [LinearGauge].
+///
+/// The LinearGauge takes a list of [Pointer] as an input.
+/// `value` Sets the value of the pointer
+/// `height` and `weight` Sets the height  & weight of the pointer
+///
+/// `PointerShape` Sets the shape of the pointer
+///
+/// Note: The `value` of the pointer should be between the `start` and `end` value of the [LinearGauge] and if the value is null it takes the value specified in  `Linear Gauge`
+///
+/// ```dart
+/// const LinearGauge(
+///    pointers: const [
+///      Pointer(
+///       value: 50.0,
+///       color: Colors.red,
+///       shape: PointerShape.circle,
+///    ),
+///   ],
+/// ),
+/// ```
+///
+///
 class Pointer {
-  /// A [Pointer] is a widget that is used to indicate the value of the [LinearGauge].
-  /// `value` Sets the value of the pointer
-  /// `height` and `weight` Sets the height  & weight of the pointer
-  ///
-  /// `PointerShape` Sets the shape of the pointer
-  ///
-  /// Note: The `value` of the pointer should be between the `start` and `end` value of the [LinearGauge] and if the value is null it takes the value specified in  `Linear Gauge`
-  ///
-  /// ```dart
-  /// const LinearGauge(
-  ///    pointer: Pointer(
-  ///    height: 20.0,
-  ///    width: 20.0,
-  ///    color: Colors.red,
-  ///    value: 50.0,
-  ///    shape: PointerShape.circle,
-  ///   ),
-  /// ),
-  /// ```
-  ///
-  ///
-
   const Pointer({
     Key? key,
     required this.value,
@@ -118,7 +119,7 @@ class Pointer {
   ///  ),
   /// ),
   /// ```
-  /// default is to [true]
+  /// default is to `true`
   ///
   final bool showLabel;
 

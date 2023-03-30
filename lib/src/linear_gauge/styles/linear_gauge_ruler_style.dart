@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
+///
+/// RulerStyle allows to customize the style of [LinearGauge] Rulers.
+///
+
 class RulerStyle {
   const RulerStyle({
     this.primaryRulerColor = Colors.black54,

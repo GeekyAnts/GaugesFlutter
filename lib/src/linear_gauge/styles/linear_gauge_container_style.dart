@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 
+///
+/// Allows to customize the style of [LinearGauge] container.
+/// Customize features like `backgroundColor`, `thickness`, `linearGradient`, `borderRadius`
+/// and `edgeStyle`
+///
+/// ```dart
+/// const LinearGauge(
+///  linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+///   borderRadius: 10.0,
+///   backgroundColor: Colors.red,
+///   thickness: 20.0,
+///  ),
+/// ),
+/// ```
+
 @immutable
 class LinearGaugeBoxDecoration {
+  ///
   /// An immutable description of how to paint a box of [LinearGauge].
   ///
-  /// [LinearGaugeBoxDecoration] allows to customize the style of [LinearGauge] container.
   const LinearGaugeBoxDecoration({
     this.backgroundColor = Colors.grey,
     this.thickness = 4.0,
