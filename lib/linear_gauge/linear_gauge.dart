@@ -454,7 +454,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setValue = lGauge.value!
       ..setRangeLinearGauge = lGauge.rangeLinearGauge
       ..setRulersOffset = lGauge.rulers!.rulersOffset!
-      ..setValueBarPosition = lGauge.valueBarPosition!
+      // ..setValueBarPosition = lGauge.valueBarPosition!
       ..setValueBar = lGauge.valueBar!
       ..setInversedRulers = lGauge.rulers!.inverseRulers!
       ..setPointers = lGauge.pointers!

@@ -68,7 +68,7 @@ class RenderLinearGauge extends RenderBox {
         _customLabels = customLabels,
         _rulersOffset = rulersOffset,
         _inversedRulers = inversedRulers,
-        _valueBarPosition = valueBarPosition,
+        // _valueBarPosition = valueBarPosition,
         _valueBar = valueBar,
         _pointers = pointers,
         _animationValue = animationValue,
@@ -179,7 +179,7 @@ class RenderLinearGauge extends RenderBox {
     if (_textStyle == textStyle) return;
 
     _textStyle = textStyle;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -191,7 +191,7 @@ class RenderLinearGauge extends RenderBox {
     if (_primaryRulersWidth == primaryRulersWidth) return;
 
     _primaryRulersWidth = primaryRulersWidth;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -205,7 +205,7 @@ class RenderLinearGauge extends RenderBox {
     if (_primaryRulersHeight == primaryRulersHeight) return;
 
     _primaryRulersHeight = primaryRulersHeight;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -220,7 +220,7 @@ class RenderLinearGauge extends RenderBox {
     if (_secondaryRulersHeight == secondaryRulersHeight) return;
 
     _secondaryRulersHeight = secondaryRulersHeight;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -232,7 +232,7 @@ class RenderLinearGauge extends RenderBox {
     if (_secondaryRulersWidth == secondaryRulersWidth) return;
 
     _secondaryRulersWidth = secondaryRulersWidth;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -245,7 +245,7 @@ class RenderLinearGauge extends RenderBox {
     if (_labelTopMargin == labelTopMargin) return;
 
     _labelTopMargin = labelTopMargin;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -282,7 +282,7 @@ class RenderLinearGauge extends RenderBox {
   set setLinearGaugeBoxDecoration(linearGaugeBoxDecoration) {
     if (_linearGaugeBoxDecoration == linearGaugeBoxDecoration) return;
     _linearGaugeBoxDecoration = linearGaugeBoxDecoration;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -346,7 +346,7 @@ class RenderLinearGauge extends RenderBox {
   set setRulerPosition(RulerPosition val) {
     if (_rulerPosition == val) return;
     _rulerPosition = val;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   double get getLabelOffset => _labelOffset;
@@ -354,7 +354,7 @@ class RenderLinearGauge extends RenderBox {
   set setLabelOffset(double val) {
     if (_labelOffset == val) return;
     _labelOffset = val;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   bool get showSecondaryRulers => _showSecondaryRulers;
@@ -401,7 +401,7 @@ class RenderLinearGauge extends RenderBox {
   set setRulersOffset(double val) {
     if (_rulersOffset == val) return;
     _rulersOffset = val;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -423,13 +423,13 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [valueBarPosition] parameter.
   ///
-  ValueBarPosition get valueBarPosition => _valueBarPosition;
-  ValueBarPosition _valueBarPosition;
-  set setValueBarPosition(ValueBarPosition val) {
-    if (_valueBarPosition == val) return;
-    _valueBarPosition = val;
-    markNeedsPaint();
-  }
+  // ValueBarPosition get valueBarPosition => _valueBarPosition;
+  // ValueBarPosition _valueBarPosition;
+  // set setValueBarPosition(ValueBarPosition val) {
+  //   if (_valueBarPosition == val) return;
+  //   _valueBarPosition = val;
+  //   markNeedsPaint();
+  // }
 
   ///
   /// Getter and Setter for the [valueBar] parameter.
@@ -439,7 +439,7 @@ class RenderLinearGauge extends RenderBox {
   set setValueBar(List<ValueBar> val) {
     if (_valueBar == val) return;
     _valueBar = val;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -450,7 +450,7 @@ class RenderLinearGauge extends RenderBox {
   set setPointers(List<Pointer> val) {
     if (_pointers == val) return;
     _pointers = val;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -461,7 +461,7 @@ class RenderLinearGauge extends RenderBox {
   set setThickness(double val) {
     if (_thickness == val) return;
     _thickness = val;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
