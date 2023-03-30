@@ -1,8 +1,21 @@
+import 'package:example/border_radius_example.dart';
+import 'package:example/fill_extend_example.dart';
+import 'package:example/gauge_vertical.dart';
+import 'package:example/pointer_alignment_example.dart';
+import 'package:example/range_vertical.dart';
+import 'package:example/shaders.dart';
+import 'package:example/tickness_extend_example.dart';
+import 'package:example/usecase/showcase_app/home.dart';
+import 'package:example/valuebar_position.dart';
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
 
 void main() {
-  runApp(const MaterialApp(home: MyGaugeExample()));
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyGaugeExample(),
+    ),
+  );
 }
 
 class MyGaugeExample extends StatefulWidget {
@@ -15,32 +28,8 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              child: LinearGauge(
-                value: 75.0,
-                labelStyle: LabelStyle(
-                  fontSize: 10,
-                  color: Colors.red,
-                  rulerPosition: RulerPosition.top,
-
-                ),
-                primaryRulerColor: Colors.red,
-                indicator: LinearGaugeIndicator(
-                  shape: PointerShape.circle,
-                  // value: 100,
-                  width: 20,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return const Scaffold(
+      body: MyShaders(),
     );
   }
 }

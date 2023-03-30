@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_painter.dart';
 
 class LinearGaugeLabel {
   String? text;
@@ -22,15 +23,24 @@ class LinearGaugeLabel {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
-      _linearGaugeLabel
-          .add(LinearGaugeLabel(text: i.toInt().toString(), value: i));
+      _linearGaugeLabel.add(LinearGaugeLabel(text: i.toString(), value: i));
     }
 
     final LinearGaugeLabel localLabel =
         _linearGaugeLabel[_linearGaugeLabel.length - 1];
     if (localLabel.value != end && localLabel.value! < end) {
-      _linearGaugeLabel
-          .add(LinearGaugeLabel(text: end.toInt().toString(), value: end));
+      _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
+    }
+  }
+
+  void addCustomLabels({
+    required List<CustomRulerLabel> labelList,
+  }) {
+    _linearGaugeLabel.clear();
+
+    for (int i = 0; i < labelList.length; i++) {
+      _linearGaugeLabel.add(
+          LinearGaugeLabel(text: labelList[i].text, value: labelList[i].value));
     }
   }
 
@@ -38,32 +48,145 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateOffSetsForLabel(
-    Size startLabel,
-    Size endLabel,
-    Size size,
-    double end,
-    double primaryRulersHeight,
-    double linearGaugeBoxContainerHeight,
-    double labelTopMargin,
-    LinearGaugeIndicator indicator,
-  ) {
+      Size startLabel,
+      Size endLabel,
+      Size size,
+      double end,
+      double primaryRulersHeight,
+      double thickness,
+      double labelTopMargin,
+      bool isCustomLabelsGiven,
+      bool isRulersInversed,
+      GaugeOrientation orientation,
+      double extendLinearGauge,
+      RenderLinearGauge linearGauge) {
     primaryRulers.clear();
+    late Offset a;
+    late Offset b;
+    double largestPointerSize = linearGauge.getLargestPointerSize();
 
-    Offset a = Offset((startLabel.width / 2) + (indicator.width! / 2),
-        linearGaugeBoxContainerHeight);
-    Offset b = Offset(
-        size.width - (endLabel.width / 2) - (indicator.width! / 2),
-        linearGaugeBoxContainerHeight);
-    for (int i = 0; i < _linearGaugeLabel.length; i++) {
-      double x = a.dx * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
-          b.dx * (i / (_linearGaugeLabel.length - 1));
-      double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
-          b.dy * (i / (_linearGaugeLabel.length - 1));
+    if (orientation == GaugeOrientation.horizontal) {
+      if (linearGauge.showLabel) {
+        a = Offset(
+            (startLabel.width / 2) +
+                (largestPointerSize / 2) +
+                extendLinearGauge,
+            thickness);
+        b = Offset(
+            size.width -
+                (endLabel.width / 2) -
+                (largestPointerSize / 2) -
+                extendLinearGauge,
+            thickness);
+      } else {
+        a = Offset((largestPointerSize / 2) + extendLinearGauge, thickness);
+        b = Offset(size.width - (largestPointerSize / 2) - extendLinearGauge,
+            thickness);
+      }
+    } else {
+      if (linearGauge.showLabel) {
+        a = Offset(
+            (startLabel.height / 2) +
+                (largestPointerSize / 2) +
+                extendLinearGauge,
+            thickness);
+        b = Offset(
+          size.height -
+              (endLabel.height / 2) -
+              (largestPointerSize / 2) -
+              extendLinearGauge,
+          thickness,
+        );
+      } else {
+        a = Offset((largestPointerSize / 2) + extendLinearGauge, thickness);
+        b = Offset(size.height - extendLinearGauge - largestPointerSize / 2,
+            thickness);
+      }
 
-      primaryRulers[_linearGaugeLabel[i].text!] = [
-        Offset(x, y),
-        Offset(x, primaryRulersHeight)
-      ];
+      // this will allow to start from bottom
+      Offset temp = a;
+      a = b;
+      b = temp;
+    }
+    if (isRulersInversed) {
+      Offset temp = a;
+      a = b;
+      b = temp;
+    }
+    if (isCustomLabelsGiven) {
+      for (int i = 0; i < _linearGaugeLabel.length; i++) {
+        // n is the nth point of the line
+        double n = 100 /
+            (((_linearGaugeLabel[i].value! - _linearGaugeLabel.first.value!) /
+                    (_linearGaugeLabel.last.value! -
+                        _linearGaugeLabel.first.value!)) *
+                100);
+
+        if (i == 0) {
+          if (GaugeOrientation.horizontal == orientation) {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              a,
+              Offset(a.dx, primaryRulersHeight)
+            ];
+          } else {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              Offset(a.dy, a.dx),
+              Offset(primaryRulersHeight, a.dx)
+            ];
+          }
+        } else if (i == _linearGaugeLabel.length - 1) {
+          if (GaugeOrientation.horizontal == orientation) {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              b,
+              Offset(b.dx, primaryRulersHeight)
+            ];
+          } else {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              Offset(b.dy, b.dx),
+              Offset(primaryRulersHeight, b.dx)
+            ];
+          }
+        } else {
+          double x = ((n - 1) / n) * a.dx + (1 / n) * b.dx;
+          double y = ((n - 1) / n) * a.dy + (1 / n) * b.dy;
+
+          if (GaugeOrientation.horizontal == orientation) {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              Offset(x, y),
+              Offset(x, primaryRulersHeight)
+            ];
+          } else {
+            primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+              Offset(y, x),
+              Offset(primaryRulersHeight, x)
+            ];
+          }
+        }
+      }
+    } else {
+      for (int i = 0; i < _linearGaugeLabel.length; i++) {
+        double x = a.dx * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
+            b.dx * (i / (_linearGaugeLabel.length - 1));
+        double y = a.dy * (1 - ((i) / (_linearGaugeLabel.length - 1))) +
+            b.dy * (i / (_linearGaugeLabel.length - 1));
+
+        if (GaugeOrientation.horizontal == orientation) {
+          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+            Offset(x, y),
+            Offset(x, primaryRulersHeight)
+          ];
+        } else {
+          primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+            Offset(y, x),
+            Offset(primaryRulersHeight, x)
+          ];
+          // Inverted the axis here
+          // primaryRulers[_linearGaugeLabel[i].value!.toString()] = [
+          //   Offset(y + primaryRulersHeight, x + primaryRulersHeight),
+          //   Offset(primaryRulersHeight * 2, (x - y) + primaryRulersHeight)
+          // ];
+        }
+      }
     }
   }
 
@@ -71,22 +194,26 @@ class LinearGaugeLabel {
   /// The formula is from the below source
   /// (!)[https://stackoverflow.com/a/3542512/4565953]
   void generateSecondaryRulers(
-      double totalRulers,
-      Canvas canvas,
-      Paint secondaryRulersPaint,
-      double height,
-      RulerPosition rulerPosition,
-      double linearGaugeHeight,
-      LinearGaugeIndicator indicator,
+    double totalRulers,
+    Canvas canvas,
+    Paint secondaryRulersPaint,
+    double height,
+    RulerPosition rulerPosition,
+    List<RangeLinearGauge> rangeLinearGauge,
+    double rulersOffset,
+    GaugeOrientation gaugeOrientation,
+    double linearGaugeHeight,
+    RenderLinearGauge linearGauge,
   ) {
-
-
     Iterable<List<Offset>> offset = primaryRulers.values;
-    int i = 0;
+    Iterable<String> keys = primaryRulers.keys;
+    Color fallBackColor = secondaryRulersPaint.color;
+
+    int j = 0;
     for (var element in offset) {
-      if (i != offset.length - 1) {
+      if (j != offset.length - 1) {
         Offset a = element[0];
-        Offset b = offset.elementAt(i + 1)[0];
+        Offset b = offset.elementAt(j + 1)[0];
 
         for (int i = 0; i < totalRulers + 1; i++) {
           double x = a.dx * (1 - ((i) / (totalRulers + 1))) +
@@ -101,39 +228,104 @@ class LinearGaugeLabel {
             switch (rulerPosition) {
               case RulerPosition.top:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(x, y);
+                secondaryRulerStartPoint = Offset(
+                    x, -rulersOffset + linearGauge.yAxisForGaugeContainer);
 
-                secondaryRulerEndPoint =
-                    Offset(x, -(5 + height - linearGaugeHeight));
+                secondaryRulerEndPoint = Offset(
+                    x,
+                    -(height + rulersOffset - y) +
+                        linearGauge.yAxisForGaugeContainer);
                 break;
               case RulerPosition.center:
-                //the staring point is shifted half of the secondary ruler height from the
-                //center of the gauge container
-                secondaryRulerStartPoint =
-                    Offset(x, (y / 2) - ((5 + height - linearGaugeHeight) / 2));
-                //the y co-ordinate of the ending point is halved from it's original position
-                secondaryRulerEndPoint = Offset(x, (5 + height) / 2);
+                if (gaugeOrientation == GaugeOrientation.horizontal) {
+                  //the staring point is shifted half of the secondary ruler height from the
+                  //center of the gauge container
+                  secondaryRulerStartPoint = Offset(
+                      x,
+                      (y / 2) -
+                          ((height - linearGaugeHeight) / 2) +
+                          linearGauge.yAxisForGaugeContainer);
+                  //the y co-ordinate of the ending point is halved from it's original position
+                  secondaryRulerEndPoint = Offset(
+                      x, (height) / 2 + linearGauge.yAxisForGaugeContainer);
+                } else {
+                  //the staring point is shifted half of the secondary ruler height from the
+                  //center of the gauge container
+                  secondaryRulerStartPoint = Offset(
+                      (x / 2) -
+                          ((height - linearGaugeHeight) / 2) +
+                          linearGauge.xAxisForGaugeContainer,
+                      y);
+                  //the y co-ordinate of the ending point is halved from it's original position
+                  secondaryRulerEndPoint = Offset(
+                      (((height) / 2) + linearGauge.xAxisForGaugeContainer), y);
+                }
                 break;
               case RulerPosition.bottom:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(x, y);
 
-                secondaryRulerEndPoint = Offset(x, 5 + height);
+                secondaryRulerStartPoint = Offset(
+                  x,
+                  y + rulersOffset + linearGauge.yAxisForGaugeContainer,
+                );
+
+                secondaryRulerEndPoint = Offset(
+                  x,
+                  height + rulersOffset + linearGauge.yAxisForGaugeContainer,
+                );
+
                 break;
+              case RulerPosition.right:
+
+                //the value 5 for the offset y axis is the height parameter for the secondary rulers
+                secondaryRulerStartPoint = Offset(
+                    x + rulersOffset + linearGauge.xAxisForGaugeContainer, y);
+
+                secondaryRulerEndPoint = Offset(
+                    rulersOffset + height + linearGauge.xAxisForGaugeContainer,
+                    (y));
+
+                break;
+              case RulerPosition.left:
+
+                //the value 5 for the offset y axis is the height parameter for the secondary rulers
+                secondaryRulerStartPoint = Offset(
+                    -rulersOffset + linearGauge.xAxisForGaugeContainer, y);
+                secondaryRulerEndPoint = Offset(
+                    -(rulersOffset +
+                        height -
+                        x -
+                        linearGauge.xAxisForGaugeContainer),
+                    y);
+
+                break;
+            }
+
+            Color secondaryRulerColor = secondaryRulersPaint.color;
+            for (int k = 0; k < rangeLinearGauge.length; k++) {
+              var range = rangeLinearGauge[k].end;
+              var offset = double.parse(keys.elementAt(j));
+              if (offset >= rangeLinearGauge[k].start && offset < range) {
+                secondaryRulerColor = rangeLinearGauge[k].color;
+                secondaryRulersPaint.color = secondaryRulerColor;
+
+                break;
+              } else {
+                secondaryRulersPaint.color = fallBackColor;
+              }
             }
 
             canvas.drawLine(secondaryRulerStartPoint, secondaryRulerEndPoint,
                 secondaryRulersPaint);
           }
         }
-        i = i + 1;
+        j = j + 1;
       }
     }
   }
 
-  Size getLabelSize({required TextStyle textStyle, required double? value}) {
-    final TextSpan textSpan =
-        TextSpan(text: value!.toInt().toString(), style: textStyle);
+  Size getLabelSize({required TextStyle textStyle, required String? value}) {
+    final TextSpan textSpan = TextSpan(text: value!, style: textStyle);
     _textPainter.text = textSpan;
     _textPainter.layout();
 

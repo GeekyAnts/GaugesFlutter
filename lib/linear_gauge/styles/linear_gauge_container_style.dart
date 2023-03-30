@@ -8,10 +8,11 @@ class LinearGaugeBoxDecoration {
   /// [LinearGaugeBoxDecoration] allows to customize the style of [LinearGauge] container.
   const LinearGaugeBoxDecoration({
     this.backgroundColor = Colors.grey,
-    this.height = 4.0,
+    this.thickness = 4.0,
     this.linearGradient,
     this.borderRadius,
     this.linearGaugeValueColor = Colors.blue,
+    this.edgeStyle = LinearEdgeStyle.bothCurve,
   });
 
   ///
@@ -27,16 +28,15 @@ class LinearGaugeBoxDecoration {
   final Color backgroundColor;
 
   ///
-  /// `height` Sets the height of the [LinearGauge] Container
-  ///
+  /// `thickness` Sets the thickness of the [LinearGauge]
   /// ```dart
   ///  const LinearGauge(
   ///   linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-  ///     height:20.0
+  ///     thickness:20.0
   ///   ),
   // ),
   /// ```
-  final double height;
+  final double? thickness;
 
   ///
   /// `linearGradient` Sets the gradient background of the [LinearGauge] Container
@@ -83,4 +83,26 @@ class LinearGaugeBoxDecoration {
   ///          ),
   /// ```
   final Color? linearGaugeValueColor;
+
+  ///
+  /// `edgeStyle` Set the style of the edges of the  [LinearGauge] Container.
+  ///
+  /// default is to `edgeStyle =`LinearEdgeStyle.bothCurve`
+  ///
+  ///
+  ///  Note : It tells to which edge of the linear gauge to apply the supplied
+  ///         borderRadius. It has no use if borderRadius is not supplied or is zero.
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+  ///              linearGradient: LinearGradient(
+  ///                colors: [Colors.blue, Colors.pink],
+  ///                borderRadius: 10.0,
+  ///                edgeStyle: LinearEdgeStyle.bothCurve,
+  ///              ),
+  ///            ),
+  ///          ),
+  /// ```
+  final LinearEdgeStyle? edgeStyle;
 }
