@@ -256,7 +256,6 @@ class _PointerPlayGroundState extends State<PointerPlayGround> {
             '⚠️ Invalid Pointer Position',
           ),
           backgroundColor: Colors.red,
-          showCloseIcon: true,
         ),
       );
     }
