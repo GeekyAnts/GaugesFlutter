@@ -622,9 +622,9 @@ class Pointer {
         }
         break;
       case PointerAlignment.end:
-        (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-            ? (animationValue = animationValue + base / 2)
-            : (vertex = Offset(vertex.dx, vertex.dy + base));
+        linearGauge.getGaugeOrientation == GaugeOrientation.horizontal
+            ? animationValue = (animationValue + base / 2)
+            : vertex = (Offset(vertex.dx, vertex.dy + base));
 
         break;
       default:
@@ -749,13 +749,13 @@ class Pointer {
     switch (pointerAlignment) {
       case PointerAlignment.start:
         (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-            ? (x = x - width! / 2)
-            : (center = Offset(center.dx, center.dy - height! / 2));
+            ? x = (x - width! / 2)
+            : center = (Offset(center.dx, center.dy - height! / 2));
         break;
       case PointerAlignment.end:
         (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-            ? (x = x + width! / 2)
-            : (center = Offset(center.dx, center.dy + height! / 2));
+            ? x = (x + width! / 2)
+            : center = (Offset(center.dx, center.dy + height! / 2));
 
         break;
       default:
