@@ -6,14 +6,13 @@
 ///
 /// Start using the package by importing the library in your Dart code:
 /// ```dart
-/// import 'package:geekyants_flutter_gauges/gauges.dart';
-/// ```
+/// import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';/// ```
 ///
 /// ### Useful Links
 /// * [ShowCase App](https://gauges-showcase.vercel.app/#/) - A showcase app for the package with UseCases and PlayGrounds.
 /// * [More from GeekyAnts](https://github.com/GeekyAnts)
 
-library geekyants_flutter_gauges;
+library gauges;
 
 export './src/linear_gauge/linear_gauge.dart';
 export './src/linear_gauge/pointers/linear_gauge_pointer.dart';
