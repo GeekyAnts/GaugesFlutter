@@ -233,5 +233,5 @@ List allTests = [
   ...valueBarTestCases,
   ...extendLinearGaugeTestCases
 ];
-  // removed singleLabelTestCases as it is Currently throwing an error
-  // ...singleLabelTestCases,
+// removed singleLabelTestCases as it is Currently throwing an error
+// ...singleLabelTestCases,
