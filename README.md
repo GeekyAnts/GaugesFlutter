@@ -46,7 +46,7 @@ This will add a line like this to your package's pubspec.yaml (and run an implic
 
 ```dart
 dependencies:
-  geekyants_flutter_gauges: ^0.0.5
+  geekyants_flutter_gauges: 1.0.0
 ```
 
 ## Usage
