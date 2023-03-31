@@ -207,7 +207,7 @@ class Pointer {
     double endValue = linearGauge.getEnd;
     double startValue = linearGauge.getStart;
     double totalWidth = end;
-    offset;
+
     bool isInversedRulers = linearGauge.getInversedRulers;
 
     double valueInPX = !isInversedRulers
@@ -442,7 +442,7 @@ class Pointer {
         _drawCircle(canvas, offset, linearGauge);
         break;
       default:
-        PointerPosition.center;
+        break;
     }
   }
 
@@ -519,7 +519,7 @@ class Pointer {
         _drawRectangle(canvas, offset, linearGauge);
         break;
       default:
-        PointerPosition.center;
+        break;
     }
   }
 
@@ -596,7 +596,7 @@ class Pointer {
         _drawTriangle(canvas, offset, 90, linearGauge);
         break;
       default:
-        PointerPosition.center;
+        break;
     }
   }
 
@@ -714,7 +714,7 @@ class Pointer {
         _drawDiamond(canvas, offset, linearGauge);
         break;
       default:
-        PointerPosition.center;
+        break;
     }
   }
 

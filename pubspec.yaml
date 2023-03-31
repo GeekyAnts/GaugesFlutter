@@ -1,7 +1,7 @@
 name: geekyants_flutter_gauges
 description: A linear gauge package for Flutter that displays progress
   and can be customized for appearance and behavior.
-version: 1.0.0
+version: 1.0.0+1
 homepage: https://github.com/GeekyAnts/GaugesFlutter
 
 environment:
@@ -17,6 +17,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   golden_toolkit: ^0.15.0
+  lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
