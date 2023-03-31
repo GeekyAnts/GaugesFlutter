@@ -17,6 +17,11 @@ and the Flutter guide for
 
 A gauge, in science and engineering, is a device used to make measurements or in order to display certain dimensional information. A wide variety of tools exist which serve such functions, ranging from simple pieces of material against which sizes can be measured to complex pieces of machinery.Here in Flutter you can use this package to plot a machinery information effortlessly.
 
+## Demo Application
+
+To fully explore the capabilities of our Linear Gauge, we recommend checking out our Demo Application which consists of Use Cases and Playgrounds for Linear Gauge
+[DEMO APPLICATION](https://gauges-showcase.vercel.app/#/)
+
 ## Table of contents
 
 - [Getting Started](#getting-started)
@@ -101,15 +106,16 @@ The `ValueBar` in the LinearGauge is the component that displays the actual valu
 The `RangeLinearGauge` class enables you to customize the ruler appearance in the `LinearGauge`. You can display multiple ranges by providing a list of `RangeLinearGauge` values, and customize the color, start, and end values to match your requirements.
 <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/rangelineargauge.png" alt="accessibility text">
 
-## Demo Application
+## License
 
-To fully explore the capabilities of our Linear Gauge, we recommend checking out our Demo Application which consists of Use Cases and Playgrounds for Linear Gauge
-[DEMO APPLICATION](https://gauges-showcase.vercel.app/#/)
+[MIT License](https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/LICENSE) , Copyright © 2023 GeekyAnts. See LICENSE for more information.
+
+## Contributors
+
+<a href="https://github.com/GeekyAnts/GaugesFlutter/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=GeekyAnts/GaugesFlutter" />
+</a>
 
 ## Credits
 
-This package was created by [@GeekyAnts](https://github.com/GeekyAnts).
-
-## License
-
-This package is available under the MIT license.
+Made with ❤️ by <a href="https://geekyants.com/" ><img src="https://s3.ap-southeast-1.amazonaws.com/cdn.elitmus.com/sy0zfezmfdovlb4vaz6siv1l7g30" height="17"/></a>
