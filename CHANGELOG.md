@@ -1,3 +1,17 @@
+## 1.0.0
+
+- Support for Vertical Orientation
+- Support for `RulerPosition`
+- Support for `Custom Labels`
+- Support for Inverse Rulers
+- Support for Extended LinearGauge
+- Support for multiple `ValueBars`
+- Support for ValueBar position
+- Support for ValueBar Thickness
+- Support for multiple `Pointers`
+- Support for `Pointer Alignment`
+- Support for `Pointer Position`
+- Support for `RangeLinearGauge`
 
 ## 0.0.6+1
 
@@ -12,7 +26,4 @@
 
 ## 0.0.5
 
-* Initial Release
-
-
-
+- Initial Release

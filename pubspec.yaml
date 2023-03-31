@@ -1,6 +1,7 @@
 name: geekyants_flutter_gauges
-description: Here in Flutter you can use this package to plot a machinery information effortlessly.
-version: 0.0.6+1
+description: A linear gauge package for Flutter that displays progress
+  and can be customized for appearance and behavior.
+version: 1.0.0
 homepage: https://github.com/GeekyAnts/GaugesFlutter
 
 environment:
