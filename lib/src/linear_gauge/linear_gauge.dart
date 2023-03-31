@@ -291,7 +291,7 @@ class LinearGauge extends StatefulWidget {
   final List<ValueBar>? valueBar;
 
   ///
-  /// `pointers` takes the list of [pointers] to render the value pointer/s
+  /// `pointers` takes the list of [pointer] to render the value pointer/s
   ///
   /// ```
   /// const LinearGauge(
