@@ -16,7 +16,6 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: LinearGauge(
-            value: 100,
             linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
                 thickness: 30,
                 borderRadius: 10,

@@ -490,7 +490,7 @@ class RenderLinearGauge extends RenderBox {
   /// Getter and Setter for the [_pointerSpace] parameter.
   ///
   double get getPointerSpace => _pointerSpace;
-  double _pointerSpace = 0;
+  final double _pointerSpace = 0;
 
   final Paint _linearGaugeContainerPaint = Paint();
   final Paint _primaryRulersPaint = Paint();
@@ -500,7 +500,7 @@ class RenderLinearGauge extends RenderBox {
 
   late Size _startLabelSize, _endLabelSize, _axisActualSize;
 
-  double _valueInPixel = 0;
+  final double _valueInPixel = 0;
 
   void _calculateRulerPoints() {
     if (getCustomLabels!.isEmpty) {
@@ -922,7 +922,7 @@ class RenderLinearGauge extends RenderBox {
     required Offset offset,
     required Rect gaugeContainer,
   }) {
-    var roundedGaugeContainer;
+    RRect roundedGaugeContainer;
 
     /// For loop for calculating colors in [RangeLinearGauge]
     /// 2 is hardcoded beacuse extend is happeing from both the end of the gauge
@@ -1029,7 +1029,7 @@ class RenderLinearGauge extends RenderBox {
     required borderRadius,
     required edgeStyle,
   }) {
-    var rectangularBox;
+    RRect rectangularBox;
     switch (edgeStyle) {
       case LinearEdgeStyle.startCurve:
         rectangularBox = RRect.fromRectAndCorners(
@@ -1219,7 +1219,7 @@ class RenderLinearGauge extends RenderBox {
       }
 
       if (showPrimaryRulers) {
-        canvas.drawLine(primaryRulerStartPoint!, a, _primaryRulersPaint);
+        canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
       }
       count++;
     });
