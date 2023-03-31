@@ -26,8 +26,8 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
               pointerPosition: PointerPosition.center,
             )
           ],
-          rulers:
-              const RulerStyle(rulerPosition: RulerPosition.center, showLabel: true),
+          rulers: const RulerStyle(
+              rulerPosition: RulerPosition.center, showLabel: true),
         ),
       ),
     );
