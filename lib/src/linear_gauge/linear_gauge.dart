@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
 import 'linear_gauge_painter.dart';
 
+/// Creates a LinearGauge Widget to display the values in a linear scale. The
+/// widget can be customized using the properties available in [LinearGauge].
+///
+/// ``` dart
+/// LinearGauge(
+///   steps: 2,
+///   start: 0,
+///   end: 100,
+///   rulers: RulerStyle(
+///           rulerPosition : RulerPosition.bottom,
+///       ),
+///  ),
+/// ```
 class LinearGauge extends StatefulWidget {
   ///
   /// [LinearGauge] is a visualization of measurement widget with a linear scale
@@ -125,21 +138,7 @@ class LinearGauge extends StatefulWidget {
   final double? extendLinearGauge;
 
   ///
-  ///
-  /// `linearGaugeBoxDecoration` sets the styles of Container using
-  /// [LinearGaugeBoxDecoration] decoration properties
-  ///
-  ///
-  /// Example
-  ///
-  ///  ```dart
-  /// const LinearGauge(
-  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-  ///               color: Colors.green,
-  ///               height: 30.0,
-  ///            ),
-  ///        ),
-  /// ```
+  /// @deprecated Value replaced by [valueBar] property
   ///
   final double? value;
 

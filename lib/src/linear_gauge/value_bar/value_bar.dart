@@ -3,25 +3,25 @@ import 'package:geekyants_flutter_gauges/gauges.dart';
 
 import '../linear_gauge_painter.dart';
 
-class ValueBar {
-  ///
-  /// The [ValueBar]  can be used to represent the current value of the [LinearGauge].
-  ///
-  ///
-  ///
-  /// ```dart
-  /// LinearGauge(
-  /// valueBar: [
-  /// ValueBar(
-  /// value: 50,
-  /// position: ValueBarPosition.top,
-  /// color: Colors.amber,
-  ///   ),
-  ///  ]
-  /// ),
-  /// ```
-  ///
+///
+/// The [ValueBar]  can be used to represent the current value of the [LinearGauge].
+///
+///
+///
+/// ```dart
+/// LinearGauge(
+/// valueBar: [
+/// ValueBar(
+/// value: 50,
+/// position: ValueBarPosition.top,
+/// color: Colors.amber,
+///   ),
+///  ]
+/// ),
+/// ```
+///
 
+class ValueBar {
   ValueBar({
     required this.value,
     this.offset = 0,
