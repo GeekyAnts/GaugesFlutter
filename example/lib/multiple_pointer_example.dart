@@ -14,12 +14,12 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          rulers: RulerStyle(
+          rulers: const RulerStyle(
               inverseRulers: false, rulerPosition: RulerPosition.bottom),
           valueBar: [
             ValueBar(value: 23, color: Colors.red),
           ],
-          pointers: [
+          pointers: const [
             Pointer(
               value: 28,
               width: 20,

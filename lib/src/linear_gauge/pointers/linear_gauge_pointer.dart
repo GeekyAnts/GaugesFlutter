@@ -314,7 +314,7 @@ class Pointer {
       double textWidth = textPainter.width / 2;
       double textHeight = textPainter.height / 2;
       // Rotated Text paint
-      void _paintRotated(Canvas canvas, TextPainter textPainter, Offset center,
+      void paintRotated(Canvas canvas, TextPainter textPainter, Offset center,
           double degrees) {
         canvas.save();
         canvas.translate(center.dx, center.dy);
@@ -332,15 +332,15 @@ class Pointer {
           break;
 
         case QuarterTurns.two:
-          _paintRotated(canvas, textPainter, offset, 180);
+          paintRotated(canvas, textPainter, offset, 180);
           break;
 
         case QuarterTurns.one:
-          _paintRotated(canvas, textPainter, offset, 90);
+          paintRotated(canvas, textPainter, offset, 90);
           break;
 
         case QuarterTurns.three:
-          _paintRotated(canvas, textPainter, offset, -90);
+          paintRotated(canvas, textPainter, offset, -90);
           break;
 
         default:
@@ -398,7 +398,6 @@ class Pointer {
     RenderLinearGauge linearGauge,
   ) {
     double gaugeThickness = linearGauge.getThickness;
-    PointerPosition rulerPosition = pointerPosition!;
     GaugeOrientation orientation = linearGauge.getGaugeOrientation;
 
     switch (pointerPosition) {
@@ -477,7 +476,6 @@ class Pointer {
   void _layoutRectangleOffsets(
       Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
     double gaugeThickness = linearGauge.getThickness;
-    RulerPosition rulerPosition = linearGauge.rulerPosition;
     GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
     switch (pointerPosition) {
       case PointerPosition.top:
@@ -556,7 +554,6 @@ class Pointer {
   void _layoutTriangleOffsets(
       Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
     double gaugeThickness = linearGauge.getThickness;
-    RulerPosition rulerPosition = linearGauge.rulerPosition;
     GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
 
     switch (pointerPosition) {
@@ -672,7 +669,6 @@ class Pointer {
     RenderLinearGauge linearGauge,
   ) {
     double gaugeThickness = linearGauge.getThickness;
-    RulerPosition rulerPosition = linearGauge.rulerPosition;
     GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
     switch (pointerPosition) {
       case PointerPosition.top:
@@ -777,6 +773,7 @@ class Pointer {
   }
 
   // Drawing the Arrow pointer
+  // ignore: unused_element
   void _drawArrowPointer(
     Canvas canvas,
     Offset offset,

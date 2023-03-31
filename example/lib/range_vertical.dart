@@ -27,7 +27,7 @@ class _MyVerticalRangeState extends State<MyVerticalRange> {
               color: Colors.green,
             ),
           ],
-          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 10),
+          linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(thickness: 10),
           gaugeOrientation: GaugeOrientation.horizontal,
           rulers: const RulerStyle(
             rulersOffset: 10,

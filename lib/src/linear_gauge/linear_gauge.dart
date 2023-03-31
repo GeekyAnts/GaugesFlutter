@@ -379,7 +379,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
   final LinearGauge lGauge;
   final double? animationValue;
 
-  const _RLinearGauge({required this.lGauge, super.key, this.animationValue});
+  const _RLinearGauge({required this.lGauge, this.animationValue});
 
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {

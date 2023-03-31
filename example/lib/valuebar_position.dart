@@ -17,7 +17,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           gaugeOrientation: GaugeOrientation.vertical,
           start: 0,
           end: 100,
-          pointers: [
+          pointers: const [
             Pointer(
               value: 100,
               shape: PointerShape.triangle,
@@ -27,7 +27,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             )
           ],
           rulers:
-              RulerStyle(rulerPosition: RulerPosition.center, showLabel: true),
+              const RulerStyle(rulerPosition: RulerPosition.center, showLabel: true),
         ),
       ),
     );

@@ -176,7 +176,6 @@ class ValueBar {
         : valueBarWidth;
 
     final ValueBarPosition valueBarPosition = position;
-    final getLinearGaugeBoxDecoration = linearGauge.getLinearGaugeBoxDecoration;
     final Paint linearGaugeContainerPaint = Paint();
     linearGaugeContainerPaint.color = color;
 
@@ -302,7 +301,7 @@ class ValueBar {
     required var linearGauge,
   }) {
     GaugeOrientation gaugeOrientation = linearGauge.getGaugeOrientation;
-    var rectangularBox;
+    RRect rectangularBox;
     switch (edgeStyle) {
       case LinearEdgeStyle.startCurve:
         gaugeOrientation == GaugeOrientation.horizontal

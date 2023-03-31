@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
 
 dev_dependencies:
   flutter_test:
@@ -23,13 +22,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-  assets:
-    - assets/images/
   fonts:
     - family: Roboto
       fonts:
-        - asset : assets/fonts/Roboto-Regular.ttf
-
+        - asset: assets/fonts/Roboto-Regular.ttf
 
   # To add assets to your package, add an assets section, like this:
   # assets:

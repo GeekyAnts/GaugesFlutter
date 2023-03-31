@@ -13,7 +13,6 @@ class InversedRulerExample extends StatelessWidget {
           children: [
             SizedBox(
               child: LinearGauge(
-                value: 15,
                 rangeLinearGauge: [
                   RangeLinearGauge(color: Colors.red, start: 10, end: 20),
                   RangeLinearGauge(color: Colors.orange, start: 20, end: 30),

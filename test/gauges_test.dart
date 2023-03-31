@@ -1,9 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 
 void main() {
   late LinearGauge linearGauge;
@@ -12,6 +9,7 @@ void main() {
       start: 0,
       end: 1000,
       steps: 0,
+      // ignore: deprecated_member_use_from_same_package
       value: 0,
       showLinearGaugeContainer: true,
       gaugeOrientation: GaugeOrientation.horizontal,
@@ -53,6 +51,7 @@ void main() {
       );
       expect(linearGauge.start, 0.0);
       expect(linearGauge.end, 1000.0);
+
       expect(linearGauge.value, 0);
       expect(linearGauge.steps, 0);
       expect(linearGauge.showLinearGaugeContainer, true);
