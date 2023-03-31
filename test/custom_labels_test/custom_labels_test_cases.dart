@@ -1,4 +1,4 @@
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 List noLabelsTestCases = [
   {
