@@ -1,53 +1,60 @@
-<!-- 
+<!--
 This README describes the package. If you publish this package to pub.dev,
 this README's contents appear on the landing page for your package.
 
 For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
 
 For general information about developing packages, see the Dart guide for
 [creating packages](https://dart.dev/guides/libraries/create-library-packages)
 and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
+[developing packages and plugins](https://flutter.dev/developing-packages).
 -->
+
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/banner.png" alt="accessibility text">
+
 # Gauges
 
-A gauge, in science and engineering, is a device used to make measurements or in order to display certain dimensional information. A wide variety of tools exist which serve such functions, ranging from simple pieces of material against which sizes can be measured to complex pieces of machinery.Here in Flutter you can use this package to plot a machinery information effortlessly.  
+A gauge, in science and engineering, is a device used to make measurements or in order to display certain dimensional information. A wide variety of tools exist which serve such functions, ranging from simple pieces of material against which sizes can be measured to complex pieces of machinery.Here in Flutter you can use this package to plot a machinery information effortlessly.
 
+## Demo Application
 
+To fully explore the capabilities of our Linear Gauge, we recommend checking out our Demo Application which consists of Use Cases and Playgrounds for Linear Gauge
+[DEMO APPLICATION](https://gauges-showcase.vercel.app/#/)
 
+## Table of contents
 
-### Features
+- [Getting Started](#getting-started)
+- [Linear Gauge Featues](#customization)
+  - [Orientation](#gauge-orientation)
+  - [Ruler Style](#rulerStyle)
+  - [Pointer](#pointer)
+  - [Value Bar](#valuebar)
+  - [Range Linear Gauge](#rangelineargauge)
+- [Demo Application](#demo-application)
+- [Credits](#credits)
 
-1. LinerGauge 
+## Getting started
 
-
-### Getting started
-
-Run this command 
+Run this command
 
 ```
-
 $flutter pub add geekyants_flutter_gauges
-
 ```
 
 This will add a line like this to your package's pubspec.yaml (and run an implicit flutter pub get):
 
-```
+```dart
 dependencies:
   geekyants_flutter_gauges: ^0.0.5
 ```
 
-
-
-### Usage
+## Usage
 
 Import it inside your main.dart
 
-```
-import 'package:geekyants_flutter_gauges/gauges.dart';
-
+```dart
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 ```
 
 Use it as below
@@ -58,9 +65,9 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: const LinearGauge(
+        child: LinearGauge(
+          rulers: const RulerStyle(
+            rulerPosition: RulerPosition.bottom,
           ),
         ),
       ),
@@ -69,54 +76,46 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 }
 ```
 
+## Customization
 
+### **Gauge Orientation**:
 
+The linearGauge can be oriented vertically or horizontally. The orientation can be set using the **`Gaugeorientation`** property in the Linear Gauge. The possible values for the orientation property are:
 
+- `GaugeOrientaion.horizontal`: The gauge will be oriented horizontally, with the minimum value on the left and the maximum value on the right.
+- `GaugeOrientaion.vertical`: The gauge will be oriented vertically, with the minimum value at the bottom and the maximum value at the top.
+  <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/orientation.gif" alt="accessibility text">
 
-### Screens
+### **RulerStyle**:
 
-#### 1. Default Styles
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/screen-two.png" width="250" alt="accessibility text"> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/default.png" width="250" alt="accessibility text">
+The **RulerStyle** class allows you to customize the appearance of the ruler used in the **LinearGauge**. With properties such as `RulerPosition`, `showLabel`, `inverseRuler`, and many more, you can customize the ruler in various ways to suit your needs.
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/rulerposition.png" alt="accessibility text">
 
-#### 2. Value on Gauge with Border Radius
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/value.png" width="250" alt="accessibility text"> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/border-radius.png" width="250" alt="accessibility text">
+### **Pointer**:
 
-#### 3. Higher label values with LinearGradient Color
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/linearGrd.png" width="250" alt="accessibility text"> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/higher-values.png" width="250" alt="accessibility text">
+The Pointer is used to indicate a specific value on the gauge. The gauge can have multiple pointers with various shapes and values
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/pointershape.png" alt="accessibility text">
 
+### **ValueBar**
 
-#### 4. Labels being adjusted depending on screen width
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/demo.gif" width="850" alt="accessibility text">
+The `ValueBar` in the LinearGauge is the component that displays the actual value of the gauge. It has properties such as `color`, `offset`, and `thickness` that can be customized to fit your needs.
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/valuebar.png" alt="accessibility text">
 
+### **RangeLinearGauge**
 
+The `RangeLinearGauge` class enables you to customize the ruler appearance in the `LinearGauge`. You can display multiple ranges by providing a list of `RangeLinearGauge` values, and customize the color, start, and end values to match your requirements.
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/rangelineargauge.png" alt="accessibility text">
 
-### Public API's to customize the LinearGauge
+## License
 
-| Properties    | Description                                                  |
-| --------------| -------------------------------------------------------------|
-| start         | Starts from the value given in `double`. It is Default to `0.0`|
-| end           | Ends at the value given in `double`. It is Default to `100`    |
-| Value         | plots the value between the start and end on the LinearGauge. It is Default to `0`   |
-| steps         | Increment the interval between Primary Labels with the given steps .Its Default to `0`. The Intervals will be calculated automatically as per the device width **Note displaying `double` values on label is not supported yet**|
-showLinearGaugeContainer | Display or Hide the LinearGauge container with the help of given `bool` value. It is Default to true|
-| gaugeOrientation         | Sets the Orientation of the Gauge to Horizontal or Vertical with the help given `GaugeOrientation` value.It is Default to `GaugeOrientation.horizontal`, **Note vertical is not supported yet**|
-| primaryRulersWidth         | Sets the width of the Primary rulers from the value given in `double`. It is Default to `1.0`|
-| primaryRulersHeight         | Sets the height of the Primary rulers from the value given in `double`. It is Default to `15.0`|
-| primaryRulersColor         | Sets the color of the Primary rulers from the value given in `Color`. It is Default to `Colors.black54`|
-| secondaryRulersWidth         | Sets the width of the Secondary rulers from the value given in `double`. It is Default to `1.0`|
-| secondaryRulersHeight         | Sets the height of the Secondary rulers from the value given in `double`. It is Default to `1.0`|
-| secondaryRulersColor         | Sets the color of the Secondary rulers from the value given in `Color`. It is Default to `Colors.grey`|
-| labelTopMargin         | Sets the margin from top using the value given in `double`. It is Default to `0.0`|
-| linearGaugeBoxDecoration         | Sets the style of linear gauge container from the given styles in `linearGaugeBoxDecoration`|
-| secondaryRulerPerInterval         | Increase or Decrease the number of secondary rulers to drawn between primary labels from the given value in `double`. It is Default to `1.0`|
+[MIT License](https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/LICENSE) , Copyright © 2023 GeekyAnts. See LICENSE for more information.
 
-### Road Map
+## Contributors
 
-- Label Font Size.
-- Label Font Color.
-- Show/Hide Labels and Rulers.
-- Padding for Gauge Container.
-- Pointer for showing the Current Reading on Gauge.
-- Vertical Linear Gauge.
-- Label Placement on different sides.
-- Animation for Linear Gauge
+<a href="https://github.com/GeekyAnts/GaugesFlutter/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=GeekyAnts/GaugesFlutter" />
+</a>
+
+## Credits
+
+Made with ❤️ by <a href="https://geekyants.com/" ><img src="https://s3.ap-southeast-1.amazonaws.com/cdn.elitmus.com/sy0zfezmfdovlb4vaz6siv1l7g30" height="17"/></a>

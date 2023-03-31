@@ -1,37 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 void main() {
-  LinearGauge linearGauge = const LinearGauge();
+  late LinearGauge linearGauge;
   setUp(() {
-    linearGauge = const LinearGauge(
+    linearGauge = LinearGauge(
       start: 0,
       end: 1000,
       steps: 0,
+      // ignore: deprecated_member_use_from_same_package
+      value: 0,
       showLinearGaugeContainer: true,
       gaugeOrientation: GaugeOrientation.horizontal,
-      textStyle: TextStyle(
-        fontSize: 12.0,
-        color: Color.fromARGB(255, 86, 86, 86),
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.normal,
-      ),
-      primaryRulersWidth: 1.0,
-      primaryRulersHeight: 15.0,
-      secondaryRulersHeight: 1.0,
-      secondaryRulersWidth: 1.0,
       labelTopMargin: 0.0,
-      primaryRulerColor: Colors.black54,
-      secondaryRulerColor: Colors.grey,
-      linearGaugeBoxDecoration: LinearGaugeBoxDecoration(),
-      secondaryRulerPerInterval: 1.0,
-      value: 0,
+      pointers: const [
+        Pointer(
+          value: 0,
+          shape: PointerShape.triangle,
+          pointerPosition: PointerPosition.bottom,
+        )
+      ],
+      linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(),
+      rulers: const RulerStyle(
+        primaryRulerColor: Colors.black54,
+        primaryRulersWidth: 1.0,
+        primaryRulersHeight: 15.0,
+        secondaryRulersHeight: 1.0,
+        secondaryRulersWidth: 1.0,
+        secondaryRulerColor: Colors.grey,
+        secondaryRulerPerInterval: 1.0,
+        textStyle: TextStyle(
+          fontSize: 12.0,
+          color: Color.fromARGB(255, 86, 86, 86),
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.normal,
+        ),
+        rulerPosition: RulerPosition.bottom,
+      ),
     );
   });
+
   group(' Testing', () {
     test('RenderLinearGauge test getter and setter', () {
-      TextStyle textStyel = const TextStyle(
+      TextStyle textStyle = const TextStyle(
         fontSize: 12.0,
         color: Color.fromARGB(255, 86, 86, 86),
         fontStyle: FontStyle.normal,
@@ -39,21 +51,23 @@ void main() {
       );
       expect(linearGauge.start, 0.0);
       expect(linearGauge.end, 1000.0);
+
       expect(linearGauge.value, 0);
       expect(linearGauge.steps, 0);
       expect(linearGauge.showLinearGaugeContainer, true);
       expect(linearGauge.gaugeOrientation, GaugeOrientation.horizontal);
-      expect(linearGauge.textStyle, textStyel);
-      expect(linearGauge.primaryRulersWidth, 1.0);
-      expect(linearGauge.primaryRulersHeight, 15.0);
-      expect(linearGauge.secondaryRulerColor, Colors.grey);
-      expect(linearGauge.primaryRulerColor, Colors.black54);
-      expect(linearGauge.secondaryRulersHeight, 1);
-      expect(linearGauge.secondaryRulersWidth, 1);
+      expect(linearGauge.rulers!.textStyle, textStyle);
+      expect(linearGauge.rulers!.primaryRulersWidth, 1.0);
+      expect(linearGauge.rulers!.primaryRulersHeight, 15.0);
+      expect(linearGauge.rulers!.secondaryRulerColor, Colors.grey);
+      expect(linearGauge.rulers!.primaryRulerColor, Colors.black54);
+      expect(linearGauge.rulers!.secondaryRulersHeight, 1);
+      expect(linearGauge.rulers!.secondaryRulersWidth, 1);
       expect(linearGauge.labelTopMargin, 0.0);
       expect(linearGauge.linearGaugeBoxDecoration,
           const LinearGaugeBoxDecoration());
-      expect(linearGauge.secondaryRulerPerInterval, 1.0);
+      expect(linearGauge.rulers!.secondaryRulerPerInterval, 1.0);
+      expect(linearGauge.rulers!.rulerPosition!, RulerPosition.bottom);
     });
 
     test("Verify Offset boundaries", () {});

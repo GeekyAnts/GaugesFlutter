@@ -1,8 +1,13 @@
+import 'package:example/shaders.dart';
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
 
 void main() {
-  runApp(const MaterialApp(home: MyGaugeExample()));
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyGaugeExample(),
+    ),
+  );
 }
 
 class MyGaugeExample extends StatefulWidget {
@@ -15,23 +20,8 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            SizedBox(
-              child: LinearGauge(
-                value: 50.0,
-                labelStyle: LabelStyle(
-                  fontSize: 10,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return const Scaffold(
+      body: MyShaders(),
     );
   }
 }
