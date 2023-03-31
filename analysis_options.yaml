@@ -2,3 +2,18 @@ include: package:flutter_lints/flutter.yaml
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+
+analyzer:
+  exclude: [build/**]
+  language:
+    strict-casts: false
+    strict-inference: false
+    
+    # strict-raw-types: true
+
+linter:
+  rules:
+    - cancel_subscriptions
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
