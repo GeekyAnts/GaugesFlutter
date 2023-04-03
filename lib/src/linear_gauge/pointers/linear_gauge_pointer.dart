@@ -207,7 +207,6 @@ class Pointer {
     double endValue = linearGauge.getEnd;
     double startValue = linearGauge.getStart;
     double totalWidth = end;
-
     bool isInversedRulers = linearGauge.getInversedRulers;
 
     double valueInPX = !isInversedRulers
@@ -584,6 +583,20 @@ class Pointer {
         center = center;
         break;
     }
+
+    double animationValue = 1;
+
+    if (linearGauge.getAnimationValue != null) {
+      animationValue = linearGauge.getAnimationValue!;
+
+      if (linearGauge.getInversedRulers) {
+        animationValue = 2 - animationValue;
+      }
+      center = (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+          ? Offset(center.dx * animationValue, center.dy)
+          : Offset(center.dx, center.dy * animationValue);
+    }
+
     canvas.drawCircle(center, height! / 2, paint);
   }
 
@@ -656,6 +669,16 @@ class Pointer {
         offset = offset;
         break;
     }
+
+    double animationValue = 1;
+
+    if (linearGauge.getAnimationValue != null) {
+      animationValue = linearGauge.getAnimationValue!;
+      offset = (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+          ? Offset(offset.dx * animationValue, offset.dy)
+          : Offset(offset.dx, offset.dy * animationValue);
+    }
+
     Rect rect = Rect.fromCenter(center: offset, width: width!, height: height!);
 
     canvas.drawRect(rect, paint);
@@ -715,7 +738,7 @@ class Pointer {
       RenderLinearGauge linearGauge) {
     // double animationValue =
     //     calculateAnimationValue(linearGauge, vertex.dx, linearGauge.getStart);
-    double animationValue = vertex.dx;
+    double xOffset = vertex.dx;
 
     final paint = Paint();
     paint.color = color!;
@@ -727,26 +750,42 @@ class Pointer {
     switch (pointerAlignment) {
       case PointerAlignment.start:
         if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
-          animationValue = animationValue - base / 2;
+          xOffset = xOffset - base / 2;
         } else {
           vertex = Offset(vertex.dx, vertex.dy - base);
         }
         break;
       case PointerAlignment.end:
-        linearGauge.getGaugeOrientation == GaugeOrientation.horizontal
-            ? animationValue = (animationValue + base / 2)
-            : vertex = (Offset(vertex.dx, vertex.dy + base));
+        (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+            ? (xOffset = xOffset + base / 2)
+            : (vertex = Offset(vertex.dx, vertex.dy + base));
 
         break;
       default:
         break;
     }
 
-    final path = Path()
-      ..moveTo((animationValue), vertex.dy)
-      ..lineTo((animationValue - base), vertex.dy + height!)
-      ..lineTo((animationValue + base), vertex.dy + height!)
-      ..close();
+    double animationValue = 1;
+
+    if (linearGauge.getAnimationValue != null) {
+      animationValue = linearGauge.getAnimationValue!;
+    }
+
+    final path = Path();
+
+    if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
+      path
+        ..moveTo((xOffset * animationValue), vertex.dy)
+        ..lineTo((xOffset - base) * animationValue, vertex.dy + height!)
+        ..lineTo((xOffset + base) * animationValue, vertex.dy + height!)
+        ..close();
+    } else {
+      path
+        ..moveTo((xOffset), vertex.dy * animationValue)
+        ..lineTo((xOffset - base), (vertex.dy + height!) * animationValue)
+        ..lineTo((xOffset + base), (vertex.dy + height!) * animationValue)
+        ..close();
+    }
 
 // this if statement setup things for pointer alignment
 //the need of this is due to the involvement of angles in drawing triangle
@@ -754,21 +793,30 @@ class Pointer {
       if ((pointerAlignment == PointerAlignment.start) &&
           ((pointerPosition == PointerPosition.top) ||
               (pointerPosition == PointerPosition.center))) {
-        animationValue -= base;
+        xOffset -= base;
       } else if ((pointerAlignment == PointerAlignment.end) &&
           ((pointerPosition == PointerPosition.top) ||
               (pointerPosition == PointerPosition.center))) {
-        animationValue += base;
+        xOffset += base;
       }
     }
 
     canvas.save();
 
-    /// Move the canvas origin to the vertex point
-    canvas.translate(animationValue, vertex.dy);
-    canvas.rotate(pi * angle / 180);
-    canvas.translate(-vertex.dx, -vertex.dy);
+    if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
+      /// Move the canvas origin to the vertex point
+      canvas.translate(xOffset * animationValue, vertex.dy);
+      canvas.rotate(pi * angle / 180);
+      canvas.translate(-vertex.dx * animationValue, -vertex.dy);
+    } else {
+      /// Move the canvas origin to the vertex point
+      canvas.translate(xOffset, vertex.dy * animationValue);
+      canvas.rotate(pi * angle / 180);
+      canvas.translate(-vertex.dx, -vertex.dy * animationValue);
+    }
+
     canvas.drawPath(path, paint);
+
     // Restore the previous canvas state
     canvas.restore();
   }
@@ -869,12 +917,27 @@ class Pointer {
         break;
     }
 
+    double animationValue = 1;
+
+    if (linearGauge.getAnimationValue != null) {
+      animationValue = linearGauge.getAnimationValue!;
+    }
+
     final path = Path();
-    path.moveTo(x, center.dy - height! / 2);
-    path.lineTo(x + width! / 2, center.dy);
-    path.lineTo(x, center.dy + height! / 2);
-    path.lineTo(x - width! / 2, center.dy);
-    path.close();
+
+    if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
+      path.moveTo(x * animationValue, center.dy - height! / 2);
+      path.lineTo((x + width! / 2) * animationValue, center.dy);
+      path.lineTo(x * animationValue, center.dy + height! / 2);
+      path.lineTo((x - width! / 2) * animationValue, center.dy);
+      path.close();
+    } else {
+      path.moveTo(x, (center.dy - height! / 2) * animationValue);
+      path.lineTo((x + width! / 2), center.dy * animationValue);
+      path.lineTo(x, (center.dy + height! / 2) * animationValue);
+      path.lineTo((x - width! / 2), center.dy * animationValue);
+      path.close();
+    }
 
     canvas.drawPath(path, paint);
   }
