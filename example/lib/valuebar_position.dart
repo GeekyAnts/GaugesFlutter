@@ -14,24 +14,22 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          enableAnimation: true,
-          valueBar: [ValueBar(value: 50)],
           gaugeOrientation: GaugeOrientation.horizontal,
+          enableAnimation: true,
           start: 0,
           end: 100,
-          pointers: const [
+          steps: 10,
+          pointers: [
             Pointer(
-              value: 70,
-              shape: PointerShape.circle,
-              height: 50,
-              // width: 50,
-              pointerPosition: PointerPosition.top,
-            )
+                value: 100,
+                shape: PointerShape.triangle,
+                height: 20,
+                width: 20,
+                pointerPosition: PointerPosition.top,
+                color: Colors.grey[800])
           ],
-          rulers: RulerStyle(
-              rulerPosition: RulerPosition.top,
-              showLabel: true,
-              inverseRulers: true),
+          rulers: const RulerStyle(
+              rulerPosition: RulerPosition.center, showLabel: true),
         ),
       ),
     );

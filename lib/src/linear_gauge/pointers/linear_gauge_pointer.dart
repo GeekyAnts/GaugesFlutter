@@ -757,8 +757,8 @@ class Pointer {
         break;
       case PointerAlignment.end:
         (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-            ? (xOffset = xOffset + base / 2)
-            : (vertex = Offset(vertex.dx, vertex.dy + base));
+            ? xOffset = xOffset + base / 2
+            : vertex = Offset(vertex.dx, vertex.dy + base);
 
         break;
       default:
