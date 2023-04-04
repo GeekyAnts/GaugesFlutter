@@ -510,6 +510,17 @@ class Pointer {
     }
   }
 
+  double getAnimatedAxisPoint(
+      double endPoint, double animationValue, RenderLinearGauge linearGauge) {
+    Offset startPointOffset = linearGauge.getLinearGaugeLabel
+        .getPrimaryRulersOffset[linearGauge.getStart.toString()]!.first;
+    double startPoint =
+        (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+            ? startPointOffset.dx
+            : startPointOffset.dy;
+    return startPoint + ((endPoint - startPoint) * animationValue);
+  }
+
   void _layoutCircleOffsets(
     Canvas canvas,
     Offset offset,
@@ -580,21 +591,22 @@ class Pointer {
 
         break;
       default:
-        center = center;
         break;
     }
 
-    double animationValue = 1;
-
     if (linearGauge.getAnimationValue != null) {
-      animationValue = linearGauge.getAnimationValue!;
+      double animationValue = linearGauge.getAnimationValue!;
 
-      if (linearGauge.getInversedRulers) {
-        animationValue = 2 - animationValue;
-      }
+      double endPoint =
+          (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+              ? center.dx
+              : center.dy;
+
+      double animatedAxisPoint =
+          getAnimatedAxisPoint(endPoint, animationValue, linearGauge);
       center = (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-          ? Offset(center.dx * animationValue, center.dy)
-          : Offset(center.dx, center.dy * animationValue);
+          ? Offset(animatedAxisPoint, center.dy)
+          : Offset(center.dx, animatedAxisPoint);
     }
 
     canvas.drawCircle(center, height! / 2, paint);
@@ -666,17 +678,22 @@ class Pointer {
 
         break;
       default:
-        offset = offset;
         break;
     }
 
-    double animationValue = 1;
-
     if (linearGauge.getAnimationValue != null) {
-      animationValue = linearGauge.getAnimationValue!;
+      double animationValue = linearGauge.getAnimationValue!;
+
+      double endPoint =
+          (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+              ? offset.dx
+              : offset.dy;
+
+      double animatedAxisPoint =
+          getAnimatedAxisPoint(endPoint, animationValue, linearGauge);
       offset = (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-          ? Offset(offset.dx * animationValue, offset.dy)
-          : Offset(offset.dx, offset.dy * animationValue);
+          ? Offset(animatedAxisPoint, offset.dy)
+          : Offset(offset.dx, animatedAxisPoint);
     }
 
     Rect rect = Rect.fromCenter(center: offset, width: width!, height: height!);
@@ -738,7 +755,7 @@ class Pointer {
       RenderLinearGauge linearGauge) {
     // double animationValue =
     //     calculateAnimationValue(linearGauge, vertex.dx, linearGauge.getStart);
-    double xOffset = vertex.dx;
+    Offset center = vertex;
 
     final paint = Paint();
     paint.color = color!;
@@ -750,42 +767,43 @@ class Pointer {
     switch (pointerAlignment) {
       case PointerAlignment.start:
         if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
-          xOffset = xOffset - base / 2;
+          center = Offset(center.dx - base / 2, center.dy);
         } else {
-          vertex = Offset(vertex.dx, vertex.dy - base);
+          center = Offset(center.dx, center.dy - base);
         }
         break;
       case PointerAlignment.end:
         (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-            ? xOffset = xOffset + base / 2
-            : vertex = Offset(vertex.dx, vertex.dy + base);
+            ? center = Offset(center.dx + base / 2, center.dy)
+            : center = Offset(center.dx, center.dy + base);
 
         break;
       default:
         break;
     }
 
-    double animationValue = 1;
-
     if (linearGauge.getAnimationValue != null) {
-      animationValue = linearGauge.getAnimationValue!;
+      double animationValue = linearGauge.getAnimationValue!;
+
+      double endPoint =
+          (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+              ? center.dx
+              : center.dy;
+
+      double animatedAxisPoint =
+          getAnimatedAxisPoint(endPoint, animationValue, linearGauge);
+      center = (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+          ? Offset(animatedAxisPoint, center.dy)
+          : Offset(center.dx, animatedAxisPoint);
     }
 
     final path = Path();
 
-    if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
-      path
-        ..moveTo((xOffset * animationValue), vertex.dy)
-        ..lineTo((xOffset - base) * animationValue, vertex.dy + height!)
-        ..lineTo((xOffset + base) * animationValue, vertex.dy + height!)
-        ..close();
-    } else {
-      path
-        ..moveTo((xOffset), vertex.dy * animationValue)
-        ..lineTo((xOffset - base), (vertex.dy + height!) * animationValue)
-        ..lineTo((xOffset + base), (vertex.dy + height!) * animationValue)
-        ..close();
-    }
+    path
+      ..moveTo(center.dx, center.dy)
+      ..lineTo((center.dx - base), center.dy + height!)
+      ..lineTo((center.dx + base), center.dy + height!)
+      ..close();
 
 // this if statement setup things for pointer alignment
 //the need of this is due to the involvement of angles in drawing triangle
@@ -793,27 +811,20 @@ class Pointer {
       if ((pointerAlignment == PointerAlignment.start) &&
           ((pointerPosition == PointerPosition.top) ||
               (pointerPosition == PointerPosition.center))) {
-        xOffset -= base;
+        center = Offset(center.dx - base, center.dy);
       } else if ((pointerAlignment == PointerAlignment.end) &&
           ((pointerPosition == PointerPosition.top) ||
               (pointerPosition == PointerPosition.center))) {
-        xOffset += base;
+        center = Offset(center.dx + base, center.dy);
       }
     }
 
     canvas.save();
 
-    if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
-      /// Move the canvas origin to the vertex point
-      canvas.translate(xOffset * animationValue, vertex.dy);
-      canvas.rotate(pi * angle / 180);
-      canvas.translate(-vertex.dx * animationValue, -vertex.dy);
-    } else {
-      /// Move the canvas origin to the vertex point
-      canvas.translate(xOffset, vertex.dy * animationValue);
-      canvas.rotate(pi * angle / 180);
-      canvas.translate(-vertex.dx, -vertex.dy * animationValue);
-    }
+    /// Move the canvas origin to the vertex point
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(pi * angle / 180);
+    canvas.translate(-center.dx, -center.dy);
 
     canvas.drawPath(path, paint);
 
@@ -895,7 +906,6 @@ class Pointer {
     RenderLinearGauge linearGauge,
   ) {
     // double x = calculateAnimationValue(linearGauge, center.dx, 0);
-    double x = center.dx;
 
     final paint = Paint()
       ..color = color!
@@ -904,12 +914,12 @@ class Pointer {
     switch (pointerAlignment) {
       case PointerAlignment.start:
         (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-            ? x = (x - width! / 2)
-            : center = (Offset(center.dx, center.dy - height! / 2));
+            ? center = Offset(center.dx - width! / 2, center.dy)
+            : center = Offset(center.dx, center.dy - height! / 2);
         break;
       case PointerAlignment.end:
         (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-            ? x = (x + width! / 2)
+            ? center = Offset(center.dx + width! / 2, center.dy)
             : center = (Offset(center.dx, center.dy + height! / 2));
 
         break;
@@ -917,27 +927,28 @@ class Pointer {
         break;
     }
 
-    double animationValue = 1;
-
     if (linearGauge.getAnimationValue != null) {
-      animationValue = linearGauge.getAnimationValue!;
+      double animationValue = linearGauge.getAnimationValue!;
+
+      double endPoint =
+          (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+              ? center.dx
+              : center.dy;
+
+      double animatedAxisPoint =
+          getAnimatedAxisPoint(endPoint, animationValue, linearGauge);
+      center = (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
+          ? Offset(animatedAxisPoint, center.dy)
+          : Offset(center.dx, animatedAxisPoint);
     }
 
     final path = Path();
 
-    if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
-      path.moveTo(x * animationValue, center.dy - height! / 2);
-      path.lineTo((x + width! / 2) * animationValue, center.dy);
-      path.lineTo(x * animationValue, center.dy + height! / 2);
-      path.lineTo((x - width! / 2) * animationValue, center.dy);
-      path.close();
-    } else {
-      path.moveTo(x, (center.dy - height! / 2) * animationValue);
-      path.lineTo((x + width! / 2), center.dy * animationValue);
-      path.lineTo(x, (center.dy + height! / 2) * animationValue);
-      path.lineTo((x - width! / 2), center.dy * animationValue);
-      path.close();
-    }
+    path.moveTo(center.dx, center.dy - height! / 2);
+    path.lineTo((center.dx + width! / 2), center.dy);
+    path.lineTo(center.dx, center.dy + height! / 2);
+    path.lineTo((center.dx - width! / 2), center.dy);
+    path.close();
 
     canvas.drawPath(path, paint);
   }

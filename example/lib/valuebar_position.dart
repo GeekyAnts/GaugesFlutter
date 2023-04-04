@@ -19,17 +19,29 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           start: 0,
           end: 100,
           steps: 10,
+          // valueBar: [
+          //   ValueBar(
+          //     value: 50,
+          //     valueBarThickness: 10,
+          //     color: Colors.blue.shade300,
+          //   )
+          // ],
           pointers: [
             Pointer(
-                value: 100,
-                shape: PointerShape.triangle,
+                value: 10,
+                shape: PointerShape.circle,
+                pointerAlignment: PointerAlignment.center,
                 height: 20,
                 width: 20,
-                pointerPosition: PointerPosition.top,
+                pointerPosition: PointerPosition.bottom,
                 color: Colors.grey[800])
           ],
+          linearGaugeBoxDecoration:
+              const LinearGaugeBoxDecoration(thickness: 10),
           rulers: const RulerStyle(
-              rulerPosition: RulerPosition.center, showLabel: true),
+              inverseRulers: true,
+              rulerPosition: RulerPosition.top,
+              showLabel: true),
         ),
       ),
     );
