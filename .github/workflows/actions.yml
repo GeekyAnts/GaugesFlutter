@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     # This job will run on ubuntu virtual machine
-    if: github.ref == 'refs/heads/main'
+    if: github.ref != 'refs/heads/stable'
     runs-on: ubuntu-latest
     steps:
     
