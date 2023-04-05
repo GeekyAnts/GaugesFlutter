@@ -1,5 +1,5 @@
-import 'package:example/shaders.dart';
 import 'package:flutter/material.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 void main() {
   runApp(
@@ -20,8 +20,12 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: MyShaders(),
+    return Scaffold(
+      body: LinearGauge(
+        rulers: const RulerStyle(
+          rulerPosition: RulerPosition.bottom,
+        ),
+      ),
     );
   }
 }
