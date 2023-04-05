@@ -55,6 +55,7 @@ class LinearGauge extends StatefulWidget {
     this.animationGap = 0,
     this.animationDuration = 1000,
     this.animationType = Curves.ease,
+    this.curves = const [],
   })  : assert(() {
           if (customLabels!.isNotEmpty) {
             assert(customLabels.length >= 2,
@@ -91,6 +92,8 @@ class LinearGauge extends StatefulWidget {
           return true;
         }()),
         super(key: key);
+
+  final List<CustomCurve>? curves;
 
   ///
   /// `start` Sets the starting label of the [LinearGauge] Container
@@ -651,6 +654,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       fillExtend: lGauge.fillExtend,
       pointerAnimation: pointerAnimation!,
       valueBarAnimation: valueBarAnimation!,
+      customCurve: lGauge.curves,
     );
   }
 
@@ -695,6 +699,7 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setLinearGaugeBoxDecoration = lGauge.linearGaugeBoxDecoration
       ..setFillExtend = lGauge.fillExtend
       ..setPointerAnimation = pointerAnimation!
-      ..setValueBarAnimation = valueBarAnimation!;
+      ..setValueBarAnimation = valueBarAnimation!
+      ..setCurves = lGauge.curves;
   }
 }

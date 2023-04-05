@@ -44,6 +44,7 @@ class RenderLinearGauge extends RenderBox {
     required bool fillExtend,
     required List<Animation<double>> pointerAnimation,
     required List<Animation<double>> valueBarAnimation,
+    required List<CustomCurve>? customCurve,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -72,7 +73,6 @@ class RenderLinearGauge extends RenderBox {
         _customLabels = customLabels,
         _rulersOffset = rulersOffset,
         _inversedRulers = inversedRulers,
-        // _valueBarPosition = valueBarPosition,
         _valueBar = valueBar,
         _pointers = pointers,
         _gaugeAnimation = gaugeAnimation,
@@ -80,7 +80,8 @@ class RenderLinearGauge extends RenderBox {
         _extendLinearGauge = extendLinearGauge,
         _fillExtend = fillExtend,
         _pointerAnimation = pointerAnimation,
-        _valueBarAnimation = valueBarAnimation;
+        _valueBarAnimation = valueBarAnimation,
+        _curves = customCurve;
 
   // For getting Gauge Values
   double gaugeStart = 0;
@@ -489,6 +490,14 @@ class RenderLinearGauge extends RenderBox {
   set setFillExtend(bool val) {
     if (_fillExtend == val) return;
     _fillExtend = val;
+    markNeedsPaint();
+  }
+
+  List<CustomCurve>? get getCustomCurves => _curves;
+  List<CustomCurve>? _curves = <CustomCurve>[];
+  set setCurves(List<CustomCurve>? val) {
+    if (_curves == val) return;
+    _curves = val;
     markNeedsPaint();
   }
 
@@ -1975,6 +1984,11 @@ class RenderLinearGauge extends RenderBox {
       firstOff = vert;
     } else {
       firstOff = vert;
+    }
+
+    for (var element in getCustomCurves!) {
+      double value = valueToPixel(element.value);
+      element.drawCurve(canvas, this, value, firstOff);
     }
     // Drawing Pointers based on list of pointers added to the gauge
     for (int i = 0; i < getPointers.length; i++) {
