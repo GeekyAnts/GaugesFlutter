@@ -3,6 +3,9 @@ on:
   push :
     branches:
     - stable
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     # This job will run on ubuntu virtual machine
