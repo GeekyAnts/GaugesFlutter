@@ -1,9 +1,5 @@
-name: Gauges Flutter Checks
+name: GeekyAnts Flutter Gauges Checks
 on:
-  pull_request:
-    branches:
-    - main
-    - stable
   push :
     branches:
     - stable
@@ -39,8 +35,9 @@ jobs:
     
     # Pub dry run.
     - run: flutter pub publish --dry-run 
+
   publishing:
-    if: github.event.pull_request.base.ref == 'stable'
+    if: github.ref == 'refs/heads/stable'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
