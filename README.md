@@ -17,8 +17,8 @@ and the Flutter guide for
 
 A gauge, in science and engineering, is a device used to make measurements or in order to display certain dimensional information. A wide variety of tools exist which serve such functions, ranging from simple pieces of material against which sizes can be measured to complex pieces of machinery.Here in Flutter you can use this package to plot a machinery information effortlessly.
 
-![example workflow](https://github.com/GeekyAnts/GaugesFlutter/.github/workflows/actions.yml/badge.svg)
 
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/GeekyAnts/GaugesFlutter/actions.yml?branch=main&label=Build&style=for-the-badge)
 
 ## Demo Application
 
