@@ -1,3 +1,7 @@
+## 1.0.0+3
+
+Updated Example
+
 ## 1.0.0+2
 
 Minor fixes for analyzer
