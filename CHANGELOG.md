@@ -1,5 +1,9 @@
 ## 1.0.0+2
 
+Updated Example
+
+## 1.0.0+2
+
 Minor fixes for analyzer
 
 ## 1.0.0+1
