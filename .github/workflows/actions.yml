@@ -1,29 +1,11 @@
 name: Publish to Pub.dev
-on: 
+on:
+  pull_request:
+    branches:
+    - main
   push :
     branches:
     - stable
-jobs:
-  publishing:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@main # required!
-        
-      - name: 'GeekyAnts Gauges Flutter'
-        uses: k-paxian/dart-package-publisher@master
-        with:
-          credentialJson: ${{ secrets.CREDENTIALLS_JSON }}
-
-
-
-on:
-  push:
-    branches:
-    - main
-    
-# on: push    # Default will running for every branch.
-    
 jobs:
   build:
     # This job will run on ubuntu virtual machine
@@ -56,3 +38,16 @@ jobs:
     
     # Pub dry run.
     - run: flutter pub publish --dry-run 
+  publishing:
+    if: github.event.pull_request.base.ref == 'stable'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@main # required!
+        
+      - name: 'GeekyAnts Gauges Flutter'
+        uses: k-paxian/dart-package-publisher@master
+        with:
+          credentialJson: ${{ secrets.CREDENTIALLS_JSON }}
+
+  
