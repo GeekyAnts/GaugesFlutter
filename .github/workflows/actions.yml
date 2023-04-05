@@ -1,4 +1,4 @@
-name: Publish to Pub.dev
+name: Gauges Flutter Checks
 on:
   pull_request:
     branches:
