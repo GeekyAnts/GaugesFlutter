@@ -35,6 +35,7 @@ jobs:
     
     # Pub dry run.
     - run: flutter pub publish --dry-run 
+    
   publishing:
     if: github.ref == 'refs/heads/stable'
     runs-on: ubuntu-latest
