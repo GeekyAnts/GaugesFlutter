@@ -14,18 +14,20 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
+          extendLinearGauge: 10,
+          fillExtend: false,
           gaugeOrientation: GaugeOrientation.horizontal,
           enableAnimation: true,
           start: 0,
           end: 100,
           steps: 10,
-          // valueBar: [
-          //   ValueBar(
-          //     value: 50,
-          //     valueBarThickness: 10,
-          //     color: Colors.blue.shade300,
-          //   )
-          // ],
+          valueBar: [
+            ValueBar(
+              value: 100,
+              valueBarThickness: 10,
+              color: Colors.blue.shade300,
+            )
+          ],
           pointers: [
             Pointer(
                 value: 10,
@@ -39,7 +41,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           linearGaugeBoxDecoration:
               const LinearGaugeBoxDecoration(thickness: 10),
           rulers: const RulerStyle(
-              inverseRulers: true,
+              inverseRulers: false,
               rulerPosition: RulerPosition.top,
               showLabel: true),
         ),

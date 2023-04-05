@@ -218,9 +218,7 @@ class ValueBar {
         valueBarThickness,
       );
     } else {
-      double barTop = (!getInversedRulers)
-          ? start + valueBarHeight
-          : start - linearGauge.getExtendLinearGauge;
+      double barTop = (!getInversedRulers) ? start + end : start;
       double barLeft = _getOffsetHeight(
         position,
         linearGaugeThickness,
@@ -230,16 +228,12 @@ class ValueBar {
 
       if (!linearGauge.getFillExtend) {
         barTop = !getInversedRulers
-            ? (barTop + linearGauge.getExtendLinearGauge)
-            : (barTop + 2 * linearGauge.getExtendLinearGauge);
+            ? (barTop - linearGauge.getExtendLinearGauge)
+            : (barTop + linearGauge.getExtendLinearGauge);
       } else {
-        barTop = barTop + linearGauge.getExtendLinearGauge;
+        // barTop = barTop + 2 * linearGauge.getExtendLinearGauge;
 
         if (linearGauge.getEnd == value) {
-          barTop = !getInversedRulers
-              ? (barTop - linearGauge.getExtendLinearGauge)
-              : (barTop);
-
           valueBarWidth += 2 * linearGauge.getExtendLinearGauge;
         } else {
           valueBarWidth += linearGauge.getExtendLinearGauge;
@@ -260,7 +254,7 @@ class ValueBar {
         (position == ValueBarPosition.left)
             ? -valueBarThickness
             : valueBarThickness, // set width to half of the gauge width
-        valueBarWidth,
+        !getInversedRulers ? -valueBarWidth : valueBarWidth,
       );
     }
 
