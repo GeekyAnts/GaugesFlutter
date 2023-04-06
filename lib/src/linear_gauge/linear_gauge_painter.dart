@@ -967,9 +967,7 @@ class RenderLinearGauge extends RenderBox {
 
         gaugeContainer = Rect.fromLTWH(
           colorRangeStart,
-          rulerPosition == RulerPosition.top
-              ? size.height - offset.dy - getThickness
-              : offset.dy,
+          offset.dy,
           !getInversedRulers ? colorRangeWidth : -colorRangeWidth,
           getThickness,
         );
