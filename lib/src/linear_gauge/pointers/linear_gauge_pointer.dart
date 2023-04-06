@@ -39,6 +39,9 @@ class Pointer {
     this.labelStyle = const TextStyle(),
     this.pointerPosition = PointerPosition.center,
     this.pointerAlignment = PointerAlignment.center,
+    this.animationDuration = 1000,
+    this.animationType = Curves.ease,
+    this.enableAnimation = true,
   });
 
   ///
@@ -175,6 +178,58 @@ class Pointer {
   ///
   set setPointerValue(double? value) => value = value;
 
+  /// Specifies the load time animation duration with [enableAnimation].
+  /// Duration is defined in milliseconds.
+  ///
+  /// Defaults to true.
+  ///
+  /// ```dart
+  ///
+  /// LinearGauge (
+  ///  pointers: [
+  /// Pointer(
+  /// value: 20,
+  /// enableAnimation: true,
+  ///  )])
+  /// ```
+  ///
+  final bool enableAnimation;
+
+  /// Specifies the load time animation duration with [enableAnimation].
+  /// Duration is defined in milliseconds.
+  ///
+  /// Defaults to 1000.
+  ///
+  /// ```dart
+  ///
+  /// LinearGauge (
+  ///  pointers: [
+  /// Pointer(
+  /// value: 20,
+  /// enableAnimation: true,
+  /// animationDuration: 4000
+  ///  )])
+  /// ```
+  ///
+  final int animationDuration;
+
+  /// Specifies the animation type of shape pointers.
+  ///
+  /// Defaults to [Curves.ease].
+  ///
+  /// ```dart
+  ///
+  /// LinearGauge (
+  ///  pointers: [
+  /// Pointer(
+  /// value: 20,
+  /// enableAnimation: true,
+  /// animationType: Curves.linear
+  ///  )])
+  /// ```
+  ///
+  final Curve animationType;
+
   /// Method to draw the pointer on the canvas based on the pointer shape
   void drawPointer(
     PointerShape? shape,
@@ -182,6 +237,7 @@ class Pointer {
     double start,
     double end,
     Offset offset,
+    int index,
     RenderLinearGauge linearGauge,
   ) {
     if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
@@ -233,20 +289,16 @@ class Pointer {
         gaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
     switch (shape) {
       case PointerShape.circle:
-        _layoutCircleOffsets(canvas, offset, linearGauge);
+        _layoutCircleOffsets(canvas, offset, linearGauge, index);
         break;
       case PointerShape.rectangle:
-        _layoutRectangleOffsets(canvas, offset, linearGauge);
+        _layoutRectangleOffsets(canvas, offset, linearGauge, index);
         break;
       case PointerShape.triangle:
-        _layoutTriangleOffsets(
-          canvas,
-          offset,
-          linearGauge,
-        );
+        _layoutTriangleOffsets(canvas, offset, linearGauge, index);
         break;
       case PointerShape.diamond:
-        _layoutDiamondOffsets(canvas, offset, linearGauge);
+        _layoutDiamondOffsets(canvas, offset, linearGauge, index);
         break;
       default:
         return;
@@ -522,10 +574,7 @@ class Pointer {
   }
 
   void _layoutCircleOffsets(
-    Canvas canvas,
-    Offset offset,
-    RenderLinearGauge linearGauge,
-  ) {
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge, int index) {
     double gaugeThickness = linearGauge.getThickness;
     GaugeOrientation orientation = linearGauge.getGaugeOrientation;
 
@@ -568,10 +617,11 @@ class Pointer {
       default:
         break;
     }
-    _drawCircle(canvas, offset, linearGauge);
+    _drawCircle(canvas, offset, linearGauge, index);
   }
 
-  _drawCircle(Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
+  _drawCircle(
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge, int index) {
     Offset center = Offset(offset.dx, offset.dy);
     final paint = Paint()..color = color!;
     paint.color = color!;
@@ -594,8 +644,10 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getAnimationValue != null) {
-      double animationValue = linearGauge.getAnimationValue!;
+    if (linearGauge.getAnimationValue != null &&
+        enableAnimation &&
+        linearGauge.getPointerAnimation[index].value >= 0) {
+      double animationValue = linearGauge.getPointerAnimation[index].value;
 
       double endPoint =
           (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
@@ -614,7 +666,7 @@ class Pointer {
 
   // Drawing the Rectangle Pointer
   void _layoutRectangleOffsets(
-      Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge, int index) {
     double gaugeThickness = linearGauge.getThickness;
     GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
     switch (pointerPosition) {
@@ -656,10 +708,11 @@ class Pointer {
       default:
         break;
     }
-    _drawRectangle(canvas, offset, linearGauge);
+    _drawRectangle(canvas, offset, linearGauge, index);
   }
 
-  _drawRectangle(Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
+  _drawRectangle(
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge, int index) {
     final paint = Paint()..color = color!;
     offset = Offset(offset.dx, offset.dy);
 
@@ -681,8 +734,10 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getAnimationValue != null) {
-      double animationValue = linearGauge.getAnimationValue!;
+    if (linearGauge.getAnimationValue != null &&
+        enableAnimation &&
+        linearGauge.getPointerAnimation[index].value >= 0) {
+      double animationValue = linearGauge.getPointerAnimation[index].value;
 
       double endPoint =
           (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
@@ -703,7 +758,7 @@ class Pointer {
 
   // Drawing the Triangle Pointer
   void _layoutTriangleOffsets(
-      Canvas canvas, Offset offset, RenderLinearGauge linearGauge) {
+      Canvas canvas, Offset offset, RenderLinearGauge linearGauge, int index) {
     double gaugeThickness = linearGauge.getThickness;
     GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
 
@@ -711,12 +766,12 @@ class Pointer {
       case PointerPosition.top:
         offset = Offset(offset.dx,
             offset.dy - gaugeThickness + linearGauge.yAxisForGaugeContainer);
-        _drawTriangle(canvas, offset, 180, linearGauge);
+        _drawTriangle(canvas, offset, 180, linearGauge, index);
         break;
       case PointerPosition.bottom:
         offset =
             Offset(offset.dx, offset.dy + linearGauge.yAxisForGaugeContainer);
-        _drawTriangle(canvas, offset, 0, linearGauge);
+        _drawTriangle(canvas, offset, 0, linearGauge, index);
         break;
       case PointerPosition.center:
         offset = rulerOrientation == GaugeOrientation.horizontal
@@ -733,18 +788,18 @@ class Pointer {
                 offset.dy);
         double angle =
             rulerOrientation == GaugeOrientation.horizontal ? 180 : 90;
-        _drawTriangle(canvas, offset, angle, linearGauge);
+        _drawTriangle(canvas, offset, angle, linearGauge, index);
         break;
       case PointerPosition.right:
         offset =
             Offset(offset.dx + linearGauge.xAxisForGaugeContainer, offset.dy);
-        _drawTriangle(canvas, offset, -90, linearGauge);
+        _drawTriangle(canvas, offset, -90, linearGauge, index);
         break;
       case PointerPosition.left:
         offset = Offset(
             offset.dx - gaugeThickness + linearGauge.xAxisForGaugeContainer,
             offset.dy);
-        _drawTriangle(canvas, offset, 90, linearGauge);
+        _drawTriangle(canvas, offset, 90, linearGauge, index);
         break;
       default:
         break;
@@ -752,7 +807,7 @@ class Pointer {
   }
 
   void _drawTriangle(Canvas canvas, Offset vertex, double angle,
-      RenderLinearGauge linearGauge) {
+      RenderLinearGauge linearGauge, int index) {
     // double animationValue =
     //     calculateAnimationValue(linearGauge, vertex.dx, linearGauge.getStart);
     Offset center = vertex;
@@ -782,8 +837,10 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getAnimationValue != null) {
-      double animationValue = linearGauge.getAnimationValue!;
+    if (linearGauge.getAnimationValue != null &&
+        enableAnimation &&
+        linearGauge.getPointerAnimation[index].value >= 0) {
+      double animationValue = linearGauge.getPointerAnimation[index].value;
 
       double endPoint =
           (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
@@ -837,6 +894,7 @@ class Pointer {
     Canvas canvas,
     Offset offset,
     RenderLinearGauge linearGauge,
+    int index,
   ) {
     double gaugeThickness = linearGauge.getThickness;
     GaugeOrientation rulerOrientation = linearGauge.getGaugeOrientation;
@@ -881,7 +939,7 @@ class Pointer {
       default:
         break;
     }
-    _drawDiamond(canvas, offset, linearGauge);
+    _drawDiamond(canvas, offset, linearGauge, index);
   }
 
   /// Animation Calculation
@@ -901,10 +959,7 @@ class Pointer {
   // }
 
   _drawDiamond(
-    Canvas canvas,
-    Offset center,
-    RenderLinearGauge linearGauge,
-  ) {
+      Canvas canvas, Offset center, RenderLinearGauge linearGauge, int index) {
     // double x = calculateAnimationValue(linearGauge, center.dx, 0);
 
     final paint = Paint()
@@ -927,8 +982,10 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getAnimationValue != null) {
-      double animationValue = linearGauge.getAnimationValue!;
+    if (linearGauge.getAnimationValue != null &&
+        enableAnimation &&
+        linearGauge.getPointerAnimation[index].value >= 0) {
+      double animationValue = linearGauge.getPointerAnimation[index].value;
 
       double endPoint =
           (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)

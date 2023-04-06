@@ -40,6 +40,7 @@ class RenderLinearGauge extends RenderBox {
     required double thickness,
     required double extendLinearGauge,
     required bool fillExtend,
+    required List<Animation<double>> pointerAnimation,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -74,7 +75,8 @@ class RenderLinearGauge extends RenderBox {
         _animationValue = animationValue,
         _thickness = thickness,
         _extendLinearGauge = extendLinearGauge,
-        _fillExtend = fillExtend;
+        _fillExtend = fillExtend,
+        _pointerAnimation = pointerAnimation;
 
   // For getting Gauge Values
   double gaugeStart = 0;
@@ -484,6 +486,17 @@ class RenderLinearGauge extends RenderBox {
     if (_fillExtend == val) return;
     _fillExtend = val;
     markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [pointerAnimation] parameter.
+  ///
+  List<Animation<double>> get getPointerAnimation => _pointerAnimation;
+  List<Animation<double>> _pointerAnimation;
+  set setPointerAnimation(List<Animation<double>> val) {
+    if (_pointerAnimation == val) return;
+    _pointerAnimation = val;
+    markNeedsLayout();
   }
 
   ///
@@ -1894,6 +1907,7 @@ class RenderLinearGauge extends RenderBox {
         gaugeStart,
         gaugeEnd,
         firstOff,
+        i,
         this,
       );
     }

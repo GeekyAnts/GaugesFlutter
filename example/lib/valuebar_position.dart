@@ -30,8 +30,31 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           ],
           pointers: [
             Pointer(
-                value: 10,
+                value: 50,
                 shape: PointerShape.circle,
+                enableAnimation: false,
+                animationDuration: 2000,
+                animationType: Curves.bounceIn,
+                pointerAlignment: PointerAlignment.center,
+                height: 20,
+                width: 20,
+                pointerPosition: PointerPosition.bottom,
+                color: Colors.grey[800]),
+            Pointer(
+                value: 90,
+                shape: PointerShape.circle,
+                animationDuration: 2000,
+                animationType: Curves.ease,
+                pointerAlignment: PointerAlignment.center,
+                height: 20,
+                width: 20,
+                pointerPosition: PointerPosition.bottom,
+                color: Colors.grey[800]),
+            Pointer(
+                value: 20,
+                shape: PointerShape.triangle,
+                animationDuration: 1000,
+                animationType: Curves.decelerate,
                 pointerAlignment: PointerAlignment.center,
                 height: 20,
                 width: 20,
@@ -41,7 +64,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           linearGaugeBoxDecoration:
               const LinearGaugeBoxDecoration(thickness: 10),
           rulers: const RulerStyle(
-              inverseRulers: false,
+              inverseRulers: true,
               rulerPosition: RulerPosition.top,
               showLabel: true),
         ),
