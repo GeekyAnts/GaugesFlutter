@@ -561,7 +561,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return _RLinearGauge(
       lGauge: widget,
-      gaugeAnimation: _gaugeAnimation!,
+      gaugeAnimation: _gaugeAnimation,
       pointerAnimation: _pointerAnimations,
       valueBarAnimation: _valueBarAnimations,
     );

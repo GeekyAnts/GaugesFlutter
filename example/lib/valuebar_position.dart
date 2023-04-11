@@ -14,12 +14,13 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          animationGap: 0.8,
-          animationDuration: 5000,
+          // animationGap: 0.8,
+          // animationDuration: 5000,
           extendLinearGauge: 10,
+
           fillExtend: false,
           gaugeOrientation: GaugeOrientation.horizontal,
-          enableGaugeAnimation: true,
+          // enableGaugeAnimation: true,
           start: 0,
           end: 100,
           steps: 10,
@@ -31,16 +32,17 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             //     animationType: Curves.bounceInOut),
           ],
           pointers: [
-            // Pointer(
-            //     value: 95,
-            //     shape: PointerShape.triangle,
-            //     animationDuration: 5000,
-            //     animationType: Curves.ease,
-            //     pointerAlignment: PointerAlignment.center,
-            //     height: 20,
-            //     width: 20,
-            //     pointerPosition: PointerPosition.bottom,
-            //     color: Colors.grey[800]),
+            Pointer(
+                value: 10,
+                shape: PointerShape.triangle,
+                animationDuration: 5000,
+                enableAnimation: false,
+                animationType: Curves.ease,
+                pointerAlignment: PointerAlignment.end,
+                height: 20,
+                width: 20,
+                pointerPosition: PointerPosition.center,
+                color: Colors.grey[800]),
             // Pointer(
             //     value: 5,
             //     shape: PointerShape.triangle,

@@ -822,14 +822,14 @@ class Pointer {
     switch (pointerAlignment) {
       case PointerAlignment.start:
         if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
-          center = Offset(center.dx - base / 2, center.dy);
+          center = Offset(center.dx - base, center.dy);
         } else {
           center = Offset(center.dx, center.dy - base);
         }
         break;
       case PointerAlignment.end:
         (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal)
-            ? center = Offset(center.dx + base / 2, center.dy)
+            ? center = Offset(center.dx + base, center.dy)
             : center = Offset(center.dx, center.dy + base);
 
         break;
@@ -861,20 +861,6 @@ class Pointer {
       ..lineTo((center.dx - base), center.dy + height!)
       ..lineTo((center.dx + base), center.dy + height!)
       ..close();
-
-// this if statement setup things for pointer alignment
-//the need of this is due to the involvement of angles in drawing triangle
-    if (linearGauge.getGaugeOrientation == GaugeOrientation.horizontal) {
-      if ((pointerAlignment == PointerAlignment.start) &&
-          ((pointerPosition == PointerPosition.top) ||
-              (pointerPosition == PointerPosition.center))) {
-        center = Offset(center.dx - base, center.dy);
-      } else if ((pointerAlignment == PointerAlignment.end) &&
-          ((pointerPosition == PointerPosition.top) ||
-              (pointerPosition == PointerPosition.center))) {
-        center = Offset(center.dx + base, center.dy);
-      }
-    }
 
     canvas.save();
 
