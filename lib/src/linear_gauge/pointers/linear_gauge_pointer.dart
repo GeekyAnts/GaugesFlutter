@@ -213,7 +213,7 @@ class Pointer {
   ///
   final int animationDuration;
 
-  /// Specifies the animation type of shape pointers.
+  /// Specifies the animation type of pointers.
   ///
   /// Defaults to [Curves.ease].
   ///
@@ -644,7 +644,7 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getAnimationValue != null &&
+    if (linearGauge.getGaugeAnimation != null &&
         enableAnimation &&
         linearGauge.getPointerAnimation[index].value >= 0) {
       double animationValue = linearGauge.getPointerAnimation[index].value;
@@ -734,7 +734,7 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getAnimationValue != null &&
+    if (linearGauge.getGaugeAnimation != null &&
         enableAnimation &&
         linearGauge.getPointerAnimation[index].value >= 0) {
       double animationValue = linearGauge.getPointerAnimation[index].value;
@@ -837,7 +837,7 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getAnimationValue != null &&
+    if (linearGauge.getGaugeAnimation != null &&
         enableAnimation &&
         linearGauge.getPointerAnimation[index].value >= 0) {
       double animationValue = linearGauge.getPointerAnimation[index].value;
@@ -982,7 +982,7 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getAnimationValue != null &&
+    if (linearGauge.getGaugeAnimation != null &&
         enableAnimation &&
         linearGauge.getPointerAnimation[index].value >= 0) {
       double animationValue = linearGauge.getPointerAnimation[index].value;

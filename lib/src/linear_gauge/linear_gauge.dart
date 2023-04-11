@@ -49,9 +49,12 @@ class LinearGauge extends StatefulWidget {
     this.valueBarPosition = ValueBarPosition.center,
     this.valueBar = const [],
     this.pointers = const [],
-    this.enableAnimation = false,
+    this.enableGaugeAnimation = false,
     this.extendLinearGauge = 0,
     this.fillExtend = false,
+    this.animationGap = 0,
+    this.animationDuration = 1000,
+    this.animationType = Curves.ease,
   })  : assert(() {
           if (customLabels!.isNotEmpty) {
             assert(customLabels.length >= 2,
@@ -315,7 +318,52 @@ class LinearGauge extends StatefulWidget {
   /// )
   /// ```
   ///
-  final bool enableAnimation;
+  final bool enableGaugeAnimation;
+
+  /// Specifies the load time animation duration with [enableAnimation].
+  /// Duration is defined in milliseconds.
+  ///
+  /// Defaults to 1000.
+  ///
+  /// ```dart
+  ///
+  /// LinearGauge (
+  /// enableAnimation: true,
+  /// animationDuration: 4000
+  ///  )
+  /// ```
+  ///
+  final int animationDuration;
+
+  /// Specifies the animation type of pointers.
+  ///
+  /// Defaults to [Curves.ease].
+  ///
+  /// ```dart
+  ///
+  /// LinearGauge (
+  /// enableAnimation: true,
+  /// animationType: Curves.linear
+  ///  )
+  /// ```
+  ///
+  final Curve animationType;
+
+  ///
+  /// `animationGap` sets the duration gap b/w the gauge animations and other pointer
+  /// or value bar animations .
+  ///
+  /// It value can be b/w 0 to 1.
+  ///
+  ///  It's default to 0.
+  ///
+  /// ```
+  /// const LinearGauge(
+  ///   animationGap:0.5;
+  /// )
+  /// ```
+  ///
+  final double animationGap;
 
   ///
   /// `fillExtend` Sets the fill of extendedLinearGauge
@@ -336,23 +384,64 @@ class LinearGauge extends StatefulWidget {
 }
 
 class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
+  AnimationController? _gaugeAnimationController;
+  Animation<double>? _gaugeAnimation;
+  List<ValueBar>? _oldValueBarList;
+  List<Pointer>? _oldPointerList;
   late List<Animation<double>> _pointerAnimations;
   late List<AnimationController> _pointerAnimationControllers;
+  late List<Animation<double>> _valueBarAnimations;
+  late List<AnimationController> _valueBarAnimationControllers;
+
+  bool isPointerAndValuebarAnimationStarted = false;
 
   @override
   void initState() {
     super.initState();
-    _initializePointerAnimations();
-    _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.ease)
-      ..addStatusListener((status) {
-        setState(() {});
-      });
-    _controller.forward();
+    _updateOldValueList();
+    _initializeAnimations();
+  }
+
+  @override
+  void didUpdateWidget(covariant LinearGauge oldWidget) {
+    if (oldWidget.enableGaugeAnimation != widget.enableGaugeAnimation ||
+        !_isEqualLists(widget.valueBar, _oldValueBarList) ||
+        !_isEqualLists(widget.pointers, _oldPointerList)) {
+      isPointerAndValuebarAnimationStarted = false;
+
+      _updateOldValueList();
+      _initializeAnimations();
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _updateOldValueList() {
+    _oldValueBarList = (widget.valueBar != null)
+        ? List<ValueBar>.from(widget.valueBar!)
+        : null;
+    _oldPointerList =
+        (widget.pointers != null) ? List<Pointer>.from(widget.pointers!) : null;
+  }
+
+  bool _isEqualLists(List<dynamic>? oldList, List<dynamic>? newList) {
+    if (oldList == null) {
+      return newList == null;
+    }
+
+    if (newList == null || oldList.length != newList.length) {
+      return false;
+    }
+
+    for (int i = 0; i < oldList.length; i++) {
+      if (oldList[i].enableAnimation != newList[i].enableAnimation ||
+          oldList[i].animationDuration != newList[i].animationDuration ||
+          oldList[i].animationType != newList[i].animationType) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   void _addPointerAnimation(int duration, Curve animationType) {
@@ -368,6 +457,76 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     _pointerAnimationControllers.add(pointerController);
   }
 
+  void _addValueBarAnimation(int duration, Curve animationType) {
+    final AnimationController valueBarController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: duration));
+
+    final Animation<double> animation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(
+            parent: valueBarController,
+            curve: Interval(0, 1, curve: animationType)));
+
+    _valueBarAnimations.add(animation);
+    _valueBarAnimationControllers.add(valueBarController);
+  }
+
+  void _initializeAnimations() {
+    if (widget.enableGaugeAnimation) {
+      _initializeGaugeAnimations();
+    } else {
+      if (_gaugeAnimationController != null) {
+        _gaugeAnimationController!.removeListener(_gaugeAnimationListener);
+        _gaugeAnimationController = null;
+      }
+
+      _gaugeAnimation = null;
+    }
+    _initializePointerAnimations();
+    _initializeValueBarAnimations();
+    _animateElements();
+  }
+
+  void _gaugeAnimationListener() {
+    if (!isPointerAndValuebarAnimationStarted &&
+        _gaugeAnimationController!.value >= widget.animationGap) {
+      isPointerAndValuebarAnimationStarted = true;
+      _animatePointers();
+    }
+  }
+
+  /// Animates the gauge elements.
+  void _animateElements() {
+    if (widget.enableGaugeAnimation) {
+      _gaugeAnimationController!.forward(from: 0);
+    } else {
+      _animatePointers();
+    }
+  }
+
+  void _animatePointers() {
+    if (_pointerAnimationControllers.isNotEmpty) {
+      for (int i = 0; i < _pointerAnimationControllers.length; i++) {
+        _pointerAnimationControllers[i].forward(from: 0);
+      }
+    }
+    if (_valueBarAnimationControllers.isNotEmpty) {
+      for (int i = 0; i < _valueBarAnimationControllers.length; i++) {
+        _valueBarAnimationControllers[i].forward(from: 0);
+      }
+    }
+  }
+
+  void _initializeGaugeAnimations() {
+    _gaugeAnimationController = AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: widget.animationDuration));
+    _gaugeAnimation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+        parent: _gaugeAnimationController!,
+        curve: Interval(0.05, 1.0, curve: widget.animationType)));
+
+    _gaugeAnimationController!.addListener(_gaugeAnimationListener);
+  }
+
   void _initializePointerAnimations() {
     _pointerAnimationControllers = <AnimationController>[];
     _pointerAnimations = <Animation<double>>[];
@@ -381,47 +540,71 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
         }
       }
     }
+  }
 
-    if (_pointerAnimationControllers.isNotEmpty) {
-      for (int i = 0; i < _pointerAnimationControllers.length; i++) {
-        _pointerAnimationControllers[i].forward(from: 0);
+  void _initializeValueBarAnimations() {
+    _valueBarAnimationControllers = <AnimationController>[];
+    _valueBarAnimations = <Animation<double>>[];
+    _valueBarAnimationControllers.clear();
+
+    if (widget.valueBar != null && widget.valueBar!.isNotEmpty) {
+      for (final ValueBar valueBar in widget.valueBar!) {
+        if (valueBar.animationDuration > 0) {
+          _addValueBarAnimation(
+              valueBar.animationDuration, valueBar.animationType);
+        }
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.enableAnimation
-        ? AnimatedBuilder(
-            animation: _animation,
-            builder: (context, child) {
-              return _RLinearGauge(
-                lGauge: widget,
-                animationValue: _animation.value,
-                pointerAnimation: _pointerAnimations,
-              );
-            },
-          )
-        : _RLinearGauge(
-            lGauge: widget,
-            pointerAnimation: [],
-          );
+    return _RLinearGauge(
+      lGauge: widget,
+      gaugeAnimation: _gaugeAnimation!,
+      pointerAnimation: _pointerAnimations,
+      valueBarAnimation: _valueBarAnimations,
+    );
+  }
+
+  void _disposeAnimationControllers() {
+    if (_gaugeAnimationController != null) {
+      _gaugeAnimationController!.removeListener(_gaugeAnimationListener);
+      _gaugeAnimationController!.dispose();
+    }
+
+    if (_pointerAnimationControllers.isNotEmpty) {
+      for (final AnimationController controller
+          in _pointerAnimationControllers) {
+        controller.dispose();
+      }
+    }
+    if (_valueBarAnimationControllers.isNotEmpty) {
+      for (final AnimationController controller
+          in _valueBarAnimationControllers) {
+        controller.dispose();
+      }
+    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _disposeAnimationControllers();
     super.dispose();
   }
 }
 
 class _RLinearGauge extends LeafRenderObjectWidget {
   final LinearGauge lGauge;
-  final double? animationValue;
+  final Animation<double>? gaugeAnimation;
   final List<Animation<double>>? pointerAnimation;
+  final List<Animation<double>>? valueBarAnimation;
 
   const _RLinearGauge(
-      {required this.lGauge, this.animationValue, this.pointerAnimation});
+      {required this.lGauge,
+      this.gaugeAnimation,
+      this.pointerAnimation,
+      this.valueBarAnimation});
 
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
@@ -458,11 +641,12 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       valueBar: lGauge.valueBar!,
       inversedRulers: lGauge.rulers!.inverseRulers!,
       pointers: lGauge.pointers!,
-      animationValue: animationValue,
+      gaugeAnimation: gaugeAnimation,
       thickness: lGauge.linearGaugeBoxDecoration!.thickness!,
       extendLinearGauge: lGauge.extendLinearGauge!,
       fillExtend: lGauge.fillExtend,
       pointerAnimation: pointerAnimation!,
+      valueBarAnimation: valueBarAnimation!,
     );
   }
 
@@ -501,11 +685,12 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setValueBar = lGauge.valueBar!
       ..setInversedRulers = lGauge.rulers!.inverseRulers!
       ..setPointers = lGauge.pointers!
-      ..setAnimationValue = animationValue
+      ..setGaugeAnimation = gaugeAnimation
       ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!
       ..setExtendLinearGauge = lGauge.extendLinearGauge!
       ..setLinearGaugeBoxDecoration = lGauge.linearGaugeBoxDecoration
       ..setFillExtend = lGauge.fillExtend
-      ..setPointerAnimation = pointerAnimation!;
+      ..setPointerAnimation = pointerAnimation!
+      ..setValueBarAnimation = valueBarAnimation!;
   }
 }
