@@ -52,16 +52,15 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             //     pointerPosition: PointerPosition.bottom,
             //     color: Colors.grey[800]),
           ],
-          rangeLinearGauge: [
-            RangeLinearGauge(color: Colors.red, start: 0, end: 50),
-            RangeLinearGauge(color: Colors.yellow, start: 50, end: 100)
-          ],
+          // rangeLinearGauge: [
+          //   RangeLinearGauge(color: Colors.red, start: 0, end: 50),
+          //   RangeLinearGauge(color: Colors.yellow, start: 50, end: 100)
+          // ],
           linearGaugeBoxDecoration:
               const LinearGaugeBoxDecoration(thickness: 10),
           rulers: const RulerStyle(
               inverseRulers: true,
               rulerPosition: RulerPosition.top,
-              primaryRulerColor: Colors.red,
               showLabel: true),
         ),
       ),

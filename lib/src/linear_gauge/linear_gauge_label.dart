@@ -307,14 +307,15 @@ class LinearGaugeLabel {
               var offset = double.parse(keys.elementAt(j));
               if (offset >= rangeLinearGauge[k].start && offset < range) {
                 secondaryRulerColor = rangeLinearGauge[k].color;
-                secondaryRulersPaint.color =
-                    linearGauge.setAnimatedColor(secondaryRulerColor);
+                secondaryRulersPaint.color = secondaryRulerColor;
 
                 break;
               } else {
                 secondaryRulersPaint.color = fallBackColor;
               }
             }
+            secondaryRulersPaint.color =
+                linearGauge.setAnimatedColor(secondaryRulersPaint.color);
 
             canvas.drawLine(secondaryRulerStartPoint, secondaryRulerEndPoint,
                 secondaryRulersPaint);
