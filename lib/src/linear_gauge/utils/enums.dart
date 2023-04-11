@@ -41,4 +41,4 @@ enum LinearEdgeStyle { bothCurve, startCurve, endCurve }
 ///
 /// Position of the Curve on the Gauge.
 ///
-enum CurvePosition { top, center, bottom, right, left }
+enum CurvePosition { top, bottom, right, left }
