@@ -33,12 +33,12 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           ],
           pointers: [
             Pointer(
-                value: 10,
+                value: 5,
                 shape: PointerShape.triangle,
-                animationDuration: 5000,
-                enableAnimation: false,
+                animationDuration: 2000,
+                // enableAnimation: false,
                 animationType: Curves.ease,
-                pointerAlignment: PointerAlignment.end,
+                pointerAlignment: PointerAlignment.center,
                 height: 20,
                 width: 20,
                 pointerPosition: PointerPosition.center,

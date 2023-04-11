@@ -229,7 +229,7 @@ class ValueBar {
     double valueBarAnimationValue =
         linearGauge.getValueBarAnimation[index].value;
 
-    valueBarWidth = (linearGauge.getGaugeAnimation != null && enableAnimation)
+    valueBarWidth = (enableAnimation)
         ? valueBarWidth * valueBarAnimationValue
         : valueBarWidth;
 

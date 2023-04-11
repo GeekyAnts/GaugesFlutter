@@ -644,9 +644,7 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getGaugeAnimation != null &&
-        enableAnimation &&
-        linearGauge.getPointerAnimation[index].value >= 0) {
+    if (enableAnimation && linearGauge.getPointerAnimation[index].value >= 0) {
       double animationValue = linearGauge.getPointerAnimation[index].value;
 
       double endPoint =
@@ -734,9 +732,7 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getGaugeAnimation != null &&
-        enableAnimation &&
-        linearGauge.getPointerAnimation[index].value >= 0) {
+    if (enableAnimation && linearGauge.getPointerAnimation[index].value >= 0) {
       double animationValue = linearGauge.getPointerAnimation[index].value;
 
       double endPoint =
@@ -837,9 +833,7 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getGaugeAnimation != null &&
-        enableAnimation &&
-        linearGauge.getPointerAnimation[index].value >= 0) {
+    if (enableAnimation && linearGauge.getPointerAnimation[index].value >= 0) {
       double animationValue = linearGauge.getPointerAnimation[index].value;
 
       double endPoint =
@@ -968,9 +962,7 @@ class Pointer {
         break;
     }
 
-    if (linearGauge.getGaugeAnimation != null &&
-        enableAnimation &&
-        linearGauge.getPointerAnimation[index].value >= 0) {
+    if (enableAnimation && linearGauge.getPointerAnimation[index].value >= 0) {
       double animationValue = linearGauge.getPointerAnimation[index].value;
 
       double endPoint =
