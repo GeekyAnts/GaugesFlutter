@@ -6,17 +6,18 @@ import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.d
 
 /// A [CustomCurve] is a class that is used to draw custom Section or
 ///  Zones  on the gauge.
-/// These custom Section or zones can have a Beizer curve or be in a straight line.
+/// These custom Section or zones can have a bezier curve or be in a straight line.
 ///
-///  * [midPoint] is the control point of the Beizer curve.
+///  * [midPoint] is the control point of the bezier curve.
 ///
 
 class CustomCurve {
   CustomCurve({
-    this.startHeight,
-    this.endHeight,
-    this.midHeight = 50,
-    this.isBeizerCurve = true,
+    this.startHeight = 0,
+    this.endHeight = 0,
+    this.midHeight = 10,
+    this.paintStyle = PaintStyle.fill,
+    this.curveStyle = CurveStyle.bezier,
     this.color,
     this.start = 0,
     this.curvePosition = CurvePosition.bottom,
@@ -25,7 +26,7 @@ class CustomCurve {
   });
 
   ///
-  /// [midPoint] is the control point of the Beizer curve.
+  /// [midPoint] is the control point of the Bezier curve.
   ///
   final double midPoint;
 
@@ -60,14 +61,20 @@ class CustomCurve {
   final double? midHeight;
 
   ///
-  /// [isBeizerCurve] is a boolean value that determines whether the curve is a Beizer curve or not.
+  /// [isBezierCurve] is a boolean value that determines whether the curve is a Bezier curve or not.
   ///
-  final bool? isBeizerCurve;
+  // final bool? isBezierCurve;
+  final CurveStyle curveStyle;
 
   ///
   /// [curvePosition] is the position of the curve on the LinearGauge.
   ///
   late CurvePosition curvePosition = CurvePosition.bottom;
+
+  ///
+  /// [paintStyle] is the style of paint of the curve.
+  ///
+  final PaintStyle paintStyle;
 
   // Method to Calculate the First & Last Offsets of the Curve
   OffsetTuple? getStartAndEndOffsets(
@@ -77,8 +84,8 @@ class CustomCurve {
     double thickness,
     double getEnd,
     double gStart,
-    double linearGaugeContainerXheight,
-    double linearGaugeContainerYheight,
+    double linearGaugeContainerXHeight,
+    double linearGaugeContainerYHeight,
     RenderLinearGauge linearGauge,
   ) {
     final double startInPX = linearGauge.valueToPixel(start!);
@@ -87,33 +94,33 @@ class CustomCurve {
         return OffsetTuple(
           Offset(
             offset.dx + startInPX,
-            offset.dy + linearGaugeContainerYheight - thickness,
+            offset.dy + linearGaugeContainerYHeight - thickness,
           ),
-          Offset(getEnd, offset.dy + linearGaugeContainerYheight - thickness),
+          Offset(getEnd, offset.dy + linearGaugeContainerYHeight - thickness),
         );
       case CurvePosition.bottom:
         return OffsetTuple(
           Offset(
             offset.dx + startInPX,
-            offset.dy + linearGaugeContainerYheight,
+            offset.dy + linearGaugeContainerYHeight,
           ),
-          Offset(getEnd, offset.dy + linearGaugeContainerYheight),
+          Offset(getEnd, offset.dy + linearGaugeContainerYHeight),
         );
       case CurvePosition.right:
         return OffsetTuple(
           Offset(
-            offset.dx + linearGaugeContainerXheight,
+            offset.dx + linearGaugeContainerXHeight,
             offset.dy - startInPX,
           ),
-          Offset(offset.dx + linearGaugeContainerXheight, gStart),
+          Offset(offset.dx + linearGaugeContainerXHeight, gStart),
         );
       case CurvePosition.left:
         return OffsetTuple(
           Offset(
-            offset.dx + linearGaugeContainerXheight - thickness,
+            offset.dx + linearGaugeContainerXHeight - thickness,
             offset.dy - startInPX,
           ),
-          Offset(offset.dx + linearGaugeContainerXheight - thickness, gStart),
+          Offset(offset.dx + linearGaugeContainerXHeight - thickness, gStart),
         );
     }
   }
@@ -140,9 +147,9 @@ class CustomCurve {
     );
 
     final double calculatedValue = isHorizontal ? midPoint : end! - midPoint;
-    final double valueinPX =
+    final double midPointInPixel =
         linearGauge.valueToPixel(calculatedValue) + linearGauge.gaugeStart;
-    final double endValueinPx =
+    final double endValueInPX =
         linearGauge.gaugeEnd - linearGauge.valueToPixel(end!);
 
     final OffsetTuple? tuple = getStartAndEndOffsets(
@@ -160,66 +167,68 @@ class CustomCurve {
     final Offset startOffset = tuple!.start;
     final Offset endOffset = tuple.end;
     late double leftHeight;
-    late double rigthtHeight;
-    late double controlpoint;
+    late double rightHeight;
+    late double controlPoint;
     if (orientation == GaugeOrientation.horizontal) {
       if (curvePosition == CurvePosition.bottom ||
           curvePosition == CurvePosition.left) {
         leftHeight = startHeight!;
-        rigthtHeight = endHeight!;
-        controlpoint = midHeight!;
+        rightHeight = endHeight!;
+        controlPoint = midHeight!;
       } else {
         leftHeight = -startHeight!;
-        rigthtHeight = -endHeight!;
-        controlpoint = -midHeight!;
+        rightHeight = -endHeight!;
+        controlPoint = -midHeight!;
       }
     } else {
       if (curvePosition == CurvePosition.right ||
           curvePosition == CurvePosition.bottom) {
         leftHeight = startHeight!;
-        rigthtHeight = endHeight!;
-        controlpoint = midHeight!;
+        rightHeight = endHeight!;
+        controlPoint = midHeight!;
       } else {
         leftHeight = -startHeight!;
-        rigthtHeight = -endHeight!;
-        controlpoint = -midHeight!;
+        rightHeight = -endHeight!;
+        controlPoint = -midHeight!;
       }
     }
 
     final Paint curvePaint = Paint()
       ..color = color ?? Colors.red
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 7;
+      ..style = paintStyle == PaintStyle.fill
+          ? PaintingStyle.fill
+          : PaintingStyle.stroke
+      ..strokeWidth = 3;
     final Path path = Path();
 
     void drawCustomCurvePath() {
-      if (isBeizerCurve!) {
+      if (curveStyle == CurveStyle.bezier) {
         orientation == GaugeOrientation.horizontal
             ? path.quadraticBezierTo(
                 valueInPX,
-                startOffset.dy + controlpoint,
-                endOffset.dx - endValueinPx,
-                endOffset.dy + rigthtHeight,
+                startOffset.dy + controlPoint,
+                endOffset.dx - endValueInPX,
+                endOffset.dy + rightHeight,
               )
             : path.quadraticBezierTo(
-                startOffset.dx + controlpoint,
-                start! + valueinPX,
-                endOffset.dx + rigthtHeight,
-                endOffset.dy + endValueinPx,
+                startOffset.dx + controlPoint,
+                start! + midPointInPixel,
+                endOffset.dx + rightHeight,
+                endOffset.dy + endValueInPX,
               );
       } else {
         if (orientation == GaugeOrientation.horizontal) {
-          path.lineTo(valueinPX, startOffset.dy + controlpoint);
-          path.lineTo(endOffset.dx - endValueinPx, endOffset.dy + rigthtHeight);
+          path.lineTo(midPointInPixel, startOffset.dy + controlPoint);
+          path.lineTo(endOffset.dx - endValueInPX, endOffset.dy + rightHeight);
         } else {
-          path.lineTo(startOffset.dx + controlpoint, valueinPX);
-          path.lineTo(endOffset.dx + rigthtHeight, endOffset.dy + endValueinPx);
+          path.lineTo(startOffset.dx + controlPoint, midPointInPixel);
+          path.lineTo(endOffset.dx + rightHeight, endOffset.dy + endValueInPX);
         }
       }
     }
 
-    // Method to draw Beizer Curve
-    void drawBeizierCurve() {
+    // Method to draw bezier Curve
+    void drawBezierCurve() {
       path.moveTo(startOffset.dx, startOffset.dy);
       orientation == GaugeOrientation.horizontal
           ? path.lineTo(startOffset.dx, startOffset.dy + leftHeight)
@@ -227,23 +236,23 @@ class CustomCurve {
       drawCustomCurvePath();
       orientation == GaugeOrientation.horizontal
           ? path.lineTo(
-              endOffset.dx - endValueinPx,
-              endOffset.dy + rigthtHeight,
+              endOffset.dx - endValueInPX,
+              endOffset.dy + rightHeight,
             )
           : path.lineTo(
-              endOffset.dx + rigthtHeight,
-              endOffset.dy + endValueinPx,
+              endOffset.dx + rightHeight,
+              endOffset.dy + endValueInPX,
             );
       if (orientation == GaugeOrientation.horizontal) {
-        path.lineTo(endOffset.dx - endValueinPx, endOffset.dy);
+        path.lineTo(endOffset.dx - endValueInPX, endOffset.dy);
       } else {
-        path.lineTo(endOffset.dx, endOffset.dy + endValueinPx);
+        path.lineTo(endOffset.dx, endOffset.dy + endValueInPX);
       }
       path.close();
       canvas.drawPath(path, curvePaint);
     }
 
-    drawBeizierCurve();
+    drawBezierCurve();
   }
 }
 

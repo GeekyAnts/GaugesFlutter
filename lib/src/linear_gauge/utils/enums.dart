@@ -42,3 +42,13 @@ enum LinearEdgeStyle { bothCurve, startCurve, endCurve }
 /// Position of the Curve on the Gauge.
 ///
 enum CurvePosition { top, bottom, right, left }
+
+///
+/// Style of the Curve on the Gauge.
+///
+enum CurveStyle { linear, bezier }
+
+///
+/// Paint Style of the Curve on the Gauge.
+///
+enum PaintStyle { fill, stroke }
