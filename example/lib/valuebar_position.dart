@@ -14,27 +14,27 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          // animationGap: 0.8,
-          // animationDuration: 5000,
+          animationGap: 0.5,
+          animationDuration: 5000,
           extendLinearGauge: 10,
 
           fillExtend: false,
           gaugeOrientation: GaugeOrientation.horizontal,
-          // enableGaugeAnimation: true,
+          enableGaugeAnimation: true,
           start: 0,
           end: 100,
           steps: 10,
           valueBar: [
-            // ValueBar(
-            //     value: 100,
-            //     valueBarThickness: 10,
-            //     color: Colors.blue.shade300,
-            //     animationType: Curves.bounceInOut),
+            ValueBar(
+                value: 100,
+                valueBarThickness: 10,
+                color: Colors.blue.shade300,
+                animationType: Curves.bounceInOut),
           ],
           pointers: [
             Pointer(
-                value: 5,
-                shape: PointerShape.triangle,
+                value: 55,
+                shape: PointerShape.circle,
                 animationDuration: 2000,
                 // enableAnimation: false,
                 animationType: Curves.ease,
@@ -43,16 +43,16 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
                 width: 20,
                 pointerPosition: PointerPosition.center,
                 color: Colors.grey[800]),
-            // Pointer(
-            //     value: 5,
-            //     shape: PointerShape.triangle,
-            //     animationDuration: 3000,
-            //     animationType: Curves.bounceIn,
-            //     pointerAlignment: PointerAlignment.center,
-            //     height: 20,
-            //     width: 20,
-            //     pointerPosition: PointerPosition.bottom,
-            //     color: Colors.grey[800]),
+            Pointer(
+                value: 100,
+                shape: PointerShape.triangle,
+                animationDuration: 3000,
+                animationType: Curves.bounceIn,
+                pointerAlignment: PointerAlignment.center,
+                height: 20,
+                width: 20,
+                pointerPosition: PointerPosition.bottom,
+                color: Colors.grey[800]),
           ],
           // rangeLinearGauge: [
           //   RangeLinearGauge(color: Colors.red, start: 0, end: 50),
