@@ -28,13 +28,28 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             ValueBar(
                 value: 100,
                 valueBarThickness: 10,
+                enableAnimation: false,
                 color: Colors.blue.shade300,
+                animationType: Curves.bounceInOut),
+            ValueBar(
+                value: 50,
+                valueBarThickness: 10,
+                offset: 10,
+                position: ValueBarPosition.bottom,
+                color: Colors.orange.shade300,
+                animationType: Curves.bounceInOut),
+            ValueBar(
+                value: 70,
+                valueBarThickness: 10,
+                offset: 20,
+                position: ValueBarPosition.bottom,
+                color: Colors.indigo.shade300,
                 animationType: Curves.bounceInOut),
           ],
           pointers: [
             Pointer(
                 value: 55,
-                shape: PointerShape.circle,
+                shape: PointerShape.triangle,
                 animationDuration: 2000,
                 // enableAnimation: false,
                 animationType: Curves.ease,
@@ -45,13 +60,13 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
                 color: Colors.grey[800]),
             Pointer(
                 value: 100,
-                shape: PointerShape.triangle,
+                shape: PointerShape.circle,
                 animationDuration: 3000,
                 animationType: Curves.bounceIn,
                 pointerAlignment: PointerAlignment.center,
                 height: 20,
                 width: 20,
-                pointerPosition: PointerPosition.bottom,
+                pointerPosition: PointerPosition.top,
                 color: Colors.grey[800]),
           ],
           // rangeLinearGauge: [

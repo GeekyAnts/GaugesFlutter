@@ -980,6 +980,9 @@ class RenderLinearGauge extends RenderBox {
       required double totalWidth}) {
     // For loop for drawing value bar in [LinearGauge]
     for (int j = 0; j < getValueBar.length; j++) {
+      if (getValueBarAnimation[j].value <= 0) {
+        return;
+      }
       getValueBar[j].drawValueBar(
         canvas,
         start,
