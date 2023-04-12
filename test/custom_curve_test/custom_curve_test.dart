@@ -12,6 +12,7 @@ void main() {
       testGoldens(testCase['Do'] as String, (tester) async {
         await tester.pumpWidgetBuilder(
           MyCustomCurveGauge(
+            curves: [...testCase['curves'] as List<CustomCurve>],
             rulers: testCase['rulers'] as RulerStyle?,
             extendLinearGauge: testCase['extendLinearGauge'] as double?,
             rulerPosition: testCase['rulerPosition'] as RulerPosition?,
@@ -31,6 +32,7 @@ class MyCustomCurveGauge extends StatelessWidget {
   final double? thickness;
   final double? extendLinearGauge;
   final GaugeOrientation? gaugeOrientation;
+  final List<CustomCurve> curves;
 
   final RulerStyle? rulers;
 
@@ -38,6 +40,7 @@ class MyCustomCurveGauge extends StatelessWidget {
     Key? key,
     this.rulerPosition,
     this.showLabel,
+    this.curves = const [],
     this.thickness,
     this.extendLinearGauge,
     this.gaugeOrientation,
@@ -60,6 +63,7 @@ class MyCustomCurveGauge extends StatelessWidget {
                 LinearGaugeBoxDecoration(thickness: thickness ?? 4),
             extendLinearGauge: extendLinearGauge ?? 0,
             gaugeOrientation: gaugeOrientation ?? GaugeOrientation.horizontal,
+            curves: [...curves],
             rulers: rulers ??
                 RulerStyle(
                   showLabel: showLabel ?? true,

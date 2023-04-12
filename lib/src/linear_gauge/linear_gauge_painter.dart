@@ -2112,10 +2112,6 @@ class RenderLinearGauge extends RenderBox {
       firstOff = vert;
     }
 
-    for (var element in getCustomCurves!) {
-      double value = valueToPixel(element.midPoint);
-      element.drawCurve(canvas, this, value, firstOff);
-    }
     // Drawing Pointers based on list of pointers added to the gauge
     for (int i = 0; i < getPointers.length; i++) {
       if (getPointerAnimation[i].value <= 0) {
@@ -2130,6 +2126,23 @@ class RenderLinearGauge extends RenderBox {
         i,
         this,
       );
+    }
+
+    // Drawing CustomCurves
+
+    if (getInversedRulers) {
+      if (_gaugeOrientation == GaugeOrientation.horizontal) {
+        firstOff = Offset(gaugeEnd - firstOff.dx + gaugeStart * 2, firstOff.dy);
+      } else {
+        firstOff = Offset(firstOff.dx, gaugeEnd - firstOff.dy + gaugeStart * 2);
+      }
+    }
+    for (var element in getCustomCurves!) {
+      double value = valueToPixel(element.midPoint);
+      if (getInversedRulers) {
+        value = gaugeEnd - value + gaugeStart * 2;
+      }
+      element.drawCurve(canvas, this, value, firstOff);
     }
 
     canvas.restore();

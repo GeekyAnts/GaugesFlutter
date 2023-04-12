@@ -1,5 +1,3 @@
-// Method to Draw Custom Curves
-
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
@@ -33,22 +31,22 @@ class CustomCurve {
   ///
   /// [startHeight] is the height of the curve at the start point.
   ///
-  final double? startHeight;
+  double? startHeight;
 
   ///
   /// [start] is the start value of the curve.
   ///
-  final double? start;
+  double? start;
 
   ///
   /// [end] is the end value of the curve.
   ///
-  final double? end;
+  double? end;
 
   ///
   /// [endHeight] is the height of the curve at the end point.
   ///
-  final double? endHeight;
+  double? endHeight;
 
   ///
   /// [color] is the color of the curve.
@@ -89,6 +87,7 @@ class CustomCurve {
     RenderLinearGauge linearGauge,
   ) {
     final double startInPX = linearGauge.valueToPixel(start!);
+    final double extendLinearGauge = linearGauge.getExtendLinearGauge;
     switch (position) {
       case CurvePosition.top:
         return OffsetTuple(
@@ -96,7 +95,8 @@ class CustomCurve {
             offset.dx + startInPX,
             offset.dy + linearGaugeContainerYHeight - thickness,
           ),
-          Offset(getEnd, offset.dy + linearGaugeContainerYHeight - thickness),
+          Offset(getEnd - extendLinearGauge,
+              offset.dy + linearGaugeContainerYHeight - thickness),
         );
       case CurvePosition.bottom:
         return OffsetTuple(
@@ -104,7 +104,8 @@ class CustomCurve {
             offset.dx + startInPX,
             offset.dy + linearGaugeContainerYHeight,
           ),
-          Offset(getEnd, offset.dy + linearGaugeContainerYHeight),
+          Offset(getEnd - extendLinearGauge,
+              offset.dy + linearGaugeContainerYHeight),
         );
       case CurvePosition.right:
         return OffsetTuple(
@@ -112,7 +113,8 @@ class CustomCurve {
             offset.dx + linearGaugeContainerXHeight,
             offset.dy - startInPX,
           ),
-          Offset(offset.dx + linearGaugeContainerXHeight, gStart),
+          Offset(offset.dx + linearGaugeContainerXHeight,
+              gStart + extendLinearGauge),
         );
       case CurvePosition.left:
         return OffsetTuple(
@@ -120,7 +122,8 @@ class CustomCurve {
             offset.dx + linearGaugeContainerXHeight - thickness,
             offset.dy - startInPX,
           ),
-          Offset(offset.dx + linearGaugeContainerXHeight - thickness, gStart),
+          Offset(offset.dx + linearGaugeContainerXHeight - thickness,
+              gStart + extendLinearGauge),
         );
     }
   }
@@ -146,9 +149,24 @@ class CustomCurve {
       'Invalid curve position for the current orientation',
     );
 
-    final double calculatedValue = isHorizontal ? midPoint : end! - midPoint;
-    final double midPointInPixel =
-        linearGauge.valueToPixel(calculatedValue) + linearGauge.gaugeStart;
+    if (linearGauge.getInversedRulers) {
+      double temp = 0;
+      temp = startHeight!;
+      startHeight = endHeight;
+      endHeight = temp;
+
+      // temp = start!;
+      // start = end;
+      // end = temp;
+    }
+    double calculatedValue = isHorizontal ? midPoint : end! - midPoint;
+    if (linearGauge.getInversedRulers) {
+      calculatedValue = end! - calculatedValue;
+    }
+
+    final double midPointInPixel = linearGauge.valueToPixel(calculatedValue) +
+        linearGauge.gaugeStart +
+        linearGauge.getExtendLinearGauge;
     final double endValueInPX =
         linearGauge.gaugeEnd - linearGauge.valueToPixel(end!);
 
@@ -166,6 +184,7 @@ class CustomCurve {
 
     final Offset startOffset = tuple!.start;
     final Offset endOffset = tuple.end;
+
     late double leftHeight;
     late double rightHeight;
     late double controlPoint;
