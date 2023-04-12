@@ -223,9 +223,6 @@ class ValueBar {
     double valueBarWidth = ((value - startValue) / (endValue - startValue)) *
         (totalWidth - 2 * linearGauge.getExtendLinearGauge);
 
-    double valueBarHeight = ((value - endValue) / (startValue - endValue)) *
-        (totalWidth - 2 * linearGauge.getExtendLinearGauge);
-
     double valueBarAnimationValue =
         linearGauge.getValueBarAnimation[index].value;
 
