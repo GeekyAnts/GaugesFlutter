@@ -1,7 +1,5 @@
-import 'package:example/shaders.dart';
 import 'package:example/valuebar_position.dart';
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 void main() {
   runApp(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:flutter/src/rendering/object.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'dart:ui' as ui;
@@ -518,12 +519,12 @@ class RenderLinearGauge extends RenderBox {
   }
 
   void _addAnimationListener() {
-    if (_pointerAnimation != null) {
+    if (_pointerAnimation.isNotEmpty) {
       for (final Animation<double> animation in _pointerAnimation) {
         animation.addListener(markNeedsPaint);
       }
     }
-    if (_valueBarAnimation != null) {
+    if (_valueBarAnimation.isNotEmpty) {
       for (final Animation<double> animation in _valueBarAnimation) {
         animation.addListener(markNeedsPaint);
       }
@@ -539,7 +540,7 @@ class RenderLinearGauge extends RenderBox {
         animation.removeListener(markNeedsPaint);
       }
     }
-    if (_valueBarAnimation != null) {
+    if (_valueBarAnimation.isNotEmpty) {
       for (final Animation<double> animation in _valueBarAnimation) {
         animation.removeListener(markNeedsPaint);
       }
