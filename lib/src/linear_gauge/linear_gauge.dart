@@ -93,6 +93,22 @@ class LinearGauge extends StatefulWidget {
         }()),
         super(key: key);
 
+  ///
+  /// `curves` takes the list of [CustomCurve] to render the curves in [LinearGauge]
+  ///
+  /// ```
+  /// LinearGauge(
+  ///   curves: [
+  ///     CustomCurve(
+  ///       midPoint: 50,
+  ///       midHeight: 100,
+  ///     )
+  ///   ],
+  ///   rulers: const RulerStyle(
+  ///     rulerPosition: RulerPosition.bottom,
+  ///   ),
+  /// ),
+  /// ```
   final List<CustomCurve>? curves;
 
   ///
