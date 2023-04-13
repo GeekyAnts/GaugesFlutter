@@ -534,7 +534,9 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
 
     if (widget.pointers != null && widget.pointers!.isNotEmpty) {
       for (final Pointer pointer in widget.pointers!) {
-        if (pointer.animationDuration > 0) {
+        if (!pointer.enableAnimation) {
+          _addPointerAnimation(0, Curves.ease);
+        } else if (pointer.animationDuration > 0) {
           _addPointerAnimation(
               pointer.animationDuration, pointer.animationType);
         }
@@ -549,7 +551,9 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
 
     if (widget.valueBar != null && widget.valueBar!.isNotEmpty) {
       for (final ValueBar valueBar in widget.valueBar!) {
-        if (valueBar.animationDuration > 0) {
+        if (!valueBar.enableAnimation) {
+          _addValueBarAnimation(0, Curves.ease);
+        } else if (valueBar.animationDuration > 0) {
           _addValueBarAnimation(
               valueBar.animationDuration, valueBar.animationType);
         }
