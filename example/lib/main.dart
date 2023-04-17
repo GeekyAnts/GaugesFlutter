@@ -1,3 +1,4 @@
+import 'package:example/valuebar_position.dart';
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
@@ -20,12 +21,6 @@ class MyGaugeExample extends StatefulWidget {
 class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LinearGauge(
-        rulers: const RulerStyle(
-          rulerPosition: RulerPosition.bottom,
-        ),
-      ),
-    );
+    return MyValueBarPosition();
   }
 }
