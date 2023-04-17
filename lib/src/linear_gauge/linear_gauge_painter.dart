@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
+import 'package:flutter/src/rendering/object.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
@@ -36,10 +38,12 @@ class RenderLinearGauge extends RenderBox {
     required List<ValueBar> valueBar,
     required bool inversedRulers,
     required List<Pointer> pointers,
-    required double? animationValue,
+    required Animation<double>? gaugeAnimation,
     required double thickness,
     required double extendLinearGauge,
     required bool fillExtend,
+    required List<Animation<double>> pointerAnimation,
+    required List<Animation<double>> valueBarAnimation,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -71,10 +75,12 @@ class RenderLinearGauge extends RenderBox {
         // _valueBarPosition = valueBarPosition,
         _valueBar = valueBar,
         _pointers = pointers,
-        _animationValue = animationValue,
+        _gaugeAnimation = gaugeAnimation,
         _thickness = thickness,
         _extendLinearGauge = extendLinearGauge,
-        _fillExtend = fillExtend;
+        _fillExtend = fillExtend,
+        _pointerAnimation = pointerAnimation,
+        _valueBarAnimation = valueBarAnimation;
 
   // For getting Gauge Values
   double gaugeStart = 0;
@@ -103,11 +109,11 @@ class RenderLinearGauge extends RenderBox {
   ///
   /// Getter and Setter for the [_animationValue] parameter.
   ///
-  double? get getAnimationValue => _animationValue;
-  double? _animationValue;
-  set setAnimationValue(double? animationValue) {
-    if (_animationValue == animationValue) return;
-    _animationValue = animationValue;
+  Animation<double>? get getGaugeAnimation => _gaugeAnimation;
+  Animation<double>? _gaugeAnimation;
+  set setGaugeAnimation(Animation<double>? gaugeAnimation) {
+    if (_gaugeAnimation == gaugeAnimation) return;
+    _gaugeAnimation = gaugeAnimation;
     markNeedsPaint();
   }
 
@@ -487,6 +493,76 @@ class RenderLinearGauge extends RenderBox {
   }
 
   ///
+  /// Getter and Setter for the [pointerAnimation] parameter.
+  ///
+  List<Animation<double>> get getPointerAnimation => _pointerAnimation;
+  List<Animation<double>> _pointerAnimation;
+  set setPointerAnimation(List<Animation<double>> val) {
+    if (_pointerAnimation == val) return;
+    _pointerAnimation = val;
+    _removeAnimationListeners();
+    _addAnimationListener();
+    markNeedsLayout();
+  }
+
+  ///
+  /// Getter and Setter for the [valueBarAnimation] parameter.
+  ///
+  List<Animation<double>> get getValueBarAnimation => _valueBarAnimation;
+  List<Animation<double>> _valueBarAnimation;
+  set setValueBarAnimation(List<Animation<double>> val) {
+    if (_valueBarAnimation == val) return;
+    _valueBarAnimation = val;
+    _removeAnimationListeners();
+    _addAnimationListener();
+    markNeedsLayout();
+  }
+
+  void _addAnimationListener() {
+    if (_pointerAnimation.isNotEmpty) {
+      for (final Animation<double> animation in _pointerAnimation) {
+        animation.addListener(markNeedsPaint);
+      }
+    }
+    if (_valueBarAnimation.isNotEmpty) {
+      for (final Animation<double> animation in _valueBarAnimation) {
+        animation.addListener(markNeedsPaint);
+      }
+    }
+    if (_gaugeAnimation != null) {
+      _gaugeAnimation!.addListener(markNeedsPaint);
+    }
+  }
+
+  void _removeAnimationListeners() {
+    if (_pointerAnimation.isNotEmpty) {
+      for (final Animation<double> animation in _pointerAnimation) {
+        animation.removeListener(markNeedsPaint);
+      }
+    }
+    if (_valueBarAnimation.isNotEmpty) {
+      for (final Animation<double> animation in _valueBarAnimation) {
+        animation.removeListener(markNeedsPaint);
+      }
+    }
+    if (_gaugeAnimation != null) {
+      _gaugeAnimation!.removeListener(markNeedsPaint);
+    }
+  }
+
+  @override
+  void attach(covariant PipelineOwner owner) {
+    super.attach(owner);
+    _addAnimationListener();
+  }
+
+  @override
+  void detach() {
+    _removeAnimationListeners();
+    super.detach();
+  }
+
+  ///
   /// Getter and Setter for the [_pointerSpace] parameter.
   ///
   double get getPointerSpace => _pointerSpace;
@@ -593,7 +669,7 @@ class RenderLinearGauge extends RenderBox {
 
     final ui.TextStyle labelTextStyle = ui.TextStyle(
       // color: getTextStyle.color,
-      color: getRangeColor(text),
+      color: setAnimatedColor(getRangeColor(text)),
       fontSize: getTextStyle.fontSize,
       background: getTextStyle.background,
       decoration: getTextStyle.decoration,
@@ -780,8 +856,8 @@ class RenderLinearGauge extends RenderBox {
       totalValOnPixel =
           (((getValue) - getStart) / (getEnd - getStart)) * totalWidth;
 
-      totalValOnPixel = getAnimationValue != null
-          ? totalValOnPixel * getAnimationValue!
+      totalValOnPixel = getGaugeAnimation != null
+          ? totalValOnPixel * getGaugeAnimation!.value
           : totalValOnPixel;
     }
 
@@ -904,11 +980,15 @@ class RenderLinearGauge extends RenderBox {
       required double totalWidth}) {
     // For loop for drawing value bar in [LinearGauge]
     for (int j = 0; j < getValueBar.length; j++) {
+      if (getValueBarAnimation[j].value <= 0) {
+        return;
+      }
       getValueBar[j].drawValueBar(
         canvas,
         start,
         end,
         totalWidth,
+        j,
         this,
       );
     }
@@ -1002,7 +1082,8 @@ class RenderLinearGauge extends RenderBox {
         );
       }
 
-      _linearGaugeContainerValuePaint.color = rangeLinearGauge![i].color;
+      _linearGaugeContainerValuePaint.color =
+          setAnimatedColor(rangeLinearGauge![i].color);
       if (rangeLinearGauge![i].borderRadius != null) {
         roundedGaugeContainer = _getRoundedContainer(
           gaugeContainer: gaugeContainer,
@@ -1125,7 +1206,6 @@ class RenderLinearGauge extends RenderBox {
   }
 
   void _drawPrimaryRulers(Canvas canvas) {
-    _setPrimaryRulersPaint();
     int count = 0;
 
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
@@ -1142,7 +1222,6 @@ class RenderLinearGauge extends RenderBox {
           break;
         }
       }
-
       switch (rulerPosition) {
         case RulerPosition.top:
           //y co-ordinate will be simply inverted on negative side by adding -ve sign
@@ -1209,7 +1288,7 @@ class RenderLinearGauge extends RenderBox {
       //the ending point of the primary ruler
 
       Offset a = Offset(x, y);
-      _primaryRulersPaint.color = primaryRulerColor!;
+      _primaryRulersPaint.color = setAnimatedColor(primaryRulerColor!);
 
       if (showLabel) {
         _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
@@ -1248,7 +1327,17 @@ class RenderLinearGauge extends RenderBox {
   }
 
   void _setLinearGaugeContainerPaint() {
-    _linearGaugeContainerPaint.color = getLinearGaugeContainerBgColor;
+    _linearGaugeContainerPaint.color =
+        setAnimatedColor(getLinearGaugeContainerBgColor);
+  }
+
+  Color setAnimatedColor(Color paintColor) {
+    double animationValue = 1;
+    if (_gaugeAnimation != null) {
+      animationValue = _gaugeAnimation!.value;
+    }
+
+    return paintColor.withOpacity(animationValue * paintColor.opacity);
   }
 
   @override
@@ -1852,6 +1941,7 @@ class RenderLinearGauge extends RenderBox {
     canvas.translate(offset.dx, offset.dy);
 
     _setLinearGaugeContainerPaint();
+    _setPrimaryRulersPaint();
     _setSecondaryRulersPaint();
 
     _calculateRulerPoints();
@@ -1888,12 +1978,16 @@ class RenderLinearGauge extends RenderBox {
     }
     // Drawing Pointers based on list of pointers added to the gauge
     for (int i = 0; i < getPointers.length; i++) {
+      if (getPointerAnimation[i].value <= 0) {
+        return;
+      }
       getPointers[i].drawPointer(
         getPointers[i].shape,
         canvas,
         gaugeStart,
         gaugeEnd,
         firstOff,
+        i,
         this,
       );
     }

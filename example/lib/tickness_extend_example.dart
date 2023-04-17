@@ -23,7 +23,7 @@ class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
                 valueBarThickness: 10,
                 position: ValueBarPosition.left)
           ],
-          enableAnimation: true,
+          enableGaugeAnimation: true,
           linearGaugeBoxDecoration:
               const LinearGaugeBoxDecoration(thickness: 20),
           pointers: const [

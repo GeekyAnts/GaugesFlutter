@@ -15,7 +15,7 @@ class _BorderRadiusExampleState extends State<BorderRadiusExample> {
       body: Center(
         child: LinearGauge(
           steps: 10,
-          enableAnimation: true,
+          enableGaugeAnimation: true,
           fillExtend: false,
           extendLinearGauge: 9,
           // valueBar: [
