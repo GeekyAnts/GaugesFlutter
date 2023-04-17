@@ -62,7 +62,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
                 value: 100,
                 shape: PointerShape.circle,
                 showLabel: true,
-                labelStyle: TextStyle(color: Colors.amber),
+                labelStyle: const TextStyle(color: Colors.amber),
                 animationDuration: 3000,
                 animationType: Curves.bounceIn,
                 // pointerAlignment: PointerAlignment.end,
