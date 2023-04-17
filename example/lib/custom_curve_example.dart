@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 class CustomCurveExample extends StatelessWidget {
