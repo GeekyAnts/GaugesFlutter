@@ -30,6 +30,25 @@ enum PointerPosition { top, center, bottom, right, left }
 
 ///
 /// Alignment of the Pointer on the Gauge.
+///
 enum PointerAlignment { start, center, end }
 
+///
+/// Style of the Linear Edge.
+///
 enum LinearEdgeStyle { bothCurve, startCurve, endCurve }
+
+///
+/// Position of the Curve on the Gauge.
+///
+enum CurvePosition { top, bottom, right, left }
+
+///
+/// Style of the Curve on the Gauge.
+///
+enum CurveStyle { linear, bezier }
+
+///
+/// Paint Style of the Curve on the Gauge.
+///
+enum PaintStyle { fill, stroke }

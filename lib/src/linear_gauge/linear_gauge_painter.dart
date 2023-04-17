@@ -44,6 +44,7 @@ class RenderLinearGauge extends RenderBox {
     required bool fillExtend,
     required List<Animation<double>> pointerAnimation,
     required List<Animation<double>> valueBarAnimation,
+    required List<CustomCurve>? customCurve,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
@@ -72,7 +73,6 @@ class RenderLinearGauge extends RenderBox {
         _customLabels = customLabels,
         _rulersOffset = rulersOffset,
         _inversedRulers = inversedRulers,
-        // _valueBarPosition = valueBarPosition,
         _valueBar = valueBar,
         _pointers = pointers,
         _gaugeAnimation = gaugeAnimation,
@@ -80,11 +80,16 @@ class RenderLinearGauge extends RenderBox {
         _extendLinearGauge = extendLinearGauge,
         _fillExtend = fillExtend,
         _pointerAnimation = pointerAnimation,
-        _valueBarAnimation = valueBarAnimation;
+        _valueBarAnimation = valueBarAnimation,
+        _curves = customCurve;
 
   // For getting Gauge Values
   double gaugeStart = 0;
   double gaugeEnd = 0;
+  double? topCurveMaxHeight,
+      bottomCurveMaxHeight,
+      rightCurveMaxHeight,
+      leftCurveMaxHeight = 0;
   double? topPointerHeight,
       bottomPointerHeight,
       centerPointerHeight,
@@ -489,6 +494,14 @@ class RenderLinearGauge extends RenderBox {
   set setFillExtend(bool val) {
     if (_fillExtend == val) return;
     _fillExtend = val;
+    markNeedsPaint();
+  }
+
+  List<CustomCurve>? get getCustomCurves => _curves;
+  List<CustomCurve>? _curves = <CustomCurve>[];
+  set setCurves(List<CustomCurve>? val) {
+    if (_curves == val) return;
+    _curves = val;
     markNeedsPaint();
   }
 
@@ -1345,6 +1358,17 @@ class RenderLinearGauge extends RenderBox {
     size = computeDryLayout(constraints);
   }
 
+  List<CustomCurve> getCustomCurveByPosition(
+      List<CustomCurve> customCurveList, CurvePosition position) {
+    List<CustomCurve> result = [];
+    for (CustomCurve customCurve in customCurveList) {
+      if (customCurve.curvePosition == position) {
+        result.add(customCurve);
+      }
+    }
+    return result;
+  }
+
   List<Pointer> getPointersByPosition(
       List<Pointer> pointerList, PointerPosition position) {
     List<Pointer> result = [];
@@ -1385,14 +1409,16 @@ class RenderLinearGauge extends RenderBox {
 
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
       return layoutHorizontalGauge(
-        topPointers,
-        bottomPointers,
-        centerPointers,
-        linearGaugeContainerThickness,
-        topValueBars,
-        bottomValueBars,
-        centerValueBar,
-      );
+          topPointers,
+          bottomPointers,
+          centerPointers,
+          linearGaugeContainerThickness,
+          topValueBars,
+          bottomValueBars,
+          centerValueBar
+          // topCurves,
+          // bottomCurves,
+          );
     } else {
       return layoutVerticalGauge(
         rightPointers,
@@ -1422,6 +1448,9 @@ class RenderLinearGauge extends RenderBox {
     _layoutRightPointers(rightPointers);
     _layoutLeftPointers(leftPointers);
     _layoutCenterPointers(centerPointers);
+    _layoutLeftCurves(getCustomCurves!);
+    _layoutRightCurves(getCustomCurves!);
+
     _initMaxWidthPointerFromRightAndCenter(linearGaugeContainerThickness);
     _initMaxWidthPointerFromLeftAndCenter(linearGaugeContainerThickness);
     _layoutLeftValueBar(leftValueBars);
@@ -1432,6 +1461,13 @@ class RenderLinearGauge extends RenderBox {
     spacingForGauge = getEffectiveRulersWidth + rulersOffset;
     if (rulerPosition == RulerPosition.right) {
       xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
+
+      if (leftCurveMaxHeight! <= pointerMaxOfLeftAndCenter!) {
+        valueBarMaxOfLeftAndCenter = 0;
+      } else {
+        xAxisForGaugeContainer = leftCurveMaxHeight!;
+        pointerMaxOfLeftAndCenter = xAxisForGaugeContainer;
+      }
 
       if (valueBarMaxOfLeftAndCenter! <= pointerMaxOfLeftAndCenter!) {
         valueBarMaxOfLeftAndCenter = 0;
@@ -1448,6 +1484,12 @@ class RenderLinearGauge extends RenderBox {
         pointerMaxOfRightAndCenter = 0;
       }
 
+      if (rightCurveMaxHeight! <= spacingForGauge) {
+        pointerMaxOfRightAndCenter = 0;
+      } else {
+        getEffectiveRulersWidth = rightCurveMaxHeight!;
+        rulersOffset = 0;
+      }
       if (pointerMaxOfRightAndCenter! <= spacingForGauge) {
         pointerMaxOfRightAndCenter = 0;
       } else {
@@ -1557,6 +1599,8 @@ class RenderLinearGauge extends RenderBox {
     List<ValueBar> topValueBars,
     List<ValueBar> bottomValueBars,
     List<ValueBar> centerValueBars,
+    // List<CustomCurve> topCurves,
+    // List<CustomCurve> bottomCurves,
   ) {
     double getEffectiveRulersHeight = getMaxRulerHeight();
     double labelThickness = getLabelHeight();
@@ -1564,6 +1608,8 @@ class RenderLinearGauge extends RenderBox {
     double labelsOffset = getLabelOffset;
     _layoutTopPointers(topPointers);
     _layoutBottomPointers(bottomPointers);
+    _layoutTopCurves(getCustomCurves!);
+    _layoutBottomCurves(getCustomCurves!);
     _layoutCenterPointers(centerPointers);
     _initMaxHeightPointerFromTopAndCenter(linearGaugeContainerThickness);
     _initMaxHeightPointerFromBottomAndCenter(linearGaugeContainerThickness);
@@ -1579,11 +1625,25 @@ class RenderLinearGauge extends RenderBox {
       /// ruler and label
       yAxisForGaugeContainer = spacingForGauge;
 
+      if (topCurveMaxHeight! <= pointerMaxOfTopAndCenter!) {
+        valueBarMaxOfTopAndCenter = 0;
+      } else {
+        pointerMaxOfTopAndCenter = topCurveMaxHeight!;
+        valueBarMaxOfTopAndCenter = 0;
+      }
+
       if (valueBarMaxOfTopAndCenter! <= pointerMaxOfTopAndCenter!) {
         valueBarMaxOfTopAndCenter = 0;
       } else {
         pointerMaxOfTopAndCenter = valueBarMaxOfTopAndCenter!;
         valueBarMaxOfTopAndCenter = 0;
+      }
+
+      if (bottomCurveMaxHeight! <= pointerMaxOfBottomAndCenter!) {
+        valueBarMaxOfBottomAndCenter = 0;
+      } else {
+        pointerMaxOfBottomAndCenter = bottomCurveMaxHeight!;
+        valueBarMaxOfBottomAndCenter = 0;
       }
 
       if (valueBarMaxOfBottomAndCenter! <= pointerMaxOfBottomAndCenter!) {
@@ -1603,6 +1663,12 @@ class RenderLinearGauge extends RenderBox {
     } else if (rulerPosition == RulerPosition.bottom) {
       yAxisForGaugeContainer = pointerMaxOfTopAndCenter!;
 
+      if (topCurveMaxHeight! <= pointerMaxOfTopAndCenter!) {
+        valueBarMaxOfTopAndCenter = 0;
+      } else {
+        yAxisForGaugeContainer = topCurveMaxHeight!;
+        pointerMaxOfTopAndCenter = yAxisForGaugeContainer;
+      }
       if (valueBarMaxOfTopAndCenter! <= pointerMaxOfTopAndCenter!) {
         valueBarMaxOfTopAndCenter = 0;
       } else {
@@ -1616,6 +1682,13 @@ class RenderLinearGauge extends RenderBox {
       } else {
         valueBarMaxOfBottomAndCenter =
             valueBarMaxOfBottomAndCenter! - spacingForGauge;
+        pointerMaxOfBottomAndCenter = 0;
+      }
+      if (bottomCurveMaxHeight! <=
+          pointerMaxOfBottomAndCenter! + spacingForGauge) {
+        // valueBarMaxOfBottomAndCenter = 0;
+      } else {
+        valueBarMaxOfBottomAndCenter = bottomCurveMaxHeight! - spacingForGauge;
         pointerMaxOfBottomAndCenter = 0;
       }
 
@@ -1823,6 +1896,68 @@ class RenderLinearGauge extends RenderBox {
     }
   }
 
+  List<CustomCurve> getCurvesByPosition(
+      List<CustomCurve> curveList, CurvePosition position) {
+    List<CustomCurve> result = [];
+    for (CustomCurve curve in curveList) {
+      if (curve.curvePosition == position) {
+        result.add(curve);
+      }
+    }
+    return result;
+  }
+
+  double? getLargestCurveForLayout(
+    List<CustomCurve>? curve,
+    CurvePosition position,
+  ) {
+    double greatestHeight = 0;
+
+    for (CustomCurve customCurve in curve!) {
+      double currentGreatestHeight = customCurve.startHeight!;
+      if (customCurve.midHeight! > currentGreatestHeight) {
+        currentGreatestHeight = customCurve.midHeight!;
+      }
+      if (customCurve.endHeight! > currentGreatestHeight) {
+        currentGreatestHeight = customCurve.endHeight!;
+      }
+
+      if (currentGreatestHeight > greatestHeight) {
+        greatestHeight = currentGreatestHeight;
+      }
+    }
+
+    return greatestHeight;
+  }
+
+  void _layoutTopCurves(List<CustomCurve> topCurves) {
+    topCurves = getCurvesByPosition(getCustomCurves!, CurvePosition.top);
+    topCurveMaxHeight = topCurves.isNotEmpty
+        ? getLargestCurveForLayout(topCurves, CurvePosition.top)
+        : 0;
+  }
+
+  void _layoutBottomCurves(List<CustomCurve> bottomCurves) {
+    bottomCurves = getCurvesByPosition(getCustomCurves!, CurvePosition.bottom);
+    bottomCurveMaxHeight = bottomCurves.isNotEmpty
+        ? getLargestCurveForLayout(bottomCurves, CurvePosition.bottom)
+        : 0;
+  }
+
+  void _layoutLeftCurves(List<CustomCurve> leftCurves) {
+    leftCurves = getCurvesByPosition(getCustomCurves!, CurvePosition.left);
+    leftCurveMaxHeight = leftCurves.isNotEmpty
+        ? getLargestCurveForLayout(leftCurves, CurvePosition.left)
+        : 0;
+  }
+
+  void _layoutRightCurves(List<CustomCurve> rightCurves) {
+    rightCurves = getCurvesByPosition(getCustomCurves!, CurvePosition.right);
+    rightCurveMaxHeight = rightCurves.isNotEmpty
+        ? getLargestCurveForLayout(rightCurves, CurvePosition.right)
+        : 0;
+  }
+
   void _layoutTopPointers(List<Pointer> topPointers) {
     topPointers = getPointersByPosition(getPointers, PointerPosition.top);
     topPointerHeight = topPointers.isNotEmpty
@@ -1976,6 +2111,7 @@ class RenderLinearGauge extends RenderBox {
     } else {
       firstOff = vert;
     }
+
     // Drawing Pointers based on list of pointers added to the gauge
     for (int i = 0; i < getPointers.length; i++) {
       if (getPointerAnimation[i].value <= 0) {
@@ -1990,6 +2126,23 @@ class RenderLinearGauge extends RenderBox {
         i,
         this,
       );
+    }
+
+    // Drawing CustomCurves
+
+    if (getInversedRulers) {
+      if (_gaugeOrientation == GaugeOrientation.horizontal) {
+        firstOff = Offset(gaugeEnd - firstOff.dx + gaugeStart * 2, firstOff.dy);
+      } else {
+        firstOff = Offset(firstOff.dx, gaugeEnd - firstOff.dy + gaugeStart * 2);
+      }
+    }
+    for (var element in getCustomCurves!) {
+      double value = valueToPixel(element.midPoint);
+      if (getInversedRulers) {
+        value = gaugeEnd - value + gaugeStart * 2;
+      }
+      element.drawCurve(canvas, this, value, firstOff);
     }
 
     canvas.restore();
