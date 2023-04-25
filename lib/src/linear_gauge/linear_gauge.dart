@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/linear_gauge_container.dart';
 import 'linear_gauge_painter.dart';
 
 /// Creates a LinearGauge Widget to display the values in a linear scale. The
@@ -412,11 +413,15 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
   late List<Animation<double>> _valueBarAnimations;
   late List<AnimationController> _valueBarAnimationControllers;
 
+  late List<Widget> _linearGaugeWidgets;
+
   bool isPointerAndValuebarAnimationStarted = false;
 
   @override
   void initState() {
     super.initState();
+    _linearGaugeWidgets = <Widget>[];
+
     _updateOldValueList();
     _initializeAnimations();
   }
@@ -580,6 +585,38 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     }
   }
 
+  void _addChild(Widget child, Animation<double>? animation,
+      AnimationController? controller) {
+    _linearGaugeWidgets.add(LinearGaugeState(
+        animation: animation,
+        orientation: widget.gaugeOrientation!,
+        isInversed: widget.rulers!.inverseRulers!,
+        animationController: controller,
+        child: child));
+  }
+
+  List<Widget> _buildChildWidgets(BuildContext context) {
+    _linearGaugeWidgets.clear();
+    int index = 0;
+
+    _linearGaugeWidgets.add(LinearGaugeContainer(linearGauge: widget));
+
+    if (widget.pointers != null && widget.pointers!.isNotEmpty) {
+      /// Adding linear gauge widget bar pointer element.
+      for (final Pointer pointer in widget.pointers!) {
+        if (pointer.enableAnimation && pointer.animationDuration > 0) {
+          _addChild(pointer as Widget, _pointerAnimations[index],
+              _pointerAnimationControllers[index]);
+          index++;
+        } else {
+          _addChild(pointer as Widget, null, null);
+        }
+      }
+    }
+
+    return _linearGaugeWidgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     return _RLinearGauge(
@@ -587,6 +624,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
       gaugeAnimation: _gaugeAnimation,
       pointerAnimation: _pointerAnimations,
       valueBarAnimation: _valueBarAnimations,
+      children: _buildChildWidgets(context),
     );
   }
 
@@ -617,17 +655,20 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
   }
 }
 
-class _RLinearGauge extends LeafRenderObjectWidget {
+class _RLinearGauge extends MultiChildRenderObjectWidget {
   final LinearGauge lGauge;
   final Animation<double>? gaugeAnimation;
   final List<Animation<double>>? pointerAnimation;
   final List<Animation<double>>? valueBarAnimation;
 
-  const _RLinearGauge(
-      {required this.lGauge,
+  _RLinearGauge(
+      {Key? key,
+      required this.lGauge,
+      required List<Widget> children,
       this.gaugeAnimation,
       this.pointerAnimation,
-      this.valueBarAnimation});
+      this.valueBarAnimation})
+      : super(key: key, children: children);
 
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
@@ -635,27 +676,14 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       start: lGauge.start!,
       end: lGauge.end!,
       steps: lGauge.steps!,
-      showLinearGaugeContainer: lGauge.showLinearGaugeContainer!,
       gaugeOrientation: lGauge.gaugeOrientation!,
       primaryRulersWidth: lGauge.rulers!.primaryRulersWidth!,
       primaryRulersHeight: lGauge.rulers!.primaryRulersHeight!,
       secondaryRulersHeight: lGauge.rulers!.secondaryRulersHeight!,
       secondaryRulersWidth: lGauge.rulers!.secondaryRulersWidth!,
-      labelTopMargin: lGauge.labelTopMargin!,
-      primaryRulerColor: lGauge.rulers!.primaryRulerColor!,
-      secondaryRulerColor: lGauge.rulers!.secondaryRulerColor!,
-      linearGaugeBoxDecoration: lGauge.linearGaugeBoxDecoration!,
-      secondaryRulerPerInterval: lGauge.rulers!.secondaryRulerPerInterval!,
-      linearGaugeContainerBgColor:
-          lGauge.linearGaugeBoxDecoration!.backgroundColor,
-      linearGaugeContainerValueColor:
-          lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!,
       textStyle: lGauge.rulers!.textStyle!,
-      showLabel: lGauge.rulers!.showLabel!,
       rulerPosition: lGauge.rulers!.rulerPosition!,
       labelOffset: lGauge.rulers!.labelOffset!,
-      showSecondaryRulers: lGauge.rulers!.showSecondaryRulers,
-      showPrimaryRulers: lGauge.rulers!.showPrimaryRulers,
       value: lGauge.value!,
       rangeLinearGauge: lGauge.rangeLinearGauge!,
       customLabels: lGauge.customLabels!,
@@ -680,28 +708,15 @@ class _RLinearGauge extends LeafRenderObjectWidget {
     renderObject
       ..setCustomLabels = lGauge.customLabels!
       ..setGaugeOrientation = lGauge.gaugeOrientation!
-      ..setLabelTopMargin = lGauge.labelTopMargin!
-      ..setPrimaryRulerColor = lGauge.rulers!.primaryRulerColor!
       ..setPrimaryRulersHeight = lGauge.rulers!.primaryRulersHeight!
       ..setPrimaryRulersWidth = lGauge.rulers!.primaryRulersWidth!
-      ..setSecondaryRulerColor = lGauge.rulers!.secondaryRulerColor!
       ..setSecondaryRulersHeight = lGauge.rulers!.secondaryRulersHeight!
       ..setSecondaryRulersWidth = lGauge.rulers!.secondaryRulersWidth!
-      ..setShowLinearGaugeContainer = lGauge.showLinearGaugeContainer!
       ..setStart = lGauge.start!
       ..setEnd = lGauge.end!
       ..setSteps = lGauge.steps!
       ..setTextStyle = lGauge.rulers!.textStyle!
-      ..setSecondaryRulerPerInterval = lGauge.rulers!.secondaryRulerPerInterval!
-      ..setLinearGaugeContainerBgColor =
-          lGauge.linearGaugeBoxDecoration!.backgroundColor
-      ..setLinearGaugeContainerValueColor =
-          lGauge.linearGaugeBoxDecoration!.linearGaugeValueColor!
-      ..setShowLabel = lGauge.rulers!.showLabel!
       ..setRulerPosition = lGauge.rulers!.rulerPosition!
-      ..setLabelOffset = lGauge.rulers!.labelOffset!
-      ..setShowSecondaryRulers = lGauge.rulers!.showSecondaryRulers
-      ..setShowPrimaryRulers = lGauge.rulers!.showPrimaryRulers
       ..setValue = lGauge.value!
       ..setRangeLinearGauge = lGauge.rangeLinearGauge
       ..setRulersOffset = lGauge.rulers!.rulersOffset!
@@ -712,7 +727,6 @@ class _RLinearGauge extends LeafRenderObjectWidget {
       ..setGaugeAnimation = gaugeAnimation
       ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!
       ..setExtendLinearGauge = lGauge.extendLinearGauge!
-      ..setLinearGaugeBoxDecoration = lGauge.linearGaugeBoxDecoration
       ..setFillExtend = lGauge.fillExtend
       ..setPointerAnimation = pointerAnimation!
       ..setValueBarAnimation = valueBarAnimation!

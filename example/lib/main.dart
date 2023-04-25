@@ -1,3 +1,4 @@
+import 'package:example/valuebar_position.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_curve_example.dart';
@@ -22,7 +23,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: CustomCurveExample(),
+      body: MyValueBarPosition(),
     );
   }
 }

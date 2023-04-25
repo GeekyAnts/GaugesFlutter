@@ -14,73 +14,19 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          animationGap: 0.5,
-          animationDuration: 5000,
-          extendLinearGauge: 10,
-
-          fillExtend: false,
-          gaugeOrientation: GaugeOrientation.horizontal,
-          enableGaugeAnimation: true,
-          start: 0,
-          end: 100,
-          steps: 10,
-          valueBar: [
-            ValueBar(
-                value: 100,
-                valueBarThickness: 10,
-                enableAnimation: false,
-                color: Colors.blue.shade300,
-                animationType: Curves.bounceInOut),
-            ValueBar(
-                value: 50,
-                valueBarThickness: 10,
-                offset: 10,
-                position: ValueBarPosition.bottom,
-                color: Colors.orange.shade300,
-                animationType: Curves.bounceInOut),
-            ValueBar(
-                value: 70,
-                valueBarThickness: 10,
-                offset: 20,
-                position: ValueBarPosition.bottom,
-                color: Colors.indigo.shade300,
-                animationType: Curves.bounceInOut),
-          ],
-          pointers: [
-            Pointer(
-                value: 55,
-                shape: PointerShape.triangle,
-                animationDuration: 2000,
-                // enableAnimation: false,
-                animationType: Curves.ease,
-                pointerAlignment: PointerAlignment.center,
-                height: 20,
-                width: 20,
-                pointerPosition: PointerPosition.center,
-                color: Colors.grey[800]),
-            Pointer(
-                value: 100,
-                shape: PointerShape.circle,
-                showLabel: true,
-                labelStyle: const TextStyle(color: Colors.amber),
-                animationDuration: 3000,
-                animationType: Curves.bounceIn,
-                // pointerAlignment: PointerAlignment.end,
-                height: 50,
-                width: 20,
-                pointerPosition: PointerPosition.top,
-                color: Colors.grey[800]),
-          ],
-          // rangeLinearGauge: [
-          //   RangeLinearGauge(color: Colors.red, start: 0, end: 50),
-          //   RangeLinearGauge(color: Colors.yellow, start: 50, end: 100)
-          // ],
-          linearGaugeBoxDecoration:
-              const LinearGaugeBoxDecoration(thickness: 10),
+          linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
+            thickness: 15,
+            backgroundColor: Colors.grey,
+          ),
+          extendLinearGauge: 200,
           rulers: const RulerStyle(
-              inverseRulers: true,
-              rulerPosition: RulerPosition.top,
-              showLabel: true),
+            // secondaryRulersHeight: 300,
+            rulerPosition: RulerPosition.bottom,
+            textStyle: TextStyle(
+              fontFamily: 'Roboto',
+              color: Colors.black,
+            ),
+          ),
         ),
       ),
     );
