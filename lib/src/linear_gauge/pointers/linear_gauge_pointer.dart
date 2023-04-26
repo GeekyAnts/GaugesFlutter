@@ -1,7 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 
 import 'linear_gauge_pointer_painter.dart';
 
@@ -230,8 +228,6 @@ class Pointer extends LeafRenderObjectWidget {
   @override
   RenderObject createRenderObject(BuildContext context) {
     final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
-    final ThemeData theme = Theme.of(context);
-    final bool isDarkTheme = theme.brightness == Brightness.dark;
     return RenderLinearGaugePointer(
         value: value,
         color: color,
@@ -252,10 +248,6 @@ class Pointer extends LeafRenderObjectWidget {
   @override
   void updateRenderObject(
       BuildContext context, RenderLinearGaugePointer renderObject) {
-    final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
-    final ThemeData theme = Theme.of(context);
-    final bool isDarkTheme = theme.brightness == Brightness.dark;
-
     renderObject
       ..setValue = value
       ..setWidth = width

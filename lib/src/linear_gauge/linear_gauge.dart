@@ -599,18 +599,30 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
   List<Widget> _buildChildWidgets(BuildContext context) {
     _linearGaugeWidgets.clear();
     int index = 0;
+    int index1 = 0;
 
     _linearGaugeWidgets.add(LinearGaugeContainer(linearGauge: widget));
 
-    if (widget.pointers != null && widget.pointers!.isNotEmpty) {
-      /// Adding linear gauge widget bar pointer element.
-      for (final Pointer pointer in widget.pointers!) {
-        if (pointer.enableAnimation && pointer.animationDuration > 0) {
-          _addChild(pointer as Widget, _pointerAnimations[index],
-              _pointerAnimationControllers[index]);
+    if (widget.valueBar != null && widget.valueBar!.isNotEmpty) {
+      for (final ValueBar valueBar in widget.valueBar!) {
+        if (valueBar.enableAnimation && valueBar.animationDuration > 0) {
+          _addChild(valueBar, _valueBarAnimations[index],
+              _valueBarAnimationControllers[index]);
           index++;
         } else {
-          _addChild(pointer as Widget, null, null);
+          _addChild(valueBar, null, null);
+        }
+      }
+    }
+
+    if (widget.pointers != null && widget.pointers!.isNotEmpty) {
+      for (final Pointer pointer in widget.pointers!) {
+        if (pointer.enableAnimation && pointer.animationDuration > 0) {
+          _addChild(pointer, _pointerAnimations[index1],
+              _pointerAnimationControllers[index1]);
+          index1++;
+        } else {
+          _addChild(pointer, null, null);
         }
       }
     }
