@@ -6,6 +6,7 @@ import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/l
 import 'dart:math' as math;
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_label.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/pointers/linear_gauge_pointer_painter.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_painter.dart';
 
 class RenderLinearGauge extends RenderBox
     with
@@ -444,27 +445,6 @@ class RenderLinearGauge extends RenderBox
 
   late Size _axisActualSize;
 
-  void _drawValueBars(
-      {required Canvas canvas,
-      required double start,
-      required double end,
-      required double totalWidth}) {
-    // For loop for drawing value bar in [LinearGauge]
-    for (int j = 0; j < getValueBar.length; j++) {
-      if (getValueBarAnimation[j].value <= 0) {
-        return;
-      }
-      getValueBar[j].drawValueBar(
-        canvas,
-        start,
-        end,
-        totalWidth,
-        j,
-        this,
-      );
-    }
-  }
-
   void _drawRangeBars({
     required Canvas canvas,
     required double start,
@@ -698,6 +678,10 @@ class RenderLinearGauge extends RenderBox
             Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
       }
       if (child.runtimeType == RenderLinearGaugePointer) {
+        childParentData.offset =
+            Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
+      }
+      if (child.runtimeType == RenderValueBar) {
         childParentData.offset =
             Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
       }
