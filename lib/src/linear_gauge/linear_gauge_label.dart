@@ -12,7 +12,7 @@ class LinearGaugeLabel {
 
   final List<LinearGaugeLabel> _linearGaugeLabel = [];
 
-  late final Map<String, List<Offset>> primaryRulers = {};
+  static late final Map<String, List<Offset>> primaryRulers = {};
   final TextPainter _textPainter =
       TextPainter(textDirection: TextDirection.ltr);
 

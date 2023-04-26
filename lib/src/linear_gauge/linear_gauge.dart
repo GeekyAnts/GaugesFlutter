@@ -592,6 +592,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
         orientation: widget.gaugeOrientation!,
         isInversed: widget.rulers!.inverseRulers!,
         animationController: controller,
+        lGauge: widget,
         child: child));
   }
 

@@ -233,20 +233,20 @@ class Pointer extends LeafRenderObjectWidget {
     final ThemeData theme = Theme.of(context);
     final bool isDarkTheme = theme.brightness == Brightness.dark;
     return RenderLinearGaugePointer(
-      value: value,
-      color: color,
-      width: width,
-      height: height,
-      pointerPosition: pointerPosition,
-      shape: shape,
-      pointerAlignment: pointerAlignment,
-      animationDuration: animationDuration,
-      showLabel: showLabel,
-      animationType: animationType,
-      quarterTurns: quarterTurns,
-      enableAnimation: enableAnimation,
-      labelStyle: labelStyle,
-    );
+        value: value,
+        color: color,
+        width: width,
+        height: height,
+        pointerPosition: pointerPosition,
+        shape: shape,
+        pointerAlignment: pointerAlignment,
+        animationDuration: animationDuration,
+        showLabel: showLabel,
+        animationType: animationType,
+        quarterTurns: quarterTurns,
+        enableAnimation: enableAnimation,
+        labelStyle: labelStyle,
+        linearGauge: linearGaugeScope.lGauge);
   }
 
   @override

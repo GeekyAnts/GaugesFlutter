@@ -164,6 +164,8 @@ class RenderLinearGaugeContainer extends RenderBox {
   final Paint _secondaryRulersPaint = Paint();
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
   late Size _startLabelSize, _endLabelSize;
+
+  static late double gaugeStart, gaugeEnd;
   late double yAxisForGaugeContainer = 0,
       xAxisForGaugeContainer = 0,
       _effectiveRulerHeight;
@@ -633,7 +635,8 @@ class RenderLinearGaugeContainer extends RenderBox {
           : size.height - (largestPointerWidth);
       start = offset.dx + (largestPointerWidth / 2);
     }
-
+    gaugeStart = start;
+    gaugeEnd = end;
     late Rect gaugeContainer;
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
       gaugeContainer = Rect.fromLTWH(

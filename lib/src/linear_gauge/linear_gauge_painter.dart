@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 // ignore: implementation_imports
-import 'package:flutter/src/rendering/object.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/linear_gauge_container.dart';
-import 'dart:ui' as ui;
 import 'dart:math' as math;
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_label.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/pointers/linear_gauge_pointer_painter.dart';
 
 class RenderLinearGauge extends RenderBox
     with
@@ -695,6 +694,10 @@ class RenderLinearGauge extends RenderBox
       child
           .layout(BoxConstraints(maxHeight: size.height, maxWidth: size.width));
       if (child.runtimeType == RenderLinearGaugeContainer) {
+        childParentData.offset =
+            Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
+      }
+      if (child.runtimeType == RenderLinearGaugePointer) {
         childParentData.offset =
             Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
       }
@@ -1422,43 +1425,6 @@ class RenderLinearGauge extends RenderBox
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
     defaultPaint(context, offset);
-
-    // canvas.save();
-    // canvas.translate(offset.dx, offset.dy);
-
-    // var firstOffset = (!getInversedRulers)
-    //     ? Offset(_valueInPixel, 0.0)
-    //     : -Offset(_valueInPixel, 0.0);
-
-    // var firstOff =
-    //     _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]![0] +
-    //         firstOffset;
-
-    // var verticalFirstOffset =
-    //     _linearGaugeLabel.getPrimaryRulersOffset[getStart.toString()]!;
-
-    // Offset vert = verticalFirstOffset.first;
-    // if (getGaugeOrientation == GaugeOrientation.horizontal) {
-    //   firstOff = vert;
-    // } else {
-    //   firstOff = vert;
-    // }
-
-    // // // Drawing Pointers based on list of pointers added to the gauge
-    // // for (int i = 0; i < getPointers.length; i++) {
-    // //   if (getPointerAnimation[i].value <= 0) {
-    // //     return;
-    // //   }
-    // //   getPointers[i].drawPointer(
-    // //     getPointers[i].shape,
-    // //     canvas,
-    // //     gaugeStart,
-    // //     gaugeEnd,
-    // //     firstOff,
-    // //     i,
-    // //     this,
-    // //   );
-    // // }
 
     // // Drawing CustomCurves
 

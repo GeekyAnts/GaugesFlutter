@@ -9,6 +9,7 @@ class LinearGaugeState extends InheritedWidget {
       required Widget child,
       required this.orientation,
       required this.isInversed,
+      required this.lGauge,
       this.animation,
       this.animationController})
       : super(key: key, child: child);
@@ -24,6 +25,8 @@ class LinearGaugeState extends InheritedWidget {
 
   /// Determines whether to invert the gauge in [LinearGauge].
   final bool isInversed;
+
+  final LinearGauge lGauge;
 
   ///LinearGaugeState scope method.
   static LinearGaugeState of(BuildContext context) {
