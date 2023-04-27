@@ -16,6 +16,7 @@ class RenderValueBar extends RenderBox {
     required int animationDuration,
     required Curve animationType,
     required bool enableAnimation,
+    LinearGradient? linearGradient,
   })  : _linearGauge = linearGauge,
         _value = value,
         _position = position,
@@ -23,7 +24,8 @@ class RenderValueBar extends RenderBox {
         _thickness = valueBarThickness,
         _borderRadius = borderRadius,
         _offset = offset,
-        _edgeStyle = edgeStyle;
+        _edgeStyle = edgeStyle,
+        _linearGradient = linearGradient;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
 
@@ -60,6 +62,20 @@ class RenderValueBar extends RenderBox {
     }
 
     _position = value;
+    markNeedsPaint();
+  }
+
+  /// Gets the linearGradient assigned to [RenderValueBar].
+  LinearGradient? get linearGradient => _linearGradient;
+  LinearGradient? _linearGradient;
+
+  /// Sets the LinearGradient for [RenderValueBar].
+  set setLinearGradient(LinearGradient? value) {
+    if (value == _linearGradient) {
+      return;
+    }
+
+    _linearGradient = value;
     markNeedsPaint();
   }
 
@@ -227,6 +243,11 @@ class RenderValueBar extends RenderBox {
             : valueBarThickness, // set width to half of the gauge width
         !getInversedRulers ? -valueBarWidth : valueBarWidth,
       );
+    }
+
+    if (linearGradient != null) {
+      linearGaugeContainerPaint.shader =
+          linearGradient!.createShader(gaugeContainer);
     }
 
     if (borderRadius != null) {

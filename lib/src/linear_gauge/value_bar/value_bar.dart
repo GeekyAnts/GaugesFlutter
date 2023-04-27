@@ -32,6 +32,7 @@ class ValueBar extends LeafRenderObjectWidget {
     this.animationDuration = 1000,
     this.animationType = Curves.ease,
     this.enableAnimation = true,
+    this.linearGradient,
   });
 
   /// The `value` sets the value of the [ValueBar].
@@ -204,8 +205,20 @@ class ValueBar extends LeafRenderObjectWidget {
   final Curve animationType;
 
   ///
-  /// Painter Method to Draw [ValueBar]
+  /// `linearGradient` Sets the gradient background of the [LinearGauge] Container
+  ///  * NOTE : If `linearGradient` is given in [LinearGaugeBoxDecoration] the `color` property will be ignored
   ///
+  /// ```dart
+  /// const LinearGauge(
+  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+  ///
+  ///              linearGradient: LinearGradient(
+  ///                colors: [Colors.blue, Colors.pink],
+  ///              ),
+  ///            ),
+  ///          ),
+  /// ```
+  final LinearGradient? linearGradient;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -222,6 +235,7 @@ class ValueBar extends LeafRenderObjectWidget {
         borderRadius: borderRadius ?? 0,
         animationDuration: animationDuration,
         animationType: animationType,
+        linearGradient: linearGradient,
         enableAnimation: enableAnimation);
   }
 
@@ -236,6 +250,7 @@ class ValueBar extends LeafRenderObjectWidget {
       ..setOffset = offset
       ..setBorderRadius = borderRadius ?? 0
       ..setEdgeStyle = edgeStyle
+      ..setLinearGradient = linearGradient
       ..setLinearGAuge = linearGaugeScope.lGauge
       ..setPosition = position;
   }

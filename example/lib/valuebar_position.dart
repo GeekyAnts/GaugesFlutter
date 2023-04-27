@@ -17,22 +17,25 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           gaugeOrientation: GaugeOrientation.horizontal,
           linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
             borderRadius: 20,
-            // thickness: 95,
+            thickness: 35,
             backgroundColor: Colors.grey,
           ),
           valueBar: [
             ValueBar(
               value: 100,
-              valueBarThickness: 55,
-              position: ValueBarPosition.bottom,
-            )
+              valueBarThickness: 20,
+              borderRadius: 20,
+              linearGradient: const LinearGradient(
+                colors: [Colors.orange, Colors.red],
+              ),
+            ),
           ],
           rulers: const RulerStyle(
             showPrimaryRulers: false,
             showSecondaryRulers: false,
             showLabel: false,
             // secondaryRulersHeight: 300,
-            rulerPosition: RulerPosition.top,
+            rulerPosition: RulerPosition.bottom,
             textStyle: TextStyle(
               fontFamily: 'Roboto',
               color: Colors.black,
