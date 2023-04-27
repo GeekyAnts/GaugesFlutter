@@ -16,11 +16,21 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
         child: LinearGauge(
           gaugeOrientation: GaugeOrientation.horizontal,
           linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
-            thickness: 15,
+            borderRadius: 20,
+            thickness: 35,
             backgroundColor: Colors.grey,
           ),
-          valueBar: [ValueBar(value: 100)],
+          valueBar: [
+            ValueBar(
+              value: 100,
+              valueBarThickness: 5,
+              position: ValueBarPosition.center,
+            )
+          ],
           rulers: const RulerStyle(
+            showPrimaryRulers: false,
+            showSecondaryRulers: false,
+            showLabel: false,
             // secondaryRulersHeight: 300,
             rulerPosition: RulerPosition.top,
             textStyle: TextStyle(
