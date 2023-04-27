@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 // ignore: implementation_imports
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/linear_gauge_container.dart';
 import 'dart:math' as math;
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_label.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/pointers/linear_gauge_pointer_painter.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_painter.dart';
 
 class RenderLinearGauge extends RenderBox
     with
@@ -1402,29 +1399,29 @@ class RenderLinearGauge extends RenderBox
     Canvas canvas = context.canvas;
     defaultPaint(context, offset);
 
-    var verticalFirstOffset =
-        LinearGaugeLabel.primaryRulers[getStart.toString()]!;
+    // var verticalFirstOffset =
+    //     LinearGaugeLabel.primaryRulers[getStart.toString()]!;
 
-    Offset firstOff = verticalFirstOffset.first;
+    // Offset firstOff = verticalFirstOffset.first;
 
-    // Drawing CustomCurves
+    // // Drawing CustomCurves
 
-    if (getInversedRulers) {
-      if (_gaugeOrientation == GaugeOrientation.horizontal) {
-        firstOff = Offset(gaugeEnd - firstOff.dx + gaugeStart * 2, firstOff.dy);
-      } else {
-        firstOff = Offset(firstOff.dx, gaugeEnd - firstOff.dy + gaugeStart * 2);
-      }
-    }
-    for (var element in getCustomCurves!) {
-      double value = valueToPixel(element.midPoint);
-      if (getInversedRulers) {
-        value = gaugeEnd - value + gaugeStart * 2;
-      }
-      element.drawCurve(canvas, this, value, firstOff);
-    }
+    // if (getInversedRulers) {
+    //   if (_gaugeOrientation == GaugeOrientation.horizontal) {
+    //     firstOff = Offset(gaugeEnd - firstOff.dx + gaugeStart * 2, firstOff.dy);
+    //   } else {
+    //     firstOff = Offset(firstOff.dx, gaugeEnd - firstOff.dy + gaugeStart * 2);
+    //   }
+    // }
+    // for (var element in getCustomCurves!) {
+    //   double value = valueToPixel(element.midPoint);
+    //   if (getInversedRulers) {
+    //     value = gaugeEnd - value + gaugeStart * 2;
+    //   }
+    //   element.drawCurve(canvas, this, value, firstOff);
+    // }
 
-    canvas.restore();
+    // canvas.restore();
   }
 
   double valueToPixel(double value) {

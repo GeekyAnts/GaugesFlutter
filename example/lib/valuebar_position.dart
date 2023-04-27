@@ -20,16 +20,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             thickness: 35,
             backgroundColor: Colors.grey,
           ),
-          valueBar: [
-            ValueBar(
-              value: 100,
-              valueBarThickness: 20,
-              borderRadius: 20,
-              linearGradient: const LinearGradient(
-                colors: [Colors.orange, Colors.red],
-              ),
-            ),
-          ],
+          curves: [CustomCurve(midPoint: 20)],
           rulers: const RulerStyle(
             showPrimaryRulers: false,
             showSecondaryRulers: false,

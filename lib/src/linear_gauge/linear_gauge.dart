@@ -627,6 +627,12 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
       }
     }
 
+    if (widget.curves != null && widget.curves!.isNotEmpty) {
+      for (final CustomCurve curve in widget.curves!) {
+        _addChild(curve, null, null);
+      }
+    }
+
     return _linearGaugeWidgets;
   }
 
