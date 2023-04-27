@@ -52,6 +52,14 @@ class RenderLinearGaugePointer extends RenderBox {
     markNeedsLayout();
   }
 
+  set setLinearGAuge(LinearGauge linearGauge) {
+    if (_linearGauge == linearGauge) {
+      return;
+    }
+    _linearGauge = linearGauge;
+    markNeedsPaint();
+  }
+
   /// Gets the orientation to [RenderLinearGaugePointer].
   GaugeOrientation? get orientation => _orientation;
   GaugeOrientation? _orientation;

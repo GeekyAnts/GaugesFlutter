@@ -227,6 +227,8 @@ class ValueBar extends LeafRenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, RenderValueBar renderObject) {
+    final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
+
     renderObject
       ..setValue = value
       ..setColor = color
@@ -234,6 +236,7 @@ class ValueBar extends LeafRenderObjectWidget {
       ..setOffset = offset
       ..setBorderRadius = borderRadius ?? 0
       ..setEdgeStyle = edgeStyle
+      ..setLinearGAuge = linearGaugeScope.lGauge
       ..setPosition = position;
   }
 }

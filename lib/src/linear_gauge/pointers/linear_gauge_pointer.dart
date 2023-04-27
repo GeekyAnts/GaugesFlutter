@@ -248,6 +248,8 @@ class Pointer extends LeafRenderObjectWidget {
   @override
   void updateRenderObject(
       BuildContext context, RenderLinearGaugePointer renderObject) {
+    final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
+
     renderObject
       ..setValue = value
       ..setWidth = width
@@ -257,6 +259,7 @@ class Pointer extends LeafRenderObjectWidget {
       ..setPointerAlignment = pointerAlignment
       ..setShowLabel = showLabel
       ..setEnableAnimation = enableAnimation
+      ..setLinearGAuge = linearGaugeScope.lGauge
       ..setLabelStyle = labelStyle;
   }
 }

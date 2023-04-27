@@ -31,6 +31,13 @@ class RenderValueBar extends RenderBox {
 
   LinearGauge get linearGauge => _linearGauge;
   LinearGauge _linearGauge;
+  set setLinearGAuge(LinearGauge linearGauge) {
+    if (_linearGauge == linearGauge) {
+      return;
+    }
+    _linearGauge = linearGauge;
+    markNeedsPaint();
+  }
 
   double get value => _value;
   double _value;
