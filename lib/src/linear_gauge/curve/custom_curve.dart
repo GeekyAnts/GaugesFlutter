@@ -2,11 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 
+///
 /// A [CustomCurve] is a class that is used to draw custom Section or
 ///  Zones  on the gauge.
 /// These custom Section or zones can have a bezier curve or be in a straight line.
 ///
-///  * [midPoint] is the control point of the bezier curve.
+///```dart
+/// LinearGauge(
+///  curves: [
+///            CustomCurve(
+///                midPoint: 50,
+///                midHeight: 100,
+///                curvePosition: CurvePosition.top,
+///                    ),
+///          ],
+///    rulers: const RulerStyle(
+///           rulerPosition: RulerPosition.bottom,
+///                          ),
+///         ),
+/// ```
 ///
 
 class CustomCurve {
@@ -59,9 +73,8 @@ class CustomCurve {
   final double? midHeight;
 
   ///
-  /// [isBezierCurve] is a boolean value that determines whether the curve is a Bezier curve or not.
+  /// [curveStyle] allows you to choose between a straight line or a bezier curve.
   ///
-  // final bool? isBezierCurve;
   final CurveStyle curveStyle;
 
   ///
