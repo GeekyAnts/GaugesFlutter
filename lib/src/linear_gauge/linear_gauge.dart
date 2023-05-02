@@ -313,12 +313,12 @@ class LinearGauge extends StatefulWidget {
   final List<ValueBar>? valueBar;
 
   ///
-  /// `pointers` takes the list of [pointer] to render the value pointer/s
+  /// `pointers` takes the list of [Pointer] to render the value pointer/s
   ///
   /// ```
   /// const LinearGauge(
-  ///  pointer: [
-  ///   pointer(
+  ///  pointers: [
+  ///   Pointer(
   ///    shape: PointerShape.circle,
   ///   color: Colors.green,
   ///  ),
@@ -333,7 +333,7 @@ class LinearGauge extends StatefulWidget {
   ///
   /// ```
   /// const LinearGauge(
-  ///   enableAnimations:true;
+  ///   enableGaugeAnimation:true;
   /// )
   /// ```
   ///
@@ -347,7 +347,7 @@ class LinearGauge extends StatefulWidget {
   /// ```dart
   ///
   /// LinearGauge (
-  /// enableAnimation: true,
+  /// enableGaugeAnimation: true,
   /// animationDuration: 4000
   ///  )
   /// ```
@@ -361,7 +361,7 @@ class LinearGauge extends StatefulWidget {
   /// ```dart
   ///
   /// LinearGauge (
-  /// enableAnimation: true,
+  /// enableGaugeAnimation: true,
   /// animationType: Curves.linear
   ///  )
   /// ```
