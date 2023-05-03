@@ -954,8 +954,9 @@ class RenderLinearGaugePointer extends RenderBox {
         LinearGaugeLabel.primaryRulers[linearGauge.start.toString()]!;
 
     Offset vert = verticalFirstOffset.first;
-
-    drawPointer(shape, canvas, RenderLinearGaugeContainer.gaugeStart,
-        RenderLinearGaugeContainer.gaugeEnd, vert, linearGauge);
+    if (getPointerAnimation.value > 0) {
+      drawPointer(shape, canvas, RenderLinearGaugeContainer.gaugeStart,
+          RenderLinearGaugeContainer.gaugeEnd, vert, linearGauge);
+    }
   }
 }

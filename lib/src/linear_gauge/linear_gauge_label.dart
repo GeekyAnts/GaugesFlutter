@@ -314,7 +314,8 @@ class LinearGaugeLabel {
                 secondaryRulersPaint.color = fallBackColor;
               }
             }
-            secondaryRulersPaint.color = secondaryRulersPaint.color;
+            secondaryRulersPaint.color =
+                linearGauge.setAnimatedColor(secondaryRulersPaint.color);
 
             canvas.drawLine(secondaryRulerStartPoint, secondaryRulerEndPoint,
                 secondaryRulersPaint);

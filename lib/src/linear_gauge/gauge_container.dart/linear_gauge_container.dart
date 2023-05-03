@@ -1002,7 +1002,7 @@ class RenderLinearGaugeContainer extends RenderBox {
       //the ending point of the primary ruler
 
       Offset a = Offset(x, y);
-      _primaryRulersPaint.color = primaryRulerColor!;
+      _primaryRulersPaint.color = setAnimatedColor(primaryRulerColor!);
 
       if (showLabel) {
         _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
