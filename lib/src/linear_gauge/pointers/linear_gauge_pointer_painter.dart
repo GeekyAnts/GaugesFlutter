@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/linear_gauge_container.dart';
 
 import '../../../geekyants_flutter_gauges.dart';
@@ -22,6 +23,7 @@ class RenderLinearGaugePointer extends RenderBox {
     required int animationDuration,
     required Curve animationType,
     required bool enableAnimation,
+    required Animation<double> pointerAnimation,
     required LinearGauge linearGauge,
   })  : _value = value,
         _height = height,
@@ -34,6 +36,7 @@ class RenderLinearGaugePointer extends RenderBox {
         _pointerAlignment = pointerAlignment,
         _pointerPosition = pointerPosition,
         _linearGauge = linearGauge,
+        _pointerAnimation = pointerAnimation,
         _enableAnimation = enableAnimation;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
@@ -137,7 +140,7 @@ class RenderLinearGaugePointer extends RenderBox {
 
   /// Sets the showLabel for [RenderLinearGaugePointer].
   set setShowLabel(bool value) {
-    if (value == _color) {
+    if (value == _showLabel) {
       return;
     }
 
@@ -218,6 +221,39 @@ class RenderLinearGaugePointer extends RenderBox {
     markNeedsPaint();
   }
 
+  ///
+  /// Getter and Setter for the [pointerAnimation] parameter.
+  ///
+  Animation<double> get getPointerAnimation => _pointerAnimation;
+  Animation<double> _pointerAnimation;
+  set setPointerAnimation(Animation<double> val) {
+    if (_pointerAnimation == val) return;
+    _pointerAnimation = val;
+    _removeAnimationListeners();
+    _addAnimationListener();
+    markNeedsLayout();
+  }
+
+  void _addAnimationListener() {
+    _pointerAnimation.addListener(markNeedsPaint);
+  }
+
+  void _removeAnimationListeners() {
+    _pointerAnimation.removeListener(markNeedsPaint);
+  }
+
+  @override
+  void attach(covariant PipelineOwner owner) {
+    super.attach(owner);
+    _addAnimationListener();
+  }
+
+  @override
+  void detach() {
+    _removeAnimationListeners();
+    super.detach();
+  }
+
   @override
   void performLayout() {
     if (shape == PointerShape.triangle &&
@@ -238,7 +274,6 @@ class RenderLinearGaugePointer extends RenderBox {
     double start,
     double end,
     Offset offset,
-    int index,
     LinearGauge linearGauge,
   ) {
     if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
@@ -288,30 +323,29 @@ class RenderLinearGaugePointer extends RenderBox {
         gaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
     switch (shape) {
       case PointerShape.circle:
-        _layoutCircleOffsets(canvas, offset, linearGauge, index);
+        _layoutCircleOffsets(canvas, offset, linearGauge);
         break;
       case PointerShape.rectangle:
-        _layoutRectangleOffsets(canvas, offset, linearGauge, index);
+        _layoutRectangleOffsets(canvas, offset, linearGauge);
         break;
       case PointerShape.triangle:
-        _layoutTriangleOffsets(canvas, offset, linearGauge, index);
+        _layoutTriangleOffsets(canvas, offset, linearGauge);
         break;
       case PointerShape.diamond:
-        _layoutDiamondOffsets(canvas, offset, linearGauge, index);
+        _layoutDiamondOffsets(canvas, offset, linearGauge);
         break;
       default:
         return;
     }
 
     if (showLabel) {
-      _drawLabel(
-          canvas, labelOffset, quarterTurns, rulerPosition, linearGauge, index);
+      _drawLabel(canvas, labelOffset, quarterTurns, rulerPosition, linearGauge);
     }
   }
 
   // Method to draw the Text for  Pointers
   void _drawLabel(Canvas canvas, Offset offset, QuarterTurns quarterTurns,
-      RulerPosition rulerPosition, LinearGauge linearGauge, int index) {
+      RulerPosition rulerPosition, LinearGauge linearGauge) {
     double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
     GaugeOrientation gaugeOrientation = linearGauge.gaugeOrientation!;
 
@@ -395,7 +429,7 @@ class RenderLinearGaugePointer extends RenderBox {
           break;
       }
 
-      // offset = applyAnimations(linearGauge, index, offset);
+      offset = applyAnimations(linearGauge, offset);
 
       double textWidth = textPainter.width / 2;
       double textHeight = textPainter.height / 2;
@@ -436,7 +470,7 @@ class RenderLinearGaugePointer extends RenderBox {
       double textWidth = textPainter.width / 2;
       double textHeight = textPainter.height / 2;
 
-      // offset = applyAnimations(linearGauge, index, offset);
+      offset = applyAnimations(linearGauge, offset);
 
       switch (pointerPosition) {
         case PointerPosition.top:
@@ -535,37 +569,37 @@ class RenderLinearGaugePointer extends RenderBox {
     }
   }
 
-  // Offset applyAnimations(LinearGauge linearGauge, int index, Offset offset) {
-  //   if (enableAnimation && linearGauge.getPointerAnimation[index].value > 0) {
-  //     double animationValue = linearGauge.getPointerAnimation[index].value;
+  Offset applyAnimations(LinearGauge linearGauge, Offset offset) {
+    if (enableAnimation && getPointerAnimation.value > 0) {
+      double animationValue = getPointerAnimation.value;
 
-  //     double endPoint =
-  //         (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-  //             ? offset.dx
-  //             : offset.dy;
+      double endPoint =
+          (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
+              ? offset.dx
+              : offset.dy;
 
-  //     double animatedAxisPoint =
-  //         getAnimatedAxisPoint(endPoint, animationValue, linearGauge);
-  //     offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-  //         ? Offset(animatedAxisPoint, offset.dy)
-  //         : Offset(offset.dx, animatedAxisPoint);
-  //   }
-  //   return offset;
-  // }
+      double animatedAxisPoint =
+          getAnimatedAxisPoint(endPoint, animationValue, linearGauge);
+      offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
+          ? Offset(animatedAxisPoint, offset.dy)
+          : Offset(offset.dx, animatedAxisPoint);
+    }
+    return offset;
+  }
 
-  // double getAnimatedAxisPoint(
-  //     double endPoint, double animationValue, LinearGauge linearGauge) {
-  //   Offset startPointOffset = linearGauge.getLinearGaugeLabel
-  //       .getPrimaryRulersOffset[linearGauge.getStart.toString()]!.first;
-  //   double startPoint =
-  //       (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-  //           ? startPointOffset.dx
-  //           : startPointOffset.dy;
-  //   return startPoint + ((endPoint - startPoint) * animationValue);
-  // }
+  double getAnimatedAxisPoint(
+      double endPoint, double animationValue, LinearGauge linearGauge) {
+    Offset startPointOffset =
+        LinearGaugeLabel.primaryRulers[linearGauge.start.toString()]!.first;
+    double startPoint =
+        (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
+            ? startPointOffset.dx
+            : startPointOffset.dy;
+    return startPoint + ((endPoint - startPoint) * animationValue);
+  }
 
   void _layoutCircleOffsets(
-      Canvas canvas, Offset offset, LinearGauge linearGauge, int index) {
+      Canvas canvas, Offset offset, LinearGauge linearGauge) {
     double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
     GaugeOrientation orientation = linearGauge.gaugeOrientation!;
 
@@ -597,11 +631,10 @@ class RenderLinearGaugePointer extends RenderBox {
       default:
         break;
     }
-    _drawCircle(canvas, offset, linearGauge, index);
+    _drawCircle(canvas, offset, linearGauge);
   }
 
-  _drawCircle(
-      Canvas canvas, Offset offset, LinearGauge linearGauge, int index) {
+  _drawCircle(Canvas canvas, Offset offset, LinearGauge linearGauge) {
     Offset center = Offset(offset.dx, offset.dy);
     final paint = Paint()..color = color;
     paint.color = color;
@@ -622,14 +655,14 @@ class RenderLinearGaugePointer extends RenderBox {
         break;
     }
 
-    // center = applyAnimations(linearGauge, index, center);
+    center = applyAnimations(linearGauge, center);
 
     canvas.drawCircle(center, height / 2, paint);
   }
 
   // Drawing the Rectangle Pointer
   void _layoutRectangleOffsets(
-      Canvas canvas, Offset offset, LinearGauge linearGauge, int index) {
+      Canvas canvas, Offset offset, LinearGauge linearGauge) {
     double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
     GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
     switch (pointerPosition) {
@@ -660,11 +693,10 @@ class RenderLinearGaugePointer extends RenderBox {
       default:
         break;
     }
-    _drawRectangle(canvas, offset, linearGauge, index);
+    _drawRectangle(canvas, offset, linearGauge);
   }
 
-  _drawRectangle(
-      Canvas canvas, Offset offset, LinearGauge linearGauge, int index) {
+  _drawRectangle(Canvas canvas, Offset offset, LinearGauge linearGauge) {
     final paint = Paint()..color = color;
     offset = Offset(offset.dx, offset.dy);
 
@@ -684,7 +716,7 @@ class RenderLinearGaugePointer extends RenderBox {
         break;
     }
 
-    // offset = applyAnimations(linearGauge, index, offset);
+    offset = applyAnimations(linearGauge, offset);
 
     Rect rect = Rect.fromCenter(center: offset, width: width, height: height);
 
@@ -693,7 +725,7 @@ class RenderLinearGaugePointer extends RenderBox {
 
   // Drawing the Triangle Pointer
   void _layoutTriangleOffsets(
-      Canvas canvas, Offset offset, LinearGauge linearGauge, int index) {
+      Canvas canvas, Offset offset, LinearGauge linearGauge) {
     double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
     GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
 
@@ -701,11 +733,11 @@ class RenderLinearGaugePointer extends RenderBox {
       case PointerPosition.top:
         offset = Offset(
             offset.dx, offset.dy - gaugeThickness + yAxisForGaugeContainer);
-        _drawTriangle(canvas, offset, 180, linearGauge, index);
+        _drawTriangle(canvas, offset, 180, linearGauge);
         break;
       case PointerPosition.bottom:
         offset = Offset(offset.dx, offset.dy + yAxisForGaugeContainer);
-        _drawTriangle(canvas, offset, 0, linearGauge, index);
+        _drawTriangle(canvas, offset, 0, linearGauge);
         break;
       case PointerPosition.center:
         offset = rulerOrientation == GaugeOrientation.horizontal
@@ -722,34 +754,29 @@ class RenderLinearGaugePointer extends RenderBox {
                 offset.dy);
         double angle =
             rulerOrientation == GaugeOrientation.horizontal ? 180 : 90;
-        _drawTriangle(canvas, offset, angle, linearGauge, index);
+        _drawTriangle(canvas, offset, angle, linearGauge);
         break;
       case PointerPosition.right:
         offset = Offset(offset.dx + xAxisForGaugeContainer, offset.dy);
-        _drawTriangle(canvas, offset, -90, linearGauge, index);
+        _drawTriangle(canvas, offset, -90, linearGauge);
         break;
       case PointerPosition.left:
         offset = Offset(
             offset.dx - gaugeThickness + xAxisForGaugeContainer, offset.dy);
-        _drawTriangle(canvas, offset, 90, linearGauge, index);
+        _drawTriangle(canvas, offset, 90, linearGauge);
         break;
       default:
         break;
     }
   }
 
-  void _drawTriangle(Canvas canvas, Offset vertex, double angle,
-      LinearGauge linearGauge, int index) {
-    // double animationValue =
-    //     calculateAnimationValue(linearGauge, vertex.dx, linearGauge.getStart);
+  void _drawTriangle(
+      Canvas canvas, Offset vertex, double angle, LinearGauge linearGauge) {
     Offset center = vertex;
 
     final paint = Paint();
     paint.color = color;
     final base = width / 2;
-
-    // path.moveTo(((animVal) - (pointerWidth / 2)), yPos);
-    // vertex.dx = animVal;
 
     switch (pointerAlignment) {
       case PointerAlignment.start:
@@ -769,7 +796,7 @@ class RenderLinearGaugePointer extends RenderBox {
         break;
     }
 
-    // center = applyAnimations(linearGauge, index, center);
+    center = applyAnimations(linearGauge, center);
 
     final path = Path();
 
@@ -797,7 +824,6 @@ class RenderLinearGaugePointer extends RenderBox {
     Canvas canvas,
     Offset offset,
     LinearGauge linearGauge,
-    int index,
   ) {
     double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
     GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
@@ -830,29 +856,10 @@ class RenderLinearGaugePointer extends RenderBox {
       default:
         break;
     }
-    _drawDiamond(canvas, offset, linearGauge, index);
+    _drawDiamond(canvas, offset, linearGauge);
   }
 
-  /// Animation Calculation
-  // double calculateReverseAnimationValue(
-  //     LinearGauge linearGauge, double valueInPX, double start) {
-  //   var animVal = linearGauge.getAnimationValue != null
-  //       ? linearGauge.size.width -
-  //           ((valueInPX * linearGauge.getAnimationValue!) + start)
-  //       : linearGauge.size.width - (valueInPX + start);
-
-  //   return animVal;
-  // }
-
-  // double calculateAnimationValue(
-  //     LinearGauge linearGauge, double valueInPX, double start) {
-  //   return valueInPX * linearGauge.getAnimationValue!;
-  // }
-
-  _drawDiamond(
-      Canvas canvas, Offset center, LinearGauge linearGauge, int index) {
-    // double x = calculateAnimationValue(linearGauge, center.dx, 0);
-
+  _drawDiamond(Canvas canvas, Offset center, LinearGauge linearGauge) {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
@@ -873,7 +880,7 @@ class RenderLinearGaugePointer extends RenderBox {
         break;
     }
 
-    // center = applyAnimations(linearGauge, index, center);
+    center = applyAnimations(linearGauge, center);
 
     final path = Path();
 
@@ -949,6 +956,6 @@ class RenderLinearGaugePointer extends RenderBox {
     Offset vert = verticalFirstOffset.first;
 
     drawPointer(shape, canvas, RenderLinearGaugeContainer.gaugeStart,
-        RenderLinearGaugeContainer.gaugeEnd, vert, 0, linearGauge);
+        RenderLinearGaugeContainer.gaugeEnd, vert, linearGauge);
   }
 }

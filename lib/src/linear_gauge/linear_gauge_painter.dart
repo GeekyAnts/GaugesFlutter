@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 // ignore: implementation_imports
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
@@ -33,8 +32,6 @@ class RenderLinearGauge extends RenderBox
     required double thickness,
     required double extendLinearGauge,
     required bool fillExtend,
-    required List<Animation<double>> pointerAnimation,
-    required List<Animation<double>> valueBarAnimation,
     required List<CustomCurve>? customCurve,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
@@ -58,8 +55,6 @@ class RenderLinearGauge extends RenderBox
         _thickness = thickness,
         _extendLinearGauge = extendLinearGauge,
         _fillExtend = fillExtend,
-        _pointerAnimation = pointerAnimation,
-        _valueBarAnimation = valueBarAnimation,
         _curves = customCurve;
 
   // For getting Gauge Values
@@ -350,75 +345,10 @@ class RenderLinearGauge extends RenderBox
   }
 
   ///
-  /// Getter and Setter for the [pointerAnimation] parameter.
-  ///
-  List<Animation<double>> get getPointerAnimation => _pointerAnimation;
-  List<Animation<double>> _pointerAnimation;
-  set setPointerAnimation(List<Animation<double>> val) {
-    if (_pointerAnimation == val) return;
-    _pointerAnimation = val;
-    _removeAnimationListeners();
-    _addAnimationListener();
-    markNeedsLayout();
-  }
-
-  ///
-  /// Getter and Setter for the [valueBarAnimation] parameter.
-  ///
-  List<Animation<double>> get getValueBarAnimation => _valueBarAnimation;
-  List<Animation<double>> _valueBarAnimation;
-  set setValueBarAnimation(List<Animation<double>> val) {
-    if (_valueBarAnimation == val) return;
-    _valueBarAnimation = val;
-    _removeAnimationListeners();
-    _addAnimationListener();
-    markNeedsLayout();
-  }
-
-  void _addAnimationListener() {
-    if (_pointerAnimation.isNotEmpty) {
-      for (final Animation<double> animation in _pointerAnimation) {
-        animation.addListener(markNeedsPaint);
-      }
-    }
-    if (_valueBarAnimation.isNotEmpty) {
-      for (final Animation<double> animation in _valueBarAnimation) {
-        animation.addListener(markNeedsPaint);
-      }
-    }
-  }
-
-  void _removeAnimationListeners() {
-    if (_pointerAnimation.isNotEmpty) {
-      for (final Animation<double> animation in _pointerAnimation) {
-        animation.removeListener(markNeedsPaint);
-      }
-    }
-    if (_valueBarAnimation.isNotEmpty) {
-      for (final Animation<double> animation in _valueBarAnimation) {
-        animation.removeListener(markNeedsPaint);
-      }
-    }
-  }
-
-  @override
-  void attach(covariant PipelineOwner owner) {
-    super.attach(owner);
-    _addAnimationListener();
-  }
-
-  @override
-  void detach() {
-    _removeAnimationListeners();
-    super.detach();
-  }
-
-  ///
   /// Getter and Setter for the [_pointerSpace] parameter.
   ///
   double get getPointerSpace => _pointerSpace;
   final double _pointerSpace = 0;
-  final Paint _linearGaugeContainerValuePaint = Paint();
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _axisActualSize;
@@ -1216,7 +1146,6 @@ class RenderLinearGauge extends RenderBox
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    Canvas canvas = context.canvas;
     defaultPaint(context, offset);
   }
 

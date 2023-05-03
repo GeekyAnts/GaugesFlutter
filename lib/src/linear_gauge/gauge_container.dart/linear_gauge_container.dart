@@ -718,18 +718,6 @@ class RenderLinearGaugeContainer extends RenderBox {
     }
 
     double totalWidth = end;
-    double totalValOnPixel;
-
-    if (getValue < getStart) {
-      totalValOnPixel = 0.0;
-    } else {
-      totalValOnPixel =
-          (((getValue) - getStart) / (getEnd - getStart)) * totalWidth;
-
-      // totalValOnPixel = getGaugeAnimation != null
-      //     ? totalValOnPixel * getGaugeAnimation!.value
-      //     : totalValOnPixel;
-    }
 
     if (getBorderRadius != null) {
       var rectangularBox = _getRoundedContainer(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/linear_gauge_container.dart';
 import '../../../geekyants_flutter_gauges.dart';
 
@@ -16,6 +17,7 @@ class RenderValueBar extends RenderBox {
     required int animationDuration,
     required Curve animationType,
     required bool enableAnimation,
+    required Animation<double> valueBarAnimation,
     LinearGradient? linearGradient,
   })  : _linearGauge = linearGauge,
         _value = value,
@@ -25,6 +27,8 @@ class RenderValueBar extends RenderBox {
         _borderRadius = borderRadius,
         _offset = offset,
         _edgeStyle = edgeStyle,
+        _valueBarAnimation = valueBarAnimation,
+        _enableAnimation = enableAnimation,
         _linearGradient = linearGradient;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
@@ -128,6 +132,18 @@ class RenderValueBar extends RenderBox {
   }
 
   ///
+  /// Getter and Setter for the [_enableAnimation] parameter.
+  ///
+
+  bool get enableAnimation => _enableAnimation;
+  bool _enableAnimation;
+  set setEnableAnimation(bool val) {
+    if (_enableAnimation == val) return;
+    _enableAnimation = val;
+    markNeedsPaint();
+  }
+
+  ///
   /// Getter and Setter for the [_edgeStyle] parameter.
   ///
 
@@ -137,6 +153,39 @@ class RenderValueBar extends RenderBox {
     if (_edgeStyle == val) return;
     _edgeStyle = val;
     markNeedsLayout();
+  }
+
+  ///
+  /// Getter and Setter for the [valueBarAnimation] parameter.
+  ///
+  Animation<double> get getValueBarAnimation => _valueBarAnimation;
+  Animation<double> _valueBarAnimation;
+  set setValueBarAnimation(Animation<double> val) {
+    if (_valueBarAnimation == val) return;
+    _valueBarAnimation = val;
+    _removeAnimationListeners();
+    _addAnimationListener();
+    markNeedsLayout();
+  }
+
+  void _addAnimationListener() {
+    _valueBarAnimation.addListener(markNeedsPaint);
+  }
+
+  void _removeAnimationListeners() {
+    _valueBarAnimation.removeListener(markNeedsPaint);
+  }
+
+  @override
+  void attach(covariant PipelineOwner owner) {
+    super.attach(owner);
+    _addAnimationListener();
+  }
+
+  @override
+  void detach() {
+    _removeAnimationListeners();
+    super.detach();
   }
 
   void drawValueBar(Canvas canvas, double start, double end, double totalWidth,
@@ -154,12 +203,11 @@ class RenderValueBar extends RenderBox {
     double valueBarWidth = ((value - startValue) / (endValue - startValue)) *
         (totalWidth - 2 * linearGauge.extendLinearGauge!);
 
-    // double valueBarAnimationValue =
-    //     linearGauge.getValueBarAnimation[index].value;
+    double valueBarAnimationValue = getValueBarAnimation.value;
 
-    // valueBarWidth = (enableAnimation)
-    //     ? valueBarWidth * valueBarAnimationValue
-    //     : valueBarWidth;
+    valueBarWidth = (enableAnimation)
+        ? valueBarWidth * valueBarAnimationValue
+        : valueBarWidth;
 
     final ValueBarPosition valueBarPosition = position;
     final Paint linearGaugeContainerPaint = Paint();
@@ -250,7 +298,7 @@ class RenderValueBar extends RenderBox {
           linearGradient!.createShader(gaugeContainer);
     }
 
-    if (borderRadius != null) {
+    if (borderRadius != 0) {
       var rectangularBox = _getRoundedContainer(
         gaugeContainer: gaugeContainer,
         linearGauge: linearGauge,

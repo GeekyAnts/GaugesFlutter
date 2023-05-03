@@ -21,6 +21,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             thickness: 35,
             backgroundColor: Colors.grey,
           ),
+          valueBar: const [ValueBar(value: 50)],
           // curves: [CustomCurve(midPoint: 20)],
           rulers: const RulerStyle(
             showPrimaryRulers: false,
@@ -28,6 +29,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             showLabel: false,
             // secondaryRulersHeight: 300,
             rulerPosition: RulerPosition.bottom,
+            inverseRulers: true,
             textStyle: TextStyle(
               fontFamily: 'Roboto',
               color: Colors.black,

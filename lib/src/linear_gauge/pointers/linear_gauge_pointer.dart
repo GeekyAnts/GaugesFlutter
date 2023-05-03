@@ -42,7 +42,7 @@ class Pointer extends LeafRenderObjectWidget {
     this.animationDuration = 1000,
     this.animationType = Curves.ease,
     this.enableAnimation = true,
-  });
+  }) : super(key: key);
 
   ///
   /// `value` Sets the value of the pointer on the [LinearGauge]
@@ -242,6 +242,7 @@ class Pointer extends LeafRenderObjectWidget {
         quarterTurns: quarterTurns,
         enableAnimation: enableAnimation,
         labelStyle: labelStyle,
+        pointerAnimation: linearGaugeScope.animation!,
         linearGauge: linearGaugeScope.lGauge);
   }
 
@@ -259,6 +260,7 @@ class Pointer extends LeafRenderObjectWidget {
       ..setPointerAlignment = pointerAlignment
       ..setShowLabel = showLabel
       ..setEnableAnimation = enableAnimation
+      ..setPointerAnimation = linearGaugeScope.animation!
       ..setLinearGAuge = linearGaugeScope.lGauge
       ..setLabelStyle = labelStyle;
   }

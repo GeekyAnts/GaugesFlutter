@@ -21,7 +21,8 @@ import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_pai
 ///
 
 class ValueBar extends LeafRenderObjectWidget {
-  ValueBar({
+  const ValueBar({
+    Key? key,
     required this.value,
     this.offset = 0,
     this.position = ValueBarPosition.center,
@@ -33,7 +34,7 @@ class ValueBar extends LeafRenderObjectWidget {
     this.animationType = Curves.ease,
     this.enableAnimation = true,
     this.linearGradient,
-  });
+  }) : super(key: key);
 
   /// The `value` sets the value of the [ValueBar].
   ///
@@ -78,7 +79,7 @@ class ValueBar extends LeafRenderObjectWidget {
   /// ```
   /// The default value of `offset` is `0`.
   ///
-  double offset;
+  final double offset;
 
   ///
   /// The `position` sets the position of the [ValueBar] in the [LinearGauge].
@@ -113,7 +114,7 @@ class ValueBar extends LeafRenderObjectWidget {
   ///       ],
   ///   ),
   /// ```
-  Color color;
+  final Color color;
 
   ///
   /// `borderRadius` Set corners to soft edges/rounded  of the ValueBar
@@ -150,7 +151,7 @@ class ValueBar extends LeafRenderObjectWidget {
   ///       ],
   ///   ),
   /// ```
-  LinearEdgeStyle edgeStyle;
+  final LinearEdgeStyle edgeStyle;
 
   /// Specifies the load time animation duration with [enableAnimation].
   /// Duration is defined in milliseconds.
@@ -236,7 +237,8 @@ class ValueBar extends LeafRenderObjectWidget {
         animationDuration: animationDuration,
         animationType: animationType,
         linearGradient: linearGradient,
-        enableAnimation: enableAnimation);
+        enableAnimation: enableAnimation,
+        valueBarAnimation: linearGaugeScope.animation!);
   }
 
   @override
@@ -252,6 +254,7 @@ class ValueBar extends LeafRenderObjectWidget {
       ..setEdgeStyle = edgeStyle
       ..setLinearGradient = linearGradient
       ..setLinearGAuge = linearGaugeScope.lGauge
+      ..setValueBarAnimation = linearGaugeScope.animation!
       ..setPosition = position;
   }
 }

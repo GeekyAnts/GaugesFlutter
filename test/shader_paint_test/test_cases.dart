@@ -4,11 +4,11 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 List shaderPaintHorizontal = [
   {
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 100,
         valueBarThickness: 20,
         borderRadius: 20,
-        linearGradient: const LinearGradient(
+        linearGradient: LinearGradient(
           colors: [Colors.orange, Colors.red],
         ),
       ),
@@ -31,11 +31,11 @@ List shaderPaintHorizontal = [
 List shaderPaintVertical = [
   {
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 100,
         valueBarThickness: 20,
         borderRadius: 20,
-        linearGradient: const LinearGradient(
+        linearGradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
           colors: [

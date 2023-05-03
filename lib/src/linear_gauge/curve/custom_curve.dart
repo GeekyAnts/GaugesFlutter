@@ -10,7 +10,8 @@ import 'package:geekyants_flutter_gauges/src/linear_gauge/curve/custom_curve_pai
 ///
 
 class CustomCurve extends LeafRenderObjectWidget {
-  CustomCurve({
+  const CustomCurve({
+    Key? key,
     this.startHeight = 0,
     this.endHeight = 0,
     this.midHeight = 10,
@@ -21,7 +22,7 @@ class CustomCurve extends LeafRenderObjectWidget {
     this.curvePosition = CurvePosition.bottom,
     this.end = 100,
     required this.midPoint,
-  });
+  }) : super(key: key);
 
   ///
   /// [midPoint] is the control point of the Bezier curve.
@@ -31,22 +32,22 @@ class CustomCurve extends LeafRenderObjectWidget {
   ///
   /// [startHeight] is the height of the curve at the start point.
   ///
-  double? startHeight;
+  final double? startHeight;
 
   ///
   /// [start] is the start value of the curve.
   ///
-  double? start;
+  final double? start;
 
   ///
   /// [end] is the end value of the curve.
   ///
-  double? end;
+  final double? end;
 
   ///
   /// [endHeight] is the height of the curve at the end point.
   ///
-  double? endHeight;
+  final double? endHeight;
 
   ///
   /// [color] is the color of the curve.
@@ -67,7 +68,7 @@ class CustomCurve extends LeafRenderObjectWidget {
   ///
   /// [curvePosition] is the position of the curve on the LinearGauge.
   ///
-  late CurvePosition curvePosition = CurvePosition.bottom;
+  final CurvePosition curvePosition;
 
   ///
   /// [paintStyle] is the style of paint of the curve.

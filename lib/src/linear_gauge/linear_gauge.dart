@@ -598,8 +598,8 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
 
   List<Widget> _buildChildWidgets(BuildContext context) {
     _linearGaugeWidgets.clear();
-    int index = 0;
-    int index1 = 0;
+    int i = 0;
+    int j = 0;
 
     _linearGaugeWidgets.add(LinearGaugeContainer(
       linearGauge: widget,
@@ -609,9 +609,9 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     if (widget.valueBar != null && widget.valueBar!.isNotEmpty) {
       for (final ValueBar valueBar in widget.valueBar!) {
         if (valueBar.enableAnimation && valueBar.animationDuration > 0) {
-          _addChild(valueBar, _valueBarAnimations[index],
-              _valueBarAnimationControllers[index]);
-          index++;
+          _addChild(valueBar, _valueBarAnimations[i],
+              _valueBarAnimationControllers[i]);
+          i++;
         } else {
           _addChild(valueBar, null, null);
         }
@@ -621,9 +621,9 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     if (widget.pointers != null && widget.pointers!.isNotEmpty) {
       for (final Pointer pointer in widget.pointers!) {
         if (pointer.enableAnimation && pointer.animationDuration > 0) {
-          _addChild(pointer, _pointerAnimations[index1],
-              _pointerAnimationControllers[index1]);
-          index1++;
+          _addChild(
+              pointer, _pointerAnimations[j], _pointerAnimationControllers[j]);
+          j++;
         } else {
           _addChild(pointer, null, null);
         }
@@ -643,8 +643,6 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return _RLinearGauge(
       lGauge: widget,
-      pointerAnimation: _pointerAnimations,
-      valueBarAnimation: _valueBarAnimations,
       children: _buildChildWidgets(context),
     );
   }
@@ -678,16 +676,11 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
 
 class _RLinearGauge extends MultiChildRenderObjectWidget {
   final LinearGauge lGauge;
-  final List<Animation<double>>? pointerAnimation;
-  final List<Animation<double>>? valueBarAnimation;
-
-  _RLinearGauge(
-      {Key? key,
-      required this.lGauge,
-      required List<Widget> children,
-      this.pointerAnimation,
-      this.valueBarAnimation})
-      : super(key: key, children: children);
+  _RLinearGauge({
+    Key? key,
+    required this.lGauge,
+    required List<Widget> children,
+  }) : super(key: key, children: children);
 
   @override
   RenderLinearGauge createRenderObject(BuildContext context) {
@@ -714,8 +707,6 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       thickness: lGauge.linearGaugeBoxDecoration!.thickness!,
       extendLinearGauge: lGauge.extendLinearGauge!,
       fillExtend: lGauge.fillExtend,
-      pointerAnimation: pointerAnimation!,
-      valueBarAnimation: valueBarAnimation!,
       customCurve: lGauge.curves,
     );
   }
@@ -745,8 +736,6 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!
       ..setExtendLinearGauge = lGauge.extendLinearGauge!
       ..setFillExtend = lGauge.fillExtend
-      ..setPointerAnimation = pointerAnimation!
-      ..setValueBarAnimation = valueBarAnimation!
       ..setCurves = lGauge.curves;
   }
 }

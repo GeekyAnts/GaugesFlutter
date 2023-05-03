@@ -11,7 +11,7 @@ class VerticalValueBarExample extends StatelessWidget {
         child: LinearGauge(
           start: 0,
           end: 200,
-          valueBar: [
+          valueBar: const [
             ValueBar(
               value: 150,
               offset: 10,

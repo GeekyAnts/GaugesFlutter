@@ -4,28 +4,28 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 List valueTestsHorizontal = [
   {
     'valueBar': [
-      ValueBar(value: 50),
+      const ValueBar(value: 50),
     ],
     'name': 'value-bar-value-50',
     'Do': 'ValueBar should be drawn till 50 value',
   },
   {
     'valueBar': [
-      ValueBar(value: 0),
+      const ValueBar(value: 0),
     ],
     'name': 'value-bar-value-0',
     'Do': 'ValueBar should be drawn till 0 value',
   },
   {
     'valueBar': [
-      ValueBar(value: 100),
+      const ValueBar(value: 100),
     ],
     'name': 'value-bar-value-100',
     'Do': 'ValueBar should be drawn till 100 value',
   },
   {
     'valueBar': [
-      ValueBar(value: 35),
+      const ValueBar(value: 35),
     ],
     'name': 'value-bar-value-35',
     'Do': 'ValueBar should be drawn till 35 value',
@@ -40,7 +40,7 @@ List valueTestsHorizontal = [
       inverseRulers: true,
     ),
     'valueBar': [
-      ValueBar(value: 35),
+      const ValueBar(value: 35),
     ],
     'name': 'value-bar-value-35-inverse',
     'Do': 'Inverse ValueBar should be drawn till 35 value',
@@ -55,7 +55,7 @@ List multipleValueBarHorizontal = [
         color: Colors.orange[800]!,
         position: ValueBarPosition.top,
       ),
-      ValueBar(
+      const ValueBar(
         value: 100,
         color: Colors.white,
         position: ValueBarPosition.center,
@@ -77,7 +77,7 @@ List multipleValueBarHorizontal = [
         color: Colors.orange[800]!,
         position: ValueBarPosition.top,
       ),
-      ValueBar(
+      const ValueBar(
         value: 60,
         color: Colors.black,
         position: ValueBarPosition.center,
@@ -100,7 +100,7 @@ List multipleValueBarHorizontal = [
         position: ValueBarPosition.top,
         valueBarThickness: 10,
       ),
-      ValueBar(
+      const ValueBar(
         value: 100,
         color: Colors.blue,
         position: ValueBarPosition.top,
@@ -127,7 +127,7 @@ List multipleValueBarHorizontal = [
         position: ValueBarPosition.center,
         valueBarThickness: 30,
       ),
-      ValueBar(
+      const ValueBar(
         value: 100,
         color: Colors.blue,
         position: ValueBarPosition.center,
@@ -153,7 +153,7 @@ List multipleValueBarHorizontal = [
         valueBarThickness: 10,
         offset: 20,
       ),
-      ValueBar(
+      const ValueBar(
         value: 100,
         color: Colors.white,
         position: ValueBarPosition.center,
@@ -183,7 +183,7 @@ List multipleValueBarHorizontal = [
         position: ValueBarPosition.bottom,
         valueBarThickness: 10,
       ),
-      ValueBar(
+      const ValueBar(
         value: 100,
         color: Colors.blue,
         position: ValueBarPosition.bottom,
@@ -208,7 +208,7 @@ List valueTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'valueBar': [
-      ValueBar(value: 50),
+      const ValueBar(value: 50),
     ],
     'name': 'value-bar-value-50-vertical',
     'Do': 'Vertical  ValueBar should be drawn till 50 value',
@@ -216,7 +216,7 @@ List valueTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'valueBar': [
-      ValueBar(value: 0),
+      const ValueBar(value: 0),
     ],
     'name': 'value-bar-value-0-vertical',
     'Do': 'Vertical ValueBar should be drawn till 0 value',
@@ -224,7 +224,7 @@ List valueTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'valueBar': [
-      ValueBar(value: 100),
+      const ValueBar(value: 100),
     ],
     'name': 'value-bar-value-100-vertical',
     'Do': 'Vertical ValueBar should be drawn till 100 value',
@@ -232,7 +232,7 @@ List valueTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'valueBar': [
-      ValueBar(value: 35),
+      const ValueBar(value: 35),
     ],
     'name': 'value-bar-value-35-vertical',
     'Do': 'Vertical ValueBar should be drawn till 35 value',
@@ -248,7 +248,7 @@ List valueTestsVertical = [
       inverseRulers: true,
     ),
     'valueBar': [
-      ValueBar(value: 35),
+      const ValueBar(value: 35),
     ],
     'name': 'value-bar-value-35-inverse-vertical',
     'Do': 'Vertical Inverse ValueBar should be drawn till 35 value',
@@ -264,7 +264,7 @@ List multipleValueBarVertical = [
         color: Colors.orange[800]!,
         position: ValueBarPosition.left,
       ),
-      ValueBar(
+      const ValueBar(
         value: 100,
         color: Colors.white,
         position: ValueBarPosition.center,
@@ -288,7 +288,7 @@ List multipleValueBarVertical = [
         position: ValueBarPosition.left,
         valueBarThickness: 10,
       ),
-      ValueBar(
+      const ValueBar(
         value: 100,
         color: Colors.blue,
         position: ValueBarPosition.left,
@@ -316,7 +316,7 @@ List multipleValueBarVertical = [
         position: ValueBarPosition.center,
         valueBarThickness: 30,
       ),
-      ValueBar(
+      const ValueBar(
         value: 100,
         color: Colors.blue,
         position: ValueBarPosition.center,
@@ -346,7 +346,7 @@ List multipleValueBarVertical = [
         position: ValueBarPosition.right,
         valueBarThickness: 10,
       ),
-      ValueBar(
+      const ValueBar(
         value: 100,
         color: Colors.blue,
         position: ValueBarPosition.right,
@@ -374,7 +374,7 @@ List gaugeThickness = [
       thickness: 20,
     ),
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 50,
         valueBarThickness: 10,
       ),
@@ -388,7 +388,7 @@ List gaugeThickness = [
       thickness: 20,
     ),
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 50,
         valueBarThickness: 10,
         position: ValueBarPosition.bottom,
@@ -403,7 +403,7 @@ List gaugeThickness = [
       thickness: 20,
     ),
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 50,
         valueBarThickness: 10,
         position: ValueBarPosition.bottom,
@@ -421,7 +421,7 @@ List extendLinearGauge = [
   {
     'extendLinearGauge': 50.0,
     'valueBar': [
-      ValueBar(value: 50),
+      const ValueBar(value: 50),
     ],
     'name': 'extendLinearGauge-value-bar-value-50',
     'Do': 'ValueBar should be drawn till 50 value with 50 extendedLinearGauge',
@@ -430,7 +430,7 @@ List extendLinearGauge = [
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 50.0,
     'valueBar': [
-      ValueBar(value: 50),
+      const ValueBar(value: 50),
     ],
     'name': 'extendLinearGauge-value-bar-value-50-vertical',
     'Do':
@@ -447,7 +447,7 @@ List extendLinearGauge = [
       ),
     ),
     'valueBar': [
-      ValueBar(value: 30),
+      const ValueBar(value: 30),
     ],
     'name': 'extendLinearGauge-value-bar-value-30-inverse',
     'Do':
@@ -465,7 +465,7 @@ List extendLinearGauge = [
       ),
     ),
     'valueBar': [
-      ValueBar(value: 100),
+      const ValueBar(value: 100),
     ],
     'name': 'extendLinearGauge-value-bar-value-100-vertical-inverse',
     'Do':
@@ -482,7 +482,7 @@ List extendLinearGauge = [
       ),
     ),
     'valueBar': [
-      ValueBar(value: 100),
+      const ValueBar(value: 100),
     ],
     'name': 'fillExtend-extendLinearGauge-value-bar-value-100',
     'Do':
@@ -499,7 +499,7 @@ List extendLinearGauge = [
       ),
     ),
     'valueBar': [
-      ValueBar(value: 50),
+      const ValueBar(value: 50),
     ],
     'name': 'fillExtend-extendLinearGauge-value-bar-value-50',
     'Do':
@@ -517,7 +517,7 @@ List extendLinearGauge = [
       ),
     ),
     'valueBar': [
-      ValueBar(value: 100),
+      const ValueBar(value: 100),
     ],
     'name': 'fillExtend-extendLinearGauge-value-bar-value-100-vertical',
     'Do':
@@ -535,7 +535,7 @@ List extendLinearGauge = [
       ),
     ),
     'valueBar': [
-      ValueBar(value: 50),
+      const ValueBar(value: 50),
     ],
     'name': 'fillExtend-extendLinearGauge-value-bar-value-50-vertical',
     'Do':
@@ -554,7 +554,7 @@ List borderRadiusHorizontal = [
       ),
     ),
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 50,
         borderRadius: 10,
         valueBarThickness: 20,
@@ -573,7 +573,7 @@ List borderRadiusHorizontal = [
       ),
     ),
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 80,
         borderRadius: 10,
         valueBarThickness: 10,
@@ -593,7 +593,7 @@ List borderRadiusHorizontal = [
       ),
     ),
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 20,
         borderRadius: 10,
         edgeStyle: LinearEdgeStyle.bothCurve,
@@ -615,7 +615,7 @@ List borderRadiusVertical = [
       ),
     ),
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 20,
         borderRadius: 5,
         valueBarThickness: 40,
@@ -636,7 +636,7 @@ List borderRadiusVertical = [
       ),
     ),
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 20,
         borderRadius: 10,
         valueBarThickness: 10,
@@ -658,7 +658,7 @@ List borderRadiusVertical = [
       ),
     ),
     'valueBar': [
-      ValueBar(
+      const ValueBar(
         value: 20,
         borderRadius: 10,
         valueBarThickness: 25,
