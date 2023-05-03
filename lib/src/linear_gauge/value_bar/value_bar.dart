@@ -30,6 +30,9 @@ class ValueBar {
     this.valueBarThickness = 4.0,
     this.edgeStyle = LinearEdgeStyle.bothCurve,
     this.borderRadius,
+    this.animationDuration = 1000,
+    this.animationType = Curves.ease,
+    this.enableAnimation = true,
   });
 
   /// The `value` sets the value of the [ValueBar].
@@ -149,12 +152,64 @@ class ValueBar {
   /// ```
   LinearEdgeStyle edgeStyle;
 
+  /// Specifies the load time animation duration with [enableAnimation].
+  /// Duration is defined in milliseconds.
+  ///
+  /// Defaults to true.
+  ///
+  /// ```dart
+  ///
+  /// LinearGauge (
+  ///  valueBar: [
+  /// ValueBar(
+  /// value: 20,
+  /// enableAnimation: true,
+  ///  )])
+  /// ```
+  ///
+  final bool enableAnimation;
+
+  /// Specifies the load time animation duration with [enableAnimation].
+  /// Duration is defined in milliseconds.
+  ///
+  /// Defaults to 1000.
+  ///
+  /// ```dart
+  ///
+  /// LinearGauge (
+  ///  valueBar: [
+  /// ValueBar(
+  /// value: 20,
+  /// enableAnimation: true,
+  /// animationDuration: 4000
+  ///  )])
+  /// ```
+  ///
+  final int animationDuration;
+
+  /// Specifies the animation type of valuebar.
+  ///
+  /// Defaults to [Curves.ease].
+  ///
+  /// ```dart
+  ///
+  /// LinearGauge (
+  ///  valueBar: [
+  /// ValueBar(
+  /// value: 20,
+  /// enableAnimation: true,
+  /// animationType: Curves.linear
+  ///  )])
+  /// ```
+  ///
+  final Curve animationType;
+
   ///
   /// Painter Method to Draw [ValueBar]
   ///
 
   void drawValueBar(Canvas canvas, double start, double end, double totalWidth,
-      RenderLinearGauge linearGauge) {
+      int index, RenderLinearGauge linearGauge) {
     assert(value >= linearGauge.getStart && value <= linearGauge.getEnd,
         'Value should be between start and end values');
 
@@ -168,11 +223,11 @@ class ValueBar {
     double valueBarWidth = ((value - startValue) / (endValue - startValue)) *
         (totalWidth - 2 * linearGauge.getExtendLinearGauge);
 
-    double valueBarHeight = ((value - endValue) / (startValue - endValue)) *
-        (totalWidth - 2 * linearGauge.getExtendLinearGauge);
+    double valueBarAnimationValue =
+        linearGauge.getValueBarAnimation[index].value;
 
-    valueBarWidth = linearGauge.getAnimationValue != null
-        ? valueBarWidth * (linearGauge.getAnimationValue!)
+    valueBarWidth = (enableAnimation)
+        ? valueBarWidth * valueBarAnimationValue
         : valueBarWidth;
 
     final ValueBarPosition valueBarPosition = position;
@@ -218,9 +273,7 @@ class ValueBar {
         valueBarThickness,
       );
     } else {
-      double barTop = (!getInversedRulers)
-          ? start + valueBarHeight
-          : start - linearGauge.getExtendLinearGauge;
+      double barTop = (!getInversedRulers) ? start + end : start;
       double barLeft = _getOffsetHeight(
         position,
         linearGaugeThickness,
@@ -230,16 +283,12 @@ class ValueBar {
 
       if (!linearGauge.getFillExtend) {
         barTop = !getInversedRulers
-            ? (barTop + linearGauge.getExtendLinearGauge)
-            : (barTop + 2 * linearGauge.getExtendLinearGauge);
+            ? (barTop - linearGauge.getExtendLinearGauge)
+            : (barTop + linearGauge.getExtendLinearGauge);
       } else {
-        barTop = barTop + linearGauge.getExtendLinearGauge;
+        // barTop = barTop + 2 * linearGauge.getExtendLinearGauge;
 
         if (linearGauge.getEnd == value) {
-          barTop = !getInversedRulers
-              ? (barTop - linearGauge.getExtendLinearGauge)
-              : (barTop);
-
           valueBarWidth += 2 * linearGauge.getExtendLinearGauge;
         } else {
           valueBarWidth += linearGauge.getExtendLinearGauge;
@@ -260,7 +309,7 @@ class ValueBar {
         (position == ValueBarPosition.left)
             ? -valueBarThickness
             : valueBarThickness, // set width to half of the gauge width
-        valueBarWidth,
+        !getInversedRulers ? -valueBarWidth : valueBarWidth,
       );
     }
 

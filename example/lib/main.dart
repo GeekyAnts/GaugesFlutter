@@ -21,9 +21,12 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LinearGauge(
-        rulers: const RulerStyle(
-          rulerPosition: RulerPosition.bottom,
+      body: Center(
+        child: LinearGauge(
+          enableGaugeAnimation: true,
+          rulers: const RulerStyle(
+            rulerPosition: RulerPosition.bottom,
+          ),
         ),
       ),
     );
