@@ -30,7 +30,6 @@ class RenderLinearGauge extends RenderBox
     required List<ValueBar> valueBar,
     required bool inversedRulers,
     required List<Pointer> pointers,
-    required Animation<double>? gaugeAnimation,
     required double thickness,
     required double extendLinearGauge,
     required bool fillExtend,
@@ -56,7 +55,6 @@ class RenderLinearGauge extends RenderBox
         _inversedRulers = inversedRulers,
         _valueBar = valueBar,
         _pointers = pointers,
-        _gaugeAnimation = gaugeAnimation,
         _thickness = thickness,
         _extendLinearGauge = extendLinearGauge,
         _fillExtend = fillExtend,
@@ -91,17 +89,6 @@ class RenderLinearGauge extends RenderBox
       pointerMaxOfLeftAndCenter = 0;
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
   double spacingForGauge = 0;
-
-  ///
-  /// Getter and Setter for the [_animationValue] parameter.
-  ///
-  Animation<double>? get getGaugeAnimation => _gaugeAnimation;
-  Animation<double>? _gaugeAnimation;
-  set setGaugeAnimation(Animation<double>? gaugeAnimation) {
-    if (_gaugeAnimation == gaugeAnimation) return;
-    _gaugeAnimation = gaugeAnimation;
-    markNeedsPaint();
-  }
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -399,9 +386,6 @@ class RenderLinearGauge extends RenderBox
         animation.addListener(markNeedsPaint);
       }
     }
-    if (_gaugeAnimation != null) {
-      _gaugeAnimation!.addListener(markNeedsPaint);
-    }
   }
 
   void _removeAnimationListeners() {
@@ -414,9 +398,6 @@ class RenderLinearGauge extends RenderBox
       for (final Animation<double> animation in _valueBarAnimation) {
         animation.removeListener(markNeedsPaint);
       }
-    }
-    if (_gaugeAnimation != null) {
-      _gaugeAnimation!.removeListener(markNeedsPaint);
     }
   }
 
@@ -441,158 +422,6 @@ class RenderLinearGauge extends RenderBox
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _axisActualSize;
-
-  void _drawRangeBars({
-    required Canvas canvas,
-    required double start,
-    required double end,
-    required double totalWidth,
-    required Offset offset,
-    required Rect gaugeContainer,
-  }) {
-    RRect roundedGaugeContainer;
-
-    /// For loop for calculating colors in [RangeLinearGauge]
-    /// 2 is hardcoded beacuse extend is happeing from both the end of the gauge
-    for (int i = 0; i < rangeLinearGauge!.length; i++) {
-      // Method to cal exact width
-      double calculateValuePixelWidth(double value) {
-        return ((value - getStart) / (getEnd - getStart)) *
-            (totalWidth - 2 * getExtendLinearGauge);
-      }
-
-      // width of the colorRange
-      double colorRangeWidth =
-          calculateValuePixelWidth(rangeLinearGauge![i].end) -
-              calculateValuePixelWidth(rangeLinearGauge![i].start);
-
-      // Start of the ColorRange
-
-      double colorRangeStart;
-      if (getGaugeOrientation == GaugeOrientation.horizontal) {
-        colorRangeStart = !getInversedRulers
-            ? (calculateValuePixelWidth(rangeLinearGauge![i].start) +
-                start +
-                getExtendLinearGauge)
-            : ((start + end) -
-                calculateValuePixelWidth(rangeLinearGauge![i].start) -
-                getExtendLinearGauge);
-
-        if (getFillExtend) {
-          if (rangeLinearGauge![i].start == getStart) {
-            if (!getInversedRulers) {
-              colorRangeStart = colorRangeStart - getExtendLinearGauge;
-              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-            } else {
-              colorRangeStart = colorRangeStart + getExtendLinearGauge;
-              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-            }
-          }
-          if (rangeLinearGauge![i].end == getEnd) {
-            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-          }
-        }
-
-        gaugeContainer = Rect.fromLTWH(
-          colorRangeStart,
-          offset.dy,
-          !getInversedRulers ? colorRangeWidth : -colorRangeWidth,
-          getThickness,
-        );
-      } else {
-        colorRangeStart = !getInversedRulers
-            ? ((start + end) -
-                calculateValuePixelWidth(rangeLinearGauge![i].start) -
-                getExtendLinearGauge)
-            : (calculateValuePixelWidth(rangeLinearGauge![i].start) +
-                start +
-                getExtendLinearGauge);
-
-        if (getFillExtend) {
-          if (rangeLinearGauge![i].start == getStart) {
-            if (!getInversedRulers) {
-              colorRangeStart = colorRangeStart + getExtendLinearGauge;
-              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-            } else {
-              colorRangeStart = colorRangeStart - getExtendLinearGauge;
-              colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-            }
-          }
-          if (rangeLinearGauge![i].end == getEnd) {
-            colorRangeWidth = colorRangeWidth + getExtendLinearGauge;
-          }
-        }
-        gaugeContainer = Rect.fromLTWH(
-          offset.dy,
-          colorRangeStart,
-          getThickness,
-          !getInversedRulers ? -colorRangeWidth : colorRangeWidth,
-        );
-      }
-
-      _linearGaugeContainerValuePaint.color =
-          setAnimatedColor(rangeLinearGauge![i].color);
-      if (rangeLinearGauge![i].borderRadius != null) {
-        roundedGaugeContainer = _getRoundedContainer(
-          gaugeContainer: gaugeContainer,
-          borderRadius: rangeLinearGauge![i].borderRadius,
-          edgeStyle: rangeLinearGauge![i].edgeStyle,
-        );
-        canvas.drawRRect(
-          roundedGaugeContainer,
-          _linearGaugeContainerValuePaint,
-        );
-      } else {
-        canvas.drawRect(
-          gaugeContainer,
-          _linearGaugeContainerValuePaint,
-        );
-      }
-    }
-  }
-
-  RRect _getRoundedContainer({
-    required Rect gaugeContainer,
-    required borderRadius,
-    required edgeStyle,
-  }) {
-    RRect rectangularBox;
-    switch (edgeStyle) {
-      case LinearEdgeStyle.startCurve:
-        rectangularBox = RRect.fromRectAndCorners(
-          gaugeContainer,
-          topLeft: Radius.circular(borderRadius!),
-          bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
-              ? Radius.circular(borderRadius!)
-              : Radius.zero,
-          topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
-              ? Radius.zero
-              : Radius.circular(borderRadius!),
-        );
-        break;
-      case LinearEdgeStyle.endCurve:
-        rectangularBox = RRect.fromRectAndCorners(
-          gaugeContainer,
-          topRight: (getGaugeOrientation == GaugeOrientation.horizontal)
-              ? Radius.circular(borderRadius!)
-              : Radius.zero,
-          bottomLeft: (getGaugeOrientation == GaugeOrientation.horizontal)
-              ? Radius.zero
-              : Radius.circular(borderRadius!),
-          bottomRight: Radius.circular(borderRadius!),
-        );
-        break;
-
-      default:
-        rectangularBox = RRect.fromRectAndRadius(
-          gaugeContainer,
-          Radius.circular(borderRadius!),
-        );
-        break;
-    }
-
-    return rectangularBox;
-  }
 
   double getLargestPointerSize() {
     if (getPointers.isNotEmpty) {
@@ -651,15 +480,6 @@ class RenderLinearGauge extends RenderBox
             ? current
             : next);
     return largestValueBar;
-  }
-
-  Color setAnimatedColor(Color paintColor) {
-    double animationValue = 1;
-    if (_gaugeAnimation != null) {
-      animationValue = _gaugeAnimation!.value;
-    }
-
-    return paintColor.withOpacity(animationValue * paintColor.opacity);
   }
 
   @override
@@ -1398,30 +1218,6 @@ class RenderLinearGauge extends RenderBox
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
     defaultPaint(context, offset);
-
-    // var verticalFirstOffset =
-    //     LinearGaugeLabel.primaryRulers[getStart.toString()]!;
-
-    // Offset firstOff = verticalFirstOffset.first;
-
-    // // Drawing CustomCurves
-
-    // if (getInversedRulers) {
-    //   if (_gaugeOrientation == GaugeOrientation.horizontal) {
-    //     firstOff = Offset(gaugeEnd - firstOff.dx + gaugeStart * 2, firstOff.dy);
-    //   } else {
-    //     firstOff = Offset(firstOff.dx, gaugeEnd - firstOff.dy + gaugeStart * 2);
-    //   }
-    // }
-    // for (var element in getCustomCurves!) {
-    //   double value = valueToPixel(element.midPoint);
-    //   if (getInversedRulers) {
-    //     value = gaugeEnd - value + gaugeStart * 2;
-    //   }
-    //   element.drawCurve(canvas, this, value, firstOff);
-    // }
-
-    // canvas.restore();
   }
 
   double valueToPixel(double value) {

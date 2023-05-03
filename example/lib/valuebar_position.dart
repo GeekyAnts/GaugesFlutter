@@ -15,12 +15,13 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
       body: Center(
         child: LinearGauge(
           gaugeOrientation: GaugeOrientation.horizontal,
+          enableGaugeAnimation: true,
           linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
             borderRadius: 20,
             thickness: 35,
             backgroundColor: Colors.grey,
           ),
-          curves: [CustomCurve(midPoint: 20)],
+          // curves: [CustomCurve(midPoint: 20)],
           rulers: const RulerStyle(
             showPrimaryRulers: false,
             showSecondaryRulers: false,

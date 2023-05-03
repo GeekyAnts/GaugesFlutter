@@ -601,7 +601,10 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     int index = 0;
     int index1 = 0;
 
-    _linearGaugeWidgets.add(LinearGaugeContainer(linearGauge: widget));
+    _linearGaugeWidgets.add(LinearGaugeContainer(
+      linearGauge: widget,
+      gaugeAnimation: _gaugeAnimation,
+    ));
 
     if (widget.valueBar != null && widget.valueBar!.isNotEmpty) {
       for (final ValueBar valueBar in widget.valueBar!) {
@@ -640,7 +643,6 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return _RLinearGauge(
       lGauge: widget,
-      gaugeAnimation: _gaugeAnimation,
       pointerAnimation: _pointerAnimations,
       valueBarAnimation: _valueBarAnimations,
       children: _buildChildWidgets(context),
@@ -676,7 +678,6 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
 
 class _RLinearGauge extends MultiChildRenderObjectWidget {
   final LinearGauge lGauge;
-  final Animation<double>? gaugeAnimation;
   final List<Animation<double>>? pointerAnimation;
   final List<Animation<double>>? valueBarAnimation;
 
@@ -684,7 +685,6 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       {Key? key,
       required this.lGauge,
       required List<Widget> children,
-      this.gaugeAnimation,
       this.pointerAnimation,
       this.valueBarAnimation})
       : super(key: key, children: children);
@@ -711,7 +711,6 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       valueBar: lGauge.valueBar!,
       inversedRulers: lGauge.rulers!.inverseRulers!,
       pointers: lGauge.pointers!,
-      gaugeAnimation: gaugeAnimation,
       thickness: lGauge.linearGaugeBoxDecoration!.thickness!,
       extendLinearGauge: lGauge.extendLinearGauge!,
       fillExtend: lGauge.fillExtend,
@@ -743,7 +742,6 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       ..setValueBar = lGauge.valueBar!
       ..setInversedRulers = lGauge.rulers!.inverseRulers!
       ..setPointers = lGauge.pointers!
-      ..setGaugeAnimation = gaugeAnimation
       ..setThickness = lGauge.linearGaugeBoxDecoration!.thickness!
       ..setExtendLinearGauge = lGauge.extendLinearGauge!
       ..setFillExtend = lGauge.fillExtend

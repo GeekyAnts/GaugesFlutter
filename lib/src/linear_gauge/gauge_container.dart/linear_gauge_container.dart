@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
@@ -9,10 +10,13 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
   const LinearGaugeContainer({
     Key? key,
     required this.linearGauge,
+    this.gaugeAnimation,
+
     // required this.fadeAnimation,
   }) : super(key: key);
 
   final LinearGauge linearGauge;
+  final Animation<double>? gaugeAnimation;
 
   // final Animation<double>? fadeAnimation;
 
@@ -24,6 +28,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
         value: linearGauge.value!,
         steps: linearGauge.steps!,
         gaugeOrientation: linearGauge.gaugeOrientation!,
+        gaugeAnimation: gaugeAnimation,
         showLinearGaugeContainer: linearGauge.showLinearGaugeContainer!,
         primaryRulersWidth: linearGauge.rulers!.primaryRulersWidth!,
         primaryRulersHeight: linearGauge.rulers!.primaryRulersHeight!,
@@ -62,6 +67,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
       ..setValue = linearGauge.value!
       ..setSteps = linearGauge.steps!
       ..setGaugeOrientation = linearGauge.gaugeOrientation!
+      ..setGaugeAnimation = gaugeAnimation
       ..setShowLinearGaugeContainer = linearGauge.showLinearGaugeContainer!
       ..setPrimaryRulersWidth = linearGauge.rulers!.primaryRulersWidth!
       ..setPrimaryRulersHeight = linearGauge.rulers!.primaryRulersHeight!
@@ -99,6 +105,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     required double steps,
     required double value,
     required GaugeOrientation gaugeOrientation,
+    required Animation<double>? gaugeAnimation,
     required bool showLinearGaugeContainer,
     required double primaryRulersWidth,
     required double primaryRulersHeight,
@@ -130,6 +137,7 @@ class RenderLinearGaugeContainer extends RenderBox {
         _value = value,
         _steps = steps,
         _gaugeOrientation = gaugeOrientation,
+        _gaugeAnimation = gaugeAnimation,
         _showLinearGaugeContainer = showLinearGaugeContainer,
         _primaryRulersWidth = primaryRulersWidth,
         _primaryRulersHeight = primaryRulersHeight,
@@ -213,6 +221,17 @@ class RenderLinearGaugeContainer extends RenderBox {
     if (_steps == steps) return;
 
     _steps = steps;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [_animationValue] parameter.
+  ///
+  Animation<double>? get getGaugeAnimation => _gaugeAnimation;
+  Animation<double>? _gaugeAnimation;
+  set setGaugeAnimation(Animation<double>? gaugeAnimation) {
+    if (_gaugeAnimation == gaugeAnimation) return;
+    _gaugeAnimation = gaugeAnimation;
     markNeedsPaint();
   }
 
@@ -507,6 +526,39 @@ class RenderLinearGaugeContainer extends RenderBox {
     markNeedsPaint();
   }
 
+  void _addAnimationListener() {
+    if (_gaugeAnimation != null) {
+      _gaugeAnimation!.addListener(markNeedsPaint);
+    }
+  }
+
+  void _removeAnimationListeners() {
+    if (_gaugeAnimation != null) {
+      _gaugeAnimation!.removeListener(markNeedsPaint);
+    }
+  }
+
+  @override
+  void attach(covariant PipelineOwner owner) {
+    super.attach(owner);
+    _addAnimationListener();
+  }
+
+  @override
+  void detach() {
+    _removeAnimationListeners();
+    super.detach();
+  }
+
+  Color setAnimatedColor(Color paintColor) {
+    double animationValue = 1;
+    if (_gaugeAnimation != null) {
+      animationValue = _gaugeAnimation!.value;
+    }
+
+    return paintColor.withOpacity(animationValue * paintColor.opacity);
+  }
+
   Pointer? getLargestPointer(List<Pointer>? pointers) {
     Pointer? largestPointer = pointers?.reduce(
         (current, next) => getGaugeOrientation == GaugeOrientation.vertical
@@ -550,7 +602,8 @@ class RenderLinearGaugeContainer extends RenderBox {
   }
 
   void _setLinearGaugeContainerPaint() {
-    _linearGaugeContainerPaint.color = getLinearGaugeContainerBgColor;
+    _linearGaugeContainerPaint.color =
+        setAnimatedColor(getLinearGaugeContainerBgColor);
   }
 
   void _calculateRulerPoints() {
