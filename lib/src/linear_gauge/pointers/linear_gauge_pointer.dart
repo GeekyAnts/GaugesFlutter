@@ -26,7 +26,7 @@ import 'linear_gauge_pointer_painter.dart';
 /// ```
 ///
 ///
-class Pointer extends LeafRenderObjectWidget {
+class Pointer extends SingleChildRenderObjectWidget {
   const Pointer({
     Key? key,
     required this.value,
@@ -42,7 +42,8 @@ class Pointer extends LeafRenderObjectWidget {
     this.animationDuration = 1000,
     this.animationType = Curves.ease,
     this.enableAnimation = true,
-  }) : super(key: key);
+    Widget? child,
+  }) : super(key: key, child: child);
 
   ///
   /// `value` Sets the value of the pointer on the [LinearGauge]

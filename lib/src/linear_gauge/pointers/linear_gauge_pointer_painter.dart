@@ -7,7 +7,7 @@ import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/l
 import '../../../geekyants_flutter_gauges.dart';
 import '../linear_gauge_label.dart';
 
-class RenderLinearGaugePointer extends RenderBox {
+class RenderLinearGaugePointer extends RenderOpacity {
   RenderLinearGaugePointer({
     Key? key,
     required double value,
@@ -265,17 +265,14 @@ class RenderLinearGaugePointer extends RenderBox {
     } else {
       size = Size(width, height);
     }
+    if (child != null) {
+      child!.layout(constraints);
+    }
   }
 
   /// Method to draw the pointer on the canvas based on the pointer shape
-  void drawPointer(
-    PointerShape? shape,
-    Canvas canvas,
-    double start,
-    double end,
-    Offset offset,
-    LinearGauge linearGauge,
-  ) {
+  void drawPointer(PointerShape? shape, Canvas canvas, double start, double end,
+      Offset offset, LinearGauge linearGauge, PaintingContext context) {
     if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
       if (pointerPosition != PointerPosition.bottom &&
           pointerPosition != PointerPosition.center &&
@@ -333,6 +330,9 @@ class RenderLinearGaugePointer extends RenderBox {
         break;
       case PointerShape.diamond:
         _layoutDiamondOffsets(canvas, offset, linearGauge);
+        break;
+      case PointerShape.childWidget:
+        _layoutChildWidget(canvas, offset, linearGauge, context);
         break;
       default:
         return;
@@ -893,6 +893,65 @@ class RenderLinearGaugePointer extends RenderBox {
     canvas.drawPath(path, paint);
   }
 
+  _layoutChildWidget(Canvas canvas, Offset offset, LinearGauge linearGauge,
+      PaintingContext context) {
+    double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
+    GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
+    switch (pointerPosition) {
+      case PointerPosition.top:
+        offset = Offset(offset.dx - width / 2,
+            (offset.dy - height - gaugeThickness) + yAxisForGaugeContainer);
+        break;
+      case PointerPosition.bottom:
+        offset =
+            Offset(offset.dx - width / 2, offset.dy + yAxisForGaugeContainer);
+        break;
+      case PointerPosition.center:
+        offset = rulerOrientation == GaugeOrientation.horizontal
+            ? Offset(
+                offset.dx - width / 2,
+                (offset.dy - gaugeThickness / 2 - height / 2) +
+                    yAxisForGaugeContainer)
+            : Offset(
+                offset.dx -
+                    width / 2 -
+                    gaugeThickness / 2 +
+                    xAxisForGaugeContainer,
+                offset.dy - height / 2);
+        break;
+      case PointerPosition.right:
+        offset =
+            Offset(offset.dx + xAxisForGaugeContainer, offset.dy - height / 2);
+        break;
+      case PointerPosition.left:
+        offset = Offset(
+            offset.dx - width - gaugeThickness + xAxisForGaugeContainer,
+            offset.dy - height / 2);
+        break;
+      default:
+        break;
+    }
+
+    switch (pointerAlignment) {
+      case PointerAlignment.start:
+        offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
+            ? Offset(offset.dx - width / 2, offset.dy)
+            : Offset(offset.dx, offset.dy - height / 2);
+        break;
+      case PointerAlignment.end:
+        offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
+            ? Offset(offset.dx + width / 2, offset.dy)
+            : Offset(offset.dx, offset.dy + height / 2);
+
+        break;
+      default:
+        break;
+    }
+
+    offset = applyAnimations(linearGauge, offset);
+    super.paint(context, offset);
+  }
+
   // Drawing the Arrow pointer
   // ignore: unused_element
   void _drawArrowPointer(
@@ -945,6 +1004,11 @@ class RenderLinearGaugePointer extends RenderBox {
   }
 
   @override
+  bool hitTestSelf(Offset position) {
+    return true;
+  }
+
+  @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
     xAxisForGaugeContainer = offset.dx;
@@ -952,11 +1016,10 @@ class RenderLinearGaugePointer extends RenderBox {
 
     var verticalFirstOffset =
         LinearGaugeLabel.primaryRulers[linearGauge.start.toString()]!;
-
     Offset vert = verticalFirstOffset.first;
     if (getPointerAnimation.value > 0) {
       drawPointer(shape, canvas, RenderLinearGaugeContainer.gaugeStart,
-          RenderLinearGaugeContainer.gaugeEnd, vert, linearGauge);
+          RenderLinearGaugeContainer.gaugeEnd, vert, linearGauge, context);
     }
   }
 }
