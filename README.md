@@ -17,7 +17,6 @@ and the Flutter guide for
 
 A gauge, in science and engineering, is a device used to make measurements or in order to display certain dimensional information. A wide variety of tools exist which serve such functions, ranging from simple pieces of material against which sizes can be measured to complex pieces of machinery.Here in Flutter you can use this package to plot a machinery information effortlessly.
 
-
 ![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/GeekyAnts/GaugesFlutter/actions.yml?branch=main&label=Package%20Build&style=for-the-badge)
 ![Pub Points](https://img.shields.io/pub/points/geekyants_flutter_gauges?label=Pub%20Points&style=for-the-badge)
 ![Pub Popularity](https://img.shields.io/pub/popularity/geekyants_flutter_gauges?style=for-the-badge)
@@ -28,7 +27,6 @@ A gauge, in science and engineering, is a device used to make measurements or in
 To fully explore the capabilities of our Linear Gauge, we recommend checking out our Demo Application which consists of Use Cases and Playgrounds for Linear Gauge
 [DEMO APPLICATION](https://gauges-showcase.vercel.app/#/)
 
-
 ## Table of contents
 
 - [Getting Started](#getting-started)
@@ -38,6 +36,8 @@ To fully explore the capabilities of our Linear Gauge, we recommend checking out
   - [Pointer](#pointer)
   - [Value Bar](#valuebar)
   - [Range Linear Gauge](#rangelineargauge)
+  - [Custom Curve](#customCurve)
+  - [Animation](#animation)
 - [Demo Application](#demo-application)
 - [Credits](#credits)
 
@@ -112,6 +112,16 @@ The `ValueBar` in the LinearGauge is the component that displays the actual valu
 
 The `RangeLinearGauge` class enables you to customize the ruler appearance in the `LinearGauge`. You can display multiple ranges by providing a list of `RangeLinearGauge` values, and customize the color, start, and end values to match your requirements.
 <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/rangelineargauge.png" alt="accessibility text">
+
+### **CustomCurve**
+
+The `CustomCurve` class allows you to draw Bezier and Straight curves on the `LinearGauge`, providing a high degree of customization for visualizing data.
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/customCurve.png" atl="CustomCurve">
+
+### **Animations**
+
+The `LinearGauge` class includes pre-made animations that can be applied to its pointers, value bars, or the gauge's overall visibility. These animations can help to make the gauge more visually engaging and dynamic.
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/animations.gif" alt="animations gif">
 
 ## License
 

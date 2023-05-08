@@ -1,3 +1,20 @@
+## [1.0.0+5] - 3 May 2023
+
+**Fixes**
+
+- Updated Readme and docs
+
+## [1.0.0+4] - 3 May 2023
+
+**Fixes**
+
+- Support for Labels on Pointers
+
+**Feature**
+
+- Support for `Animations` (Gauge Animations along with Pointer & ValueBar animations)
+- Support for `CustomCurve`
+
 ## 1.0.0+3
 
 Updated Example
