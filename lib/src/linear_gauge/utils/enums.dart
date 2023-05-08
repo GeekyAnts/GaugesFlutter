@@ -6,7 +6,7 @@ enum GaugeOrientation { vertical, horizontal }
 ///
 /// Shape of the  Pointer on the Gauge.
 ///
-enum PointerShape { circle, rectangle, triangle, diamond, arrow }
+enum PointerShape { circle, rectangle, triangle, diamond, arrow, childWidget }
 
 ///
 /// Position of the  Rulers on the Gauge.

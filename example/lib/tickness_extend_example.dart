@@ -17,7 +17,7 @@ class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
           start: 100,
           end: 200,
           extendLinearGauge: 10,
-          valueBar: [
+          valueBar: const [
             ValueBar(
                 value: 190,
                 valueBarThickness: 10,

@@ -16,7 +16,7 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
         child: LinearGauge(
           rulers: const RulerStyle(
               inverseRulers: false, rulerPosition: RulerPosition.bottom),
-          valueBar: [
+          valueBar: const [
             ValueBar(value: 23, color: Colors.red),
           ],
           pointers: const [

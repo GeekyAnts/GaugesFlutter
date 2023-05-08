@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/linear_gauge_container.dart';
 
 class LinearGaugeLabel {
   String? text;
@@ -11,7 +11,7 @@ class LinearGaugeLabel {
 
   final List<LinearGaugeLabel> _linearGaugeLabel = [];
 
-  late final Map<String, List<Offset>> primaryRulers = {};
+  static final Map<String, List<Offset>> primaryRulers = {};
   final TextPainter _textPainter =
       TextPainter(textDirection: TextDirection.ltr);
 
@@ -59,7 +59,7 @@ class LinearGaugeLabel {
       bool isRulersInversed,
       GaugeOrientation orientation,
       double extendLinearGauge,
-      RenderLinearGauge linearGauge) {
+      RenderLinearGaugeContainer linearGauge) {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
@@ -203,7 +203,7 @@ class LinearGaugeLabel {
     double rulersOffset,
     GaugeOrientation gaugeOrientation,
     double linearGaugeHeight,
-    RenderLinearGauge linearGauge,
+    RenderLinearGaugeContainer linearGauge,
   ) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     Iterable<String> keys = primaryRulers.keys;

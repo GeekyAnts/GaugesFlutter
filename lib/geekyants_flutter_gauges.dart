@@ -16,6 +16,7 @@ library gauges;
 
 export './src/linear_gauge/linear_gauge.dart';
 export './src/linear_gauge/pointers/linear_gauge_pointer.dart';
+export './src/linear_gauge/linear_gauge_state.dart';
 export './src/linear_gauge/styles/linear_gauge_ruler_style.dart';
 export './src/linear_gauge/styles/linear_gauge_container_style.dart';
 export './src/linear_gauge/range_linear_gauge/range_linear_gauge.dart';

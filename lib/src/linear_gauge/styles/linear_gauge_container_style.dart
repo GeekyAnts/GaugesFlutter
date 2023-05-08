@@ -24,7 +24,6 @@ class LinearGaugeBoxDecoration {
   const LinearGaugeBoxDecoration({
     this.backgroundColor = Colors.grey,
     this.thickness = 4.0,
-    this.linearGradient,
     this.borderRadius,
     this.linearGaugeValueColor = Colors.blue,
     this.edgeStyle = LinearEdgeStyle.bothCurve,
@@ -52,22 +51,6 @@ class LinearGaugeBoxDecoration {
   // ),
   /// ```
   final double? thickness;
-
-  ///
-  /// `linearGradient` Sets the gradient background of the [LinearGauge] Container
-  ///  * NOTE : If `linearGradient` is given in [LinearGaugeBoxDecoration] the `color` property will be ignored
-  ///
-  /// ```dart
-  /// const LinearGauge(
-  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-  ///
-  ///              linearGradient: LinearGradient(
-  ///                colors: [Colors.blue, Colors.pink],
-  ///              ),
-  ///            ),
-  ///          ),
-  /// ```
-  final LinearGradient? linearGradient;
 
   ///
   /// `borderRadius` Set corners to soft edges/rounded  of the [LinearGauge] Container
