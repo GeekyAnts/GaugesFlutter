@@ -15,22 +15,28 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
       body: Center(
         child: LinearGauge(
           gaugeOrientation: GaugeOrientation.horizontal,
-          enableGaugeAnimation: true,
-          linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
-            borderRadius: 20,
-            thickness: 35,
-            backgroundColor: Colors.grey,
-          ),
-          valueBar: const [ValueBar(value: 50)],
-          // curves: [CustomCurve(midPoint: 20)],
+          // enableGaugeAnimation: true,
+          // linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
+          //   borderRadius: 20,
+          //   thickness: 35,
+          //   backgroundColor: Colors.grey,
+          // ),
+          valueBar: const [
+            ValueBar(
+              value: 75,
+              // valueBarThickness: 35,
+            )
+          ],
+          extendLinearGauge: 0,
+          customLabels: const [
+            CustomRulerLabel(text: "0", value: 0),
+            CustomRulerLabel(text: "50", value: 50),
+            CustomRulerLabel(text: "100", value: 100),
+          ],
           rulers: const RulerStyle(
-            showPrimaryRulers: false,
-            showSecondaryRulers: false,
-            showLabel: false,
-            // secondaryRulersHeight: 300,
-            rulerPosition: RulerPosition.bottom,
-            inverseRulers: true,
-            textStyle: TextStyle(
+            inverseRulers: false,
+            rulerPosition: RulerPosition.center,
+            textStyle: const TextStyle(
               fontFamily: 'Roboto',
               color: Colors.black,
             ),

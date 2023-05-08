@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/linear_gauge_container.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import '../../../geekyants_flutter_gauges.dart';
 
 class RenderValueBar extends RenderBox {

@@ -39,7 +39,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
         linearGaugeContainerBgColor:
             linearGauge.linearGaugeBoxDecoration!.backgroundColor,
         thickness: linearGauge.linearGaugeBoxDecoration!.thickness!,
-        borderRadius: linearGauge.linearGaugeBoxDecoration!.borderRadius ?? 0,
+        borderRadius: linearGauge.linearGaugeBoxDecoration!.borderRadius ?? 0.0,
         edgeStyle: linearGauge.linearGaugeBoxDecoration!.edgeStyle!,
         labelOffset: linearGauge.rulers!.labelOffset!,
         rulersOffset: linearGauge.rulers!.rulersOffset!,
@@ -125,7 +125,6 @@ class RenderLinearGaugeContainer extends RenderBox {
     required List<Pointer> pointers,
     required List<RangeLinearGauge> rangeLinearGauge,
     required bool fillExtend,
-    // required Animation<double>? gaugeAnimation,
     required double thickness,
     required double borderRadius,
     required LinearEdgeStyle edgeStyle,
@@ -232,6 +231,8 @@ class RenderLinearGaugeContainer extends RenderBox {
   set setGaugeAnimation(Animation<double>? gaugeAnimation) {
     if (_gaugeAnimation == gaugeAnimation) return;
     _gaugeAnimation = gaugeAnimation;
+    _removeAnimationListeners();
+    _addAnimationListener();
     markNeedsPaint();
   }
 
@@ -240,7 +241,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   ///
   get getBorderRadius => _bordeRadius;
   double _bordeRadius;
-  set setBorderRadius(radius) {
+  set setBorderRadius(double radius) {
     if (_bordeRadius == radius) return;
 
     _bordeRadius = radius;
@@ -920,116 +921,6 @@ class RenderLinearGaugeContainer extends RenderBox {
     size = _axisActualSize;
   }
 
-  void _drawPrimaryRulers(Canvas canvas, Offset offset) {
-    int count = 0;
-    _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
-      double? y;
-      double? x;
-      Offset? primaryRulerStartPoint;
-      Color? primaryRulerColor = getPrimaryRulerColor;
-
-      for (int i = 0; i < rangeLinearGauge!.length; i++) {
-        var range = rangeLinearGauge![i].end;
-        var offset = double.parse(key);
-        if (offset >= rangeLinearGauge![i].start && offset <= range) {
-          primaryRulerColor = rangeLinearGauge![i].color;
-          break;
-        }
-      }
-      switch (rulerPosition) {
-        case RulerPosition.top:
-          //y co-ordinate will be simply inverted on negative side by adding -ve sign
-          //no need to adjust y co-ordinate by adding the height of gauge container
-          y = -(value[1].dy + getRulersOffset - yAxisForGaugeContainer);
-          x = value[1].dx;
-          primaryRulerStartPoint =
-              Offset(value[0].dx, -getRulersOffset + yAxisForGaugeContainer);
-          break;
-        case RulerPosition.center:
-          if (getGaugeOrientation == GaugeOrientation.horizontal) {
-            //the y co-ordinate of the ending point is halved from it's original position
-
-            y = ((value[1].dy + getThickness) / 2) + yAxisForGaugeContainer;
-            x = value[1].dx;
-            //the staring point is shifted half of the primary ruler height from the
-            //center of the gauge container
-            primaryRulerStartPoint = Offset(
-                value[0].dx,
-                value[0].dy / 2 -
-                    getPrimaryRulersHeight / 2 +
-                    yAxisForGaugeContainer);
-          } else {
-            y = value[1].dy;
-            x = (value[1].dx + getThickness) / 2 + xAxisForGaugeContainer;
-            primaryRulerStartPoint = Offset(
-                value[0].dx / 2 -
-                    (getPrimaryRulersHeight / 2) +
-                    xAxisForGaugeContainer,
-                value[0].dy);
-          }
-          break;
-        case RulerPosition.bottom:
-          //there is need to adjust y co-ordinate by adding the height of gauge container
-          //bcz line will start drawing from behind of gauge container
-          y = value[1].dy +
-              getThickness +
-              getRulersOffset +
-              yAxisForGaugeContainer;
-          x = value[1].dx;
-          primaryRulerStartPoint = Offset(value[0].dx,
-              value[0].dy + getRulersOffset + yAxisForGaugeContainer);
-          break;
-        case RulerPosition.right:
-          y = value[1].dy;
-          x = value[1].dx +
-              getThickness +
-              getRulersOffset +
-              xAxisForGaugeContainer;
-          primaryRulerStartPoint = Offset(
-              value[0].dx + getRulersOffset + xAxisForGaugeContainer,
-              value[0].dy);
-
-          break;
-        case RulerPosition.left:
-          y = value[1].dy;
-          x = -(value[1].dx + getRulersOffset - xAxisForGaugeContainer);
-          primaryRulerStartPoint =
-              Offset(-getRulersOffset + xAxisForGaugeContainer, value[0].dy);
-
-          break;
-      }
-
-      //the ending point of the primary ruler
-
-      Offset a = Offset(x, y);
-      _primaryRulersPaint.color = setAnimatedColor(primaryRulerColor!);
-
-      if (showLabel) {
-        _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
-            _linearGaugeLabel.getListOfLabel[count].value!, value);
-      }
-
-      if (showPrimaryRulers) {
-        canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
-      }
-      count++;
-    });
-  }
-
-  void _drawSecondaryRulers(Canvas canvas) {
-    _linearGaugeLabel.generateSecondaryRulers(
-        getSecondaryRulerPerInterval,
-        canvas,
-        _secondaryRulersPaint,
-        getSecondaryRulersHeight + getThickness,
-        rulerPosition,
-        rangeLinearGauge!,
-        getRulersOffset,
-        getGaugeOrientation,
-        getThickness,
-        this);
-  }
-
   void _drawLabels(
     Canvas canvas,
     String text,
@@ -1205,21 +1096,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     xAxisForGaugeContainer = offset.dx;
     yAxisForGaugeContainer = offset.dy;
     _setLinearGaugeContainerPaint();
-    _setPrimaryRulersPaint();
-    _setSecondaryRulersPaint();
     _calculateRulerPoints();
-
-    if (rulerPosition == RulerPosition.center) {
-      _paintGaugeContainer(canvas, size, offset);
-    }
-
-    _drawPrimaryRulers(canvas, offset);
-    if (showSecondaryRulers) {
-      _drawSecondaryRulers(canvas);
-    }
-
-    if (rulerPosition != RulerPosition.center) {
-      _paintGaugeContainer(canvas, size, offset);
-    }
+    _paintGaugeContainer(canvas, size, offset);
   }
 }

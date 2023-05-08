@@ -25,7 +25,6 @@ class RenderLinearGauge extends RenderBox
     required List<RangeLinearGauge> rangeLinearGauge,
     required List<CustomRulerLabel> customLabels,
     required double rulersOffset,
-    required ValueBarPosition valueBarPosition,
     required List<ValueBar> valueBar,
     required bool inversedRulers,
     required List<Pointer> pointers,

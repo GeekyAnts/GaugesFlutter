@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container.dart/linear_gauge_container.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers.dart';
 import 'linear_gauge_painter.dart';
 
 /// Creates a LinearGauge Widget to display the values in a linear scale. The
@@ -606,6 +608,16 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
       gaugeAnimation: _gaugeAnimation,
     ));
 
+    if (widget.rulers!.rulerPosition != RulerPosition.center) {
+      _linearGaugeWidgets.add(Rulers(
+        linearGauge: widget,
+        gaugeAnimation: _gaugeAnimation,
+      ));
+      _linearGaugeWidgets.add(RulerLabel(
+        linearGauge: widget,
+        gaugeAnimation: _gaugeAnimation,
+      ));
+    }
     if (widget.valueBar != null && widget.valueBar!.isNotEmpty) {
       for (final ValueBar valueBar in widget.valueBar!) {
         if (valueBar.enableAnimation && valueBar.animationDuration > 0) {
@@ -616,6 +628,16 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
           _addChild(valueBar, null, null);
         }
       }
+    }
+    if (widget.rulers!.rulerPosition == RulerPosition.center) {
+      _linearGaugeWidgets.add(Rulers(
+        linearGauge: widget,
+        gaugeAnimation: _gaugeAnimation,
+      ));
+      _linearGaugeWidgets.add(RulerLabel(
+        linearGauge: widget,
+        gaugeAnimation: _gaugeAnimation,
+      ));
     }
 
     if (widget.pointers != null && widget.pointers!.isNotEmpty) {
@@ -700,7 +722,6 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       rangeLinearGauge: lGauge.rangeLinearGauge!,
       customLabels: lGauge.customLabels!,
       rulersOffset: lGauge.rulers!.rulersOffset!,
-      valueBarPosition: lGauge.valueBarPosition!,
       valueBar: lGauge.valueBar!,
       inversedRulers: lGauge.rulers!.inverseRulers!,
       pointers: lGauge.pointers!,
