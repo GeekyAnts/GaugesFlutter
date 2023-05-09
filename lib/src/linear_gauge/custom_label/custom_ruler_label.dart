@@ -1,3 +1,5 @@
+import '../../base/base_custom_ruler_label.dart';
+
 /// A [CustomRulerLabel] class allows to add custom text of any kind and assign value to it
 /// on the gauge scale.
 ///
@@ -13,29 +15,9 @@
 ///
 ///
 
-class CustomRulerLabel {
+class CustomRulerLabel extends BaseCustomRulerLabel {
   const CustomRulerLabel({
-    required this.text,
-    required this.value,
+    required super.text,
+    required super.value,
   });
-
-  ///
-  /// `text` Sets the text of the ruler label  on [LinearGauge]
-  ///
-  /// ```dart
-  /// const CustomRulerLabel(
-  ///   text : "10$"
-  /// ),
-  /// ```
-  final String? text;
-
-  ///
-  /// `value` Sets the value of the ruler label  on [LinearGauge]
-  ///
-  /// ```dart
-  /// const CustomRulerLabel(
-  ///   value : 10
-  /// ),
-  /// ```
-  final double? value;
 }

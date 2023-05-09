@@ -328,7 +328,7 @@ class LinearGauge extends StatefulWidget {
   final List<Pointer>? pointers;
 
   ///
-  /// `enableAnimation` will enable animations for pointers and value bars.
+  /// `enableGaugeAnimation` will enable animations for pointers and value bars.
   ///  It's default to false.
   ///
   /// ```
@@ -339,7 +339,7 @@ class LinearGauge extends StatefulWidget {
   ///
   final bool enableGaugeAnimation;
 
-  /// Specifies the load time animation duration with [enableAnimation].
+  /// Specifies the load time animation duration with [enableGaugeAnimation].
   /// Duration is defined in milliseconds.
   ///
   /// Defaults to 1000.
