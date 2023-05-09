@@ -566,7 +566,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   }
 
   double getLargestPointerSize() {
-    if (getPointers.isNotEmpty) {
+    if (filteredShapePointers.isNotEmpty) {
       ShapePointer? largestPointer = getLargestPointer(filteredShapePointers);
 
       if ((largestPointer?.shape == PointerShape.rectangle ||
@@ -955,7 +955,9 @@ class RenderLinearGaugeContainer extends RenderBox {
 
   void filterShapePointers(List<Pointer> pointers) {
     for (dynamic pointer in pointers) {
-      filteredShapePointers.add(pointer as ShapePointer);
+      if (pointer.runtimeType == ShapePointer) {
+        filteredShapePointers.add(pointer as ShapePointer);
+      }
     }
   }
 }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/pointers/linear_gauge_widget_pointer_painter.dart';
-
-import 'linear_gauge_shape_pointer_painter.dart';
 
 /// A [Pointer] is a widget that is used to indicate the value of the [LinearGauge].
 ///
@@ -38,7 +35,7 @@ class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
     this.animationType = Curves.ease,
     this.enableAnimation = true,
     Widget? child,
-  }) : super(key: key);
+  }) : super(key: key, child: child);
 
   ///
   /// `value` Sets the value of the pointer on the [LinearGauge]
@@ -50,6 +47,7 @@ class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
   /// ),
   /// ),
   /// ```
+
   final double value;
 
   ///
@@ -147,5 +145,7 @@ class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
       ..setEnableAnimation = enableAnimation
       ..setPointerAnimation = linearGaugeScope.animation!
       ..setLinearGAuge = linearGaugeScope.lGauge;
+
+    super.updateRenderObject(context, renderObject);
   }
 }

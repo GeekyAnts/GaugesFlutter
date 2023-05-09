@@ -762,6 +762,8 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       ..setExtendLinearGauge = lGauge.extendLinearGauge!
       ..setFillExtend = lGauge.fillExtend
       ..setCurves = lGauge.curves;
+
+    // super.updateRenderObject(context, renderObject);
   }
 
   @override
@@ -786,6 +788,14 @@ class RenderLinearGaugeElement extends MultiChildRenderObjectElement {
 
     if (child is RenderLinearGaugeShapePointer) {
       renderObject.addShapePointer(child);
+    }
+  }
+
+  @override
+  void removeRenderObjectChild(RenderObject child, dynamic slot) {
+    super.removeRenderObjectChild(child, slot);
+    if (child is RenderLinearGaugeWidgetPointer) {
+      renderObject.removeWidgetPointer(child);
     }
   }
 }
