@@ -613,10 +613,12 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
         linearGauge: widget,
         gaugeAnimation: _gaugeAnimation,
       ));
-      _linearGaugeWidgets.add(RulerLabel(
-        linearGauge: widget,
-        gaugeAnimation: _gaugeAnimation,
-      ));
+      if (widget.rulers!.showLabel!) {
+        _linearGaugeWidgets.add(RulerLabel(
+          linearGauge: widget,
+          gaugeAnimation: _gaugeAnimation,
+        ));
+      }
     }
     if (widget.valueBar != null && widget.valueBar!.isNotEmpty) {
       for (final ValueBar valueBar in widget.valueBar!) {
@@ -634,10 +636,12 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
         linearGauge: widget,
         gaugeAnimation: _gaugeAnimation,
       ));
-      _linearGaugeWidgets.add(RulerLabel(
-        linearGauge: widget,
-        gaugeAnimation: _gaugeAnimation,
-      ));
+      if (widget.rulers!.showLabel!) {
+        _linearGaugeWidgets.add(RulerLabel(
+          linearGauge: widget,
+          gaugeAnimation: _gaugeAnimation,
+        ));
+      }
     }
 
     if (widget.pointers != null && widget.pointers!.isNotEmpty) {

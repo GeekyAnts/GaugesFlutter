@@ -221,7 +221,6 @@ class RenderRulerLabel extends RenderBox {
     }
 
     final ui.TextStyle labelTextStyle = ui.TextStyle(
-      // color: getTextStyle.color,
       color: setAnimatedColor(getRangeColor(text)),
       fontSize: getTextStyle.fontSize,
       background: getTextStyle.background,
