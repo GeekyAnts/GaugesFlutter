@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'dart:math' as math;
-import 'dart:ui' as ui;
-
 import '../linear_gauge_label.dart';
 
 class LinearGaugeContainer extends LeafRenderObjectWidget {
@@ -11,14 +9,10 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     Key? key,
     required this.linearGauge,
     this.gaugeAnimation,
-
-    // required this.fadeAnimation,
   }) : super(key: key);
 
   final LinearGauge linearGauge;
   final Animation<double>? gaugeAnimation;
-
-  // final Animation<double>? fadeAnimation;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -39,7 +33,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
         linearGaugeContainerBgColor:
             linearGauge.linearGaugeBoxDecoration!.backgroundColor,
         thickness: linearGauge.linearGaugeBoxDecoration!.thickness!,
-        borderRadius: linearGauge.linearGaugeBoxDecoration!.borderRadius ?? 0,
+        borderRadius: linearGauge.linearGaugeBoxDecoration!.borderRadius ?? 0.0,
         edgeStyle: linearGauge.linearGaugeBoxDecoration!.edgeStyle!,
         labelOffset: linearGauge.rulers!.labelOffset!,
         rulersOffset: linearGauge.rulers!.rulersOffset!,
@@ -125,7 +119,6 @@ class RenderLinearGaugeContainer extends RenderBox {
     required List<Pointer> pointers,
     required List<RangeLinearGauge> rangeLinearGauge,
     required bool fillExtend,
-    // required Animation<double>? gaugeAnimation,
     required double thickness,
     required double borderRadius,
     required LinearEdgeStyle edgeStyle,
@@ -161,7 +154,7 @@ class RenderLinearGaugeContainer extends RenderBox {
             gaugeOrientation == GaugeOrientation.horizontal,
         _customLabels = customLabel,
         _pointers = pointers,
-        _bordeRadius = borderRadius,
+        _borderRadius = borderRadius,
         _fillExtend = fillExtend,
         _edgeStyle = edgeStyle,
         _textStyle = textStyle;
@@ -225,25 +218,27 @@ class RenderLinearGaugeContainer extends RenderBox {
   }
 
   ///
-  /// Getter and Setter for the [_animationValue] parameter.
+  /// Getter and Setter for the [_gaugeAnimation] parameter.
   ///
   Animation<double>? get getGaugeAnimation => _gaugeAnimation;
   Animation<double>? _gaugeAnimation;
   set setGaugeAnimation(Animation<double>? gaugeAnimation) {
     if (_gaugeAnimation == gaugeAnimation) return;
     _gaugeAnimation = gaugeAnimation;
+    _removeAnimationListeners();
+    _addAnimationListener();
     markNeedsPaint();
   }
 
   ///
-  /// Getter and Setter for the [_bordeRadius] parameter.
+  /// Getter and Setter for the [_borderRadius] parameter.
   ///
-  get getBorderRadius => _bordeRadius;
-  double _bordeRadius;
-  set setBorderRadius(radius) {
-    if (_bordeRadius == radius) return;
+  get getBorderRadius => _borderRadius;
+  double _borderRadius;
+  set setBorderRadius(double radius) {
+    if (_borderRadius == radius) return;
 
-    _bordeRadius = radius;
+    _borderRadius = radius;
     markNeedsPaint();
   }
 
@@ -591,16 +586,6 @@ class RenderLinearGaugeContainer extends RenderBox {
     }
   }
 
-  void _setPrimaryRulersPaint() {
-    _primaryRulersPaint.color = getPrimaryRulerColor;
-    _primaryRulersPaint.strokeWidth = getPrimaryRulersWidth;
-  }
-
-  void _setSecondaryRulersPaint() {
-    _secondaryRulersPaint.color = getSecondaryRulerColor;
-    _secondaryRulersPaint.strokeWidth = getSecondaryRulersWidth;
-  }
-
   void _setLinearGaugeContainerPaint() {
     _linearGaugeContainerPaint.color =
         setAnimatedColor(getLinearGaugeContainerBgColor);
@@ -898,306 +883,62 @@ class RenderLinearGaugeContainer extends RenderBox {
 
   @override
   void performLayout() {
-    double parentWidgetSize;
+    // double parentWidgetSize;
 
-    final double actualParentWidth = constraints.maxWidth;
-    final double actualParentHeight = constraints.maxHeight;
+    // final double actualParentWidth = constraints.maxWidth;
+    // final double actualParentHeight = constraints.maxHeight;
 
-    if (_isHorizontalOrientation) {
-      parentWidgetSize = actualParentWidth;
-    } else {
-      parentWidgetSize = actualParentHeight;
-    }
+    // if (_isHorizontalOrientation) {
+    //   parentWidgetSize = actualParentWidth;
+    // } else {
+    //   parentWidgetSize = actualParentHeight;
+    // }
 
-    final double gaugeContainerWidgetThickness = _measureGaugeContainerSize();
+    // final double gaugeContainerWidgetThickness = _measureGaugeContainerSize();
 
-    if (_isHorizontalOrientation) {
-      _axisActualSize = Size(parentWidgetSize, gaugeContainerWidgetThickness);
-    } else {
-      _axisActualSize = Size(gaugeContainerWidgetThickness, parentWidgetSize);
-    }
+    // if (_isHorizontalOrientation) {
+    //   _axisActualSize = Size(parentWidgetSize, gaugeContainerWidgetThickness);
+    // } else {
+    //   _axisActualSize = Size(gaugeContainerWidgetThickness, parentWidgetSize);
+    // }
 
-    size = _axisActualSize;
+    size = Size(constraints.maxWidth, constraints.maxHeight);
   }
 
-  void _drawPrimaryRulers(Canvas canvas, Offset offset) {
-    int count = 0;
-    _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
-      double? y;
-      double? x;
-      Offset? primaryRulerStartPoint;
-      Color? primaryRulerColor = getPrimaryRulerColor;
+  // _measureGaugeContainerSize() {
+  //   _startLabelSize = _linearGaugeLabel.getLabelSize(
+  //       textStyle: getTextStyle,
+  //       value: !getInversedRulers
+  //           ? getCustomLabels!.isEmpty
+  //               ? getStart.toInt().toString()
+  //               : getCustomLabels!.first.text
+  //           : getCustomLabels!.isEmpty
+  //               ? getEnd.toInt().toString()
+  //               : getCustomLabels!.last.text);
 
-      for (int i = 0; i < rangeLinearGauge!.length; i++) {
-        var range = rangeLinearGauge![i].end;
-        var offset = double.parse(key);
-        if (offset >= rangeLinearGauge![i].start && offset <= range) {
-          primaryRulerColor = rangeLinearGauge![i].color;
-          break;
-        }
-      }
-      switch (rulerPosition) {
-        case RulerPosition.top:
-          //y co-ordinate will be simply inverted on negative side by adding -ve sign
-          //no need to adjust y co-ordinate by adding the height of gauge container
-          y = -(value[1].dy + getRulersOffset - yAxisForGaugeContainer);
-          x = value[1].dx;
-          primaryRulerStartPoint =
-              Offset(value[0].dx, -getRulersOffset + yAxisForGaugeContainer);
-          break;
-        case RulerPosition.center:
-          if (getGaugeOrientation == GaugeOrientation.horizontal) {
-            //the y co-ordinate of the ending point is halved from it's original position
+  //   _endLabelSize = _linearGaugeLabel.getLabelSize(
+  //       textStyle: getTextStyle,
+  //       value: !getInversedRulers
+  //           ? getCustomLabels!.isEmpty
+  //               ? getEnd.toInt().toString()
+  //               : getCustomLabels!.last.text
+  //           : getCustomLabels!.isEmpty
+  //               ? getStart.toInt().toString()
+  //               : getCustomLabels!.first.text);
+  //   double effectiveLabelThickness = _isHorizontalOrientation
+  //       ? _startLabelSize.height
+  //       : _startLabelSize.width;
+  //   _effectiveRulerHeight = math.max(
+  //       getPrimaryRulersHeight + getLabelOffset + effectiveLabelThickness,
+  //       getSecondaryRulersHeight);
+  //   if (rulerPosition == RulerPosition.center) {
+  //     return (getThickness >= _effectiveRulerHeight)
+  //         ? getThickness - _effectiveRulerHeight
+  //         : _effectiveRulerHeight - getThickness;
+  //   }
 
-            y = ((value[1].dy + getThickness) / 2) + yAxisForGaugeContainer;
-            x = value[1].dx;
-            //the staring point is shifted half of the primary ruler height from the
-            //center of the gauge container
-            primaryRulerStartPoint = Offset(
-                value[0].dx,
-                value[0].dy / 2 -
-                    getPrimaryRulersHeight / 2 +
-                    yAxisForGaugeContainer);
-          } else {
-            y = value[1].dy;
-            x = (value[1].dx + getThickness) / 2 + xAxisForGaugeContainer;
-            primaryRulerStartPoint = Offset(
-                value[0].dx / 2 -
-                    (getPrimaryRulersHeight / 2) +
-                    xAxisForGaugeContainer,
-                value[0].dy);
-          }
-          break;
-        case RulerPosition.bottom:
-          //there is need to adjust y co-ordinate by adding the height of gauge container
-          //bcz line will start drawing from behind of gauge container
-          y = value[1].dy +
-              getThickness +
-              getRulersOffset +
-              yAxisForGaugeContainer;
-          x = value[1].dx;
-          primaryRulerStartPoint = Offset(value[0].dx,
-              value[0].dy + getRulersOffset + yAxisForGaugeContainer);
-          break;
-        case RulerPosition.right:
-          y = value[1].dy;
-          x = value[1].dx +
-              getThickness +
-              getRulersOffset +
-              xAxisForGaugeContainer;
-          primaryRulerStartPoint = Offset(
-              value[0].dx + getRulersOffset + xAxisForGaugeContainer,
-              value[0].dy);
-
-          break;
-        case RulerPosition.left:
-          y = value[1].dy;
-          x = -(value[1].dx + getRulersOffset - xAxisForGaugeContainer);
-          primaryRulerStartPoint =
-              Offset(-getRulersOffset + xAxisForGaugeContainer, value[0].dy);
-
-          break;
-      }
-
-      //the ending point of the primary ruler
-
-      Offset a = Offset(x, y);
-      _primaryRulersPaint.color = setAnimatedColor(primaryRulerColor!);
-
-      if (showLabel) {
-        _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
-            _linearGaugeLabel.getListOfLabel[count].value!, value);
-      }
-
-      if (showPrimaryRulers) {
-        canvas.drawLine(primaryRulerStartPoint, a, _primaryRulersPaint);
-      }
-      count++;
-    });
-  }
-
-  void _drawSecondaryRulers(Canvas canvas) {
-    _linearGaugeLabel.generateSecondaryRulers(
-        getSecondaryRulerPerInterval,
-        canvas,
-        _secondaryRulersPaint,
-        getSecondaryRulersHeight + getThickness,
-        rulerPosition,
-        rangeLinearGauge!,
-        getRulersOffset,
-        getGaugeOrientation,
-        getThickness,
-        this);
-  }
-
-  void _drawLabels(
-    Canvas canvas,
-    String text,
-    double? value,
-    List<Offset> list,
-  ) {
-    final ui.ParagraphStyle paragraphStyle = ui.ParagraphStyle(
-      textDirection: TextDirection.ltr,
-    );
-
-    // calculator method to get the text style based on the range
-    Color getRangeColor(String text) {
-      for (int i = 0; i < rangeLinearGauge!.length; i++) {
-        if (value! >= rangeLinearGauge![i].start &&
-            value <= rangeLinearGauge![i].end) {
-          return rangeLinearGauge![i].color;
-        }
-      }
-      // Return a default style if no range color is found
-      return getTextStyle.color ?? Colors.black;
-    }
-
-    final ui.TextStyle labelTextStyle = ui.TextStyle(
-      // color: getTextStyle.color,
-      color: getRangeColor(text),
-      fontSize: getTextStyle.fontSize,
-      background: getTextStyle.background,
-      decoration: getTextStyle.decoration,
-      decorationColor: getTextStyle.decorationColor,
-      decorationStyle: getTextStyle.decorationStyle,
-      decorationThickness: getTextStyle.decorationThickness,
-      fontFamily: getTextStyle.fontFamily,
-      fontFamilyFallback: getTextStyle.fontFamilyFallback,
-      fontFeatures: getTextStyle.fontFeatures,
-      fontStyle: getTextStyle.fontStyle,
-      fontVariations: getTextStyle.fontVariations,
-      fontWeight: getTextStyle.fontWeight,
-      foreground: getTextStyle.foreground,
-      height: getTextStyle.height,
-      leadingDistribution: getTextStyle.leadingDistribution,
-      letterSpacing: getTextStyle.letterSpacing,
-      locale: getTextStyle.locale,
-      shadows: getTextStyle.shadows,
-      textBaseline: getTextStyle.textBaseline,
-      wordSpacing: getTextStyle.wordSpacing,
-    );
-
-    final ui.ParagraphBuilder paragraphBuilder =
-        ui.ParagraphBuilder(paragraphStyle)
-          ..pushStyle(labelTextStyle)
-          ..addText(text);
-    final ui.Paragraph paragraph = paragraphBuilder.build();
-    final Size labelSize =
-        _linearGaugeLabel.getLabelSize(textStyle: getTextStyle, value: text);
-
-    paragraph.layout(ui.ParagraphConstraints(width: labelSize.width));
-
-    // offset for drawing the label on the canvas
-    Offset labelPosition;
-
-    switch (rulerPosition) {
-      case RulerPosition.top:
-        labelPosition = Offset(
-          (list[0].dx - (labelSize.width / 2)),
-          -(getPrimaryRulersHeight +
-              getLabelOffset +
-              getRulersOffset +
-              labelSize.height -
-              yAxisForGaugeContainer +
-              2),
-        );
-        break;
-      case RulerPosition.center:
-        if (getGaugeOrientation == GaugeOrientation.horizontal) {
-          double labelOffset = getLabelOffset;
-          labelPosition = Offset(
-            (list[0].dx - (labelSize.width / 2)),
-            (list[0].dy / 2 +
-                getPrimaryRulersHeight / 2 +
-                labelOffset +
-                yAxisForGaugeContainer),
-          );
-        } else {
-          double labelOffset = getLabelOffset;
-          labelPosition = Offset(
-            (list[0].dx / 2 +
-                getPrimaryRulersHeight / 2 +
-                labelOffset +
-                xAxisForGaugeContainer),
-            (list[0].dy - (labelSize.height / 2)),
-          );
-        }
-        break;
-      case RulerPosition.bottom:
-        double labelOffset = getLabelOffset;
-        labelPosition = Offset(
-          (list[0].dx - (labelSize.width / 2)),
-          (list[0].dy +
-              getPrimaryRulersHeight +
-              labelOffset +
-              getRulersOffset +
-              yAxisForGaugeContainer),
-        );
-        break;
-      case RulerPosition.right:
-        double labelOffset = getLabelOffset;
-        labelPosition = Offset(
-          (list[0].dx +
-              (getPrimaryRulersHeight +
-                  labelOffset +
-                  getRulersOffset +
-                  xAxisForGaugeContainer)),
-          (list[0].dy - (labelSize.height / 2)),
-        );
-        break;
-      case RulerPosition.left:
-        double labelOffset = getLabelOffset;
-        labelPosition = Offset(
-          -(getPrimaryRulersHeight +
-              labelOffset +
-              getRulersOffset +
-              labelSize.width -
-              xAxisForGaugeContainer),
-          (list[0].dy - (labelSize.height / 2)),
-        );
-        break;
-    }
-
-    canvas.drawParagraph(
-      paragraph,
-      labelPosition,
-    );
-  }
-
-  _measureGaugeContainerSize() {
-    _startLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle,
-        value: !getInversedRulers
-            ? getCustomLabels!.isEmpty
-                ? getStart.toInt().toString()
-                : getCustomLabels!.first.text
-            : getCustomLabels!.isEmpty
-                ? getEnd.toInt().toString()
-                : getCustomLabels!.last.text);
-
-    _endLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle,
-        value: !getInversedRulers
-            ? getCustomLabels!.isEmpty
-                ? getEnd.toInt().toString()
-                : getCustomLabels!.last.text
-            : getCustomLabels!.isEmpty
-                ? getStart.toInt().toString()
-                : getCustomLabels!.first.text);
-    double effectiveLabelThickness = _isHorizontalOrientation
-        ? _startLabelSize.height
-        : _startLabelSize.width;
-    _effectiveRulerHeight = math.max(
-        getPrimaryRulersHeight + getLabelOffset + effectiveLabelThickness,
-        getSecondaryRulersHeight);
-    if (rulerPosition == RulerPosition.center) {
-      return (getThickness >= _effectiveRulerHeight)
-          ? getThickness - _effectiveRulerHeight
-          : _effectiveRulerHeight - getThickness;
-    }
-
-    return _effectiveRulerHeight + getThickness + getRulersOffset;
-  }
+  //   return _effectiveRulerHeight + getThickness + getRulersOffset;
+  // }
 
   @override
   void paint(PaintingContext context, Offset offset) {
@@ -1205,21 +946,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     xAxisForGaugeContainer = offset.dx;
     yAxisForGaugeContainer = offset.dy;
     _setLinearGaugeContainerPaint();
-    _setPrimaryRulersPaint();
-    _setSecondaryRulersPaint();
     _calculateRulerPoints();
-
-    if (rulerPosition == RulerPosition.center) {
-      _paintGaugeContainer(canvas, size, offset);
-    }
-
-    _drawPrimaryRulers(canvas, offset);
-    if (showSecondaryRulers) {
-      _drawSecondaryRulers(canvas);
-    }
-
-    if (rulerPosition != RulerPosition.center) {
-      _paintGaugeContainer(canvas, size, offset);
-    }
+    _paintGaugeContainer(canvas, size, offset);
   }
 }
