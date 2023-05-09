@@ -20,7 +20,7 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
             ValueBar(value: 23, color: Colors.red),
           ],
           pointers: const [
-            Pointer(
+            ShapePointer(
               value: 28,
               width: 20,
               height: 120,
@@ -31,7 +31,7 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
               color: Color(0xff624CAB),
               // shape: PointerShape.circle,
             ),
-            Pointer(
+            ShapePointer(
               value: 38,
               width: 20,
               height: 50,
@@ -40,7 +40,7 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
               labelStyle: TextStyle(color: Colors.green),
               color: Colors.red,
             ),
-            Pointer(
+            ShapePointer(
               value: 8,
               width: 20,
               height: 70,
@@ -50,7 +50,7 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
               color: Color(0xffD64933),
               // shape: PointerShape.circle,
             ),
-            Pointer(
+            ShapePointer(
               value: 68,
               width: 20,
               height: 45,

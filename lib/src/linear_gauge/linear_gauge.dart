@@ -645,7 +645,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     }
 
     if (widget.pointers != null && widget.pointers!.isNotEmpty) {
-      for (final Pointer pointer in widget.pointers!) {
+      for (final dynamic pointer in widget.pointers!) {
         if (pointer.enableAnimation && pointer.animationDuration > 0) {
           _addChild(
               pointer, _pointerAnimations[j], _pointerAnimationControllers[j]);
@@ -762,5 +762,30 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       ..setExtendLinearGauge = lGauge.extendLinearGauge!
       ..setFillExtend = lGauge.fillExtend
       ..setCurves = lGauge.curves;
+  }
+
+  @override
+  MultiChildRenderObjectElement createElement() =>
+      RenderLinearGaugeElement(this);
+}
+
+/// Linear gauge render widget element class.
+class RenderLinearGaugeElement extends MultiChildRenderObjectElement {
+  /// Creates a instance for Linear gauge render widget element class.
+  RenderLinearGaugeElement(MultiChildRenderObjectWidget widget) : super(widget);
+
+  @override
+  RenderLinearGauge get renderObject => super.renderObject as RenderLinearGauge;
+
+  @override
+  void insertRenderObjectChild(RenderObject child, IndexedSlot<Element?> slot) {
+    super.insertRenderObjectChild(child, slot);
+    if (child is RenderLinearGaugeWidgetPointer) {
+      renderObject.addWidgetPointer(child);
+    }
+
+    if (child is RenderLinearGaugeShapePointer) {
+      renderObject.addShapePointer(child);
+    }
   }
 }

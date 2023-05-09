@@ -16,7 +16,7 @@ class _PointerAlignmentExampleState extends State<PointerAlignmentExample> {
       child: LinearGauge(
         gaugeOrientation: GaugeOrientation.vertical,
         pointers: const [
-          Pointer(
+          ShapePointer(
             color: Colors.red,
             value: 30,
             width: 20,
@@ -25,7 +25,7 @@ class _PointerAlignmentExampleState extends State<PointerAlignmentExample> {
             pointerPosition: PointerPosition.left,
             pointerAlignment: PointerAlignment.end,
           ),
-          Pointer(
+          ShapePointer(
             color: Colors.green,
             value: 50,
             width: 70,
@@ -34,7 +34,7 @@ class _PointerAlignmentExampleState extends State<PointerAlignmentExample> {
             pointerPosition: PointerPosition.left,
             pointerAlignment: PointerAlignment.end,
           ),
-          Pointer(
+          ShapePointer(
             color: Colors.indigo,
             value: 80,
             width: 30,
@@ -43,7 +43,7 @@ class _PointerAlignmentExampleState extends State<PointerAlignmentExample> {
             pointerPosition: PointerPosition.center,
             pointerAlignment: PointerAlignment.start,
           ),
-          Pointer(
+          ShapePointer(
             color: Colors.black,
             value: 10,
             width: 30,

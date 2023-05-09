@@ -54,7 +54,9 @@ class RenderLinearGauge extends RenderBox
         _thickness = thickness,
         _extendLinearGauge = extendLinearGauge,
         _fillExtend = fillExtend,
-        _curves = customCurve;
+        _curves = customCurve,
+        _shapePointers = <RenderLinearGaugeShapePointer>[],
+        _widgetPointers = <RenderLinearGaugeWidgetPointer>[];
 
   // For getting Gauge Values
   double gaugeStart = 0;
@@ -83,6 +85,8 @@ class RenderLinearGauge extends RenderBox
       pointerMaxOfLeftAndCenter = 0;
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
   double spacingForGauge = 0;
+
+  List<ShapePointer> filteredShapePointers = [];
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -351,10 +355,24 @@ class RenderLinearGauge extends RenderBox
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _axisActualSize;
+  late List<RenderLinearGaugeWidgetPointer> _widgetPointers;
+  late List<RenderLinearGaugeShapePointer> _shapePointers;
+
+  /// Adds the widget render object to widget pointer collection.
+  void addWidgetPointer(RenderLinearGaugeWidgetPointer widgetPointer) {
+    _widgetPointers.add(widgetPointer);
+    markNeedsLayout();
+  }
+
+  /// Adds the shape render object to widget pointer collection.
+  void addShapePointer(RenderLinearGaugeShapePointer shapePointer) {
+    _shapePointers.add(shapePointer);
+    markNeedsLayout();
+  }
 
   double getLargestPointerSize() {
     if (getPointers.isNotEmpty) {
-      Pointer? largestPointer = getLargestPointer(getPointers);
+      ShapePointer? largestPointer = getLargestPointer(filteredShapePointers);
 
       if ((largestPointer?.shape == PointerShape.rectangle ||
               largestPointer?.shape == PointerShape.diamond) &&
@@ -372,8 +390,8 @@ class RenderLinearGauge extends RenderBox
     }
   }
 
-  Pointer? getLargestPointer(List<Pointer>? pointers) {
-    Pointer? largestPointer = pointers?.reduce(
+  ShapePointer? getLargestPointer(List<ShapePointer>? pointers) {
+    ShapePointer? largestPointer = pointers?.reduce(
         (current, next) => getGaugeOrientation == GaugeOrientation.vertical
             ? current.height > next.height
                 ? current
@@ -390,8 +408,8 @@ class RenderLinearGauge extends RenderBox
     return largestValueBarWithOffset;
   }
 
-  Pointer? getLargestPointerForLayout(List<Pointer>? pointers) {
-    Pointer? largestPointer = pointers?.reduce(
+  ShapePointer? getLargestPointerForLayout(List<ShapePointer>? pointers) {
+    ShapePointer? largestPointer = pointers?.reduce(
         (current, next) => getGaugeOrientation == GaugeOrientation.horizontal
             ? current.height > next.height
                 ? current
@@ -413,6 +431,8 @@ class RenderLinearGauge extends RenderBox
 
   @override
   void performLayout() {
+    filterShapePointers(getPointers);
+
     size = computeDryLayout(constraints);
     RenderBox? child = firstChild;
     while (child != null) {
@@ -438,10 +458,10 @@ class RenderLinearGauge extends RenderBox
     return result;
   }
 
-  List<Pointer> getPointersByPosition(
-      List<Pointer> pointerList, PointerPosition position) {
-    List<Pointer> result = [];
-    for (Pointer pointer in pointerList) {
+  List<ShapePointer> getPointersByPosition(
+      List<ShapePointer> pointerList, PointerPosition position) {
+    List<ShapePointer> result = [];
+    for (ShapePointer pointer in pointerList) {
       if (pointer.pointerPosition == position) {
         result.add(pointer);
       }
@@ -461,7 +481,7 @@ class RenderLinearGauge extends RenderBox
   }
 
   getLinearGaugeThickness() {
-    List<Pointer> centerPointers = [],
+    List<ShapePointer> centerPointers = [],
         bottomPointers = [],
         topPointers = [],
         leftPointers = [],
@@ -501,9 +521,9 @@ class RenderLinearGauge extends RenderBox
   }
 
   double layoutVerticalGauge(
-    List<Pointer> rightPointers,
-    List<Pointer> leftPointers,
-    List<Pointer> centerPointers,
+    List<ShapePointer> rightPointers,
+    List<ShapePointer> leftPointers,
+    List<ShapePointer> centerPointers,
     double linearGaugeContainerThickness,
     List<ValueBar> leftValueBars,
     List<ValueBar> rightValueBars,
@@ -660,9 +680,9 @@ class RenderLinearGauge extends RenderBox
   }
 
   double layoutHorizontalGauge(
-    List<Pointer> topPointers,
-    List<Pointer> bottomPointers,
-    List<Pointer> centerPointers,
+    List<ShapePointer> topPointers,
+    List<ShapePointer> bottomPointers,
+    List<ShapePointer> centerPointers,
     double linearGaugeContainerThickness,
     List<ValueBar> topValueBars,
     List<ValueBar> bottomValueBars,
@@ -920,8 +940,9 @@ class RenderLinearGauge extends RenderBox
         ((centerPointerHeight! / 2) - (linearGaugeContainerThickness / 2)));
   }
 
-  void _layoutCenterPointers(List<Pointer> centerPointers) {
-    centerPointers = getPointersByPosition(getPointers, PointerPosition.center);
+  void _layoutCenterPointers(List<ShapePointer> centerPointers) {
+    centerPointers =
+        getPointersByPosition(filteredShapePointers, PointerPosition.center);
 
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
       centerPointerHeight = centerPointers.isNotEmpty
@@ -942,15 +963,17 @@ class RenderLinearGauge extends RenderBox
     }
   }
 
-  void _layoutBottomPointers(List<Pointer> bottomPointers) {
-    bottomPointers = getPointersByPosition(getPointers, PointerPosition.bottom);
+  void _layoutBottomPointers(List<ShapePointer> bottomPointers) {
+    bottomPointers =
+        getPointersByPosition(filteredShapePointers, PointerPosition.bottom);
     bottomPointerHeight = bottomPointers.isNotEmpty
         ? getLargestPointerForLayout(bottomPointers)?.height ?? 0
         : 0;
   }
 
-  void _layoutLeftPointers(List<Pointer> leftPointers) {
-    leftPointers = getPointersByPosition(getPointers, PointerPosition.left);
+  void _layoutLeftPointers(List<ShapePointer> leftPointers) {
+    leftPointers =
+        getPointersByPosition(filteredShapePointers, PointerPosition.left);
     if (leftPointers.isNotEmpty) {
       var lPointer = getLargestPointerForLayout(leftPointers);
       if (lPointer?.shape == PointerShape.rectangle ||
@@ -1026,15 +1049,17 @@ class RenderLinearGauge extends RenderBox
         : 0;
   }
 
-  void _layoutTopPointers(List<Pointer> topPointers) {
-    topPointers = getPointersByPosition(getPointers, PointerPosition.top);
+  void _layoutTopPointers(List<ShapePointer> topPointers) {
+    topPointers =
+        getPointersByPosition(filteredShapePointers, PointerPosition.top);
     topPointerHeight = topPointers.isNotEmpty
         ? getLargestPointerForLayout(topPointers)?.height ?? 0
         : 0;
   }
 
-  void _layoutRightPointers(List<Pointer> rightPointers) {
-    rightPointers = getPointersByPosition(getPointers, PointerPosition.right);
+  void _layoutRightPointers(List<ShapePointer> rightPointers) {
+    rightPointers =
+        getPointersByPosition(filteredShapePointers, PointerPosition.right);
     if (rightPointers.isNotEmpty) {
       var lPointer = getLargestPointerForLayout(rightPointers);
       if (lPointer?.shape == PointerShape.rectangle ||
@@ -1151,5 +1176,11 @@ class RenderLinearGauge extends RenderBox
   double valueToPixel(double value) {
     final double pixel = ((value - getStart) / (getEnd - getStart)) * gaugeEnd;
     return pixel;
+  }
+
+  void filterShapePointers(List<Pointer> pointers) {
+    for (dynamic pointer in pointers) {
+      filteredShapePointers.add(pointer as ShapePointer);
+    }
   }
 }

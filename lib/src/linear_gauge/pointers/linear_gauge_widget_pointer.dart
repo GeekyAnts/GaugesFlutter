@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/pointers/linear_gauge_widget_pointer_painter.dart';
+
+import 'linear_gauge_shape_pointer_painter.dart';
 
 /// A [Pointer] is a widget that is used to indicate the value of the [LinearGauge].
 ///
@@ -24,8 +27,9 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 /// ```
 ///
 ///
-abstract class Pointer {
-  const Pointer({
+
+class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
+  const WidgetPointer({
     Key? key,
     required this.value,
     this.pointerPosition = PointerPosition.center,
@@ -33,7 +37,8 @@ abstract class Pointer {
     this.animationDuration = 1000,
     this.animationType = Curves.ease,
     this.enableAnimation = true,
-  });
+    Widget? child,
+  }) : super(key: key);
 
   ///
   /// `value` Sets the value of the pointer on the [LinearGauge]
@@ -115,4 +120,32 @@ abstract class Pointer {
   /// ```
   ///
   final Curve animationType;
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
+    return RenderLinearGaugeWidgetPointer(
+        value: value,
+        pointerPosition: pointerPosition,
+        pointerAlignment: pointerAlignment,
+        animationDuration: animationDuration,
+        animationType: animationType,
+        enableAnimation: enableAnimation,
+        pointerAnimation: linearGaugeScope.animation!,
+        linearGauge: linearGaugeScope.lGauge);
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, RenderLinearGaugeWidgetPointer renderObject) {
+    final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
+
+    renderObject
+      ..setValue = value
+      ..setPointerPosition = pointerPosition
+      ..setPointerAlignment = pointerAlignment
+      ..setEnableAnimation = enableAnimation
+      ..setPointerAnimation = linearGaugeScope.animation!
+      ..setLinearGAuge = linearGaugeScope.lGauge;
+  }
 }

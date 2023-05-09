@@ -7,8 +7,8 @@ import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear
 import '../../../geekyants_flutter_gauges.dart';
 import '../linear_gauge_label.dart';
 
-class RenderLinearGaugePointer extends RenderOpacity {
-  RenderLinearGaugePointer({
+class RenderLinearGaugeShapePointer extends RenderOpacity {
+  RenderLinearGaugeShapePointer({
     Key? key,
     required double value,
     required double height,
@@ -41,11 +41,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
 
-  /// Gets the value to [RenderLinearGaugePointer].
+  /// Gets the value to [RenderLinearGaugeShapePointer].
   double? get value => _value;
   double? _value;
 
-  /// Sets the value for [RenderLinearGaugePointer].
+  /// Sets the value for [RenderLinearGaugeShapePointer].
   set setValue(double? value) {
     if (value == _value) {
       return;
@@ -63,11 +63,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsPaint();
   }
 
-  /// Gets the orientation to [RenderLinearGaugePointer].
+  /// Gets the orientation to [RenderLinearGaugeShapePointer].
   GaugeOrientation? get orientation => _orientation;
   GaugeOrientation? _orientation;
 
-  /// Sets the orientation for [RenderLinearGaugePointer].
+  /// Sets the orientation for [RenderLinearGaugeShapePointer].
   ///
   /// Default value is [GaugeOrientation.horizontal].
   set setOrientation(GaugeOrientation? value) {
@@ -79,11 +79,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsLayout();
   }
 
-  /// Gets the shape assigned to [RenderLinearGaugePointer].
+  /// Gets the shape assigned to [RenderLinearGaugeShapePointer].
   PointerShape? get shape => _shape;
   PointerShape? _shape;
 
-  /// Sets the shape for [RenderLinearGaugePointer].
+  /// Sets the shape for [RenderLinearGaugeShapePointer].
   set setShape(PointerShape? value) {
     if (value == _shape) {
       return;
@@ -92,11 +92,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsPaint();
   }
 
-  /// Gets the width assigned to [RenderLinearGaugePointer].
+  /// Gets the width assigned to [RenderLinearGaugeShapePointer].
   double get width => _width;
   double _width;
 
-  /// Sets the width for [RenderLinearGaugePointer].
+  /// Sets the width for [RenderLinearGaugeShapePointer].
   set setWidth(double value) {
     if (value == _width) {
       return;
@@ -106,11 +106,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsLayout();
   }
 
-  /// Gets the height assigned to [RenderLinearGaugePointer].
+  /// Gets the height assigned to [RenderLinearGaugeShapePointer].
   double get height => _height;
   double _height;
 
-  /// Sets the height for [RenderLinearGaugePointer].
+  /// Sets the height for [RenderLinearGaugeShapePointer].
   set setHeight(double value) {
     if (value == _height) {
       return;
@@ -120,11 +120,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsLayout();
   }
 
-  /// Gets the color assigned to [RenderLinearGaugePointer].
+  /// Gets the color assigned to [RenderLinearGaugeShapePointer].
   Color get color => _color;
   Color _color;
 
-  /// Sets the color for [RenderLinearGaugePointer].
+  /// Sets the color for [RenderLinearGaugeShapePointer].
   set setColor(Color value) {
     if (value == _color) {
       return;
@@ -134,11 +134,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsPaint();
   }
 
-  /// Gets the showLabel assigned to [RenderLinearGaugePointer].
+  /// Gets the showLabel assigned to [RenderLinearGaugeShapePointer].
   bool get showLabel => _showLabel;
   bool _showLabel;
 
-  /// Sets the showLabel for [RenderLinearGaugePointer].
+  /// Sets the showLabel for [RenderLinearGaugeShapePointer].
   set setShowLabel(bool value) {
     if (value == _showLabel) {
       return;
@@ -148,11 +148,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsPaint();
   }
 
-  /// Gets the quarterTurns assigned to [RenderLinearGaugePointer].
+  /// Gets the quarterTurns assigned to [RenderLinearGaugeShapePointer].
   QuarterTurns get quarterTurns => _quarterTurns;
   QuarterTurns _quarterTurns;
 
-  /// Sets the quarterTurns for [RenderLinearGaugePointer].
+  /// Sets the quarterTurns for [RenderLinearGaugeShapePointer].
   set setQuarterTurns(QuarterTurns value) {
     if (value == _quarterTurns) {
       return;
@@ -162,11 +162,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsPaint();
   }
 
-  /// Gets the labelStyle assigned to [RenderLinearGaugePointer].
+  /// Gets the labelStyle assigned to [RenderLinearGaugeShapePointer].
   TextStyle get labelStyle => _labelStyle;
   TextStyle _labelStyle;
 
-  /// Sets the labelStyle for [RenderLinearGaugePointer].
+  /// Sets the labelStyle for [RenderLinearGaugeShapePointer].
   set setLabelStyle(TextStyle value) {
     if (value == _labelStyle) {
       return;
@@ -176,11 +176,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsPaint();
   }
 
-  /// Gets the pointerPosition assigned to [RenderLinearGaugePointer].
+  /// Gets the pointerPosition assigned to [RenderLinearGaugeShapePointer].
   PointerPosition get pointerPosition => _pointerPosition;
   PointerPosition _pointerPosition;
 
-  /// Sets the pointerPosition for [RenderLinearGaugePointer].
+  /// Sets the pointerPosition for [RenderLinearGaugeShapePointer].
   set setPointerPosition(PointerPosition value) {
     if (value == _pointerPosition) {
       return;
@@ -190,11 +190,11 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsPaint();
   }
 
-  /// Gets the pointerAlignment assigned to [RenderLinearGaugePointer].
+  /// Gets the pointerAlignment assigned to [RenderLinearGaugeShapePointer].
   PointerAlignment get pointerAlignment => _pointerAlignment;
   PointerAlignment _pointerAlignment;
 
-  /// Sets the pointerAlignment for [RenderLinearGaugePointer].
+  /// Sets the pointerAlignment for [RenderLinearGaugeShapePointer].
   set setPointerAlignment(PointerAlignment value) {
     if (value == _pointerAlignment) {
       return;
@@ -204,14 +204,14 @@ class RenderLinearGaugePointer extends RenderOpacity {
     markNeedsPaint();
   }
 
-  /// Gets the pointerAlignment assigned to [RenderLinearGaugePointer].
+  /// Gets the pointerAlignment assigned to [RenderLinearGaugeShapePointer].
   bool get enableAnimation => _enableAnimation;
   bool _enableAnimation;
 
   LinearGauge get linearGauge => _linearGauge;
   LinearGauge _linearGauge;
 
-  /// Sets the pointerAlignment for [RenderLinearGaugePointer].
+  /// Sets the pointerAlignment for [RenderLinearGaugeShapePointer].
   set setEnableAnimation(bool value) {
     if (value == _enableAnimation) {
       return;
@@ -264,9 +264,6 @@ class RenderLinearGaugePointer extends RenderOpacity {
       size = Size(height, width);
     } else {
       size = Size(width, height);
-    }
-    if (child != null) {
-      child!.layout(constraints);
     }
   }
 
@@ -330,9 +327,6 @@ class RenderLinearGaugePointer extends RenderOpacity {
         break;
       case PointerShape.diamond:
         _layoutDiamondOffsets(canvas, offset, linearGauge);
-        break;
-      case PointerShape.childWidget:
-        _layoutChildWidget(canvas, offset, linearGauge, context);
         break;
       default:
         return;
@@ -893,65 +887,6 @@ class RenderLinearGaugePointer extends RenderOpacity {
     canvas.drawPath(path, paint);
   }
 
-  _layoutChildWidget(Canvas canvas, Offset offset, LinearGauge linearGauge,
-      PaintingContext context) {
-    double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
-    GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
-    switch (pointerPosition) {
-      case PointerPosition.top:
-        offset = Offset(offset.dx - width / 2,
-            (offset.dy - height - gaugeThickness) + yAxisForGaugeContainer);
-        break;
-      case PointerPosition.bottom:
-        offset =
-            Offset(offset.dx - width / 2, offset.dy + yAxisForGaugeContainer);
-        break;
-      case PointerPosition.center:
-        offset = rulerOrientation == GaugeOrientation.horizontal
-            ? Offset(
-                offset.dx - width / 2,
-                (offset.dy - gaugeThickness / 2 - height / 2) +
-                    yAxisForGaugeContainer)
-            : Offset(
-                offset.dx -
-                    width / 2 -
-                    gaugeThickness / 2 +
-                    xAxisForGaugeContainer,
-                offset.dy - height / 2);
-        break;
-      case PointerPosition.right:
-        offset =
-            Offset(offset.dx + xAxisForGaugeContainer, offset.dy - height / 2);
-        break;
-      case PointerPosition.left:
-        offset = Offset(
-            offset.dx - width - gaugeThickness + xAxisForGaugeContainer,
-            offset.dy - height / 2);
-        break;
-      default:
-        break;
-    }
-
-    switch (pointerAlignment) {
-      case PointerAlignment.start:
-        offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? Offset(offset.dx - width / 2, offset.dy)
-            : Offset(offset.dx, offset.dy - height / 2);
-        break;
-      case PointerAlignment.end:
-        offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? Offset(offset.dx + width / 2, offset.dy)
-            : Offset(offset.dx, offset.dy + height / 2);
-
-        break;
-      default:
-        break;
-    }
-
-    offset = applyAnimations(linearGauge, offset);
-    super.paint(context, offset);
-  }
-
   // Drawing the Arrow pointer
   // ignore: unused_element
   void _drawArrowPointer(
@@ -1001,11 +936,6 @@ class RenderLinearGaugePointer extends RenderOpacity {
       default:
         return 0;
     }
-  }
-
-  @override
-  bool hitTestSelf(Offset position) {
-    return true;
   }
 
   @override

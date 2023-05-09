@@ -15,7 +15,7 @@ void main() {
       gaugeOrientation: GaugeOrientation.horizontal,
       labelTopMargin: 0.0,
       pointers: const [
-        Pointer(
+        ShapePointer(
           value: 0,
           shape: PointerShape.triangle,
           pointerPosition: PointerPosition.bottom,
