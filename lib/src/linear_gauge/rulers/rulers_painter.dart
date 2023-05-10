@@ -408,8 +408,7 @@ class RenderRulers extends RenderBox {
 
   @override
   void performLayout() {
-    size = Size(math.max(_primaryRulersWidth, _secondaryRulersWidth),
-        math.max(_primaryRulersHeight, _secondaryRulersHeight));
+    size = Size(constraints.maxWidth, constraints.maxHeight);
   }
 
   @override

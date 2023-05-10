@@ -90,6 +90,11 @@ class RenderLinearGauge extends RenderBox
       leftPointerHeight,
       pointerMaxOfRightAndCenter,
       pointerMaxOfLeftAndCenter = 0;
+
+  double? rightWidgetPointerHeight,
+      leftWidgetPointerHeight,
+      widgetPointerMaxOfRightAndCenter,
+      widgetPointerMaxOfLeftAndCenter = 0;
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
   double spacingForGauge = 0;
 
@@ -279,17 +284,6 @@ class RenderLinearGauge extends RenderBox
   LinearGaugeLabel get getLinearGaugeLabel {
     return _linearGaugeLabel;
   }
-
-  ///
-  /// Getter and Setter for the [valueBarPosition] parameter.
-  ///
-  // ValueBarPosition get valueBarPosition => _valueBarPosition;
-  // ValueBarPosition _valueBarPosition;
-  // set setValueBarPosition(ValueBarPosition val) {
-  //   if (_valueBarPosition == val) return;
-  //   _valueBarPosition = val;
-  //   markNeedsPaint();
-  // }
 
   ///
   /// Getter and Setter for the [valueBar] parameter.
@@ -536,6 +530,9 @@ class RenderLinearGauge extends RenderBox
         leftValueBars,
         rightValueBars,
         centerValueBar,
+        leftWidgetPointers,
+        rightWidgetPointers,
+        centerWidgetPointers,
       );
     }
   }
@@ -548,6 +545,9 @@ class RenderLinearGauge extends RenderBox
     List<ValueBar> leftValueBars,
     List<ValueBar> rightValueBars,
     List<ValueBar> centerValueBars,
+    List<RenderLinearGaugeWidgetPointer> leftWidgetPointers,
+    List<RenderLinearGaugeWidgetPointer> rightWidgetPointers,
+    List<RenderLinearGaugeWidgetPointer> centerWidgetPointers,
   ) {
     double getEffectiveRulersWidth = getMaxRulerHeight();
     double labelThickness = getLabelWidth();
@@ -558,7 +558,6 @@ class RenderLinearGauge extends RenderBox
     _layoutCenterPointers(centerPointers);
     _layoutLeftCurves(getCustomCurves!);
     _layoutRightCurves(getCustomCurves!);
-
     _initMaxWidthPointerFromRightAndCenter(linearGaugeContainerThickness);
     _initMaxWidthPointerFromLeftAndCenter(linearGaugeContainerThickness);
     _layoutLeftValueBar(leftValueBars);
@@ -927,8 +926,10 @@ class RenderLinearGauge extends RenderBox
 
   void _initMaxWidthPointerFromLeftAndCenter(
       double linearGaugeContainerThickness) {
-    pointerMaxOfLeftAndCenter = math.max((leftPointerHeight!),
-        ((centerPointerHeight! / 2) - (linearGaugeContainerThickness / 2)));
+    pointerMaxOfLeftAndCenter = math.max(
+        math.max(leftPointerHeight!, leftWidgetPointerHeight!),
+        (math.max(centerPointerHeight! / 2, centerWidgetPointerHeight! / 2) -
+            (linearGaugeContainerThickness / 2)));
   }
 
   void _initMaxHeightPointerFromTopAndCenter(
@@ -963,8 +964,10 @@ class RenderLinearGauge extends RenderBox
 
   void _initMaxWidthPointerFromRightAndCenter(
       double linearGaugeContainerThickness) {
-    pointerMaxOfRightAndCenter = math.max((rightPointerHeight!),
-        ((centerPointerHeight! / 2) - (linearGaugeContainerThickness / 2)));
+    pointerMaxOfRightAndCenter = math.max(
+        math.max(rightPointerHeight!, rightWidgetPointerHeight!),
+        (math.max(centerPointerHeight! / 2, centerWidgetPointerHeight! / 2) -
+            (linearGaugeContainerThickness / 2)));
   }
 
   void _layoutCenterPointers(List<ShapePointer> centerPointers) {
@@ -995,6 +998,13 @@ class RenderLinearGauge extends RenderBox
         }
       } else {
         centerPointerHeight = 0;
+      }
+      if (centerWidgetPointers.isNotEmpty) {
+        var lPointer = getLargestWidgetPointerForLayout(centerWidgetPointers);
+
+        centerWidgetPointerHeight = lPointer?.size.width;
+      } else {
+        centerWidgetPointerHeight = 0;
       }
     }
   }
@@ -1027,6 +1037,16 @@ class RenderLinearGauge extends RenderBox
       }
     } else {
       leftPointerHeight = 0;
+    }
+
+    List<RenderLinearGaugeWidgetPointer> leftWidgetPointers =
+        getWidgetPointersByPosition(_widgetPointers, PointerPosition.left);
+    if (leftWidgetPointers.isNotEmpty) {
+      var lWidgetPointer = getLargestWidgetPointerForLayout(leftWidgetPointers);
+
+      leftWidgetPointerHeight = lWidgetPointer?.size.width;
+    } else {
+      leftWidgetPointerHeight = 0;
     }
   }
 
@@ -1121,9 +1141,17 @@ class RenderLinearGauge extends RenderBox
     } else {
       rightPointerHeight = 0;
     }
-    // rightPointerHeight = rightPointers.isNotEmpty
-    //     ? getLargestPointerForLayout(rightPointers)?.height ?? 0
-    //     : 0;
+
+    List<RenderLinearGaugeWidgetPointer> rightWidgetPointers =
+        getWidgetPointersByPosition(_widgetPointers, PointerPosition.right);
+    if (rightWidgetPointers.isNotEmpty) {
+      var lWidgetPointer =
+          getLargestWidgetPointerForLayout(rightWidgetPointers);
+
+      rightWidgetPointerHeight = lWidgetPointer?.size.width;
+    } else {
+      rightWidgetPointerHeight = 0;
+    }
   }
 
   void _layoutTopValueBar(List<ValueBar> topValueBars) {
