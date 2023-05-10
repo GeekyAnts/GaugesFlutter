@@ -27,13 +27,9 @@ class RenderRulerLabel extends RenderBox {
         _inversedRulers = inversedRulers,
         _rulersOffset = rulersOffset,
         _rangeLinearGauge = rangeLinearGauge,
-        _isHorizontalOrientation =
-            gaugeOrientation == GaugeOrientation.horizontal,
         _customLabels = customLabel,
         _textStyle = textStyle;
 
-  late bool _isHorizontalOrientation;
-  late Size _axisActualSize;
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   static late double gaugeStart, gaugeEnd;
@@ -73,8 +69,6 @@ class RenderRulerLabel extends RenderBox {
   GaugeOrientation _gaugeOrientation;
 
   set setGaugeOrientation(gaugeOrientation) {
-    _isHorizontalOrientation = gaugeOrientation == GaugeOrientation.horizontal;
-
     if (_gaugeOrientation == gaugeOrientation) return;
 
     _gaugeOrientation = gaugeOrientation;

@@ -42,7 +42,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           rulers: const RulerStyle(
             inverseRulers: false,
             rulerPosition: RulerPosition.center,
-            textStyle: const TextStyle(
+            textStyle: TextStyle(
               fontFamily: 'Roboto',
               color: Colors.black,
             ),

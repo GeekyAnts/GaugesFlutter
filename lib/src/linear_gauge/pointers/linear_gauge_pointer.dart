@@ -3,10 +3,10 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 /// A [Pointer] is a widget that is used to indicate the value of the [LinearGauge].
 ///
-/// The LinearGauge takes a list of [Pointer] as an input.
+/// The LinearGauge takes a list of [Pointer] as an input i.e [ShapePointer] & [WidgetPointer].
 /// `value` Sets the value of the pointer
 /// `height` and `weight` Sets the height  & weight of the pointer
-///
+/// `child` adds the custom widget as a pointer
 /// `PointerShape` Sets the shape of the pointer
 ///
 /// Note: The `value` of the pointer should be between the `start` and `end` value of the [LinearGauge] and if the value is null it takes the value specified in  `Linear Gauge`
@@ -14,10 +14,14 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 /// ```dart
 /// const LinearGauge(
 ///    pointers: const [
-///      Pointer(
+///      ShapePointer(
 ///       value: 50.0,
 ///       color: Colors.red,
 ///       shape: PointerShape.circle,
+///    ),
+///      WidgetPointer(
+///       value: 20.0,
+///       child: Image.assets("image",height:100,width:100),
 ///    ),
 ///   ],
 /// ),

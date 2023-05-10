@@ -160,7 +160,6 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
       }
     }
 
-    RulerPosition rulerPosition = linearGauge.rulers!.rulerPosition!;
     GaugeOrientation gaugeOrientation = linearGauge.gaugeOrientation!;
     double endValue = linearGauge.end!;
     double startValue = linearGauge.start!;
@@ -184,8 +183,6 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
         : Offset(offset.dx, (offset.dy - valueInPX));
 
     offset =
-        gaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
-    Offset labelOffset =
         gaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
 
     _layoutChildWidget(canvas, offset, linearGauge, context);

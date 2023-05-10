@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
-/// A [Pointer] is a widget that is used to indicate the value of the [LinearGauge].
+/// A [ShapePointer] implements [Pointer] that is used to add the shape pointer to the [LinearGauge].
 ///
 /// The LinearGauge takes a list of [Pointer] as an input.
-/// `value` Sets the value of the pointer
-/// `height` and `weight` Sets the height  & weight of the pointer
-///
-/// `PointerShape` Sets the shape of the pointer
 ///
 /// Note: The `value` of the pointer should be between the `start` and `end` value of the [LinearGauge] and if the value is null it takes the value specified in  `Linear Gauge`
 ///
 /// ```dart
 /// const LinearGauge(
 ///    pointers: const [
-///      Pointer(
+///      ShapePointer(
 ///       value: 50.0,
 ///       color: Colors.red,
 ///       shape: PointerShape.circle,
@@ -52,6 +48,7 @@ class ShapePointer extends LeafRenderObjectWidget implements Pointer {
   /// ),
   /// ),
   /// ```
+  @override
   final double value;
 
   ///
@@ -157,6 +154,7 @@ class ShapePointer extends LeafRenderObjectWidget implements Pointer {
   ///
   /// Pointer Position on the [LinearGauge]  sets the position of `pointer` on the [LinearGauge]
   ///
+  @override
   final PointerPosition pointerPosition;
 
   ///
@@ -169,6 +167,7 @@ class ShapePointer extends LeafRenderObjectWidget implements Pointer {
   /// ),
   /// ),
   /// ```
+  @override
   final PointerAlignment pointerAlignment;
 
   /// Specifies the load time animation duration with [enableAnimation].
@@ -186,6 +185,7 @@ class ShapePointer extends LeafRenderObjectWidget implements Pointer {
   ///  )])
   /// ```
   ///
+  @override
   final bool enableAnimation;
 
   /// Specifies the load time animation duration with [enableAnimation].
@@ -204,6 +204,7 @@ class ShapePointer extends LeafRenderObjectWidget implements Pointer {
   ///  )])
   /// ```
   ///
+  @override
   final int animationDuration;
 
   /// Specifies the animation type of pointers.
@@ -221,6 +222,7 @@ class ShapePointer extends LeafRenderObjectWidget implements Pointer {
   ///  )])
   /// ```
   ///
+  @override
   final Curve animationType;
 
   @override

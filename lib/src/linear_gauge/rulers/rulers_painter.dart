@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'dart:math' as math;
 
 import '../../../geekyants_flutter_gauges.dart';
 import '../linear_gauge_label.dart';
@@ -42,11 +41,8 @@ class RenderRulers extends RenderBox {
         _showPrimaryRulers = showPrimaryRulers,
         _showSecondaryRulers = showSecondaryRulers,
         _extendLinearGauge = extendLinearGauge,
-        _isHorizontalOrientation =
-            gaugeOrientation == GaugeOrientation.horizontal,
         _fillExtend = fillExtend;
 
-  late bool _isHorizontalOrientation;
   final Paint _primaryRulersPaint = Paint();
   final Paint _secondaryRulersPaint = Paint();
   late double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
@@ -94,8 +90,6 @@ class RenderRulers extends RenderBox {
   GaugeOrientation _gaugeOrientation;
 
   set setGaugeOrientation(gaugeOrientation) {
-    _isHorizontalOrientation = gaugeOrientation == GaugeOrientation.horizontal;
-
     if (_gaugeOrientation == gaugeOrientation) return;
 
     _gaugeOrientation = gaugeOrientation;

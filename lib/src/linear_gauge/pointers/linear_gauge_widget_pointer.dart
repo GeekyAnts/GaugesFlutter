@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
-/// A [Pointer] is a widget that is used to indicate the value of the [LinearGauge].
+/// A [WidgetPointer] implements [Pointer] that is used to add custom widget as a pointer in  [LinearGauge].
 ///
 /// The LinearGauge takes a list of [Pointer] as an input.
-/// `value` Sets the value of the pointer
-/// `height` and `weight` Sets the height  & weight of the pointer
-///
-/// `PointerShape` Sets the shape of the pointer
-///
+
 /// Note: The `value` of the pointer should be between the `start` and `end` value of the [LinearGauge] and if the value is null it takes the value specified in  `Linear Gauge`
 ///
 /// ```dart
 /// const LinearGauge(
 ///    pointers: const [
-///      Pointer(
+///      WidgetPointer(
 ///       value: 50.0,
-///       color: Colors.red,
-///       shape: PointerShape.circle,
+///       child: Container(
+///              height: 100,
+///              width: 200,
+///              color: Colors.red,
+///               ),
 ///    ),
 ///   ],
 /// ),
@@ -34,7 +33,7 @@ class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
     this.animationDuration = 1000,
     this.animationType = Curves.ease,
     this.enableAnimation = true,
-    Widget? child,
+    required Widget child,
   }) : super(key: key, child: child);
 
   ///
@@ -48,11 +47,13 @@ class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
   /// ),
   /// ```
 
+  @override
   final double value;
 
   ///
   /// Pointer Position on the [LinearGauge]  sets the position of `pointer` on the [LinearGauge]
   ///
+  @override
   final PointerPosition pointerPosition;
 
   ///
@@ -65,6 +66,7 @@ class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
   /// ),
   /// ),
   /// ```
+  @override
   final PointerAlignment pointerAlignment;
 
   /// Specifies the load time animation duration with [enableAnimation].
@@ -82,6 +84,7 @@ class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
   ///  )])
   /// ```
   ///
+  @override
   final bool enableAnimation;
 
   /// Specifies the load time animation duration with [enableAnimation].
@@ -100,6 +103,7 @@ class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
   ///  )])
   /// ```
   ///
+  @override
   final int animationDuration;
 
   /// Specifies the animation type of pointers.
@@ -117,6 +121,7 @@ class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
   ///  )])
   /// ```
   ///
+  @override
   final Curve animationType;
 
   @override

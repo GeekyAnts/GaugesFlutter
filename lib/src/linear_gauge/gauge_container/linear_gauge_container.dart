@@ -150,8 +150,6 @@ class RenderLinearGaugeContainer extends RenderBox {
         _thickness = thickness,
         _extendLinearGauge = extendLinearGauge,
         _rangeLinearGauge = rangeLinearGauge,
-        _isHorizontalOrientation =
-            gaugeOrientation == GaugeOrientation.horizontal,
         _customLabels = customLabel,
         _pointers = pointers,
         _borderRadius = borderRadius,
@@ -159,8 +157,6 @@ class RenderLinearGaugeContainer extends RenderBox {
         _edgeStyle = edgeStyle,
         _textStyle = textStyle;
 
-  late bool _isHorizontalOrientation;
-  late Size _axisActualSize;
   final Paint _linearGaugeContainerPaint = Paint();
   final Paint _linearGaugeRangePaint = Paint();
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
@@ -168,9 +164,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   List<ShapePointer> filteredShapePointers = [];
 
   static late double gaugeStart, gaugeEnd;
-  late double yAxisForGaugeContainer = 0,
-      xAxisForGaugeContainer = 0,
-      _effectiveRulerHeight;
+  late double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -272,8 +266,6 @@ class RenderLinearGaugeContainer extends RenderBox {
   GaugeOrientation _gaugeOrientation;
 
   set setGaugeOrientation(gaugeOrientation) {
-    _isHorizontalOrientation = gaugeOrientation == GaugeOrientation.horizontal;
-
     if (_gaugeOrientation == gaugeOrientation) return;
 
     _gaugeOrientation = gaugeOrientation;
