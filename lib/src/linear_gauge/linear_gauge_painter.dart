@@ -55,8 +55,7 @@ class RenderLinearGauge extends RenderBox
         _extendLinearGauge = extendLinearGauge,
         _fillExtend = fillExtend,
         _curves = customCurve,
-        _shapePointers = <RenderLinearGaugeShapePointer>[],
-        _widgetPointers = <RenderLinearGaugeWidgetPointer>[];
+        _shapePointers = <RenderLinearGaugeShapePointer>[];
 
   // For getting Gauge Values
   double gaugeStart = 0;
@@ -356,7 +355,11 @@ class RenderLinearGauge extends RenderBox
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _axisActualSize;
-  late List<RenderLinearGaugeWidgetPointer> _widgetPointers;
+  static final List<RenderLinearGaugeWidgetPointer> _widgetPointers =
+      <RenderLinearGaugeWidgetPointer>[];
+  static List<RenderLinearGaugeWidgetPointer>? get getWidgetPointers =>
+      _widgetPointers;
+
   late List<RenderLinearGaugeShapePointer> _shapePointers;
 
   /// Adds the widget render object to widget pointer collection.

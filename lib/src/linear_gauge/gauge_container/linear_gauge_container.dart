@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 import 'dart:math' as math;
 import '../linear_gauge_label.dart';
 
@@ -577,6 +578,34 @@ class RenderLinearGaugeContainer extends RenderBox {
     }
   }
 
+  RenderLinearGaugeWidgetPointer? getLargestWidgetPointer(
+      List<RenderLinearGaugeWidgetPointer>? pointers) {
+    RenderLinearGaugeWidgetPointer? largestPointer = pointers?.reduce(
+        (current, next) => getGaugeOrientation == GaugeOrientation.vertical
+            ? current.size.height > next.size.height
+                ? current
+                : next
+            : current.size.width > next.size.width
+                ? current
+                : next);
+    return largestPointer;
+  }
+
+  double getLargestWidgetPointerSize() {
+    if (RenderLinearGauge.getWidgetPointers!.isNotEmpty) {
+      RenderLinearGaugeWidgetPointer? largestPointer =
+          getLargestWidgetPointer(RenderLinearGauge.getWidgetPointers);
+
+      if (getGaugeOrientation == GaugeOrientation.vertical) {
+        return largestPointer?.size.width ?? 0;
+      } else {
+        return largestPointer?.size.width ?? 0;
+      }
+    } else {
+      return 0;
+    }
+  }
+
   void _setLinearGaugeContainerPaint() {
     _linearGaugeContainerPaint.color =
         setAnimatedColor(getLinearGaugeContainerBgColor);
@@ -648,7 +677,8 @@ class RenderLinearGaugeContainer extends RenderBox {
     late double end;
     late double start;
 
-    double largestPointerWidth = getLargestPointerSize();
+    double largestPointerWidth =
+        math.max(getLargestPointerSize(), getLargestWidgetPointerSize());
 
     if (showLabel) {
       end = GaugeOrientation.horizontal == getGaugeOrientation
