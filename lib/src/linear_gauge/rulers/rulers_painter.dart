@@ -421,15 +421,13 @@ class RenderRulers extends RenderBox {
 
     double effectiveRulerHeight =
         math.max(getPrimaryRulersHeight, getSecondaryRulersHeight);
-    double effectiveRulerWidth =
-        math.max(getPrimaryRulersWidth, getSecondaryRulersWidth);
 
     effectiveRulerHeight += getRulersOffset;
 
     if (_isHorizontalOrientation) {
-      _axisActualSize = Size(effectiveRulerWidth, effectiveRulerHeight);
+      _axisActualSize = Size(parentWidgetSize, effectiveRulerHeight);
     } else {
-      _axisActualSize = Size(effectiveRulerHeight, effectiveRulerWidth);
+      _axisActualSize = Size(effectiveRulerHeight, parentWidgetSize);
     }
 
     size = _axisActualSize;

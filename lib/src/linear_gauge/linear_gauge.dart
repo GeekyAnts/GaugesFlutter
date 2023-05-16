@@ -3,6 +3,8 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_painter.dart';
 import 'linear_gauge_painter.dart';
 
 /// Creates a LinearGauge Widget to display the values in a linear scale. The
@@ -784,10 +786,12 @@ class RenderLinearGaugeElement extends MultiChildRenderObjectElement {
     super.insertRenderObjectChild(child, slot);
     if (child is RenderLinearGaugeWidgetPointer) {
       renderObject.addWidgetPointer(child);
-    }
-
-    if (child is RenderLinearGaugeShapePointer) {
+    } else if (child is RenderLinearGaugeShapePointer) {
       renderObject.addShapePointer(child);
+    } else if (child is RenderRulers) {
+      renderObject.addRuler(child);
+    } else if (child is RenderValueBar) {
+      renderObject.addValueBar(child);
     }
   }
 

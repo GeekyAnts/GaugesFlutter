@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'dart:math' as math;
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_label.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_painter.dart';
 
 import 'gauge_container/linear_gauge_container.dart';
 
@@ -57,6 +59,7 @@ class RenderLinearGauge extends RenderBox
         _extendLinearGauge = extendLinearGauge,
         _fillExtend = fillExtend,
         _curves = customCurve,
+        _valueBarRenderObject = <RenderValueBar>[],
         _shapePointers = <RenderLinearGaugeShapePointer>[];
 
   // For getting Gauge Values
@@ -362,7 +365,10 @@ class RenderLinearGauge extends RenderBox
   static List<RenderLinearGaugeWidgetPointer>? get getWidgetPointers =>
       _widgetPointers;
 
-  late List<RenderLinearGaugeShapePointer> _shapePointers;
+  late final List<RenderLinearGaugeShapePointer> _shapePointers;
+  late final List<RenderValueBar> _valueBarRenderObject;
+
+  late final RenderRulers _renderRulerElement;
 
   /// Adds the widget render object to widget pointer collection.
   void addWidgetPointer(RenderLinearGaugeWidgetPointer widgetPointer) {
@@ -385,6 +391,24 @@ class RenderLinearGauge extends RenderBox
   /// Adds the shape render object to widget pointer collection.
   void addShapePointer(RenderLinearGaugeShapePointer shapePointer) {
     _shapePointers.add(shapePointer);
+    markNeedsLayout();
+  }
+
+  /// Adds the ruler render object to widget .
+  void addRuler(RenderRulers ruler) {
+    _renderRulerElement = ruler;
+    markNeedsLayout();
+  }
+
+  /// Adds the valuebar render object to widget .
+  void addValueBar(RenderValueBar ruler) {
+    _valueBarRenderObject.add(ruler);
+    markNeedsLayout();
+  }
+
+  /// Remove the valuebar render object from widget .
+  void removeValueBar(RenderValueBar ruler) {
+    _valueBarRenderObject.remove(ruler);
     markNeedsLayout();
   }
 
@@ -728,7 +752,6 @@ class RenderLinearGauge extends RenderBox
         linearGaugeChild.parentData as MultiChildLayoutParentData?;
     childParentData!.offset = getShapePointerOffset(
         linearGaugeChild as RenderLinearGaugeShapePointer);
-    // }
   }
 
   positionPointer() {
@@ -739,13 +762,125 @@ class RenderLinearGauge extends RenderBox
     }
   }
 
+  Offset _layoutRulerOffset(RenderRulers ruler) {
+    return Offset.zero;
+  }
+
+  positionRulers() {
+    // final MultiChildLayoutParentData? childParentData =
+    //     _renderRulerElement.parentData as MultiChildLayoutParentData?;
+    // childParentData!.offset = _layoutRulerOffset(_renderRulerElement);
+  }
+
+  Offset _calculateOffsetForValueBar(RenderValueBar valueBar) {
+    double start = RenderLinearGaugeContainer.gaugeStart;
+    double end = RenderLinearGaugeContainer.gaugeEnd;
+    // Start and End values of the Linear Gauge
+    double endValue = getEnd;
+    double startOffset, topOffset;
+    double startValue = getStart;
+
+    //  width of the value bar in pixels based on the value
+    double valueBarWidth =
+        ((valueBar.value - startValue) / (endValue - startValue)) *
+            (end - 2 * getExtendLinearGauge);
+
+    double totalValOffset = _getOffsetHeight(
+        valueBar.position, getThickness, valueBar.offset, valueBar);
+
+    if (getGaugeOrientation == GaugeOrientation.horizontal) {
+      double startValue = (!getInversedRulers) ? start : (start + end);
+
+      if (!getFillExtend) {
+        startValue = !getInversedRulers
+            ? (startValue + getExtendLinearGauge)
+            : (startValue - getExtendLinearGauge);
+      } else {
+        if (getEnd == valueBar.value) {
+          valueBarWidth += 2 * getExtendLinearGauge;
+        } else {
+          valueBarWidth += getExtendLinearGauge;
+        }
+      }
+      topOffset = totalValOffset;
+
+      if (valueBar.position == ValueBarPosition.center) {
+        topOffset = totalValOffset +
+            (getThickness - valueBar.valueBarThickness) / 2 +
+            yAxisForGaugeContainer;
+      }
+      startOffset = startValue;
+    } else {
+      double barTop = (!getInversedRulers) ? start + end : start;
+      double barLeft = _getOffsetHeight(valueBar.position, getThickness,
+          valueBar.offset, valueBar); // adjust left position as needed
+
+      if (!getFillExtend) {
+        barTop = !getInversedRulers
+            ? (barTop - getExtendLinearGauge)
+            : (barTop + getExtendLinearGauge);
+      } else {
+        if (getEnd == valueBar.value) {
+          valueBarWidth += 2 * getExtendLinearGauge;
+        } else {
+          valueBarWidth += getExtendLinearGauge;
+        }
+      }
+      startOffset = barLeft;
+
+      if (valueBar.position == ValueBarPosition.center) {
+        startOffset = barLeft +
+            (getThickness - valueBar.valueBarThickness) / 2 +
+            xAxisForGaugeContainer;
+      }
+      topOffset = barTop;
+    }
+
+    return Offset(startOffset, topOffset);
+  }
+
+  // Calculating Offset Height for Value Bar
+  double _getOffsetHeight(ValueBarPosition position, double height,
+      double valueBarOffset, RenderValueBar valueBar) {
+    switch (position) {
+      case ValueBarPosition.center:
+        return 0.0;
+      case ValueBarPosition.top:
+        return (yAxisForGaugeContainer -
+            valueBar.valueBarThickness -
+            valueBar.offset);
+      case ValueBarPosition.bottom:
+        return height + valueBarOffset + yAxisForGaugeContainer;
+      case ValueBarPosition.left:
+        return xAxisForGaugeContainer - valueBarOffset;
+      case ValueBarPosition.right:
+        return height + valueBarOffset + xAxisForGaugeContainer;
+      default:
+        return 0;
+    }
+  }
+
+  _setOffsetOfValueBar(RenderValueBar valueBar) {
+    final MultiChildLayoutParentData? childParentData =
+        valueBar.parentData as MultiChildLayoutParentData?;
+    childParentData!.offset = _calculateOffsetForValueBar(valueBar);
+  }
+
+  positionValueBars() {
+    if (_valueBarRenderObject.isNotEmpty) {
+      _valueBarRenderObject.forEach((element) {
+        _setOffsetOfValueBar(element);
+      });
+    }
+  }
+
   @override
   void performLayout() {
     filterShapePointers(getPointers);
     RenderBox? child = firstChild;
     while (child != null) {
       final childParentData = child.parentData as MultiChildLayoutParentData;
-      child.layout(constraints, parentUsesSize: true);
+      child.layout(constraints);
 
       child = childParentData.nextSibling;
     }
@@ -759,7 +894,8 @@ class RenderLinearGauge extends RenderBox
 
       childRef = childParentData.nextSibling;
     }
-
+    positionRulers();
+    positionValueBars();
     positionPointer();
   }
 

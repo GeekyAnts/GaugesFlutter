@@ -19,9 +19,17 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           valueBar: const [
             ValueBar(
               value: 75,
+              position: ValueBarPosition.top,
+              // valueBarThickness: 135,
+            ),
+            ValueBar(
+              value: 75,
+              position: ValueBarPosition.top,
+              offset: 40,
               // valueBarThickness: 135,
             )
           ],
+          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 40),
           pointers: [
             // WidgetPointer(
             //   value: 50,
@@ -42,15 +50,12 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             // ),
             ShapePointer(
               value: 10,
-              shape: PointerShape.triangle,
-              height: 200,
-              width: 300,
-              showLabel: true,
-              color: Colors.black.withOpacity(0.1),
-              // quarterTurns: QuarterTurns.three,
+              shape: PointerShape.circle,
+              height: 100,
+              width: 100,
+              color: Colors.black.withOpacity(0.3),
               labelStyle: TextStyle(color: Colors.black),
-              pointerPosition: PointerPosition.top,
-              // pointerAlignment: PointerAlignment.end,
+              pointerPosition: PointerPosition.bottom,
             ),
             // ShapePointer(
             //   value: 0,
@@ -69,7 +74,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           // ],
           rulers: const RulerStyle(
             inverseRulers: false,
-            rulerPosition: RulerPosition.center,
+            rulerPosition: RulerPosition.bottom,
             // primaryRulersHeight: 100,
             textStyle: TextStyle(
               fontFamily: 'Roboto',
