@@ -4,6 +4,8 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'dart:math' as math;
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_label.dart';
 
+import 'gauge_container/linear_gauge_container.dart';
+
 class RenderLinearGauge extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, MultiChildLayoutParentData>,
@@ -374,6 +376,12 @@ class RenderLinearGauge extends RenderBox
     markNeedsLayout();
   }
 
+  /// Adds the widget render object to widget pointer collection.
+  void removeShapePointer(RenderLinearGaugeShapePointer shapePointer) {
+    _shapePointers.remove(shapePointer);
+    markNeedsLayout();
+  }
+
   /// Adds the shape render object to widget pointer collection.
   void addShapePointer(RenderLinearGaugeShapePointer shapePointer) {
     _shapePointers.add(shapePointer);
@@ -395,6 +403,7 @@ class RenderLinearGauge extends RenderBox
             : current.width > next.width
                 ? current
                 : next);
+
     return largestPointer;
   }
 
@@ -420,10 +429,319 @@ class RenderLinearGauge extends RenderBox
     return largestValueBar;
   }
 
+  Offset _layoutCircleOffsets(
+      Offset offset, RenderLinearGaugeShapePointer pointer) {
+    double gaugeThickness = getThickness;
+    GaugeOrientation orientation = getGaugeOrientation!;
+
+    switch (pointer.pointerPosition) {
+      case PointerPosition.top:
+        offset = Offset(
+            offset.dx - pointer.height / 2,
+            (offset.dy - pointer.height - gaugeThickness) +
+                yAxisForGaugeContainer);
+        break;
+      case PointerPosition.bottom:
+        offset = Offset(
+            offset.dx - pointer.height / 2, offset.dy + yAxisForGaugeContainer);
+        break;
+      case PointerPosition.center:
+        offset = orientation == GaugeOrientation.horizontal
+            ? Offset(
+                offset.dx - pointer.height / 2,
+                (offset.dy - pointer.height / 2 - gaugeThickness / 2) +
+                    yAxisForGaugeContainer)
+            : Offset(
+                offset.dx -
+                    pointer.height / 2 -
+                    gaugeThickness / 2 +
+                    xAxisForGaugeContainer,
+                offset.dy - pointer.height / 2);
+        break;
+      case PointerPosition.right:
+        offset = Offset(
+            offset.dx + xAxisForGaugeContainer, offset.dy - pointer.height / 2);
+        break;
+      case PointerPosition.left:
+        offset = Offset(
+            offset.dx -
+                pointer.height -
+                gaugeThickness +
+                xAxisForGaugeContainer,
+            offset.dy - pointer.height / 2);
+        break;
+      default:
+        break;
+    }
+
+    switch (pointer.pointerAlignment) {
+      case PointerAlignment.start:
+        offset = (getGaugeOrientation! == GaugeOrientation.horizontal)
+            ? Offset(offset.dx - pointer.height / 2, offset.dy)
+            : Offset(offset.dx, offset.dy - pointer.height / 2);
+        break;
+      case PointerAlignment.end:
+        offset = (getGaugeOrientation! == GaugeOrientation.horizontal)
+            ? Offset(offset.dx + pointer.height / 2, offset.dy)
+            : Offset(offset.dx, offset.dy + pointer.height / 2);
+
+        break;
+      default:
+        break;
+    }
+
+    return offset;
+  }
+
+  Offset _layoutRectangleOffsets(
+      Offset offset, RenderLinearGaugeShapePointer pointer) {
+    double gaugeThickness = getThickness;
+    GaugeOrientation rulerOrientation = getGaugeOrientation!;
+    switch (pointer.pointerPosition) {
+      case PointerPosition.top:
+        offset = Offset(
+            offset.dx - pointer.width / 2,
+            (offset.dy - pointer.height - gaugeThickness) +
+                yAxisForGaugeContainer);
+        break;
+      case PointerPosition.bottom:
+        offset = Offset(
+            offset.dx - pointer.width / 2, offset.dy + yAxisForGaugeContainer);
+        break;
+      case PointerPosition.center:
+        offset = rulerOrientation == GaugeOrientation.horizontal
+            ? Offset(
+                offset.dx - pointer.width / 2,
+                (offset.dy - pointer.height / 2 - gaugeThickness / 2) +
+                    yAxisForGaugeContainer)
+            : Offset(
+                offset.dx -
+                    pointer.width / 2 -
+                    gaugeThickness / 2 +
+                    xAxisForGaugeContainer,
+                offset.dy - pointer.height / 2);
+        break;
+      case PointerPosition.right:
+        offset = Offset(
+            offset.dx + xAxisForGaugeContainer, offset.dy - pointer.height / 2);
+        break;
+      case PointerPosition.left:
+        offset = Offset(
+            offset.dx - pointer.width - gaugeThickness + xAxisForGaugeContainer,
+            offset.dy - pointer.height / 2);
+        break;
+      default:
+        break;
+    }
+
+    switch (pointer.pointerAlignment) {
+      case PointerAlignment.start:
+        offset = (getGaugeOrientation! == GaugeOrientation.horizontal)
+            ? Offset(offset.dx - pointer.width / 2, offset.dy)
+            : Offset(offset.dx, offset.dy - pointer.height / 2);
+        break;
+      case PointerAlignment.end:
+        offset = (getGaugeOrientation! == GaugeOrientation.horizontal)
+            ? Offset(offset.dx + pointer.width / 2, offset.dy)
+            : Offset(offset.dx, offset.dy + pointer.height / 2);
+
+        break;
+      default:
+        break;
+    }
+
+    return offset;
+  }
+
+  Offset getShapePointerOffset(RenderLinearGaugeShapePointer pointer) {
+    double start = RenderLinearGaugeContainer.gaugeStart;
+    double end = RenderLinearGaugeContainer.gaugeEnd;
+    var verticalFirstOffset =
+        LinearGaugeLabel.primaryRulers[getStart.toString()]!;
+    Offset offset = verticalFirstOffset.first;
+    double valueInPX = !getInversedRulers
+        ? (pointer.value! - getStart) /
+            (getEnd - getStart) *
+            (end - 2 * getExtendLinearGauge)
+        : (pointer.value! - getEnd) /
+            (getStart - getEnd) *
+            (end - 2 * getExtendLinearGauge);
+
+    Offset hOffset =
+        Offset(valueInPX + start + getExtendLinearGauge, offset.dy);
+
+    Offset vOffset = getInversedRulers
+        ? Offset(
+            offset.dx, offset.dy + (end - valueInPX - 2 * getExtendLinearGauge))
+        : Offset(offset.dx, (offset.dy - valueInPX));
+
+    offset =
+        getGaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
+    // Offset labelOffset =
+    //     getGaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
+
+    switch (pointer.shape) {
+      case PointerShape.circle:
+        offset = _layoutCircleOffsets(offset, pointer);
+        break;
+      case PointerShape.rectangle:
+        offset = _layoutRectangleOffsets(offset, pointer);
+        break;
+      case PointerShape.triangle:
+        offset = _layoutTriangleOffsets(offset, pointer);
+        break;
+      case PointerShape.diamond:
+        offset = _layoutDiamondOffsets(offset, pointer);
+        break;
+      default:
+        break;
+    }
+    return offset;
+  }
+
+  Offset _layoutTriangleOffsets(
+      Offset offset, RenderLinearGaugeShapePointer pointer) {
+    double gaugeThickness = getThickness;
+    GaugeOrientation rulerOrientation = getGaugeOrientation!;
+
+    switch (pointer.pointerPosition) {
+      case PointerPosition.top:
+        offset = Offset(offset.dx + pointer.width / 2,
+            offset.dy - gaugeThickness + yAxisForGaugeContainer);
+        break;
+      case PointerPosition.bottom:
+        offset = Offset(
+            offset.dx - pointer.width / 2, offset.dy + yAxisForGaugeContainer);
+        break;
+      case PointerPosition.center:
+        offset = rulerOrientation == GaugeOrientation.horizontal
+            ? Offset(
+                offset.dx + pointer.width / 2,
+                offset.dy +
+                    (pointer.height / 2 - gaugeThickness / 2) +
+                    yAxisForGaugeContainer)
+            : Offset(
+                offset.dx +
+                    pointer.height / 2 -
+                    gaugeThickness / 2 +
+                    xAxisForGaugeContainer,
+                offset.dy - pointer.width / 2);
+        break;
+      case PointerPosition.right:
+        offset = Offset(
+            offset.dx + xAxisForGaugeContainer, offset.dy + pointer.width / 2);
+        break;
+      case PointerPosition.left:
+        offset = Offset(offset.dx - gaugeThickness + xAxisForGaugeContainer,
+            offset.dy - pointer.width / 2);
+        break;
+      default:
+        break;
+    }
+    final base = pointer.width / 2;
+
+    switch (pointer.pointerAlignment) {
+      case PointerAlignment.start:
+        if (getGaugeOrientation! == GaugeOrientation.horizontal) {
+          offset = Offset(offset.dx - base, offset.dy);
+        } else {
+          offset = Offset(offset.dx, offset.dy - base);
+        }
+        break;
+      case PointerAlignment.end:
+        (getGaugeOrientation! == GaugeOrientation.horizontal)
+            ? offset = Offset(offset.dx + base, offset.dy)
+            : offset = Offset(offset.dx, offset.dy + base);
+
+        break;
+      default:
+        break;
+    }
+    return offset;
+  }
+
+  Offset _layoutDiamondOffsets(
+    Offset offset,
+    RenderLinearGaugeShapePointer pointer,
+  ) {
+    double gaugeThickness = getThickness;
+    GaugeOrientation rulerOrientation = getGaugeOrientation!;
+    switch (pointer.pointerPosition) {
+      case PointerPosition.top:
+        offset = Offset(
+            offset.dx - pointer.width / 2,
+            (offset.dy - gaugeThickness - pointer.height) +
+                yAxisForGaugeContainer);
+        break;
+      case PointerPosition.bottom:
+        offset = Offset(
+            offset.dx - pointer.width / 2, offset.dy + yAxisForGaugeContainer);
+        break;
+      case PointerPosition.center:
+        offset = rulerOrientation == GaugeOrientation.horizontal
+            ? Offset(
+                offset.dx - pointer.width / 2,
+                offset.dy -
+                    gaugeThickness / 2 +
+                    yAxisForGaugeContainer -
+                    pointer.height / 2)
+            : Offset(
+                offset.dx -
+                    gaugeThickness / 2 +
+                    xAxisForGaugeContainer -
+                    pointer.width / 2,
+                offset.dy - pointer.height / 2);
+
+        break;
+      case PointerPosition.right:
+        offset = Offset(
+            offset.dx + xAxisForGaugeContainer, offset.dy - pointer.height / 2);
+        break;
+      case PointerPosition.left:
+        offset = Offset(
+            offset.dx - gaugeThickness - pointer.width + xAxisForGaugeContainer,
+            offset.dy - pointer.height / 2);
+        break;
+      default:
+        break;
+    }
+    switch (pointer.pointerAlignment) {
+      case PointerAlignment.start:
+        (getGaugeOrientation! == GaugeOrientation.horizontal)
+            ? offset = Offset(offset.dx - pointer.width / 2, offset.dy)
+            : offset = Offset(offset.dx, offset.dy - pointer.height / 2);
+        break;
+      case PointerAlignment.end:
+        (getGaugeOrientation! == GaugeOrientation.horizontal)
+            ? offset = Offset(offset.dx + pointer.width / 2, offset.dy)
+            : offset = (Offset(offset.dx, offset.dy + pointer.height / 2));
+
+        break;
+      default:
+        break;
+    }
+    return offset;
+  }
+
+  _positionShapePointer(RenderObject linearGaugeChild) {
+    final MultiChildLayoutParentData? childParentData =
+        linearGaugeChild.parentData as MultiChildLayoutParentData?;
+    childParentData!.offset = getShapePointerOffset(
+        linearGaugeChild as RenderLinearGaugeShapePointer);
+    // }
+  }
+
+  positionPointer() {
+    if (_shapePointers.isNotEmpty) {
+      _shapePointers.forEach((element) {
+        _positionShapePointer(element);
+      });
+    }
+  }
+
   @override
   void performLayout() {
     filterShapePointers(getPointers);
-
     RenderBox? child = firstChild;
     while (child != null) {
       final childParentData = child.parentData as MultiChildLayoutParentData;
@@ -441,6 +759,8 @@ class RenderLinearGauge extends RenderBox
 
       childRef = childParentData.nextSibling;
     }
+
+    positionPointer();
   }
 
   List<CustomCurve> getCustomCurveByPosition(
@@ -1220,7 +1540,6 @@ class RenderLinearGauge extends RenderBox
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     double parentWidgetSize;
-
     final double actualParentWidth = constraints.maxWidth;
     final double actualParentHeight = constraints.maxHeight;
 
@@ -1260,6 +1579,7 @@ class RenderLinearGauge extends RenderBox
   }
 
   void filterShapePointers(List<Pointer> pointers) {
+    filteredShapePointers.clear();
     for (dynamic pointer in pointers) {
       if (pointer.runtimeType == ShapePointer) {
         filteredShapePointers.add(pointer as ShapePointer);

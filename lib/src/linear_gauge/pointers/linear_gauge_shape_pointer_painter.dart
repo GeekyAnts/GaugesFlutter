@@ -259,17 +259,16 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     if (shape == PointerShape.triangle &&
         linearGauge.gaugeOrientation == GaugeOrientation.vertical) {
       size = Size(height, width);
-    } else if (shape == PointerShape.circle &&
-        linearGauge.gaugeOrientation == GaugeOrientation.vertical) {
-      size = Size(height, width);
+    } else if (shape == PointerShape.circle) {
+      size = Size(height, height);
     } else {
       size = Size(width, height);
     }
   }
 
   /// Method to draw the pointer on the canvas based on the pointer shape
-  void drawPointer(PointerShape? shape, Canvas canvas, double start, double end,
-      Offset offset, LinearGauge linearGauge, PaintingContext context) {
+  void drawPointer(PointerShape? shape, Canvas canvas, LinearGauge linearGauge,
+      Offset offset) {
     if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
       if (pointerPosition != PointerPosition.bottom &&
           pointerPosition != PointerPosition.center &&
@@ -290,8 +289,11 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     GaugeOrientation gaugeOrientation = linearGauge.gaugeOrientation!;
     final paint = Paint();
     paint.color = color;
+
     double endValue = linearGauge.end!;
     double startValue = linearGauge.start!;
+    double start = RenderLinearGaugeContainer.gaugeStart;
+    double end = RenderLinearGaugeContainer.gaugeEnd;
     double totalWidth = end;
     bool isInversedRulers = linearGauge.rulers!.inverseRulers!;
 
@@ -311,29 +313,29 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
             offset.dy + (end - valueInPX - 2 * linearGauge.extendLinearGauge!))
         : Offset(offset.dx, (offset.dy - valueInPX));
 
-    offset =
-        gaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
     Offset labelOffset =
         gaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
     switch (shape) {
       case PointerShape.circle:
-        _layoutCircleOffsets(canvas, offset, linearGauge);
+        _drawCircle(canvas, offset, linearGauge);
+
         break;
       case PointerShape.rectangle:
-        _layoutRectangleOffsets(canvas, offset, linearGauge);
+        _drawRectangle(canvas, offset, linearGauge);
+
         break;
       case PointerShape.triangle:
         _layoutTriangleOffsets(canvas, offset, linearGauge);
         break;
       case PointerShape.diamond:
-        _layoutDiamondOffsets(canvas, offset, linearGauge);
+        _drawDiamond(canvas, offset, linearGauge);
         break;
       default:
         return;
     }
 
     if (showLabel) {
-      _drawLabel(canvas, labelOffset, quarterTurns, rulerPosition, linearGauge);
+      _drawLabel(canvas, offset, quarterTurns, rulerPosition, linearGauge);
     }
   }
 
@@ -351,58 +353,41 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     textPainter.text = TextSpan(
         text: value == null ? linearGauge.value!.toString() : value.toString(),
         style: labelStyle);
+    offset = applyAnimations(linearGauge, offset);
 
     textPainter.layout();
     if (shape == PointerShape.circle) {
       if (gaugeOrientation == GaugeOrientation.horizontal) {
+        var yAxisTurn = (quarterTurns == QuarterTurns.zero ||
+                quarterTurns == QuarterTurns.two)
+            ? textPainter.height / 2
+            : textPainter.width / 2;
         switch (pointerPosition) {
           case PointerPosition.top:
-            var yAxisTurn = (quarterTurns == QuarterTurns.zero ||
-                    quarterTurns == QuarterTurns.two)
-                ? textPainter.height / 2
-                : textPainter.width / 2;
-            offset = Offset(
-                offset.dx,
-                (offset.dy - height - gaugeThickness - yAxisTurn) +
-                    yAxisForGaugeContainer);
+            offset = Offset(offset.dx + height / 2, offset.dy - yAxisTurn);
             break;
           case PointerPosition.bottom:
-            var yAxisTurn = (quarterTurns == QuarterTurns.zero ||
-                    quarterTurns == QuarterTurns.two)
-                ? textPainter.height / 2
-                : textPainter.width / 2;
-            offset = Offset(offset.dx,
-                offset.dy + height + yAxisTurn + yAxisForGaugeContainer);
+            offset =
+                Offset(offset.dx + height / 2, offset.dy + height + yAxisTurn);
             break;
           default:
-            offset = Offset(offset.dx,
-                (offset.dy - gaugeThickness / 2) + yAxisForGaugeContainer);
+            offset = Offset(offset.dx + height / 2, offset.dy - yAxisTurn);
         }
       } else {
+        var xAxisTurn = (quarterTurns == QuarterTurns.zero ||
+                quarterTurns == QuarterTurns.two)
+            ? textPainter.width / 2
+            : textPainter.height / 2;
         switch (pointerPosition) {
           case PointerPosition.right:
-            var xAxisTurn = (quarterTurns == QuarterTurns.zero ||
-                    quarterTurns == QuarterTurns.two)
-                ? textPainter.width / 2
-                : textPainter.height / 2;
-            offset = Offset(
-                offset.dx + height + xAxisTurn + xAxisForGaugeContainer,
-                offset.dy);
+            offset =
+                Offset(offset.dx + height + xAxisTurn, offset.dy + height / 2);
             break;
           case PointerPosition.left:
-            var xAxisTurn = (quarterTurns == QuarterTurns.zero ||
-                    quarterTurns == QuarterTurns.two)
-                ? textPainter.width / 2
-                : textPainter.height / 2;
-            offset = Offset(
-                (offset.dx - height - gaugeThickness - xAxisTurn) +
-                    xAxisForGaugeContainer,
-                offset.dy);
+            offset = Offset(offset.dx - xAxisTurn, offset.dy + height / 2);
             break;
           default:
-            offset = Offset(
-                offset.dx - gaugeThickness / 2 + xAxisForGaugeContainer,
-                offset.dy);
+            offset = Offset(offset.dx - xAxisTurn, offset.dy + height / 2);
         }
       }
       switch (pointerAlignment) {
@@ -422,8 +407,6 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
         default:
           break;
       }
-
-      offset = applyAnimations(linearGauge, offset);
 
       double textWidth = textPainter.width / 2;
       double textHeight = textPainter.height / 2;
@@ -471,47 +454,47 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
           var yAxisTurn = (quarterTurns == QuarterTurns.zero ||
                   quarterTurns == QuarterTurns.two)
               ? textPainter.height
-              : textPainter.height;
-          offset = Offset(
-              offset.dx - textWidth,
-              (offset.dy - height - gaugeThickness - yAxisTurn) +
-                  yAxisForGaugeContainer);
+              : textPainter.width;
+          offset =
+              Offset(offset.dx - textWidth + width / 2, offset.dy - yAxisTurn);
           break;
         case PointerPosition.bottom:
           var yAxisTurn = (quarterTurns == QuarterTurns.zero ||
                   quarterTurns == QuarterTurns.two)
-              ? 0
+              ? textHeight / 2
               : textWidth / 2;
-          offset = Offset(offset.dx - textWidth,
-              gaugeThickness + height + yAxisTurn + yAxisForGaugeContainer);
+          offset = Offset(offset.dx - textWidth + width / 2,
+              offset.dy + height + yAxisTurn);
           break;
         case PointerPosition.center:
-          var yAxisTurn = (quarterTurns == QuarterTurns.zero ||
-                  quarterTurns == QuarterTurns.two)
-              ? textHeight
-              : textWidth / 2;
+          var yAxisTurn;
+          if (gaugeOrientation == GaugeOrientation.horizontal) {
+            yAxisTurn = (quarterTurns == QuarterTurns.zero ||
+                    quarterTurns == QuarterTurns.two)
+                ? textHeight * 2
+                : textWidth * 2;
+          } else {
+            yAxisTurn = (quarterTurns == QuarterTurns.zero ||
+                    quarterTurns == QuarterTurns.two)
+                ? textHeight * 2
+                : textWidth;
+          }
           gaugeOrientation == GaugeOrientation.horizontal
               ? offset = Offset(
-                  offset.dx - textWidth,
-                  (offset.dy - gaugeThickness / 2 - yAxisTurn) +
-                      yAxisForGaugeContainer)
-              : offset = Offset(
-                  offset.dx -
-                      gaugeThickness / 2 -
-                      yAxisTurn * 2 +
-                      xAxisForGaugeContainer,
-                  offset.dy - textHeight);
+                  offset.dx - textWidth + width / 2, (offset.dy - yAxisTurn))
+              : offset = Offset(offset.dx - yAxisTurn * 2,
+                  offset.dy - textHeight + height / 2);
           break;
         case PointerPosition.left:
           var xAxisTurn = (quarterTurns == QuarterTurns.zero ||
                   quarterTurns == QuarterTurns.two)
               ? textWidth * 2
-              : textHeight * 2;
+              : textHeight * 3;
 
           var isTriangle = (shape == PointerShape.triangle) ? height : width;
 
-          offset = Offset(xAxisForGaugeContainer - isTriangle - xAxisTurn,
-              offset.dy - textHeight);
+          offset = Offset(
+              offset.dx - xAxisTurn, offset.dy - textHeight + height / 2);
           break;
         case PointerPosition.right:
           var xAxisTurn = (quarterTurns == QuarterTurns.zero ||
@@ -520,9 +503,8 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
               : -textHeight;
           var isTriangle = (shape == PointerShape.triangle) ? height : width;
 
-          offset = Offset(
-              xAxisForGaugeContainer + gaugeThickness + isTriangle + xAxisTurn,
-              offset.dy - textHeight);
+          offset = Offset(offset.dx + width + xAxisTurn,
+              offset.dy - textHeight + height / 2);
           break;
 
         default:
@@ -592,127 +574,25 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     return startPoint + ((endPoint - startPoint) * animationValue);
   }
 
-  void _layoutCircleOffsets(
-      Canvas canvas, Offset offset, LinearGauge linearGauge) {
-    double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
-    GaugeOrientation orientation = linearGauge.gaugeOrientation!;
-
-    switch (pointerPosition) {
-      case PointerPosition.top:
-        offset = Offset(offset.dx,
-            (offset.dy - height / 2 - gaugeThickness) + yAxisForGaugeContainer);
-        break;
-      case PointerPosition.bottom:
-        offset = Offset(
-            offset.dx, (offset.dy + height / 2) + yAxisForGaugeContainer);
-        break;
-      case PointerPosition.center:
-        offset = orientation == GaugeOrientation.horizontal
-            ? Offset(offset.dx,
-                (offset.dy - gaugeThickness / 2) + yAxisForGaugeContainer)
-            : Offset(offset.dx - gaugeThickness / 2 + xAxisForGaugeContainer,
-                offset.dy);
-        break;
-      case PointerPosition.right:
-        offset =
-            Offset(offset.dx + height / 2 + xAxisForGaugeContainer, offset.dy);
-        break;
-      case PointerPosition.left:
-        offset = Offset(
-            offset.dx - height / 2 - gaugeThickness + xAxisForGaugeContainer,
-            offset.dy);
-        break;
-      default:
-        break;
-    }
-    _drawCircle(canvas, offset, linearGauge);
-  }
-
   _drawCircle(Canvas canvas, Offset offset, LinearGauge linearGauge) {
-    Offset center = Offset(offset.dx, offset.dy);
     final paint = Paint()..color = color;
     paint.color = color;
 
-    switch (pointerAlignment) {
-      case PointerAlignment.start:
-        center = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? Offset(center.dx - height / 2, center.dy)
-            : Offset(center.dx, center.dy - height / 2);
-        break;
-      case PointerAlignment.end:
-        center = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? Offset(center.dx + height / 2, center.dy)
-            : Offset(center.dx, center.dy + height / 2);
+    offset = applyAnimations(linearGauge, offset);
+    Rect rect = Rect.fromLTWH(offset.dx, offset.dy, height, height);
+    Path path = Path();
+    path.addOval(rect);
 
-        break;
-      default:
-        break;
-    }
-
-    center = applyAnimations(linearGauge, center);
-
-    canvas.drawCircle(center, height / 2, paint);
+    canvas.drawPath(path, paint);
   }
 
   // Drawing the Rectangle Pointer
-  void _layoutRectangleOffsets(
-      Canvas canvas, Offset offset, LinearGauge linearGauge) {
-    double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
-    GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
-    switch (pointerPosition) {
-      case PointerPosition.top:
-        offset = Offset(offset.dx,
-            (offset.dy - height / 2 - gaugeThickness) + yAxisForGaugeContainer);
-        break;
-      case PointerPosition.bottom:
-        offset = Offset(
-            offset.dx, (offset.dy + height / 2) + yAxisForGaugeContainer);
-        break;
-      case PointerPosition.center:
-        offset = rulerOrientation == GaugeOrientation.horizontal
-            ? Offset(offset.dx,
-                (offset.dy - gaugeThickness / 2) + yAxisForGaugeContainer)
-            : Offset(offset.dx - gaugeThickness / 2 + xAxisForGaugeContainer,
-                offset.dy);
-        break;
-      case PointerPosition.right:
-        offset =
-            Offset(offset.dx + width / 2 + xAxisForGaugeContainer, offset.dy);
-        break;
-      case PointerPosition.left:
-        offset = Offset(
-            offset.dx - width / 2 - gaugeThickness + xAxisForGaugeContainer,
-            offset.dy);
-        break;
-      default:
-        break;
-    }
-    _drawRectangle(canvas, offset, linearGauge);
-  }
-
   _drawRectangle(Canvas canvas, Offset offset, LinearGauge linearGauge) {
     final paint = Paint()..color = color;
-    offset = Offset(offset.dx, offset.dy);
-
-    switch (pointerAlignment) {
-      case PointerAlignment.start:
-        offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? Offset(offset.dx - width / 2, offset.dy)
-            : Offset(offset.dx, offset.dy - height / 2);
-        break;
-      case PointerAlignment.end:
-        offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? Offset(offset.dx + width / 2, offset.dy)
-            : Offset(offset.dx, offset.dy + height / 2);
-
-        break;
-      default:
-        break;
-    }
 
     offset = applyAnimations(linearGauge, offset);
 
-    Rect rect = Rect.fromCenter(center: offset, width: width, height: height);
+    Rect rect = Rect.fromLTWH(offset.dx, offset.dy, width, height);
 
     canvas.drawRect(rect, paint);
   }
@@ -720,43 +600,24 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
   // Drawing the Triangle Pointer
   void _layoutTriangleOffsets(
       Canvas canvas, Offset offset, LinearGauge linearGauge) {
-    double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
     GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
 
     switch (pointerPosition) {
       case PointerPosition.top:
-        offset = Offset(
-            offset.dx, offset.dy - gaugeThickness + yAxisForGaugeContainer);
         _drawTriangle(canvas, offset, 180, linearGauge);
         break;
       case PointerPosition.bottom:
-        offset = Offset(offset.dx, offset.dy + yAxisForGaugeContainer);
         _drawTriangle(canvas, offset, 0, linearGauge);
         break;
       case PointerPosition.center:
-        offset = rulerOrientation == GaugeOrientation.horizontal
-            ? Offset(
-                offset.dx,
-                offset.dy +
-                    (height / 2 - gaugeThickness / 2) +
-                    yAxisForGaugeContainer)
-            : Offset(
-                offset.dx +
-                    height / 2 -
-                    gaugeThickness / 2 +
-                    xAxisForGaugeContainer,
-                offset.dy);
         double angle =
             rulerOrientation == GaugeOrientation.horizontal ? 180 : 90;
         _drawTriangle(canvas, offset, angle, linearGauge);
         break;
       case PointerPosition.right:
-        offset = Offset(offset.dx + xAxisForGaugeContainer, offset.dy);
         _drawTriangle(canvas, offset, -90, linearGauge);
         break;
       case PointerPosition.left:
-        offset = Offset(
-            offset.dx - gaugeThickness + xAxisForGaugeContainer, offset.dy);
         _drawTriangle(canvas, offset, 90, linearGauge);
         break;
       default:
@@ -772,33 +633,16 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     paint.color = color;
     final base = width / 2;
 
-    switch (pointerAlignment) {
-      case PointerAlignment.start:
-        if (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal) {
-          center = Offset(center.dx - base, center.dy);
-        } else {
-          center = Offset(center.dx, center.dy - base);
-        }
-        break;
-      case PointerAlignment.end:
-        (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? center = Offset(center.dx + base, center.dy)
-            : center = Offset(center.dx, center.dy + base);
-
-        break;
-      default:
-        break;
-    }
-
     center = applyAnimations(linearGauge, center);
+
+    Rect rect = Rect.fromLTWH(center.dx, center.dy, width, height);
 
     final path = Path();
 
-    path
-      ..moveTo(center.dx, center.dy)
-      ..lineTo((center.dx - base), center.dy + height)
-      ..lineTo((center.dx + base), center.dy + height)
-      ..close();
+    path.moveTo(rect.left + (rect.width / 2), rect.top);
+    path.lineTo(rect.left, rect.top + rect.height);
+    path.lineTo(rect.left + rect.width, rect.top + rect.height);
+    path.close();
 
     canvas.save();
 
@@ -814,74 +658,21 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
   }
 
   // Drawing the Diamond pointer
-  void _layoutDiamondOffsets(
-    Canvas canvas,
-    Offset offset,
-    LinearGauge linearGauge,
-  ) {
-    double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
-    GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
-    switch (pointerPosition) {
-      case PointerPosition.top:
-        offset = Offset(offset.dx,
-            (offset.dy - gaugeThickness - height / 2) + yAxisForGaugeContainer);
-        break;
-      case PointerPosition.bottom:
-        offset =
-            Offset(offset.dx, offset.dy + height / 2 + yAxisForGaugeContainer);
-        break;
-      case PointerPosition.center:
-        offset = rulerOrientation == GaugeOrientation.horizontal
-            ? Offset(offset.dx,
-                offset.dy - gaugeThickness / 2 + yAxisForGaugeContainer)
-            : Offset(offset.dx - gaugeThickness / 2 + xAxisForGaugeContainer,
-                offset.dy);
-
-        break;
-      case PointerPosition.right:
-        offset =
-            Offset(offset.dx + width / 2 + xAxisForGaugeContainer, offset.dy);
-        break;
-      case PointerPosition.left:
-        offset = Offset(
-            offset.dx - gaugeThickness - width / 2 + xAxisForGaugeContainer,
-            offset.dy);
-        break;
-      default:
-        break;
-    }
-    _drawDiamond(canvas, offset, linearGauge);
-  }
 
   _drawDiamond(Canvas canvas, Offset center, LinearGauge linearGauge) {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
 
-    switch (pointerAlignment) {
-      case PointerAlignment.start:
-        (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? center = Offset(center.dx - width / 2, center.dy)
-            : center = Offset(center.dx, center.dy - height / 2);
-        break;
-      case PointerAlignment.end:
-        (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? center = Offset(center.dx + width / 2, center.dy)
-            : center = (Offset(center.dx, center.dy + height / 2));
-
-        break;
-      default:
-        break;
-    }
-
     center = applyAnimations(linearGauge, center);
+    Rect rect = Rect.fromLTWH(center.dx, center.dy, width, height);
 
     final path = Path();
 
-    path.moveTo(center.dx, center.dy - height / 2);
-    path.lineTo((center.dx + width / 2), center.dy);
-    path.lineTo(center.dx, center.dy + height / 2);
-    path.lineTo((center.dx - width / 2), center.dy);
+    path.moveTo(rect.left + rect.width / 2.0, rect.top);
+    path.lineTo(rect.left, rect.top + rect.height / 2.0);
+    path.lineTo(rect.left + rect.width / 2.0, rect.top + rect.height);
+    path.lineTo(rect.left + rect.width, rect.top + rect.height / 2.0);
     path.close();
 
     canvas.drawPath(path, paint);
@@ -941,15 +732,9 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = offset.dx;
-    yAxisForGaugeContainer = offset.dy;
 
-    var verticalFirstOffset =
-        LinearGaugeLabel.primaryRulers[linearGauge.start.toString()]!;
-    Offset vert = verticalFirstOffset.first;
     if (getPointerAnimation.value > 0) {
-      drawPointer(shape, canvas, RenderLinearGaugeContainer.gaugeStart,
-          RenderLinearGaugeContainer.gaugeEnd, vert, linearGauge, context);
+      drawPointer(shape, canvas, linearGauge, offset);
     }
   }
 }

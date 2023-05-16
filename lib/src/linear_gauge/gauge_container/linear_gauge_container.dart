@@ -156,15 +156,19 @@ class RenderLinearGaugeContainer extends RenderBox {
         _borderRadius = borderRadius,
         _fillExtend = fillExtend,
         _edgeStyle = edgeStyle,
+        _isHorizontalOrientation =
+            gaugeOrientation == GaugeOrientation.horizontal,
         _textStyle = textStyle;
 
   final Paint _linearGaugeContainerPaint = Paint();
   final Paint _linearGaugeRangePaint = Paint();
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
-  late Size _startLabelSize, _endLabelSize;
+  late Size _startLabelSize, _endLabelSize, _axisActualSize;
   List<ShapePointer> filteredShapePointers = [];
 
   static late double gaugeStart, gaugeEnd;
+  static late Size startLabelSize, endLabelSize;
+  late bool _isHorizontalOrientation;
   late double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
 
   ///
@@ -270,6 +274,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     if (_gaugeOrientation == gaugeOrientation) return;
 
     _gaugeOrientation = gaugeOrientation;
+    _isHorizontalOrientation = gaugeOrientation == GaugeOrientation.horizontal;
     markNeedsLayout();
   }
 
@@ -537,6 +542,72 @@ class RenderLinearGaugeContainer extends RenderBox {
     super.detach();
   }
 
+  calculateStartAndEndLabelSize() {
+    _startLabelSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle,
+        value: !getInversedRulers
+            ? getCustomLabels!.isEmpty
+                ? getStart.toInt().toString()
+                : getCustomLabels!.first.text
+            : getCustomLabels!.isEmpty
+                ? getEnd.toInt().toString()
+                : getCustomLabels!.last.text);
+
+    _endLabelSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle,
+        value: !getInversedRulers
+            ? getCustomLabels!.isEmpty
+                ? getEnd.toInt().toString()
+                : getCustomLabels!.last.text
+            : getCustomLabels!.isEmpty
+                ? getStart.toInt().toString()
+                : getCustomLabels!.first.text);
+
+    startLabelSize = _startLabelSize;
+    endLabelSize = _endLabelSize;
+  }
+
+  calculateStartAndEndOffsetOfGauge() {
+    Offset offset = Offset(
+      0,
+      getGaugeOrientation == GaugeOrientation.horizontal
+          ? yAxisForGaugeContainer
+          : xAxisForGaugeContainer,
+    );
+    late double end;
+    late double start;
+
+    double largestPointerWidth =
+        math.max(getLargestPointerSize(), getLargestWidgetPointerSize());
+
+    if (showLabel) {
+      end = GaugeOrientation.horizontal == getGaugeOrientation
+          ? size.width -
+              ((_endLabelSize.width / 2) +
+                  (_startLabelSize.width / 2) +
+                  (largestPointerWidth))
+          : (size.height -
+              ((_endLabelSize.height / 2) +
+                  (_startLabelSize.height / 2) +
+                  (largestPointerWidth)));
+
+      start = GaugeOrientation.horizontal == getGaugeOrientation
+          ? (offset.dx +
+              (_startLabelSize.width / 2) +
+              (largestPointerWidth / 2))
+          : (offset.dx +
+              (_startLabelSize.height / 2) +
+              (largestPointerWidth / 2));
+    } else {
+      end = GaugeOrientation.horizontal == getGaugeOrientation
+          ? size.width - (largestPointerWidth)
+          : size.height - (largestPointerWidth);
+      start = offset.dx + (largestPointerWidth / 2);
+    }
+    gaugeStart = start;
+    gaugeEnd = end;
+  }
+
   Color setAnimatedColor(Color paintColor) {
     double animationValue = 1;
     if (_gaugeAnimation != null) {
@@ -668,44 +739,16 @@ class RenderLinearGaugeContainer extends RenderBox {
           'The start value of the range should be less than the end value of the range.');
     }
 
+    double end = gaugeEnd;
+    double start = gaugeStart;
+
     Offset offset = Offset(
       0,
       getGaugeOrientation == GaugeOrientation.horizontal
           ? yAxisForGaugeContainer
           : xAxisForGaugeContainer,
     );
-    late double end;
-    late double start;
 
-    double largestPointerWidth =
-        math.max(getLargestPointerSize(), getLargestWidgetPointerSize());
-
-    if (showLabel) {
-      end = GaugeOrientation.horizontal == getGaugeOrientation
-          ? size.width -
-              ((_endLabelSize.width / 2) +
-                  (_startLabelSize.width / 2) +
-                  (largestPointerWidth))
-          : (size.height -
-              ((_endLabelSize.height / 2) +
-                  (_startLabelSize.height / 2) +
-                  (largestPointerWidth)));
-
-      start = GaugeOrientation.horizontal == getGaugeOrientation
-          ? (offset.dx +
-              (_startLabelSize.width / 2) +
-              (largestPointerWidth / 2))
-          : (offset.dx +
-              (_startLabelSize.height / 2) +
-              (largestPointerWidth / 2));
-    } else {
-      end = GaugeOrientation.horizontal == getGaugeOrientation
-          ? size.width - (largestPointerWidth)
-          : size.height - (largestPointerWidth);
-      start = offset.dx + (largestPointerWidth / 2);
-    }
-    gaugeStart = start;
-    gaugeEnd = end;
     late Rect gaugeContainer;
     if (getGaugeOrientation == GaugeOrientation.horizontal) {
       gaugeContainer = Rect.fromLTWH(
@@ -904,66 +947,31 @@ class RenderLinearGaugeContainer extends RenderBox {
 
   @override
   void performLayout() {
-    _startLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle,
-        value: !getInversedRulers
-            ? getCustomLabels!.isEmpty
-                ? getStart.toInt().toString()
-                : getCustomLabels!.first.text
-            : getCustomLabels!.isEmpty
-                ? getEnd.toInt().toString()
-                : getCustomLabels!.last.text);
-
-    _endLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle,
-        value: !getInversedRulers
-            ? getCustomLabels!.isEmpty
-                ? getEnd.toInt().toString()
-                : getCustomLabels!.last.text
-            : getCustomLabels!.isEmpty
-                ? getStart.toInt().toString()
-                : getCustomLabels!.first.text);
-
     filterShapePointers(getPointers);
+    calculateStartAndEndLabelSize();
 
-    // double parentWidgetSize;
+    double parentWidgetSize;
 
-    // final double actualParentWidth = constraints.maxWidth;
-    // final double actualParentHeight = constraints.maxHeight;
+    final double actualParentWidth = constraints.maxWidth;
+    final double actualParentHeight = constraints.maxHeight;
 
-    // if (_isHorizontalOrientation) {
-    //   parentWidgetSize = actualParentWidth;
-    // } else {
-    //   parentWidgetSize = actualParentHeight;
-    // }
+    if (_isHorizontalOrientation) {
+      parentWidgetSize = actualParentWidth;
+    } else {
+      parentWidgetSize = actualParentHeight;
+    }
 
-    // final double gaugeContainerWidgetThickness = _measureGaugeContainerSize();
+    if (_isHorizontalOrientation) {
+      _axisActualSize = Size(parentWidgetSize, getThickness);
+    } else {
+      _axisActualSize = Size(getThickness, parentWidgetSize);
+    }
 
-    // if (_isHorizontalOrientation) {
-    //   _axisActualSize = Size(parentWidgetSize, gaugeContainerWidgetThickness);
-    // } else {
-    //   _axisActualSize = Size(gaugeContainerWidgetThickness, parentWidgetSize);
-    // }
+    size = _axisActualSize;
 
-    size = Size(constraints.maxWidth, constraints.maxHeight);
+    calculateStartAndEndOffsetOfGauge();
+    _calculateRulerPoints();
   }
-
-  // _measureGaugeContainerSize() {
-
-  //   double effectiveLabelThickness = _isHorizontalOrientation
-  //       ? _startLabelSize.height
-  //       : _startLabelSize.width;
-  //   _effectiveRulerHeight = math.max(
-  //       getPrimaryRulersHeight + getLabelOffset + effectiveLabelThickness,
-  //       getSecondaryRulersHeight);
-  //   if (rulerPosition == RulerPosition.center) {
-  //     return (getThickness >= _effectiveRulerHeight)
-  //         ? getThickness - _effectiveRulerHeight
-  //         : _effectiveRulerHeight - getThickness;
-  //   }
-
-  //   return _effectiveRulerHeight + getThickness + getRulersOffset;
-  // }
 
   @override
   void paint(PaintingContext context, Offset offset) {
@@ -971,11 +979,11 @@ class RenderLinearGaugeContainer extends RenderBox {
     xAxisForGaugeContainer = offset.dx;
     yAxisForGaugeContainer = offset.dy;
     _setLinearGaugeContainerPaint();
-    _calculateRulerPoints();
     _paintGaugeContainer(canvas, size, offset);
   }
 
   void filterShapePointers(List<Pointer> pointers) {
+    filteredShapePointers.clear();
     for (dynamic pointer in pointers) {
       if (pointer.runtimeType == ShapePointer) {
         filteredShapePointers.add(pointer as ShapePointer);

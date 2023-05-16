@@ -256,6 +256,8 @@ class ShapePointer extends LeafRenderObjectWidget implements Pointer {
       ..setWidth = width
       ..setHeight = height
       ..setColor = color
+      ..setShape = shape
+      ..setQuarterTurns = quarterTurns
       ..setPointerPosition = pointerPosition
       ..setPointerAlignment = pointerAlignment
       ..setShowLabel = showLabel
@@ -263,5 +265,7 @@ class ShapePointer extends LeafRenderObjectWidget implements Pointer {
       ..setPointerAnimation = linearGaugeScope.animation!
       ..setLinearGAuge = linearGaugeScope.lGauge
       ..setLabelStyle = labelStyle;
+
+    super.updateRenderObject(context, renderObject);
   }
 }

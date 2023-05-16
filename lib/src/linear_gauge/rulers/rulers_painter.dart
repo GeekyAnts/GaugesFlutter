@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
+import 'dart:math' as math;
 import '../../../geekyants_flutter_gauges.dart';
 import '../linear_gauge_label.dart';
 
@@ -41,12 +41,16 @@ class RenderRulers extends RenderBox {
         _showPrimaryRulers = showPrimaryRulers,
         _showSecondaryRulers = showSecondaryRulers,
         _extendLinearGauge = extendLinearGauge,
+        _isHorizontalOrientation =
+            gaugeOrientation == GaugeOrientation.horizontal,
         _fillExtend = fillExtend;
 
   final Paint _primaryRulersPaint = Paint();
   final Paint _secondaryRulersPaint = Paint();
   late double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
+  late bool _isHorizontalOrientation;
+  late Size _axisActualSize;
 
   ///
   /// Getter and Setter for the [_thickness] parameter.
@@ -93,6 +97,8 @@ class RenderRulers extends RenderBox {
     if (_gaugeOrientation == gaugeOrientation) return;
 
     _gaugeOrientation = gaugeOrientation;
+    _isHorizontalOrientation = gaugeOrientation == GaugeOrientation.horizontal;
+
     markNeedsLayout();
   }
 
@@ -402,7 +408,31 @@ class RenderRulers extends RenderBox {
 
   @override
   void performLayout() {
-    size = Size(constraints.maxWidth, constraints.maxHeight);
+    double parentWidgetSize;
+
+    final double actualParentWidth = constraints.maxWidth;
+    final double actualParentHeight = constraints.maxHeight;
+
+    if (_isHorizontalOrientation) {
+      parentWidgetSize = actualParentWidth;
+    } else {
+      parentWidgetSize = actualParentHeight;
+    }
+
+    double effectiveRulerHeight =
+        math.max(getPrimaryRulersHeight, getSecondaryRulersHeight);
+    double effectiveRulerWidth =
+        math.max(getPrimaryRulersWidth, getSecondaryRulersWidth);
+
+    effectiveRulerHeight += getRulersOffset;
+
+    if (_isHorizontalOrientation) {
+      _axisActualSize = Size(effectiveRulerWidth, effectiveRulerHeight);
+    } else {
+      _axisActualSize = Size(effectiveRulerHeight, effectiveRulerWidth);
+    }
+
+    size = _axisActualSize;
   }
 
   @override
