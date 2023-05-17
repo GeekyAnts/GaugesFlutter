@@ -1,3 +1,9 @@
+## [1.0.0+5] - 3 May 2023
+
+**Fixes**
+
+- Updated Readme and docs
+
 ## [1.0.0+4] - 3 May 2023
 
 **Fixes**

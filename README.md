@@ -116,12 +116,12 @@ The `RangeLinearGauge` class enables you to customize the ruler appearance in th
 ### **CustomCurve**
 
 The `CustomCurve` class allows you to draw Bezier and Straight curves on the `LinearGauge`, providing a high degree of customization for visualizing data.
-<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/main/example/screens/customCurve.png" atl="CustomCurve">
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/customCurve.png" atl="CustomCurve">
 
 ### **Animations**
 
 The `LinearGauge` class includes pre-made animations that can be applied to its pointers, value bars, or the gauge's overall visibility. These animations can help to make the gauge more visually engaging and dynamic.
-<img src="https://github.com/GeekyAnts/GaugesFlutter/blob/main/example/screens/animations.gif" alt="animations gif">
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/animations.gif" alt="animations gif">
 
 ## License
 
