@@ -23,3 +23,6 @@ export './src/linear_gauge/custom_label/custom_ruler_label.dart';
 export './src/linear_gauge/value_bar/value_bar.dart';
 export './src/linear_gauge/utils/enums.dart';
 export './src/linear_gauge/curve/custom_curve.dart';
+export './src/radial_gauge/radial_gauge.dart';
+export './src/radial_gauge/radial_track.dart';
+export 'src/radial_gauge/pointer/needle_pointer.dart';
