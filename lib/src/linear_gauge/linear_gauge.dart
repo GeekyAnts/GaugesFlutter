@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label_painter.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_painter.dart';
@@ -734,6 +735,7 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       thickness: lGauge.linearGaugeBoxDecoration!.thickness!,
       extendLinearGauge: lGauge.extendLinearGauge!,
       fillExtend: lGauge.fillExtend,
+      showLabel: lGauge.rulers!.showLabel!,
       customCurve: lGauge.curves,
     );
   }
@@ -751,6 +753,8 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       ..setStart = lGauge.start!
       ..setEnd = lGauge.end!
       ..setSteps = lGauge.steps!
+      ..setShowLabel = lGauge.rulers!.showLabel!
+      ..setLabelOffset = lGauge.rulers!.labelOffset!
       ..setTextStyle = lGauge.rulers!.textStyle!
       ..setRulerPosition = lGauge.rulers!.rulerPosition!
       ..setValue = lGauge.value!
@@ -784,12 +788,14 @@ class RenderLinearGaugeElement extends MultiChildRenderObjectElement {
   @override
   void insertRenderObjectChild(RenderObject child, IndexedSlot<Element?> slot) {
     super.insertRenderObjectChild(child, slot);
-    if (child is RenderLinearGaugeWidgetPointer) {
+    if (child is RenderRulers) {
+      renderObject.addRuler(child);
+    } else if (child is RenderRulerLabel) {
+      renderObject.addRulerLabel(child);
+    } else if (child is RenderLinearGaugeWidgetPointer) {
       renderObject.addWidgetPointer(child);
     } else if (child is RenderLinearGaugeShapePointer) {
       renderObject.addShapePointer(child);
-    } else if (child is RenderRulers) {
-      renderObject.addRuler(child);
     } else if (child is RenderValueBar) {
       renderObject.addValueBar(child);
     }
@@ -800,9 +806,10 @@ class RenderLinearGaugeElement extends MultiChildRenderObjectElement {
     super.removeRenderObjectChild(child, slot);
     if (child is RenderLinearGaugeWidgetPointer) {
       renderObject.removeWidgetPointer(child);
-    }
-    if (child is RenderLinearGaugeShapePointer) {
+    } else if (child is RenderLinearGaugeShapePointer) {
       renderObject.removeShapePointer(child);
+    } else if (child is RenderValueBar) {
+      renderObject.removeValueBar(child);
     }
   }
 }

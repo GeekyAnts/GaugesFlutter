@@ -15,6 +15,8 @@ class RulerLabel extends LeafRenderObjectWidget {
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderRulerLabel(
+        start: linearGauge.start!,
+        end: linearGauge.end!,
         gaugeOrientation: linearGauge.gaugeOrientation!,
         gaugeAnimation: gaugeAnimation,
         labelOffset: linearGauge.rulers!.labelOffset!,
@@ -25,12 +27,15 @@ class RulerLabel extends LeafRenderObjectWidget {
         rangeLinearGauge: linearGauge.rangeLinearGauge!,
         customLabel: linearGauge.customLabels!,
         textStyle: linearGauge.rulers!.textStyle!,
+        extendLinearGauge: linearGauge.extendLinearGauge!,
         primaryRulersHeight: linearGauge.rulers!.primaryRulersHeight!);
   }
 
   @override
   void updateRenderObject(BuildContext context, RenderRulerLabel renderObject) {
     renderObject
+      ..setStart = linearGauge.start!
+      ..setEnd = linearGauge.end!
       ..setGaugeOrientation = linearGauge.gaugeOrientation!
       ..setGaugeAnimation = gaugeAnimation
       ..setPrimaryRulersHeight = linearGauge.rulers!.primaryRulersHeight!
@@ -41,6 +46,7 @@ class RulerLabel extends LeafRenderObjectWidget {
       ..setInversedRulers = linearGauge.rulers!.inverseRulers!
       ..setRangeLinearGauge = linearGauge.rangeLinearGauge!
       ..setCustomLabels = linearGauge.customLabels!
+      ..setExtendLinearGauge = linearGauge.extendLinearGauge!
       ..setTextStyle = linearGauge.rulers!.textStyle!;
   }
 }

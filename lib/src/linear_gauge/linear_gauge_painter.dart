@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'dart:math' as math;
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_label.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label_painter.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_painter.dart';
 
@@ -35,6 +36,7 @@ class RenderLinearGauge extends RenderBox
     required double thickness,
     required double extendLinearGauge,
     required bool fillExtend,
+    required bool showLabel,
     required List<CustomCurve>? customCurve,
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
@@ -59,6 +61,7 @@ class RenderLinearGauge extends RenderBox
         _extendLinearGauge = extendLinearGauge,
         _fillExtend = fillExtend,
         _curves = customCurve,
+        _showLabel = showLabel,
         _valueBarRenderObject = <RenderValueBar>[],
         _shapePointers = <RenderLinearGaugeShapePointer>[];
 
@@ -285,6 +288,14 @@ class RenderLinearGauge extends RenderBox
     markNeedsPaint();
   }
 
+  bool get showLabel => _showLabel;
+  bool _showLabel;
+  set setShowLabel(bool val) {
+    if (_showLabel == val) return;
+    _showLabel = val;
+    markNeedsPaint();
+  }
+
   LinearGaugeLabel get getLinearGaugeLabel {
     return _linearGaugeLabel;
   }
@@ -369,6 +380,7 @@ class RenderLinearGauge extends RenderBox
   late final List<RenderValueBar> _valueBarRenderObject;
 
   late final RenderRulers _renderRulerElement;
+  late final RenderRulerLabel _renderRulerLabel;
 
   /// Adds the widget render object to widget pointer collection.
   void addWidgetPointer(RenderLinearGaugeWidgetPointer widgetPointer) {
@@ -397,6 +409,12 @@ class RenderLinearGauge extends RenderBox
   /// Adds the ruler render object to widget .
   void addRuler(RenderRulers ruler) {
     _renderRulerElement = ruler;
+    markNeedsLayout();
+  }
+
+  /// Adds the ruler render object to widget .
+  void addRulerLabel(RenderRulerLabel label) {
+    _renderRulerLabel = label;
     markNeedsLayout();
   }
 
@@ -766,6 +784,12 @@ class RenderLinearGauge extends RenderBox
     List<Offset> value = LinearGaugeLabel.primaryRulers.values.first;
     List<Offset> lastValue = LinearGaugeLabel.primaryRulers.values.last;
 
+    if (getInversedRulers) {
+      List<Offset> temp = value;
+      value = lastValue;
+      lastValue = temp;
+    }
+
     double? y;
     double? x;
     switch (rulerPosition) {
@@ -814,6 +838,86 @@ class RenderLinearGauge extends RenderBox
     final MultiChildLayoutParentData? childParentData =
         _renderRulerElement.parentData as MultiChildLayoutParentData?;
     childParentData!.offset = _layoutRulerOffset(_renderRulerElement);
+  }
+
+  Offset _layoutRulerLabelOffset(RenderRulerLabel label) {
+    List<Offset> value = LinearGaugeLabel.primaryRulers.values.first;
+    List<Offset> lastValue = LinearGaugeLabel.primaryRulers.values.last;
+    double effectiveLabelWidth, effectiveLabelHeight;
+    if (getInversedRulers) {
+      List<Offset> temp = value;
+      value = lastValue;
+      lastValue = temp;
+      effectiveLabelWidth =
+          RenderLinearGaugeContainer.startLabelSize.width / 1.5;
+    } else {
+      effectiveLabelWidth = RenderLinearGaugeContainer.startLabelSize.width;
+    }
+    effectiveLabelHeight = RenderLinearGaugeContainer.startLabelSize.height;
+
+    double? y;
+    double? x;
+    switch (rulerPosition) {
+      case RulerPosition.top:
+        y = -(value[1].dy +
+            getLabelOffset +
+            effectiveLabelHeight +
+            getRulersOffset -
+            yAxisForGaugeContainer);
+
+        x = value[1].dx - effectiveLabelWidth;
+        break;
+      case RulerPosition.center:
+        if (getGaugeOrientation == GaugeOrientation.horizontal) {
+          y = ((getThickness) / 2) +
+              yAxisForGaugeContainer +
+              value[1].dy / 2 +
+              getLabelOffset;
+          x = value[1].dx - effectiveLabelWidth;
+        } else {
+          y = lastValue[1].dy - effectiveLabelHeight / 2;
+          x = getThickness / 2 +
+              xAxisForGaugeContainer +
+              lastValue[1].dx / 2 +
+              getLabelOffset;
+        }
+        break;
+      case RulerPosition.bottom:
+        y = getThickness +
+            getRulersOffset +
+            yAxisForGaugeContainer +
+            getLabelOffset +
+            value[1].dy;
+        x = value[1].dx - effectiveLabelWidth;
+
+        break;
+      case RulerPosition.right:
+        y = lastValue[1].dy - effectiveLabelHeight / 2;
+        x = getThickness +
+            getRulersOffset +
+            xAxisForGaugeContainer +
+            value[1].dx +
+            getLabelOffset;
+
+        break;
+      case RulerPosition.left:
+        y = lastValue[1].dy - effectiveLabelHeight / 2;
+        x = 0;
+
+        break;
+    }
+
+    Offset a;
+
+    a = Offset(x, y);
+
+    return a;
+  }
+
+  positionRulerLabel() {
+    final MultiChildLayoutParentData? childParentData =
+        _renderRulerLabel.parentData as MultiChildLayoutParentData?;
+    childParentData!.offset = _layoutRulerLabelOffset(_renderRulerLabel);
   }
 
   Offset _calculateOffsetForValueBar(RenderValueBar valueBar) {
@@ -939,6 +1043,9 @@ class RenderLinearGauge extends RenderBox
       childRef = childParentData.nextSibling;
     }
     positionRulers();
+    if (showLabel) {
+      positionRulerLabel();
+    }
     positionValueBars();
     positionPointer();
   }

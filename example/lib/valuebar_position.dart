@@ -14,7 +14,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          gaugeOrientation: GaugeOrientation.horizontal,
+          gaugeOrientation: GaugeOrientation.vertical,
 
           valueBar: const [
             // ValueBar(
@@ -45,7 +45,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             //   shape: PointerShape.triangle,
             //   height: 20,
             //   width: 100,
-            //   pointerPosition: PointerPosition.top,
+            //   pointerPosition: PointerPosition.left,
             //   pointerAlignment: PointerAlignment.center,
             // ),
             // ShapePointer(
@@ -73,8 +73,10 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           //   CustomRulerLabel(text: "100", value: 100),
           // ],
           rulers: const RulerStyle(
-            inverseRulers: false,
-            rulerPosition: RulerPosition.bottom,
+            // inverseRulers: true,
+            rulerPosition: RulerPosition.left,
+            // labelOffset: 10,
+            // rulersOffset: 10,
             // primaryRulersHeight: 100,
             textStyle: TextStyle(
               fontFamily: 'Roboto',
