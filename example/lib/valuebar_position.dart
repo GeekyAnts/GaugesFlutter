@@ -15,21 +15,21 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
       body: Center(
         child: LinearGauge(
           gaugeOrientation: GaugeOrientation.horizontal,
-          enableGaugeAnimation: true,
+
           valueBar: const [
-            ValueBar(
-              value: 75,
-              position: ValueBarPosition.top,
-              // valueBarThickness: 135,
-            ),
-            ValueBar(
-              value: 75,
-              position: ValueBarPosition.top,
-              offset: 40,
-              // valueBarThickness: 135,
-            )
+            // ValueBar(
+            //   value: 75,
+            //   position: ValueBarPosition.top,
+            //   // valueBarThickness: 135,
+            // ),
+            // ValueBar(
+            //   value: 75,
+            //   position: ValueBarPosition.top,
+            //   offset: 40,
+            //   // valueBarThickness: 135,
+            // )
           ],
-          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 40),
+          // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 80),
           pointers: [
             // WidgetPointer(
             //   value: 50,
@@ -48,15 +48,15 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             //   pointerPosition: PointerPosition.top,
             //   pointerAlignment: PointerAlignment.center,
             // ),
-            ShapePointer(
-              value: 10,
-              shape: PointerShape.circle,
-              height: 100,
-              width: 100,
-              color: Colors.black.withOpacity(0.3),
-              labelStyle: TextStyle(color: Colors.black),
-              pointerPosition: PointerPosition.bottom,
-            ),
+            // ShapePointer(
+            //   value: 10,
+            //   shape: PointerShape.circle,
+            //   height: 100,
+            //   width: 100,
+            //   color: Colors.black.withOpacity(0.3),
+            //   labelStyle: TextStyle(color: Colors.black),
+            //   pointerPosition: PointerPosition.bottom,
+            // ),
             // ShapePointer(
             //   value: 0,
             //   shape: PointerShape.circle,
@@ -66,7 +66,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             //   pointerAlignment: PointerAlignment.center,
             // )
           ],
-          extendLinearGauge: 0,
+          // extendLinearGauge: 10,
           // customLabels: const [
           //   CustomRulerLabel(text: "0", value: 0),
           //   CustomRulerLabel(text: "50", value: 50),

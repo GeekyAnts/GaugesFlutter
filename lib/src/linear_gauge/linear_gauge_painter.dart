@@ -99,7 +99,7 @@ class RenderLinearGauge extends RenderBox
       leftWidgetPointerHeight,
       widgetPointerMaxOfRightAndCenter,
       widgetPointerMaxOfLeftAndCenter = 0;
-  double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
+  static double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
   double spacingForGauge = 0;
 
   List<ShapePointer> filteredShapePointers = [];
@@ -763,13 +763,57 @@ class RenderLinearGauge extends RenderBox
   }
 
   Offset _layoutRulerOffset(RenderRulers ruler) {
-    return Offset.zero;
+    List<Offset> value = LinearGaugeLabel.primaryRulers.values.first;
+    List<Offset> lastValue = LinearGaugeLabel.primaryRulers.values.last;
+
+    double? y;
+    double? x;
+    switch (rulerPosition) {
+      case RulerPosition.top:
+        y = -(value[1].dy + getRulersOffset - yAxisForGaugeContainer);
+        x = value[1].dx;
+        break;
+      case RulerPosition.center:
+        if (getGaugeOrientation == GaugeOrientation.horizontal) {
+          y = ((getThickness) / 2) + yAxisForGaugeContainer - value[1].dy / 2;
+          x = value[1].dx;
+        } else {
+          y = lastValue[1].dy;
+          x = getThickness / 2 + xAxisForGaugeContainer - lastValue[1].dx / 2;
+        }
+        break;
+      case RulerPosition.bottom:
+        y = getThickness + getRulersOffset + yAxisForGaugeContainer;
+        x = value[1].dx;
+
+        break;
+      case RulerPosition.right:
+        y = lastValue[1].dy;
+        x = getThickness + getRulersOffset + xAxisForGaugeContainer;
+
+        break;
+      case RulerPosition.left:
+        y = lastValue[1].dy;
+        x = -(lastValue[1].dx + getRulersOffset - xAxisForGaugeContainer);
+
+        break;
+    }
+
+    Offset a;
+    if (rulerPosition == RulerPosition.top ||
+        rulerPosition == RulerPosition.left) {
+      a = Offset(x, y);
+    } else {
+      a = Offset(x, y);
+    }
+
+    return a;
   }
 
   positionRulers() {
-    // final MultiChildLayoutParentData? childParentData =
-    //     _renderRulerElement.parentData as MultiChildLayoutParentData?;
-    // childParentData!.offset = _layoutRulerOffset(_renderRulerElement);
+    final MultiChildLayoutParentData? childParentData =
+        _renderRulerElement.parentData as MultiChildLayoutParentData?;
+    childParentData!.offset = _layoutRulerOffset(_renderRulerElement);
   }
 
   Offset _calculateOffsetForValueBar(RenderValueBar valueBar) {

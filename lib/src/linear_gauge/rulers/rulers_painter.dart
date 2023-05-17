@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 import 'dart:math' as math;
 import '../../../geekyants_flutter_gauges.dart';
 import '../linear_gauge_label.dart';
@@ -294,7 +296,7 @@ class RenderRulers extends RenderBox {
     _secondaryRulersPaint.strokeWidth = getSecondaryRulersWidth;
   }
 
-  void _drawPrimaryRulers(Canvas canvas, Offset offset) {
+  void _drawPrimaryRulers(Canvas canvas) {
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
       double? y;
       double? x;
@@ -410,14 +412,10 @@ class RenderRulers extends RenderBox {
   void performLayout() {
     double parentWidgetSize;
 
-    final double actualParentWidth = constraints.maxWidth;
-    final double actualParentHeight = constraints.maxHeight;
+    final double actualParentWidth =
+        RenderLinearGaugeContainer.gaugeEnd - getExtendLinearGauge * 2;
 
-    if (_isHorizontalOrientation) {
-      parentWidgetSize = actualParentWidth;
-    } else {
-      parentWidgetSize = actualParentHeight;
-    }
+    parentWidgetSize = actualParentWidth;
 
     double effectiveRulerHeight =
         math.max(getPrimaryRulersHeight, getSecondaryRulersHeight);
@@ -436,12 +434,12 @@ class RenderRulers extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = offset.dx;
-    yAxisForGaugeContainer = offset.dy;
+    xAxisForGaugeContainer = RenderLinearGauge.xAxisForGaugeContainer;
+    yAxisForGaugeContainer = RenderLinearGauge.yAxisForGaugeContainer;
     _setPrimaryRulersPaint();
     _setSecondaryRulersPaint();
 
-    _drawPrimaryRulers(canvas, offset);
+    _drawPrimaryRulers(canvas);
     if (showSecondaryRulers) {
       _drawSecondaryRulers(canvas);
     }
