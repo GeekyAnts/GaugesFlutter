@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 import 'dart:math' as math;
-
 import '../../../geekyants_flutter_gauges.dart';
 import '../linear_gauge_label.dart';
 
@@ -46,11 +47,12 @@ class RenderRulers extends RenderBox {
             gaugeOrientation == GaugeOrientation.horizontal,
         _fillExtend = fillExtend;
 
-  late bool _isHorizontalOrientation;
   final Paint _primaryRulersPaint = Paint();
   final Paint _secondaryRulersPaint = Paint();
   late double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
+  late bool _isHorizontalOrientation;
+  late Size _axisActualSize;
 
   ///
   /// Getter and Setter for the [_thickness] parameter.
@@ -94,11 +96,11 @@ class RenderRulers extends RenderBox {
   GaugeOrientation _gaugeOrientation;
 
   set setGaugeOrientation(gaugeOrientation) {
-    _isHorizontalOrientation = gaugeOrientation == GaugeOrientation.horizontal;
-
     if (_gaugeOrientation == gaugeOrientation) return;
 
     _gaugeOrientation = gaugeOrientation;
+    _isHorizontalOrientation = gaugeOrientation == GaugeOrientation.horizontal;
+
     markNeedsLayout();
   }
 
@@ -294,7 +296,7 @@ class RenderRulers extends RenderBox {
     _secondaryRulersPaint.strokeWidth = getSecondaryRulersWidth;
   }
 
-  void _drawPrimaryRulers(Canvas canvas, Offset offset) {
+  void _drawPrimaryRulers(Canvas canvas) {
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
       double? y;
       double? x;
@@ -408,19 +410,34 @@ class RenderRulers extends RenderBox {
 
   @override
   void performLayout() {
-    size = Size(math.max(_primaryRulersWidth, _secondaryRulersWidth),
-        math.max(_primaryRulersHeight, _secondaryRulersHeight));
+    double parentWidgetSize;
+
+    final double actualParentWidth =
+        RenderLinearGaugeContainer.gaugeEnd - getExtendLinearGauge * 2;
+
+    parentWidgetSize = actualParentWidth;
+
+    double effectiveRulerHeight =
+        math.max(getPrimaryRulersHeight, getSecondaryRulersHeight);
+
+    if (_isHorizontalOrientation) {
+      _axisActualSize = Size(parentWidgetSize, effectiveRulerHeight);
+    } else {
+      _axisActualSize = Size(effectiveRulerHeight, parentWidgetSize);
+    }
+
+    size = _axisActualSize;
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = offset.dx;
-    yAxisForGaugeContainer = offset.dy;
+    xAxisForGaugeContainer = RenderLinearGauge.xAxisForGaugeContainer;
+    yAxisForGaugeContainer = RenderLinearGauge.yAxisForGaugeContainer;
     _setPrimaryRulersPaint();
     _setSecondaryRulersPaint();
 
-    _drawPrimaryRulers(canvas, offset);
+    _drawPrimaryRulers(canvas);
     if (showSecondaryRulers) {
       _drawSecondaryRulers(canvas);
     }

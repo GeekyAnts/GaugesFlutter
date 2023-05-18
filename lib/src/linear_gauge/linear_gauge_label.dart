@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
+import 'dart:math' as math;
 
 class LinearGaugeLabel {
   String? text;
@@ -64,6 +65,9 @@ class LinearGaugeLabel {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
+    // double largestPointerSize = math.max(linearGauge.getLargestPointerSize(),
+    //     linearGauge.getLargestWidgetPointerSize());
+
     double largestPointerSize = linearGauge.getLargestPointerSize();
 
     if (orientation == GaugeOrientation.horizontal) {

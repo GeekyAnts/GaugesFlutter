@@ -189,19 +189,12 @@ class RenderValueBar extends RenderBox {
   }
 
   void drawValueBar(Canvas canvas, double start, double end, double totalWidth,
-      int index, LinearGauge linearGauge) {
+      LinearGauge linearGauge, Offset paintingOffset) {
     assert(value >= linearGauge.start! && value <= linearGauge.end!,
         'Value should be between start and end values');
 
-    // Start and End values of the Linear Gauge
-    double endValue = linearGauge.end!;
-
-    double startValue = linearGauge.start!;
     GaugeOrientation gaugeOrientation = linearGauge.gaugeOrientation!;
-
-    //  width of the value bar in pixels based on the value
-    double valueBarWidth = ((value - startValue) / (endValue - startValue)) *
-        (totalWidth - 2 * linearGauge.extendLinearGauge!);
+    double valueBarWidth = calculateValueBarWidth();
 
     double valueBarAnimationValue = getValueBarAnimation.value;
 
@@ -209,65 +202,30 @@ class RenderValueBar extends RenderBox {
         ? valueBarWidth * valueBarAnimationValue
         : valueBarWidth;
 
-    final ValueBarPosition valueBarPosition = position;
     final Paint linearGaugeContainerPaint = Paint();
     linearGaugeContainerPaint.color = color;
 
-    //For get Offset Height
-    double linearGaugeThickness =
-        linearGauge.linearGaugeBoxDecoration!.thickness!;
-
-    double totalValOffset = _getOffsetHeight(
-        valueBarPosition, linearGaugeThickness, offset, linearGauge);
     bool getInversedRulers = linearGauge.rulers!.inverseRulers!;
     // Drawing Value Bar
     final Rect gaugeContainer;
 
     if (gaugeOrientation == GaugeOrientation.horizontal) {
-      double startValue = (!getInversedRulers) ? start : (start + end);
-
-      if (!linearGauge.fillExtend) {
-        startValue = !getInversedRulers
-            ? (startValue + linearGauge.extendLinearGauge!)
-            : (startValue - linearGauge.extendLinearGauge!);
-      } else {
-        if (linearGauge.end! == value) {
+      if (linearGauge.fillExtend) {
+        if (linearGauge.end == value) {
           valueBarWidth += 2 * linearGauge.extendLinearGauge!;
         } else {
           valueBarWidth += linearGauge.extendLinearGauge!;
         }
       }
 
-      var topOffset = totalValOffset;
-
-      if (position == ValueBarPosition.center) {
-        topOffset = totalValOffset +
-            (linearGaugeThickness - valueBarThickness) / 2 +
-            yAxisForGaugeContainer;
-      }
-
       gaugeContainer = Rect.fromLTWH(
-        startValue,
-        topOffset,
+        paintingOffset.dx,
+        paintingOffset.dy,
         !getInversedRulers ? valueBarWidth : -valueBarWidth,
         valueBarThickness,
       );
     } else {
-      double barTop = (!getInversedRulers) ? start + end : start;
-      double barLeft = _getOffsetHeight(
-        position,
-        linearGaugeThickness,
-        offset,
-        linearGauge,
-      ); // adjust left position as needed
-
-      if (!linearGauge.fillExtend) {
-        barTop = !getInversedRulers
-            ? (barTop - linearGauge.extendLinearGauge!)
-            : (barTop + linearGauge.extendLinearGauge!);
-      } else {
-        // barTop = barTop + 2 * linearGauge.extendLinearGauge!;
-
+      if (linearGauge.fillExtend) {
         if (linearGauge.end! == value) {
           valueBarWidth += 2 * linearGauge.extendLinearGauge!;
         } else {
@@ -275,17 +233,9 @@ class RenderValueBar extends RenderBox {
         }
       }
 
-      var startOffset = barLeft;
-
-      if (position == ValueBarPosition.center) {
-        startOffset = barLeft +
-            (linearGaugeThickness - valueBarThickness) / 2 +
-            xAxisForGaugeContainer;
-      }
-
       gaugeContainer = Rect.fromLTWH(
-        startOffset,
-        barTop,
+        paintingOffset.dx,
+        paintingOffset.dy,
         (position == ValueBarPosition.left)
             ? -valueBarThickness
             : valueBarThickness, // set width to half of the gauge width
@@ -309,23 +259,17 @@ class RenderValueBar extends RenderBox {
     }
   }
 
-  // Calculating Offset Height for Value Bar
-  double _getOffsetHeight(ValueBarPosition position, double height,
-      double valueBarOffset, LinearGauge linearGauge) {
-    switch (position) {
-      case ValueBarPosition.center:
-        return 0.0;
-      case ValueBarPosition.top:
-        return (yAxisForGaugeContainer - valueBarThickness - offset);
-      case ValueBarPosition.bottom:
-        return height + valueBarOffset + yAxisForGaugeContainer;
-      case ValueBarPosition.left:
-        return xAxisForGaugeContainer - valueBarOffset;
-      case ValueBarPosition.right:
-        return height + valueBarOffset + xAxisForGaugeContainer;
-      default:
-        return 0;
-    }
+  double calculateValueBarWidth() {
+    // Start and End values of the Linear Gauge
+    double endValue = linearGauge.end!;
+    double startValue = linearGauge.start!;
+
+    //  width of the value bar in pixels based on the value
+    double valueBarWidth = ((value - startValue) / (endValue - startValue)) *
+        (RenderLinearGaugeContainer.gaugeEnd -
+            2 * linearGauge.extendLinearGauge!);
+
+    return valueBarWidth;
   }
 
   RRect _getRoundedContainer({
@@ -403,21 +347,12 @@ class RenderValueBar extends RenderBox {
 
   @override
   void performLayout() {
-    double parentWidgetSize;
+    final double valueBarWidth = calculateValueBarWidth();
 
-    final double actualParentWidth = constraints.maxWidth;
-    final double actualParentHeight = constraints.maxHeight;
-
-    if (linearGauge.gaugeOrientation == GaugeOrientation.vertical) {
-      parentWidgetSize = actualParentWidth;
+    if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
+      _axisActualSize = Size(valueBarWidth, valueBarThickness);
     } else {
-      parentWidgetSize = actualParentHeight;
-    }
-
-    if (linearGauge.gaugeOrientation == GaugeOrientation.vertical) {
-      _axisActualSize = Size(parentWidgetSize, valueBarThickness);
-    } else {
-      _axisActualSize = Size(valueBarThickness, parentWidgetSize);
+      _axisActualSize = Size(valueBarThickness, valueBarWidth);
     }
 
     size = _axisActualSize;
@@ -426,14 +361,14 @@ class RenderValueBar extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = offset.dx;
-    yAxisForGaugeContainer = offset.dy;
+    // xAxisForGaugeContainer = offset.dx;
+    // yAxisForGaugeContainer = offset.dy;
     drawValueBar(
         canvas,
         RenderLinearGaugeContainer.gaugeStart,
         RenderLinearGaugeContainer.gaugeEnd,
         RenderLinearGaugeContainer.gaugeEnd,
-        0,
-        linearGauge);
+        linearGauge,
+        offset);
   }
 }

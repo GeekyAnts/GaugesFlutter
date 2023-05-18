@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label_painter.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_painter.dart';
 import 'linear_gauge_painter.dart';
 
 /// Creates a LinearGauge Widget to display the values in a linear scale. The
@@ -320,15 +323,17 @@ class LinearGauge extends StatefulWidget {
   ///
   /// ```
   /// const LinearGauge(
+
   ///  pointers: [
   ///   Pointer(
   ///    shape: PointerShape.circle,
+  ///    value: 50,
   ///   color: Colors.green,
   ///  ),
   /// ],
   /// ```
   ///
-  final List<Pointer>? pointers;
+  final List<BasePointer>? pointers;
 
   ///
   /// `enableAnimation` will enable animations for pointers and value bars.
@@ -409,7 +414,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
   AnimationController? _gaugeAnimationController;
   Animation<double>? _gaugeAnimation;
   List<ValueBar>? _oldValueBarList;
-  List<Pointer>? _oldPointerList;
+  List<BasePointer>? _oldPointerList;
   late List<Animation<double>> _pointerAnimations;
   late List<AnimationController> _pointerAnimationControllers;
   late List<Animation<double>> _valueBarAnimations;
@@ -446,8 +451,9 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     _oldValueBarList = (widget.valueBar != null)
         ? List<ValueBar>.from(widget.valueBar!)
         : null;
-    _oldPointerList =
-        (widget.pointers != null) ? List<Pointer>.from(widget.pointers!) : null;
+    _oldPointerList = (widget.pointers != null)
+        ? List<BasePointer>.from(widget.pointers!)
+        : null;
   }
 
   bool _isEqualLists(List<dynamic>? oldList, List<dynamic>? newList) {
@@ -559,7 +565,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     _pointerAnimationControllers.clear();
 
     if (widget.pointers != null && widget.pointers!.isNotEmpty) {
-      for (final Pointer pointer in widget.pointers!) {
+      for (final BasePointer pointer in widget.pointers!) {
         if (!pointer.enableAnimation) {
           _addPointerAnimation(0, Curves.ease);
         } else if (pointer.animationDuration > 0) {
@@ -645,7 +651,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     }
 
     if (widget.pointers != null && widget.pointers!.isNotEmpty) {
-      for (final Pointer pointer in widget.pointers!) {
+      for (final dynamic pointer in widget.pointers!) {
         if (pointer.enableAnimation && pointer.animationDuration > 0) {
           _addChild(
               pointer, _pointerAnimations[j], _pointerAnimationControllers[j]);
@@ -732,6 +738,7 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       thickness: lGauge.linearGaugeBoxDecoration!.thickness!,
       extendLinearGauge: lGauge.extendLinearGauge!,
       fillExtend: lGauge.fillExtend,
+      showLabel: lGauge.rulers!.showLabel!,
       customCurve: lGauge.curves,
     );
   }
@@ -749,6 +756,8 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       ..setStart = lGauge.start!
       ..setEnd = lGauge.end!
       ..setSteps = lGauge.steps!
+      ..setShowLabel = lGauge.rulers!.showLabel!
+      ..setLabelOffset = lGauge.rulers!.labelOffset!
       ..setTextStyle = lGauge.rulers!.textStyle!
       ..setRulerPosition = lGauge.rulers!.rulerPosition!
       ..setValue = lGauge.value!
@@ -762,5 +771,48 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       ..setExtendLinearGauge = lGauge.extendLinearGauge!
       ..setFillExtend = lGauge.fillExtend
       ..setCurves = lGauge.curves;
+
+    super.updateRenderObject(context, renderObject);
+  }
+
+  @override
+  MultiChildRenderObjectElement createElement() =>
+      RenderLinearGaugeElement(this);
+}
+
+/// Linear gauge render widget element class.
+class RenderLinearGaugeElement extends MultiChildRenderObjectElement {
+  /// Creates a instance for Linear gauge render widget element class.
+  RenderLinearGaugeElement(MultiChildRenderObjectWidget widget) : super(widget);
+
+  @override
+  RenderLinearGauge get renderObject => super.renderObject as RenderLinearGauge;
+
+  @override
+  void insertRenderObjectChild(RenderObject child, IndexedSlot<Element?> slot) {
+    super.insertRenderObjectChild(child, slot);
+    if (child is RenderRulers) {
+      renderObject.addRuler(child);
+    } else if (child is RenderRulerLabel) {
+      renderObject.addRulerLabel(child);
+    } else if (child is RenderLinearGaugeWidgetPointer) {
+      renderObject.addWidgetPointer(child);
+    } else if (child is RenderLinearGaugeShapePointer) {
+      renderObject.addShapePointer(child);
+    } else if (child is RenderValueBar) {
+      renderObject.addValueBar(child);
+    }
+  }
+
+  @override
+  void removeRenderObjectChild(RenderObject child, dynamic slot) {
+    super.removeRenderObjectChild(child, slot);
+    if (child is RenderLinearGaugeWidgetPointer) {
+      renderObject.removeWidgetPointer(child);
+    } else if (child is RenderLinearGaugeShapePointer) {
+      renderObject.removeShapePointer(child);
+    } else if (child is RenderValueBar) {
+      renderObject.removeValueBar(child);
+    }
   }
 }

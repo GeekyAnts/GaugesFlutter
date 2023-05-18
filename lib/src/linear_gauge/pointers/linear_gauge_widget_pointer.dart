@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
-/// A [BasePointer] is a widget that is used to indicate the value of the [LinearGauge].
+/// A [WidgetPointer] implements [Pointer] that is used to add custom widget as a pointer in  [LinearGauge].
 ///
-/// The LinearGauge takes a list of [BasePointer] as an input i.e [Pointer] & [WidgetPointer].
-/// `value` Sets the value of the pointer
-/// `height` and `weight` Sets the height  & weight of the pointer
-/// `child` adds the custom widget as a pointer
-/// `PointerShape` Sets the shape of the pointer
-///
+/// The LinearGauge takes a list of [Pointer] as an input.
+
 /// Note: The `value` of the pointer should be between the `start` and `end` value of the [LinearGauge] and if the value is null it takes the value specified in  `Linear Gauge`
 ///
 /// ```dart
 /// const LinearGauge(
 ///    pointers: const [
-///      Pointer(
-///       value: 50.0,
-///       color: Colors.red,
-///       shape: PointerShape.circle,
-///    ),
 ///      WidgetPointer(
-///       value: 20.0,
-///       child: Image.assets("image",height:100,width:100),
+///       value: 50.0,
+///       child: Container(
+///              height: 100,
+///              width: 200,
+///              color: Colors.red,
+///               ),
 ///    ),
 ///   ],
 /// ),
 /// ```
 ///
 ///
-abstract class BasePointer {
-  const BasePointer({
+
+class WidgetPointer extends SingleChildRenderObjectWidget
+    implements BasePointer {
+  const WidgetPointer({
     Key? key,
     required this.value,
     this.pointerPosition = PointerPosition.center,
@@ -37,7 +34,8 @@ abstract class BasePointer {
     this.animationDuration = 1000,
     this.animationType = Curves.ease,
     this.enableAnimation = true,
-  });
+    required Widget child,
+  }) : super(key: key, child: child);
 
   ///
   /// `value` Sets the value of the pointer on the [LinearGauge]
@@ -49,11 +47,14 @@ abstract class BasePointer {
   /// ),
   /// ),
   /// ```
+
+  @override
   final double value;
 
   ///
   /// Pointer Position on the [LinearGauge]  sets the position of `pointer` on the [LinearGauge]
   ///
+  @override
   final PointerPosition pointerPosition;
 
   ///
@@ -66,6 +67,7 @@ abstract class BasePointer {
   /// ),
   /// ),
   /// ```
+  @override
   final PointerAlignment pointerAlignment;
 
   /// Specifies the load time animation duration with [enableAnimation].
@@ -83,6 +85,7 @@ abstract class BasePointer {
   ///  )])
   /// ```
   ///
+  @override
   final bool enableAnimation;
 
   /// Specifies the load time animation duration with [enableAnimation].
@@ -101,6 +104,7 @@ abstract class BasePointer {
   ///  )])
   /// ```
   ///
+  @override
   final int animationDuration;
 
   /// Specifies the animation type of pointers.
@@ -118,5 +122,36 @@ abstract class BasePointer {
   ///  )])
   /// ```
   ///
+  @override
   final Curve animationType;
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
+    return RenderLinearGaugeWidgetPointer(
+        value: value,
+        pointerPosition: pointerPosition,
+        pointerAlignment: pointerAlignment,
+        animationDuration: animationDuration,
+        animationType: animationType,
+        enableAnimation: enableAnimation,
+        pointerAnimation: linearGaugeScope.animation!,
+        linearGauge: linearGaugeScope.lGauge);
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, RenderLinearGaugeWidgetPointer renderObject) {
+    final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
+
+    renderObject
+      ..setValue = value
+      ..setPointerPosition = pointerPosition
+      ..setPointerAlignment = pointerAlignment
+      ..setEnableAnimation = enableAnimation
+      ..setPointerAnimation = linearGaugeScope.animation!
+      ..setLinearGAuge = linearGaugeScope.lGauge;
+
+    super.updateRenderObject(context, renderObject);
+  }
 }

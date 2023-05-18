@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 import '../../../geekyants_flutter_gauges.dart';
 import 'dart:ui' as ui;
-
+import 'dart:math' as math;
+import '../gauge_container/linear_gauge_container.dart';
 import '../linear_gauge_label.dart';
 
 class RenderRulerLabel extends RenderBox {
-  RenderRulerLabel({
-    required GaugeOrientation gaugeOrientation,
-    required double primaryRulersHeight,
-    required Animation<double>? gaugeAnimation,
-    required bool showLabel,
-    required RulerPosition rulerPosition,
-    required double labelOffset,
-    required bool inversedRulers,
-    required List<RangeLinearGauge> rangeLinearGauge,
-    required double rulersOffset,
-    required List<CustomRulerLabel> customLabel,
-    required TextStyle textStyle,
-  })  : _gaugeOrientation = gaugeOrientation,
+  RenderRulerLabel(
+      {required GaugeOrientation gaugeOrientation,
+      required double primaryRulersHeight,
+      required Animation<double>? gaugeAnimation,
+      required bool showLabel,
+      required RulerPosition rulerPosition,
+      required double labelOffset,
+      required bool inversedRulers,
+      required List<RangeLinearGauge> rangeLinearGauge,
+      required double rulersOffset,
+      required List<CustomRulerLabel> customLabel,
+      required TextStyle textStyle,
+      required double extendLinearGauge,
+      required double start,
+      required double end})
+      : _gaugeOrientation = gaugeOrientation,
         _primaryRulersHeight = primaryRulersHeight,
         _gaugeAnimation = gaugeAnimation,
         _showLabel = showLabel,
@@ -27,14 +32,17 @@ class RenderRulerLabel extends RenderBox {
         _inversedRulers = inversedRulers,
         _rulersOffset = rulersOffset,
         _rangeLinearGauge = rangeLinearGauge,
+        _extendLinearGauge = extendLinearGauge,
+        _start = start,
+        _end = end,
         _isHorizontalOrientation =
             gaugeOrientation == GaugeOrientation.horizontal,
         _customLabels = customLabel,
         _textStyle = textStyle;
 
-  late bool _isHorizontalOrientation;
-  late Size _axisActualSize;
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
+  late bool _isHorizontalOrientation;
+  late Size _startLabelSize, _endLabelSize;
 
   static late double gaugeStart, gaugeEnd;
   late double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
@@ -51,6 +59,28 @@ class RenderRulerLabel extends RenderBox {
 
     _primaryRulersHeight = primaryRulersHeight;
     markNeedsLayout();
+  }
+
+  ///
+  /// Getter and Setter for the [_start] parameter.
+  ///
+  double get getStart => _start;
+  double _start;
+  set setStart(double start) {
+    if (_start == start) return;
+    _start = start;
+    markNeedsPaint();
+  }
+
+  ///
+  /// Getter and Setter for the [_end] parameter.
+  ///
+  get getEnd => _end;
+  double _end;
+  set setEnd(end) {
+    if (_end == end) return;
+    _end = end;
+    markNeedsPaint();
   }
 
   ///
@@ -73,11 +103,11 @@ class RenderRulerLabel extends RenderBox {
   GaugeOrientation _gaugeOrientation;
 
   set setGaugeOrientation(gaugeOrientation) {
-    _isHorizontalOrientation = gaugeOrientation == GaugeOrientation.horizontal;
-
     if (_gaugeOrientation == gaugeOrientation) return;
 
     _gaugeOrientation = gaugeOrientation;
+    _isHorizontalOrientation = gaugeOrientation == GaugeOrientation.horizontal;
+
     markNeedsLayout();
   }
 
@@ -114,6 +144,14 @@ class RenderRulerLabel extends RenderBox {
   set setLabelOffset(double val) {
     if (_labelOffset == val) return;
     _labelOffset = val;
+    markNeedsLayout();
+  }
+
+  double get getExtendLinearGauge => _extendLinearGauge;
+  double _extendLinearGauge;
+  set setExtendLinearGauge(double val) {
+    if (_extendLinearGauge == val) return;
+    _extendLinearGauge = val;
     markNeedsLayout();
   }
 
@@ -193,9 +231,66 @@ class RenderRulerLabel extends RenderBox {
     return paintColor.withOpacity(animationValue * paintColor.opacity);
   }
 
+  calculateStartAndEndLabelSize() {
+    _startLabelSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle,
+        value: !getInversedRulers
+            ? getCustomLabels!.isEmpty
+                ? getStart.toString()
+                : getCustomLabels!.first.text
+            : getCustomLabels!.isEmpty
+                ? getEnd.toString()
+                : getCustomLabels!.last.text);
+
+    _endLabelSize = _linearGaugeLabel.getLabelSize(
+        textStyle: getTextStyle,
+        value: !getInversedRulers
+            ? getCustomLabels!.isEmpty
+                ? getEnd.toString()
+                : getCustomLabels!.last.text
+            : getCustomLabels!.isEmpty
+                ? getStart.toString()
+                : getCustomLabels!.first.text);
+  }
+
   @override
   void performLayout() {
-    size = Size(constraints.maxWidth, constraints.maxHeight);
+    Size _axisActualSize;
+    calculateStartAndEndLabelSize();
+
+    final double actualParentWidth;
+    if (_isHorizontalOrientation) {
+      if (!getInversedRulers) {
+        actualParentWidth = (RenderLinearGaugeContainer.endLabelSize.width +
+                RenderLinearGaugeContainer.gaugeEnd) -
+            getExtendLinearGauge * 2;
+      } else {
+        actualParentWidth = (RenderLinearGaugeContainer.startLabelSize.width +
+                RenderLinearGaugeContainer.gaugeEnd) -
+            getExtendLinearGauge * 2;
+      }
+    } else {
+      actualParentWidth = (RenderLinearGaugeContainer.endLabelSize.height +
+              RenderLinearGaugeContainer.gaugeEnd) -
+          getExtendLinearGauge * 2;
+    }
+
+    double effectiveLabelHeight;
+
+    if (_isHorizontalOrientation) {
+      effectiveLabelHeight = RenderLinearGaugeContainer.startLabelSize.height;
+    } else {
+      effectiveLabelHeight =
+          math.max(_startLabelSize.width, _endLabelSize.width);
+    }
+
+    if (_isHorizontalOrientation) {
+      _axisActualSize = Size(actualParentWidth, effectiveLabelHeight);
+    } else {
+      _axisActualSize = Size(effectiveLabelHeight, actualParentWidth);
+    }
+
+    size = _axisActualSize;
   }
 
   void _drawLabels(
@@ -334,8 +429,8 @@ class RenderRulerLabel extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = offset.dx;
-    yAxisForGaugeContainer = offset.dy;
+    xAxisForGaugeContainer = RenderLinearGauge.xAxisForGaugeContainer;
+    yAxisForGaugeContainer = RenderLinearGauge.yAxisForGaugeContainer;
     int count = 0;
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
       _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
