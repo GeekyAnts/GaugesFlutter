@@ -19,6 +19,7 @@ class MyValueBarPosition extends StatefulWidget {
 }
 
 class _MyValueBarPositionState extends State<MyValueBarPosition> {
+  double value = 50;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,62 +27,22 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
         child: LinearGauge(
           gaugeOrientation: GaugeOrientation.horizontal,
 
-          curves: [
-            CustomCurve(
-              curvePosition: CurvePosition.top,
-              midPoint: 50,
-              start: 10,
-              end: 50,
-              startHeight: 100,
-              endHeight: 100,
-              midHeight: 100,
-            )
-          ],
           // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 80),
           pointers: [
-            // WidgetPointer(
-            //   value: 50,
-            //   pointerPosition: PointerPosition.top,
-            //   child: Image.asset(
-            //     "assets/bmi_light.png",
-            //     height: 300,
-            //     width: 200,
-            //   ),
-            // )
-            // ShapePointer(
-            //   value: 10,
-            //   shape: PointerShape.triangle,
-            //   height: 20,
-            //   width: 100,
-            //   pointerPosition: PointerPosition.left,
-            //   pointerAlignment: PointerAlignment.center,
-            // ),
-            // Pointer(
-            //   value: 90,
-            //   shape: PointerShape.rectangle,
-            //   height: 400,
-            //   width: 100,
-            //   color: Colors.black.withOpacity(0.3),
-            //   labelStyle: TextStyle(color: Colors.black),
-            //   pointerPosition: PointerPosition.bottom,
-            // ),
-            // ShapePointer(
-            //   value: 0,
-            //   shape: PointerShape.circle,
-            //   height: 200,
-            //   // height: 20,
-            //   pointerPosition: PointerPosition.top,
-            //   pointerAlignment: PointerAlignment.center,
-            // )
+            Pointer(
+                value: value,
+                width: 30,
+                height: 50,
+                onChanged: (value) {
+                  setState(() {
+                    this.value = value;
+                  });
+                },
+                shape: PointerShape.circle)
           ],
-          // extendLinearGauge: 10,
-          // customLabels: const [
-          //   CustomRulerLabel(text: "0", value: 0),
-          //   CustomRulerLabel(text: "50", value: 50),
-          //   CustomRulerLabel(text: "100", value: 100),
-          // ],
+
           rulers: const RulerStyle(
-            inverseRulers: true,
+            inverseRulers: false,
             rulerPosition: RulerPosition.bottom,
             labelOffset: 10,
             rulersOffset: 10,

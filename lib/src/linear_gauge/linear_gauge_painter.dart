@@ -1935,24 +1935,25 @@ class RenderLinearGauge extends RenderBox
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
-    var pos = details.localPosition;
+    var localPosition = globalToLocal(details.localPosition);
     var w = gaugeEnd + gaugeStart - 2 * getExtendLinearGauge;
-    pos = Offset(pos.dx, pos.dy);
-
-    // var dx = pos.dx.clamp(
-    //     0 + width! + linearGauge.getExtendLinearGauge,
-    //     w + linearGauge.getExtendLinearGauge);
-
-    // var dy = localPosition.dy.clamp(
-    //     0 + width! + linearGauge.getExtendLinearGauge,
-    //     w + linearGauge.getExtendLinearGauge);
+    localPosition = Offset(localPosition.dx, localPosition.dy);
+    // var dx = localPosition.dx
+    //     .clamp(0 + getExtendLinearGauge, w + getExtendLinearGauge);
+    var dx = localPosition.dx;
+    var dy = localPosition.dy
+        .clamp(0 + getExtendLinearGauge, w + getExtendLinearGauge);
     var range = getEnd - getStart;
 
-    // getPointers.first.value = pos.dx / 200;
-    print(filteredShapePointers.first.value);
+    double adjustedValue = dx - (getExtendLinearGauge);
 
-    filteredShapePointers.first.value = pos.dx / 200;
-    filteredShapePointers.first.onChanged!(pos.dx / w);
+    double percentValue = (adjustedValue - getStart) / range * 100;
+
+    var value = percentValue + getStart;
+    print(adjustedValue);
+
+    // filteredShapePointers.first.value = pos.dx / 200;
+    // filteredShapePointers.first.onChanged!(value);
     markNeedsPaint();
     markNeedsLayout();
     markNeedsSemanticsUpdate();
