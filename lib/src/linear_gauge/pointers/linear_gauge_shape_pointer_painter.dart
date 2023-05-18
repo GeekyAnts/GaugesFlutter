@@ -16,6 +16,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     required double width,
     required PointerShape shape,
     required bool showLabel,
+    required ValueChanged<double>? onChanged,
     required QuarterTurns quarterTurns,
     required TextStyle labelStyle,
     required PointerPosition pointerPosition,
@@ -27,6 +28,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     required LinearGauge linearGauge,
   })  : _value = value,
         _height = height,
+        _onChanged = onChanged,
         _color = color,
         _width = width,
         _shape = shape,
@@ -61,6 +63,16 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     }
     _linearGauge = linearGauge;
     markNeedsPaint();
+  }
+
+  /// Gets and sets the onChanged assigned to [RenderLinearPointerBase].
+  ValueChanged<double>? get onChanged => _onChanged;
+  ValueChanged<double>? _onChanged;
+  set onChanged(ValueChanged<double>? value) {
+    if (value == _onChanged) {
+      return;
+    }
+    _onChanged = value;
   }
 
   /// Gets the orientation to [RenderLinearGaugeShapePointer].
@@ -727,6 +739,11 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
       default:
         return 0;
     }
+  }
+
+  @override
+  bool hitTestSelf(Offset position) {
+    return true;
   }
 
   @override

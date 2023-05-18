@@ -154,4 +154,9 @@ class WidgetPointer extends SingleChildRenderObjectWidget
 
     super.updateRenderObject(context, renderObject);
   }
+
+  @override
+  set value(double _value) {
+    value = _value;
+  }
 }

@@ -29,7 +29,7 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 ///
 ///
 abstract class BasePointer {
-  const BasePointer({
+  BasePointer({
     Key? key,
     required this.value,
     this.pointerPosition = PointerPosition.center,
@@ -49,7 +49,7 @@ abstract class BasePointer {
   /// ),
   /// ),
   /// ```
-  final double value;
+  double value;
 
   ///
   /// Pointer Position on the [LinearGauge]  sets the position of `pointer` on the [LinearGauge]

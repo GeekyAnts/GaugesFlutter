@@ -21,7 +21,7 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 ///
 ///
 class Pointer extends LeafRenderObjectWidget implements BasePointer {
-  const Pointer({
+  Pointer({
     Key? key,
     required this.value,
     this.height = 10.0,
@@ -29,6 +29,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
     this.width = 10.0,
     required this.shape,
     this.showLabel = false,
+    this.onChanged,
     this.quarterTurns = QuarterTurns.zero,
     this.labelStyle = const TextStyle(),
     this.pointerPosition = PointerPosition.center,
@@ -49,7 +50,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
   /// ),
   /// ```
   @override
-  final double value;
+  double value;
 
   ///
   /// `height` Sets the height of the pointer on the [LinearGauge]
@@ -150,6 +151,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
   /// ),
   /// ```
   final TextStyle labelStyle;
+  final ValueChanged<double>? onChanged;
 
   ///
   /// Pointer Position on the [LinearGauge]  sets the position of `pointer` on the [LinearGauge]
@@ -242,6 +244,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
         quarterTurns: quarterTurns,
         enableAnimation: enableAnimation,
         labelStyle: labelStyle,
+        onChanged: onChanged,
         pointerAnimation: linearGaugeScope.animation!,
         linearGauge: linearGaugeScope.lGauge);
   }
@@ -264,6 +267,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
       ..setEnableAnimation = enableAnimation
       ..setPointerAnimation = linearGaugeScope.animation!
       ..setLinearGAuge = linearGaugeScope.lGauge
+      ..onChanged = onChanged
       ..setLabelStyle = labelStyle;
 
     super.updateRenderObject(context, renderObject);

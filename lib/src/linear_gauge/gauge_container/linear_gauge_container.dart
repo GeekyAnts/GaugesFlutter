@@ -975,6 +975,11 @@ class RenderLinearGaugeContainer extends RenderBox {
   }
 
   @override
+  bool hitTestSelf(Offset position) {
+    return true;
+  }
+
+  @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
     xAxisForGaugeContainer = offset.dx;

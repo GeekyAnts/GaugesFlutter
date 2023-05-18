@@ -16,20 +16,6 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
         child: LinearGauge(
           gaugeOrientation: GaugeOrientation.horizontal,
 
-          valueBar: const [
-            ValueBar(
-              value: 45,
-              position: ValueBarPosition.top,
-              valueBarThickness: 15,
-            ),
-            ValueBar(
-              value: 75,
-              position: ValueBarPosition.top,
-              color: Colors.amber,
-              offset: 40,
-              valueBarThickness: 15,
-            )
-          ],
           // curves: [
           //   CustomCurve(
           //     midPoint: 50,
@@ -38,23 +24,6 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           // ],
           // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 80),
           pointers: [
-            // WidgetPointer(
-            //   value: 50,
-            //   pointerPosition: PointerPosition.top,
-            //   child: Image.asset(
-            //     "assets/bmi_light.png",
-            //     height: 300,
-            //     width: 200,
-            //   ),
-            // )
-            // ShapePointer(
-            //   value: 10,
-            //   shape: PointerShape.triangle,
-            //   height: 20,
-            //   width: 100,
-            //   pointerPosition: PointerPosition.left,
-            //   pointerAlignment: PointerAlignment.center,
-            // ),
             Pointer(
               value: 90,
               shape: PointerShape.circle,

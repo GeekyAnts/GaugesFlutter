@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 // ignore: implementation_imports
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
@@ -63,7 +64,9 @@ class RenderLinearGauge extends RenderBox
         _curves = customCurve,
         _showLabel = showLabel,
         _valueBarRenderObject = <RenderValueBar>[],
-        _shapePointers = <RenderLinearGaugeShapePointer>[];
+        _shapePointers = <RenderLinearGaugeShapePointer>[] {
+    _drag = HorizontalDragGestureRecognizer()..onUpdate = _handleDragUpdate;
+  }
 
   // For getting Gauge Values
   double gaugeStart = 0;
@@ -106,6 +109,7 @@ class RenderLinearGauge extends RenderBox
   double spacingForGauge = 0;
 
   List<Pointer> filteredShapePointers = [];
+  late HorizontalDragGestureRecognizer _drag;
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -1022,6 +1026,61 @@ class RenderLinearGauge extends RenderBox
     }
   }
 
+  PointerDeviceKind pointerType = PointerDeviceKind.mouse;
+
+  // @override
+  // bool hitTest(BoxHitTestResult result, {Offset? position}) {
+  //   if (size.contains(position!)) {
+  //     print("yes");
+  //     result.add(BoxHitTestEntry(this, position));
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  late RenderBox _child;
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    final bool isHit = super.hitTestChildren(result, position: position);
+
+    RenderBox? child = lastChild;
+    _child = child!;
+
+    while (child != null) {
+      final childParentData = child.parentData as MultiChildLayoutParentData;
+      if (child.runtimeType == RenderLinearGaugeContainer ||
+          child.runtimeType == RenderLinearGaugeShapePointer) {
+        if (child.hitTest(result, position: position)) {
+          return true;
+        }
+      }
+      child = childParentData.previousSibling;
+    }
+    return true;
+  }
+
+  @override
+  void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
+    assert(debugHandleEvent(event, entry));
+
+    if (event is PointerDownEvent) {
+      pointerType = event.kind;
+      _drag.addPointer(event);
+    } else if (event is PointerUpEvent) {
+      // _drag.dispose();
+      // activePointerIndices.clear();
+      // _endPointerInteractivity();
+    }
+
+    super.handleEvent(event, entry);
+  }
+
+  // @override
+  // bool hitTestSelf(Offset position) {
+  //   return super.hitTestSelf(position);
+  // }
+
   @override
   void performLayout() {
     filterShapePointers(getPointers);
@@ -1873,5 +1932,29 @@ class RenderLinearGauge extends RenderBox
         filteredShapePointers.add(pointer as Pointer);
       }
     }
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    var pos = details.localPosition;
+    var w = gaugeEnd + gaugeStart - 2 * getExtendLinearGauge;
+    pos = Offset(pos.dx, pos.dy);
+
+    // var dx = pos.dx.clamp(
+    //     0 + width! + linearGauge.getExtendLinearGauge,
+    //     w + linearGauge.getExtendLinearGauge);
+
+    // var dy = localPosition.dy.clamp(
+    //     0 + width! + linearGauge.getExtendLinearGauge,
+    //     w + linearGauge.getExtendLinearGauge);
+    var range = getEnd - getStart;
+
+    // getPointers.first.value = pos.dx / 200;
+    print(filteredShapePointers.first.value);
+
+    filteredShapePointers.first.value = pos.dx / 200;
+    filteredShapePointers.first.onChanged!(pos.dx / w);
+    markNeedsPaint();
+    markNeedsLayout();
+    markNeedsSemanticsUpdate();
   }
 }
