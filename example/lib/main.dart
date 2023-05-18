@@ -22,6 +22,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: MyValueBarPosition(),
+
     );
   }
 }
