@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
-/// A [ShapePointer] implements [Pointer] that is used to add the shape pointer to the [LinearGauge].
+/// A [Pointer] implements [BasePointer] that is used to add the shape pointer to the [LinearGauge].
 ///
-/// The LinearGauge takes a list of [Pointer] as an input.
+/// The LinearGauge takes a list of [BasePointer] as an input.
 ///
 /// Note: The `value` of the pointer should be between the `start` and `end` value of the [LinearGauge] and if the value is null it takes the value specified in  `Linear Gauge`
 ///
 /// ```dart
 /// const LinearGauge(
 ///    pointers: const [
-///      ShapePointer(
+///      Pointer(
 ///       value: 50.0,
 ///       color: Colors.red,
 ///       shape: PointerShape.circle,
@@ -20,8 +20,8 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 /// ```
 ///
 ///
-class ShapePointer extends LeafRenderObjectWidget implements Pointer {
-  const ShapePointer({
+class Pointer extends LeafRenderObjectWidget implements BasePointer {
+  const Pointer({
     Key? key,
     required this.value,
     this.height = 10.0,

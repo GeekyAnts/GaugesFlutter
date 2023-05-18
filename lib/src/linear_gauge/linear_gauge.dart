@@ -324,14 +324,15 @@ class LinearGauge extends StatefulWidget {
   /// ```
   /// const LinearGauge(
   ///  pointer: [
-  ///   pointer(
+  ///   Pointer(
   ///    shape: PointerShape.circle,
+  ///    value: 50,
   ///   color: Colors.green,
   ///  ),
   /// ],
   /// ```
   ///
-  final List<Pointer>? pointers;
+  final List<BasePointer>? pointers;
 
   ///
   /// `enableAnimation` will enable animations for pointers and value bars.
@@ -412,7 +413,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
   AnimationController? _gaugeAnimationController;
   Animation<double>? _gaugeAnimation;
   List<ValueBar>? _oldValueBarList;
-  List<Pointer>? _oldPointerList;
+  List<BasePointer>? _oldPointerList;
   late List<Animation<double>> _pointerAnimations;
   late List<AnimationController> _pointerAnimationControllers;
   late List<Animation<double>> _valueBarAnimations;
@@ -449,8 +450,9 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     _oldValueBarList = (widget.valueBar != null)
         ? List<ValueBar>.from(widget.valueBar!)
         : null;
-    _oldPointerList =
-        (widget.pointers != null) ? List<Pointer>.from(widget.pointers!) : null;
+    _oldPointerList = (widget.pointers != null)
+        ? List<BasePointer>.from(widget.pointers!)
+        : null;
   }
 
   bool _isEqualLists(List<dynamic>? oldList, List<dynamic>? newList) {
@@ -562,7 +564,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     _pointerAnimationControllers.clear();
 
     if (widget.pointers != null && widget.pointers!.isNotEmpty) {
-      for (final Pointer pointer in widget.pointers!) {
+      for (final BasePointer pointer in widget.pointers!) {
         if (!pointer.enableAnimation) {
           _addPointerAnimation(0, Curves.ease);
         } else if (pointer.animationDuration > 0) {

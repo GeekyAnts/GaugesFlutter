@@ -55,7 +55,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             //   pointerPosition: PointerPosition.left,
             //   pointerAlignment: PointerAlignment.center,
             // ),
-            ShapePointer(
+            Pointer(
               value: 90,
               shape: PointerShape.circle,
               height: 100,

@@ -117,7 +117,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     required bool showPrimaryRulers,
     required double rulersOffset,
     required bool inversedRulers,
-    required List<Pointer> pointers,
+    required List<BasePointer> pointers,
     required List<RangeLinearGauge> rangeLinearGauge,
     required bool fillExtend,
     required double thickness,
@@ -164,7 +164,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   final Paint _linearGaugeRangePaint = Paint();
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
   late Size _startLabelSize, _endLabelSize, _axisActualSize;
-  List<ShapePointer> filteredShapePointers = [];
+  List<Pointer> filteredShapePointers = [];
 
   static late double gaugeStart, gaugeEnd;
   static late Size startLabelSize, endLabelSize;
@@ -491,9 +491,9 @@ class RenderLinearGaugeContainer extends RenderBox {
   ///
   /// Getter and Setter for the [Pointer] parameter.
   ///
-  List<Pointer> get getPointers => _pointers;
-  List<Pointer> _pointers = <Pointer>[];
-  set setPointers(List<Pointer> val) {
+  List<BasePointer> get getPointers => _pointers;
+  List<BasePointer> _pointers = <BasePointer>[];
+  set setPointers(List<BasePointer> val) {
     if (_pointers == val) return;
     _pointers = val;
     markNeedsLayout();
@@ -618,8 +618,8 @@ class RenderLinearGaugeContainer extends RenderBox {
     return paintColor.withOpacity(animationValue * paintColor.opacity);
   }
 
-  ShapePointer? getLargestPointer(List<ShapePointer>? pointers) {
-    ShapePointer? largestPointer = pointers?.reduce(
+  Pointer? getLargestPointer(List<Pointer>? pointers) {
+    Pointer? largestPointer = pointers?.reduce(
         (current, next) => getGaugeOrientation == GaugeOrientation.vertical
             ? current.height > next.height
                 ? current
@@ -632,7 +632,7 @@ class RenderLinearGaugeContainer extends RenderBox {
 
   double getLargestPointerSize() {
     if (filteredShapePointers.isNotEmpty) {
-      ShapePointer? largestPointer = getLargestPointer(filteredShapePointers);
+      Pointer? largestPointer = getLargestPointer(filteredShapePointers);
 
       if ((largestPointer?.shape == PointerShape.rectangle ||
               largestPointer?.shape == PointerShape.diamond) &&
@@ -983,11 +983,11 @@ class RenderLinearGaugeContainer extends RenderBox {
     _paintGaugeContainer(canvas, size, offset);
   }
 
-  void filterShapePointers(List<Pointer> pointers) {
+  void filterShapePointers(List<BasePointer> pointers) {
     filteredShapePointers.clear();
     for (dynamic pointer in pointers) {
-      if (pointer.runtimeType == ShapePointer) {
-        filteredShapePointers.add(pointer as ShapePointer);
+      if (pointer.runtimeType == Pointer) {
+        filteredShapePointers.add(pointer as Pointer);
       }
     }
   }

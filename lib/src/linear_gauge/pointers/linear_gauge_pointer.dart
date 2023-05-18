@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
-/// A [Pointer] is a widget that is used to indicate the value of the [LinearGauge].
+/// A [BasePointer] is a widget that is used to indicate the value of the [LinearGauge].
 ///
-/// The LinearGauge takes a list of [Pointer] as an input i.e [ShapePointer] & [WidgetPointer].
+/// The LinearGauge takes a list of [BasePointer] as an input i.e [Pointer] & [WidgetPointer].
 /// `value` Sets the value of the pointer
 /// `height` and `weight` Sets the height  & weight of the pointer
 /// `child` adds the custom widget as a pointer
@@ -14,7 +14,7 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 /// ```dart
 /// const LinearGauge(
 ///    pointers: const [
-///      ShapePointer(
+///      Pointer(
 ///       value: 50.0,
 ///       color: Colors.red,
 ///       shape: PointerShape.circle,
@@ -28,8 +28,8 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 /// ```
 ///
 ///
-abstract class Pointer {
-  const Pointer({
+abstract class BasePointer {
+  const BasePointer({
     Key? key,
     required this.value,
     this.pointerPosition = PointerPosition.center,

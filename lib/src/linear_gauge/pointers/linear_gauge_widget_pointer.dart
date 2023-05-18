@@ -24,7 +24,8 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 ///
 ///
 
-class WidgetPointer extends SingleChildRenderObjectWidget implements Pointer {
+class WidgetPointer extends SingleChildRenderObjectWidget
+    implements BasePointer {
   const WidgetPointer({
     Key? key,
     required this.value,
