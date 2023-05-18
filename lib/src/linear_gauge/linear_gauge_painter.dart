@@ -1028,7 +1028,7 @@ class RenderLinearGauge extends RenderBox
     RenderBox? child = firstChild;
     while (child != null) {
       final childParentData = child.parentData as MultiChildLayoutParentData;
-      child.layout(constraints);
+      child.layout(constraints, parentUsesSize: true);
 
       child = childParentData.nextSibling;
     }
@@ -1036,10 +1036,11 @@ class RenderLinearGauge extends RenderBox
     RenderBox? childRef = firstChild;
     while (childRef != null) {
       final childParentData = childRef.parentData as MultiChildLayoutParentData;
-
-      childParentData.offset =
-          Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
-
+      if (childRef.runtimeType == RenderLinearGaugeContainer ||
+          childRef.runtimeType == RenderLinearGaugeWidgetPointer) {
+        childParentData.offset =
+            Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
+      }
       childRef = childParentData.nextSibling;
     }
     positionRulers();

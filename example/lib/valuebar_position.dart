@@ -14,21 +14,28 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          gaugeOrientation: GaugeOrientation.vertical,
+          gaugeOrientation: GaugeOrientation.horizontal,
 
           valueBar: const [
-            // ValueBar(
-            //   value: 75,
-            //   position: ValueBarPosition.top,
-            //   // valueBarThickness: 135,
-            // ),
-            // ValueBar(
-            //   value: 75,
-            //   position: ValueBarPosition.top,
-            //   offset: 40,
-            //   // valueBarThickness: 135,
-            // )
+            ValueBar(
+              value: 45,
+              position: ValueBarPosition.top,
+              valueBarThickness: 15,
+            ),
+            ValueBar(
+              value: 75,
+              position: ValueBarPosition.top,
+              color: Colors.amber,
+              offset: 40,
+              valueBarThickness: 15,
+            )
           ],
+          // curves: [
+          //   CustomCurve(
+          //     midPoint: 50,
+          //     start: 20,
+          //   )
+          // ],
           // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 80),
           pointers: [
             // WidgetPointer(
@@ -48,15 +55,15 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             //   pointerPosition: PointerPosition.left,
             //   pointerAlignment: PointerAlignment.center,
             // ),
-            // ShapePointer(
-            //   value: 10,
-            //   shape: PointerShape.circle,
-            //   height: 100,
-            //   width: 100,
-            //   color: Colors.black.withOpacity(0.3),
-            //   labelStyle: TextStyle(color: Colors.black),
-            //   pointerPosition: PointerPosition.bottom,
-            // ),
+            ShapePointer(
+              value: 90,
+              shape: PointerShape.circle,
+              height: 100,
+              width: 100,
+              color: Colors.black.withOpacity(0.3),
+              labelStyle: TextStyle(color: Colors.black),
+              pointerPosition: PointerPosition.top,
+            ),
             // ShapePointer(
             //   value: 0,
             //   shape: PointerShape.circle,
@@ -74,10 +81,10 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           // ],
           rulers: const RulerStyle(
             // inverseRulers: true,
-            rulerPosition: RulerPosition.left,
-            // labelOffset: 10,
-            // rulersOffset: 10,
-            // primaryRulersHeight: 100,
+            rulerPosition: RulerPosition.bottom,
+            labelOffset: 10,
+            rulersOffset: 10,
+            primaryRulersHeight: 30,
             textStyle: TextStyle(
               fontFamily: 'Roboto',
               color: Colors.black,

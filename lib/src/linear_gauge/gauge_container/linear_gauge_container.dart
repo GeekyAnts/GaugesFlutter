@@ -577,8 +577,9 @@ class RenderLinearGaugeContainer extends RenderBox {
     late double end;
     late double start;
 
-    double largestPointerWidth =
-        math.max(getLargestPointerSize(), getLargestWidgetPointerSize());
+    // double largestPointerWidth =
+    //     math.max(getLargestPointerSize(), getLargestWidgetPointerSize());
+    double largestPointerWidth = getLargestPointerSize();
 
     if (showLabel) {
       end = GaugeOrientation.horizontal == getGaugeOrientation

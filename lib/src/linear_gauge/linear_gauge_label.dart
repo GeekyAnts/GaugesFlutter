@@ -65,8 +65,10 @@ class LinearGaugeLabel {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
-    double largestPointerSize = math.max(linearGauge.getLargestPointerSize(),
-        linearGauge.getLargestWidgetPointerSize());
+    // double largestPointerSize = math.max(linearGauge.getLargestPointerSize(),
+    //     linearGauge.getLargestWidgetPointerSize());
+
+    double largestPointerSize = linearGauge.getLargestPointerSize();
 
     if (orientation == GaugeOrientation.horizontal) {
       if (linearGauge.showLabel) {

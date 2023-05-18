@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_label.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 
 import '../../../geekyants_flutter_gauges.dart';
 
@@ -373,14 +374,37 @@ class RenderCurve extends RenderBox {
 
   @override
   void performLayout() {
-    size = Size(constraints.maxWidth, constraints.maxHeight);
+    double greatestHeight = 0;
+    double currentGreatestHeight = startHeight!;
+    if (midHeight! > currentGreatestHeight) {
+      currentGreatestHeight = midHeight!;
+    }
+    if (endHeight! > currentGreatestHeight) {
+      currentGreatestHeight = endHeight!;
+    }
+
+    if (currentGreatestHeight > greatestHeight) {
+      greatestHeight = currentGreatestHeight;
+    }
+
+    Size widgetSize;
+    final double actualWidth = RenderLinearGaugeContainer.gaugeEnd -
+        linearGauge.extendLinearGauge! * 2;
+
+    if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
+      widgetSize = Size(actualWidth, greatestHeight);
+    } else {
+      widgetSize = Size(greatestHeight, actualWidth);
+    }
+
+    size = widgetSize;
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = offset.dx;
-    yAxisForGaugeContainer = offset.dy;
+    xAxisForGaugeContainer = RenderLinearGauge.xAxisForGaugeContainer;
+    yAxisForGaugeContainer = RenderLinearGauge.yAxisForGaugeContainer;
 
     var firstOff =
         LinearGaugeLabel.primaryRulers[linearGauge.start!.toString()]![0];
