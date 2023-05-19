@@ -65,7 +65,16 @@ class RenderLinearGauge extends RenderBox
         _showLabel = showLabel,
         _valueBarRenderObject = <RenderValueBar>[],
         _shapePointers = <RenderLinearGaugeShapePointer>[] {
-    _drag = HorizontalDragGestureRecognizer()..onUpdate = _handleDragUpdate;
+    _horizontalDrag = HorizontalDragGestureRecognizer()
+      ..onUpdate = _handleDragUpdate
+      ..onEnd = _handleDragEnd
+      ..onStart = _handleDragStart
+      ..dragStartBehavior = DragStartBehavior.start;
+    _verticalDrag = VerticalDragGestureRecognizer()
+      ..onUpdate = _handleDragUpdate
+      ..onEnd = _handleDragEnd
+      ..onStart = _handleDragStart
+      ..dragStartBehavior = DragStartBehavior.start;
   }
 
   // For getting Gauge Values
@@ -109,7 +118,12 @@ class RenderLinearGauge extends RenderBox
   double spacingForGauge = 0;
 
   List<Pointer> filteredShapePointers = [];
-  late HorizontalDragGestureRecognizer _drag;
+
+  /// Horizontal  Gesture Recognizer for the Linear Gauge.
+  late HorizontalDragGestureRecognizer _horizontalDrag;
+
+  /// Vertical Gesture Recognizer for the Linear Gauge.
+  late VerticalDragGestureRecognizer _verticalDrag;
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -602,6 +616,9 @@ class RenderLinearGauge extends RenderBox
   Offset getShapePointerOffset(RenderLinearGaugeShapePointer pointer) {
     double start = RenderLinearGaugeContainer.gaugeStart;
     double end = RenderLinearGaugeContainer.gaugeEnd;
+
+    gaugeEnd = end;
+    gaugeStart = start;
     var verticalFirstOffset =
         LinearGaugeLabel.primaryRulers[getStart.toString()]!;
     Offset offset = verticalFirstOffset.first;
@@ -1028,36 +1045,26 @@ class RenderLinearGauge extends RenderBox
 
   PointerDeviceKind pointerType = PointerDeviceKind.mouse;
 
-  // @override
-  // bool hitTest(BoxHitTestResult result, {Offset? position}) {
-  //   if (size.contains(position!)) {
-  //     print("yes");
-  //     result.add(BoxHitTestEntry(this, position));
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  bool restrictPointerChange = false;
 
-  late RenderBox _child;
+  late RenderLinearGaugeShapePointer _movablePointer;
 
   @override
   bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    final bool isHit = super.hitTestChildren(result, position: position);
+    final bool isHit = super.defaultHitTestChildren(result, position: position);
 
-    RenderBox? child = lastChild;
-    _child = child!;
-
-    while (child != null) {
-      final childParentData = child.parentData as MultiChildLayoutParentData;
-      if (child.runtimeType == RenderLinearGaugeContainer ||
-          child.runtimeType == RenderLinearGaugeShapePointer) {
-        if (child.hitTest(result, position: position)) {
-          return true;
+    if (isHit && !restrictPointerChange) {
+      final HitTestTarget child = result.path.last.target;
+      if (child is RenderLinearGaugeShapePointer) {
+        _movablePointer = child;
+        if (!_movablePointer.isInteractive) {
+          return false;
         }
+        return true;
       }
-      child = childParentData.previousSibling;
     }
-    return true;
+
+    return false;
   }
 
   @override
@@ -1066,20 +1073,18 @@ class RenderLinearGauge extends RenderBox
 
     if (event is PointerDownEvent) {
       pointerType = event.kind;
-      _drag.addPointer(event);
+      if (getGaugeOrientation == GaugeOrientation.horizontal) {
+        _horizontalDrag.addPointer(event);
+      } else {
+        _verticalDrag.addPointer(event);
+      }
+      restrictPointerChange = true;
     } else if (event is PointerUpEvent) {
-      // _drag.dispose();
-      // activePointerIndices.clear();
-      // _endPointerInteractivity();
+      restrictPointerChange = true;
     }
 
     super.handleEvent(event, entry);
   }
-
-  // @override
-  // bool hitTestSelf(Offset position) {
-  //   return super.hitTestSelf(position);
-  // }
 
   @override
   void performLayout() {
@@ -1934,28 +1939,65 @@ class RenderLinearGauge extends RenderBox
     }
   }
 
-  void _handleDragUpdate(DragUpdateDetails details) {
-    var localPosition = globalToLocal(details.localPosition);
-    var w = gaugeEnd + gaugeStart - 2 * getExtendLinearGauge;
+  double _calculatePosition(Offset localPosition) {
+    double totalWidth = (gaugeEnd) - (2 * getExtendLinearGauge);
     localPosition = Offset(localPosition.dx, localPosition.dy);
-    // var dx = localPosition.dx
-    //     .clamp(0 + getExtendLinearGauge, w + getExtendLinearGauge);
-    var dx = localPosition.dx;
-    var dy = localPosition.dy
-        .clamp(0 + getExtendLinearGauge, w + getExtendLinearGauge);
+
+    double dx = localPosition.dx;
+    double dy = localPosition.dy;
+
     var range = getEnd - getStart;
 
-    double adjustedValue = dx - (getExtendLinearGauge);
+    double adjustedValue = getGaugeOrientation == GaugeOrientation.horizontal
+        ? (dx - gaugeStart - ((getExtendLinearGauge))) / (totalWidth)
+        : (dy - gaugeStart - (getExtendLinearGauge)) / (totalWidth);
 
-    double percentValue = (adjustedValue - getStart) / range * 100;
+    var value = (getStart + (adjustedValue * range));
 
-    var value = percentValue + getStart;
-    print(adjustedValue);
+    value = value.clamp(getStart, getEnd).toDouble();
 
-    // filteredShapePointers.first.value = pos.dx / 200;
-    // filteredShapePointers.first.onChanged!(value);
+    if (getGaugeOrientation == GaugeOrientation.vertical) {
+      value = !getInversedRulers ? getEnd - (value - getStart) : value;
+    } else {
+      value = getInversedRulers ? getEnd - (value - getStart) : value;
+    }
+
+    return value;
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    Offset localPosition = details.localPosition;
+    double value = _calculatePosition(localPosition);
+
+    if (getGaugeOrientation == GaugeOrientation.horizontal) {
+      if (_movablePointer.isInteractive) {
+        _movablePointer.onChanged!(value);
+      }
+    } else {
+      if (_movablePointer.isInteractive) {
+        _movablePointer.onChanged!(value);
+      }
+    }
     markNeedsPaint();
+    markNeedsSemanticsUpdate();
+  }
+
+  void _handleDragStart(DragStartDetails details) {
+    _movablePointer.setIsInteractive = true;
     markNeedsLayout();
     markNeedsSemanticsUpdate();
+  }
+
+  void _handleDragEnd(DragEndDetails details) {
+    restrictPointerChange = false;
+    _horizontalDrag.dispose();
+    _verticalDrag.dispose();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _horizontalDrag.dispose();
+    _verticalDrag.dispose();
   }
 }

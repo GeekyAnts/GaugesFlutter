@@ -24,6 +24,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     required int animationDuration,
     required Curve animationType,
     required bool enableAnimation,
+    required bool isInteractive,
     required Animation<double> pointerAnimation,
     required LinearGauge linearGauge,
   })  : _value = value,
@@ -39,6 +40,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
         _pointerPosition = pointerPosition,
         _linearGauge = linearGauge,
         _pointerAnimation = pointerAnimation,
+        _isInteractive = isInteractive,
         _enableAnimation = enableAnimation;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
@@ -145,6 +147,20 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     _color = value;
     markNeedsPaint();
   }
+
+  // Sets the Interaction for [RenderLinearGaugeShapePointer].
+  set setIsInteractive(bool value) {
+    if (value == _isInteractive) {
+      return;
+    }
+
+    _isInteractive = value;
+    markNeedsPaint();
+  }
+
+  /// Gets the Interaction assigned to [RenderLinearGaugeShapePointer].
+  bool get isInteractive => _isInteractive;
+  bool _isInteractive;
 
   /// Gets the showLabel assigned to [RenderLinearGaugeShapePointer].
   bool get showLabel => _showLabel;

@@ -29,6 +29,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
     this.width = 10.0,
     required this.shape,
     this.showLabel = false,
+    this.isInteractive = false,
     this.onChanged,
     this.quarterTurns = QuarterTurns.zero,
     this.labelStyle = const TextStyle(),
@@ -75,6 +76,22 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
   /// ```
   ///
   final double width;
+
+  ///
+  /// `isInteractive` enables/disables the interaction of the
+  /// pointer on the [LinearGauge]
+  /// ```dart
+  /// const LinearGauge(
+  ///   pointers: [
+  ///     Pointer(
+  ///       isInteractive: true,
+  ///       value: 50.0,
+  ///       ),
+  ///     ],
+  ///   ),
+  /// ```
+
+  bool isInteractive;
 
   ///
   /// `color` Sets the color of the pointer on the [LinearGauge]
@@ -234,6 +251,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
         value: value,
         color: color,
         width: width,
+        isInteractive: isInteractive,
         height: height,
         pointerPosition: pointerPosition,
         shape: shape,
@@ -268,6 +286,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
       ..setPointerAnimation = linearGaugeScope.animation!
       ..setLinearGAuge = linearGaugeScope.lGauge
       ..onChanged = onChanged
+      ..setIsInteractive = isInteractive
       ..setLabelStyle = labelStyle;
 
     super.updateRenderObject(context, renderObject);
