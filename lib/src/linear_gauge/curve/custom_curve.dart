@@ -105,4 +105,24 @@ class CustomCurve extends LeafRenderObjectWidget {
         end: end ?? 100,
         midPoint: midPoint);
   }
+
+  @override
+  void updateRenderObject(BuildContext context, RenderCurve renderObject) {
+    final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
+
+    renderObject
+      ..setLinearGAuge = linearGaugeScope.lGauge
+      ..setStartHeight = startHeight ?? 0
+      ..setEndHeight = endHeight ?? 0
+      ..setMidHeight = midHeight ?? 10
+      ..setPaintStyle = paintStyle
+      ..setCurveStyle = curveStyle
+      ..setColor = color
+      ..setStart = start ?? 0
+      ..setCurvePosition = curvePosition
+      ..setEnd = end ?? 100
+      ..setMidPoint = midPoint;
+
+    super.updateRenderObject(context, renderObject);
+  }
 }

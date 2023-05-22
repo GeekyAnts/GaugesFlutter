@@ -18,8 +18,13 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
 
           // curves: [
           //   CustomCurve(
+          //     curvePosition: CurvePosition.top,
           //     midPoint: 50,
-          //     start: 20,
+          //     start: 10,
+          //     end: 50,
+          //     startHeight: 100,
+          //     endHeight: 100,
+          //     midHeight: 100,
           //   )
           // ],
           // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 80),
@@ -41,6 +46,15 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
             //   pointerPosition: PointerPosition.top,
             //   pointerAlignment: PointerAlignment.center,
             // )
+            // ,
+            WidgetPointer(
+                value: 50,
+                pointerPosition: PointerPosition.center,
+                child: Container(
+                  height: 100,
+                  width: 60,
+                  color: Colors.amber,
+                ))
           ],
           // extendLinearGauge: 10,
           // customLabels: const [
@@ -49,8 +63,8 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           //   CustomRulerLabel(text: "100", value: 100),
           // ],
           rulers: const RulerStyle(
-            // inverseRulers: true,
-            rulerPosition: RulerPosition.bottom,
+            inverseRulers: true,
+            rulerPosition: RulerPosition.center,
             labelOffset: 10,
             rulersOffset: 10,
             primaryRulersHeight: 30,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/curve/custom_curve_painter.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label_painter.dart';
@@ -801,6 +802,8 @@ class RenderLinearGaugeElement extends MultiChildRenderObjectElement {
       renderObject.addShapePointer(child);
     } else if (child is RenderValueBar) {
       renderObject.addValueBar(child);
+    } else if (child is RenderCurve) {
+      renderObject.addCurve(child);
     }
   }
 
@@ -813,6 +816,8 @@ class RenderLinearGaugeElement extends MultiChildRenderObjectElement {
       renderObject.removeShapePointer(child);
     } else if (child is RenderValueBar) {
       renderObject.removeValueBar(child);
+    } else if (child is RenderCurve) {
+      renderObject.removeCurve(child);
     }
   }
 }

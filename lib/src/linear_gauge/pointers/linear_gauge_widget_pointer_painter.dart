@@ -170,8 +170,8 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
   }
 
   /// Method to draw the pointer on the canvas based on the pointer shape
-  void drawPointer(Canvas canvas, double start, double end, Offset offset,
-      LinearGauge linearGauge, PaintingContext context) {
+  void drawPointer(Canvas canvas, Offset offset, LinearGauge linearGauge,
+      PaintingContext context) {
     if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
       if (pointerPosition != PointerPosition.bottom &&
           pointerPosition != PointerPosition.center &&
@@ -187,31 +187,6 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
             'Invalid pointer position: $pointerPosition. For a vertical gauge, pointer should be positioned at left, right, or center.');
       }
     }
-
-    GaugeOrientation gaugeOrientation = linearGauge.gaugeOrientation!;
-    double endValue = linearGauge.end!;
-    double startValue = linearGauge.start!;
-    double totalWidth = end;
-    bool isInversedRulers = linearGauge.rulers!.inverseRulers!;
-
-    double valueInPX = !isInversedRulers
-        ? (value! - startValue) /
-            (endValue - startValue) *
-            (totalWidth - 2 * linearGauge.extendLinearGauge!)
-        : (value! - endValue) /
-            (startValue - endValue) *
-            (totalWidth - 2 * linearGauge.extendLinearGauge!);
-
-    Offset hOffset =
-        Offset(valueInPX + start + linearGauge.extendLinearGauge!, offset.dy);
-
-    Offset vOffset = isInversedRulers
-        ? Offset(offset.dx,
-            offset.dy + (end - valueInPX - 2 * linearGauge.extendLinearGauge!))
-        : Offset(offset.dx, (offset.dy - valueInPX));
-
-    offset =
-        gaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
 
     _layoutChildWidget(canvas, offset, linearGauge, context);
   }
@@ -247,64 +222,6 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
 
   _layoutChildWidget(Canvas canvas, Offset offset, LinearGauge linearGauge,
       PaintingContext context) {
-    double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
-    GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
-    switch (pointerPosition) {
-      case PointerPosition.top:
-        offset = Offset(
-            offset.dx - child!.size.width / 2,
-            (offset.dy - child!.size.height - gaugeThickness) +
-                yAxisForGaugeContainer);
-        break;
-      case PointerPosition.bottom:
-        offset = Offset(offset.dx - child!.size.width / 2,
-            offset.dy + yAxisForGaugeContainer);
-        break;
-      case PointerPosition.center:
-        offset = rulerOrientation == GaugeOrientation.horizontal
-            ? Offset(
-                offset.dx - child!.size.width / 2,
-                (offset.dy - gaugeThickness / 2 - child!.size.height / 2) +
-                    yAxisForGaugeContainer)
-            : Offset(
-                offset.dx -
-                    child!.size.width / 2 -
-                    gaugeThickness / 2 +
-                    xAxisForGaugeContainer,
-                offset.dy - child!.size.height / 2);
-        break;
-      case PointerPosition.right:
-        offset = Offset(offset.dx + xAxisForGaugeContainer,
-            offset.dy - child!.size.height / 2);
-        break;
-      case PointerPosition.left:
-        offset = Offset(
-            offset.dx -
-                child!.size.width -
-                gaugeThickness +
-                xAxisForGaugeContainer,
-            offset.dy - child!.size.height / 2);
-        break;
-      default:
-        break;
-    }
-
-    switch (pointerAlignment) {
-      case PointerAlignment.start:
-        offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? Offset(offset.dx - child!.size.width / 2, offset.dy)
-            : Offset(offset.dx, offset.dy - child!.size.height / 2);
-        break;
-      case PointerAlignment.end:
-        offset = (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
-            ? Offset(offset.dx + child!.size.width / 2, offset.dy)
-            : Offset(offset.dx, offset.dy + child!.size.height / 2);
-
-        break;
-      default:
-        break;
-    }
-
     offset = applyAnimations(linearGauge, offset);
     super.paint(context, offset);
   }
@@ -317,15 +234,8 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = offset.dx;
-    yAxisForGaugeContainer = offset.dy;
-
-    var verticalFirstOffset =
-        LinearGaugeLabel.primaryRulers[linearGauge.start.toString()]!;
-    Offset vert = verticalFirstOffset.first;
     if (getPointerAnimation.value > 0) {
-      drawPointer(canvas, RenderLinearGaugeContainer.gaugeStart,
-          RenderLinearGaugeContainer.gaugeEnd, vert, linearGauge, context);
+      drawPointer(canvas, offset, linearGauge, context);
     }
   }
 }
