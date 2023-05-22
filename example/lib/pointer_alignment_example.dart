@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 class PointerAlignmentExample extends StatefulWidget {
-  const PointerAlignmentExample({super.key});
+  PointerAlignmentExample({super.key});
 
   @override
   State<PointerAlignmentExample> createState() =>
@@ -15,7 +15,7 @@ class _PointerAlignmentExampleState extends State<PointerAlignmentExample> {
     return Center(
       child: LinearGauge(
         gaugeOrientation: GaugeOrientation.vertical,
-        pointers: const [
+        pointers: [
           Pointer(
             color: Colors.red,
             value: 30,

@@ -26,7 +26,7 @@ class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
           enableGaugeAnimation: true,
           linearGaugeBoxDecoration:
               const LinearGaugeBoxDecoration(thickness: 20),
-          pointers: const [
+          pointers: [
             Pointer(
               shape: PointerShape.triangle,
               pointerPosition: PointerPosition.left,

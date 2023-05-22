@@ -31,8 +31,10 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           pointers: [
             Pointer(
                 value: value,
+                isInteractive: true,
                 width: 30,
                 height: 50,
+                color: Colors.transparent,
                 onChanged: (value) {
                   setState(() {
                     this.value = value;
@@ -40,6 +42,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
                 },
                 shape: PointerShape.circle)
           ],
+          valueBar: [ValueBar(value: value)],
 
           rulers: const RulerStyle(
             inverseRulers: false,
