@@ -314,35 +314,6 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     }
 
     RulerPosition rulerPosition = linearGauge.rulers!.rulerPosition!;
-    GaugeOrientation gaugeOrientation = linearGauge.gaugeOrientation!;
-    final paint = Paint();
-    paint.color = color;
-
-    double endValue = linearGauge.end!;
-    double startValue = linearGauge.start!;
-    double start = RenderLinearGaugeContainer.gaugeStart;
-    double end = RenderLinearGaugeContainer.gaugeEnd;
-    double totalWidth = end;
-    bool isInversedRulers = linearGauge.rulers!.inverseRulers!;
-
-    double valueInPX = !isInversedRulers
-        ? (value! - startValue) /
-            (endValue - startValue) *
-            (totalWidth - 2 * linearGauge.extendLinearGauge!)
-        : (value! - endValue) /
-            (startValue - endValue) *
-            (totalWidth - 2 * linearGauge.extendLinearGauge!);
-
-    Offset hOffset =
-        Offset(valueInPX + start + linearGauge.extendLinearGauge!, offset.dy);
-
-    Offset vOffset = isInversedRulers
-        ? Offset(offset.dx,
-            offset.dy + (end - valueInPX - 2 * linearGauge.extendLinearGauge!))
-        : Offset(offset.dx, (offset.dy - valueInPX));
-
-    Offset labelOffset =
-        gaugeOrientation == GaugeOrientation.horizontal ? hOffset : vOffset;
     switch (shape) {
       case PointerShape.circle:
         _drawCircle(canvas, offset, linearGauge);
@@ -353,7 +324,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
 
         break;
       case PointerShape.triangle:
-        _layoutTriangleOffsets(canvas, offset, linearGauge);
+        _drawTriangle(canvas, offset, linearGauge);
         break;
       case PointerShape.diamond:
         _drawDiamond(canvas, offset, linearGauge);
@@ -625,36 +596,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     canvas.drawRect(rect, paint);
   }
 
-  // Drawing the Triangle Pointer
-  void _layoutTriangleOffsets(
-      Canvas canvas, Offset offset, LinearGauge linearGauge) {
-    GaugeOrientation rulerOrientation = linearGauge.gaugeOrientation!;
-
-    switch (pointerPosition) {
-      case PointerPosition.top:
-        _drawTriangle(canvas, offset, 180, linearGauge);
-        break;
-      case PointerPosition.bottom:
-        _drawTriangle(canvas, offset, 0, linearGauge);
-        break;
-      case PointerPosition.center:
-        double angle =
-            rulerOrientation == GaugeOrientation.horizontal ? 180 : 90;
-        _drawTriangle(canvas, offset, angle, linearGauge);
-        break;
-      case PointerPosition.right:
-        _drawTriangle(canvas, offset, -90, linearGauge);
-        break;
-      case PointerPosition.left:
-        _drawTriangle(canvas, offset, 90, linearGauge);
-        break;
-      default:
-        break;
-    }
-  }
-
-  void _drawTriangle(
-      Canvas canvas, Offset vertex, double angle, LinearGauge linearGauge) {
+  void _drawTriangle(Canvas canvas, Offset vertex, LinearGauge linearGauge) {
     Offset center = vertex;
 
     final paint = Paint();
@@ -667,22 +609,50 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
 
     final path = Path();
 
-    path.moveTo(rect.left + (rect.width / 2), rect.top);
-    path.lineTo(rect.left, rect.top + rect.height);
-    path.lineTo(rect.left + rect.width, rect.top + rect.height);
-    path.close();
+    switch (pointerPosition) {
+      case PointerPosition.top:
+        path.moveTo(rect.left, rect.top);
+        path.lineTo(rect.left + rect.width, rect.top);
+        path.lineTo(rect.left + (rect.width / 2), rect.top + rect.height);
+        path.close();
+        break;
+      case PointerPosition.bottom:
+        path.moveTo(rect.left + (rect.width / 2), rect.top);
+        path.lineTo(rect.left, rect.top + rect.height);
+        path.lineTo(rect.left + rect.width, rect.top + rect.height);
+        path.close();
+        break;
+      case PointerPosition.center:
+        if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
+          path.moveTo(rect.left, rect.top);
+          path.lineTo(rect.left + rect.width, rect.top);
+          path.lineTo(rect.left + (rect.width / 2), rect.top + rect.height);
+          path.close();
+        } else {
+          path.moveTo(rect.left, rect.top);
+          path.lineTo(rect.left + rect.height, rect.top + (rect.width / 2));
+          path.lineTo(rect.left, rect.top + rect.width);
+          path.close();
+        }
+        break;
+      case PointerPosition.right:
+        path.moveTo(rect.left, rect.top + (rect.width / 2));
+        path.lineTo(rect.left + rect.height, rect.top);
+        path.lineTo(rect.left + rect.height, rect.top + rect.width);
+        path.close();
 
-    canvas.save();
-
-    /// Move the canvas origin to the vertex point
-    canvas.translate(center.dx, center.dy);
-    canvas.rotate(pi * angle / 180);
-    canvas.translate(-center.dx, -center.dy);
+        break;
+      case PointerPosition.left:
+        path.moveTo(rect.left, rect.top);
+        path.lineTo(rect.left + rect.height, rect.top + (rect.width / 2));
+        path.lineTo(rect.left, rect.top + rect.width);
+        path.close();
+        break;
+      default:
+        break;
+    }
 
     canvas.drawPath(path, paint);
-
-    // Restore the previous canvas state
-    canvas.restore();
   }
 
   // Drawing the Diamond pointer

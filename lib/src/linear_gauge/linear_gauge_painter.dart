@@ -759,8 +759,10 @@ class RenderLinearGauge extends RenderBox
 
     switch (pointer.pointerPosition) {
       case PointerPosition.top:
-        offset = Offset(offset.dx + pointer.width / 2,
-            offset.dy - gaugeThickness + yAxisForGaugeContainer);
+        offset = Offset(
+            offset.dx - pointer.width / 2,
+            (offset.dy - pointer.height - gaugeThickness) +
+                yAxisForGaugeContainer);
         break;
       case PointerPosition.bottom:
         offset = Offset(
@@ -769,12 +771,11 @@ class RenderLinearGauge extends RenderBox
       case PointerPosition.center:
         offset = rulerOrientation == GaugeOrientation.horizontal
             ? Offset(
-                offset.dx + pointer.width / 2,
-                offset.dy +
-                    (pointer.height / 2 - gaugeThickness / 2) +
+                offset.dx - pointer.width / 2,
+                (offset.dy - pointer.height / 2 - gaugeThickness / 2) +
                     yAxisForGaugeContainer)
             : Offset(
-                offset.dx +
+                offset.dx -
                     pointer.height / 2 -
                     gaugeThickness / 2 +
                     xAxisForGaugeContainer,
@@ -782,10 +783,14 @@ class RenderLinearGauge extends RenderBox
         break;
       case PointerPosition.right:
         offset = Offset(
-            offset.dx + xAxisForGaugeContainer, offset.dy + pointer.width / 2);
+            offset.dx + xAxisForGaugeContainer, offset.dy - pointer.width / 2);
         break;
       case PointerPosition.left:
-        offset = Offset(offset.dx - gaugeThickness + xAxisForGaugeContainer,
+        offset = Offset(
+            offset.dx -
+                pointer.height -
+                gaugeThickness +
+                xAxisForGaugeContainer,
             offset.dy - pointer.width / 2);
         break;
       default:
