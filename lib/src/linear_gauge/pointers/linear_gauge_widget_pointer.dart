@@ -34,6 +34,8 @@ class WidgetPointer extends SingleChildRenderObjectWidget
     this.animationDuration = 1000,
     this.animationType = Curves.ease,
     this.enableAnimation = true,
+    this.isInteractive = false,
+    this.onChanged,
     required Widget child,
   }) : super(key: key, child: child);
 
@@ -56,6 +58,12 @@ class WidgetPointer extends SingleChildRenderObjectWidget
   ///
   @override
   final PointerPosition pointerPosition;
+
+  ///
+  /// onChanged is a  callback function that will be invoked when a `pointer`
+  /// value is changed.
+  ///
+  final ValueChanged<double>? onChanged;
 
   ///
   /// Pointer Alignment on the [LinearGauge]  sets the alignment of `pointer` on the [LinearGauge]
@@ -87,6 +95,11 @@ class WidgetPointer extends SingleChildRenderObjectWidget
   ///
   @override
   final bool enableAnimation;
+
+  ///
+  /// Specifies whether to enable the interaction for the pointers.
+  ///
+  final bool isInteractive;
 
   /// Specifies the load time animation duration with [enableAnimation].
   /// Duration is defined in milliseconds.
@@ -134,7 +147,9 @@ class WidgetPointer extends SingleChildRenderObjectWidget
         pointerAlignment: pointerAlignment,
         animationDuration: animationDuration,
         animationType: animationType,
+        isInteractive: isInteractive,
         enableAnimation: enableAnimation,
+        onChanged: onChanged,
         pointerAnimation: linearGaugeScope.animation!,
         linearGauge: linearGaugeScope.lGauge);
   }
@@ -150,8 +165,14 @@ class WidgetPointer extends SingleChildRenderObjectWidget
       ..setPointerAlignment = pointerAlignment
       ..setEnableAnimation = enableAnimation
       ..setPointerAnimation = linearGaugeScope.animation!
+      ..onChanged = onChanged
       ..setLinearGAuge = linearGaugeScope.lGauge;
 
     super.updateRenderObject(context, renderObject);
+  }
+
+  @override
+  set value(double _value) {
+    value = _value;
   }
 }

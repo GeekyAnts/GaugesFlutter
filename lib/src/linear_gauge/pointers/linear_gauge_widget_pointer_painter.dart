@@ -15,11 +15,15 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
     required Curve animationType,
     required bool enableAnimation,
     required Animation<double> pointerAnimation,
+    required ValueChanged<double>? onChanged,
+    required bool isInteractive,
     required LinearGauge linearGauge,
   })  : _value = value,
         _pointerAlignment = pointerAlignment,
         _pointerPosition = pointerPosition,
+        _onChanged = onChanged,
         _linearGauge = linearGauge,
+        _isInteractive = isInteractive,
         _pointerAnimation = pointerAnimation,
         _enableAnimation = enableAnimation;
 
@@ -38,6 +42,20 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
     _value = value;
     markNeedsLayout();
   }
+
+  /// Sets  isInteractive for  [RenderLinearGaugeWidgetPointer].
+  set setIsInteractive(bool value) {
+    if (value == _isInteractive) {
+      return;
+    }
+
+    _isInteractive = value;
+    markNeedsPaint();
+  }
+
+  /// Gets  isInteractive for  [RenderLinearGaugeWidgetPointer].
+  bool get isInteractive => _isInteractive;
+  bool _isInteractive;
 
   set setLinearGAuge(LinearGauge linearGauge) {
     if (_linearGauge == linearGauge) {
@@ -89,6 +107,16 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
 
     _pointerAlignment = value;
     markNeedsPaint();
+  }
+
+  /// Gets and sets the onChanged assigned to [RenderLinearPointerBase].
+  ValueChanged<double>? get onChanged => _onChanged;
+  ValueChanged<double>? _onChanged;
+  set onChanged(ValueChanged<double>? value) {
+    if (value == _onChanged) {
+      return;
+    }
+    _onChanged = value;
   }
 
   /// Gets the pointerAlignment assigned to [RenderLinearGaugeWidgetPointer].

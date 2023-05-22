@@ -16,6 +16,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     required double width,
     required PointerShape shape,
     required bool showLabel,
+    required ValueChanged<double>? onChanged,
     required QuarterTurns quarterTurns,
     required TextStyle labelStyle,
     required PointerPosition pointerPosition,
@@ -23,10 +24,12 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     required int animationDuration,
     required Curve animationType,
     required bool enableAnimation,
+    required bool isInteractive,
     required Animation<double> pointerAnimation,
     required LinearGauge linearGauge,
   })  : _value = value,
         _height = height,
+        _onChanged = onChanged,
         _color = color,
         _width = width,
         _shape = shape,
@@ -37,6 +40,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
         _pointerPosition = pointerPosition,
         _linearGauge = linearGauge,
         _pointerAnimation = pointerAnimation,
+        _isInteractive = isInteractive,
         _enableAnimation = enableAnimation;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
@@ -61,6 +65,16 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     }
     _linearGauge = linearGauge;
     markNeedsPaint();
+  }
+
+  /// Gets and sets the onChanged assigned to [RenderLinearPointerBase].
+  ValueChanged<double>? get onChanged => _onChanged;
+  ValueChanged<double>? _onChanged;
+  set onChanged(ValueChanged<double>? value) {
+    if (value == _onChanged) {
+      return;
+    }
+    _onChanged = value;
   }
 
   /// Gets the orientation to [RenderLinearGaugeShapePointer].
@@ -133,6 +147,20 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     _color = value;
     markNeedsPaint();
   }
+
+  // Sets the Interaction for [RenderLinearGaugeShapePointer].
+  set setIsInteractive(bool value) {
+    if (value == _isInteractive) {
+      return;
+    }
+
+    _isInteractive = value;
+    markNeedsPaint();
+  }
+
+  /// Gets the Interaction assigned to [RenderLinearGaugeShapePointer].
+  bool get isInteractive => _isInteractive;
+  bool _isInteractive;
 
   /// Gets the showLabel assigned to [RenderLinearGaugeShapePointer].
   bool get showLabel => _showLabel;
@@ -727,6 +755,11 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
       default:
         return 0;
     }
+  }
+
+  @override
+  bool hitTestSelf(Offset position) {
+    return true;
   }
 
   @override

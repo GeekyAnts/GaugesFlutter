@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 // ignore: implementation_imports
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
@@ -63,7 +64,18 @@ class RenderLinearGauge extends RenderBox
         _curves = customCurve,
         _showLabel = showLabel,
         _valueBarRenderObject = <RenderValueBar>[],
-        _shapePointers = <RenderLinearGaugeShapePointer>[];
+        _shapePointers = <RenderLinearGaugeShapePointer>[] {
+    _horizontalDrag = HorizontalDragGestureRecognizer()
+      ..onUpdate = _handleDragUpdate
+      ..onEnd = _handleDragEnd
+      ..onStart = _handleDragStart
+      ..dragStartBehavior = DragStartBehavior.start;
+    _verticalDrag = VerticalDragGestureRecognizer()
+      ..onUpdate = _handleDragUpdate
+      ..onEnd = _handleDragEnd
+      ..onStart = _handleDragStart
+      ..dragStartBehavior = DragStartBehavior.start;
+  }
 
   // For getting Gauge Values
   double gaugeStart = 0;
@@ -106,6 +118,12 @@ class RenderLinearGauge extends RenderBox
   double spacingForGauge = 0;
 
   List<Pointer> filteredShapePointers = [];
+
+  /// Horizontal  Gesture Recognizer for the Linear Gauge.
+  late HorizontalDragGestureRecognizer _horizontalDrag;
+
+  /// Vertical Gesture Recognizer for the Linear Gauge.
+  late VerticalDragGestureRecognizer _verticalDrag;
 
   ///
   /// Getter and Setter for the [_start] parameter.
@@ -598,6 +616,9 @@ class RenderLinearGauge extends RenderBox
   Offset getShapePointerOffset(RenderLinearGaugeShapePointer pointer) {
     double start = RenderLinearGaugeContainer.gaugeStart;
     double end = RenderLinearGaugeContainer.gaugeEnd;
+
+    gaugeEnd = end;
+    gaugeStart = start;
     var verticalFirstOffset =
         LinearGaugeLabel.primaryRulers[getStart.toString()]!;
     Offset offset = verticalFirstOffset.first;
@@ -1020,6 +1041,49 @@ class RenderLinearGauge extends RenderBox
         _setOffsetOfValueBar(element);
       });
     }
+  }
+
+  PointerDeviceKind pointerType = PointerDeviceKind.mouse;
+
+  bool restrictPointerChange = false;
+
+  late RenderLinearGaugeShapePointer _movablePointer;
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    final bool isHit = super.defaultHitTestChildren(result, position: position);
+
+    if (isHit && !restrictPointerChange) {
+      final HitTestTarget child = result.path.last.target;
+      if (child is RenderLinearGaugeShapePointer) {
+        _movablePointer = child;
+        if (!_movablePointer.isInteractive) {
+          return false;
+        }
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @override
+  void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
+    assert(debugHandleEvent(event, entry));
+
+    if (event is PointerDownEvent) {
+      pointerType = event.kind;
+      if (getGaugeOrientation == GaugeOrientation.horizontal) {
+        _horizontalDrag.addPointer(event);
+      } else {
+        _verticalDrag.addPointer(event);
+      }
+      restrictPointerChange = true;
+    } else if (event is PointerUpEvent) {
+      restrictPointerChange = true;
+    }
+
+    super.handleEvent(event, entry);
   }
 
   @override
@@ -1873,5 +1937,67 @@ class RenderLinearGauge extends RenderBox
         filteredShapePointers.add(pointer as Pointer);
       }
     }
+  }
+
+  double _calculatePosition(Offset localPosition) {
+    double totalWidth = (gaugeEnd) - (2 * getExtendLinearGauge);
+    localPosition = Offset(localPosition.dx, localPosition.dy);
+
+    double dx = localPosition.dx;
+    double dy = localPosition.dy;
+
+    var range = getEnd - getStart;
+
+    double adjustedValue = getGaugeOrientation == GaugeOrientation.horizontal
+        ? (dx - gaugeStart - ((getExtendLinearGauge))) / (totalWidth)
+        : (dy - gaugeStart - (getExtendLinearGauge)) / (totalWidth);
+
+    var value = (getStart + (adjustedValue * range));
+
+    value = value.clamp(getStart, getEnd).toDouble();
+
+    if (getGaugeOrientation == GaugeOrientation.vertical) {
+      value = !getInversedRulers ? getEnd - (value - getStart) : value;
+    } else {
+      value = getInversedRulers ? getEnd - (value - getStart) : value;
+    }
+
+    return value;
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    Offset localPosition = details.localPosition;
+    double value = _calculatePosition(localPosition);
+
+    if (getGaugeOrientation == GaugeOrientation.horizontal) {
+      if (_movablePointer.isInteractive) {
+        _movablePointer.onChanged!(value);
+      }
+    } else {
+      if (_movablePointer.isInteractive) {
+        _movablePointer.onChanged!(value);
+      }
+    }
+    markNeedsPaint();
+    markNeedsSemanticsUpdate();
+  }
+
+  void _handleDragStart(DragStartDetails details) {
+    _movablePointer.setIsInteractive = true;
+    markNeedsLayout();
+    markNeedsSemanticsUpdate();
+  }
+
+  void _handleDragEnd(DragEndDetails details) {
+    restrictPointerChange = false;
+    _horizontalDrag.dispose();
+    _verticalDrag.dispose();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _horizontalDrag.dispose();
+    _verticalDrag.dispose();
   }
 }
