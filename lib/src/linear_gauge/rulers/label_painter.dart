@@ -258,7 +258,7 @@ class RenderRulerLabel extends RenderBox {
     Size _axisActualSize;
     calculateStartAndEndLabelSize();
 
-    final double actualParentWidth;
+    double actualParentWidth;
     if (_isHorizontalOrientation) {
       if (!getInversedRulers) {
         actualParentWidth = (RenderLinearGaugeContainer.endLabelSize.width +
@@ -282,6 +282,10 @@ class RenderRulerLabel extends RenderBox {
     } else {
       effectiveLabelHeight =
           math.max(_startLabelSize.width, _endLabelSize.width);
+    }
+
+    if (actualParentWidth > constraints.maxWidth) {
+      actualParentWidth = constraints.maxWidth;
     }
 
     if (_isHorizontalOrientation) {

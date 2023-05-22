@@ -142,7 +142,7 @@ class RenderCurve extends RenderBox {
   PaintStyle _paintStyle;
 
   /// Sets the paintStyle for [RenderCurve].
-  set paintStyle(PaintStyle value) {
+  set setPaintStyle(PaintStyle value) {
     if (value == _paintStyle) {
       return;
     }
@@ -156,7 +156,7 @@ class RenderCurve extends RenderBox {
   CurvePosition _curvePosition;
 
   /// Sets the CurvePosition for [RenderCurve].
-  set curvePosition(CurvePosition value) {
+  set setCurvePosition(CurvePosition value) {
     if (value == _curvePosition) {
       return;
     }
@@ -387,14 +387,16 @@ class RenderCurve extends RenderBox {
       greatestHeight = currentGreatestHeight;
     }
 
+    double startInPixel = valueToPixel(start!);
+    double endInPixel = valueToPixel(end!);
+    double totalWidth = endInPixel - startInPixel;
+
     Size widgetSize;
-    final double actualWidth = RenderLinearGaugeContainer.gaugeEnd -
-        linearGauge.extendLinearGauge! * 2;
 
     if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
-      widgetSize = Size(actualWidth, greatestHeight);
+      widgetSize = Size(totalWidth, greatestHeight);
     } else {
-      widgetSize = Size(greatestHeight, actualWidth);
+      widgetSize = Size(greatestHeight, totalWidth);
     }
 
     size = widgetSize;
