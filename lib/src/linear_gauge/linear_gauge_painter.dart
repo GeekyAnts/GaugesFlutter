@@ -119,8 +119,18 @@ class RenderLinearGauge extends RenderBox
       widgetPointerMaxOfLeftAndCenter = 0;
   static double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
   double spacingForGauge = 0;
-
   List<Pointer> filteredShapePointers = [];
+
+  // For Interactivity
+  PointerDeviceKind pointerType = PointerDeviceKind.mouse;
+  bool restrictPointerChange = false;
+  bool restrictWidgetPointerChange = false;
+
+  // RenderObjects For Movable Pointers
+  late RenderLinearGaugeShapePointer _movablePointer;
+  late RenderLinearGaugeWidgetPointer _movableWidget;
+
+  late HitTestTarget _pointerType;
 
   /// Horizontal  Gesture Recognizer for the Linear Gauge.
   late HorizontalDragGestureRecognizer _horizontalDrag;
@@ -1134,12 +1144,6 @@ class RenderLinearGauge extends RenderBox
     }
   }
 
-  PointerDeviceKind pointerType = PointerDeviceKind.mouse;
-
-  bool restrictPointerChange = false;
-
-  late RenderLinearGaugeShapePointer _movablePointer;
-
   @override
   bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
     final bool isHit = super.defaultHitTestChildren(result, position: position);
@@ -1148,7 +1152,15 @@ class RenderLinearGauge extends RenderBox
       final HitTestTarget child = result.path.last.target;
       if (child is RenderLinearGaugeShapePointer) {
         _movablePointer = child;
+        _pointerType = child;
         if (!_movablePointer.isInteractive) {
+          return false;
+        }
+        return true;
+      } else if (child is RenderLinearGaugeWidgetPointer) {
+        _movableWidget = child;
+        _pointerType = child;
+        if (!_movableWidget.isInteractive) {
           return false;
         }
         return true;
@@ -1170,8 +1182,10 @@ class RenderLinearGauge extends RenderBox
         _verticalDrag.addPointer(event);
       }
       restrictPointerChange = true;
+      restrictWidgetPointerChange = true;
     } else if (event is PointerUpEvent) {
       restrictPointerChange = true;
+      restrictWidgetPointerChange = true;
     }
 
     super.handleEvent(event, entry);
@@ -2129,27 +2143,39 @@ class RenderLinearGauge extends RenderBox
     Offset localPosition = details.localPosition;
     double value = _calculatePosition(localPosition);
 
-    if (getGaugeOrientation == GaugeOrientation.horizontal) {
-      if (_movablePointer.isInteractive) {
-        _movablePointer.onChanged!(value);
+    if (_pointerType is RenderLinearGaugeWidgetPointer) {
+      if (_movableWidget.isInteractive) {
+        _movableWidget.onChanged!(value);
       }
-    } else {
+    } else if (_pointerType is RenderLinearGaugeShapePointer) {
       if (_movablePointer.isInteractive) {
         _movablePointer.onChanged!(value);
       }
     }
+
+    // if getGaugeOrientation == GaugeOrientation.horizontal) {
+
+    // if (_movableWidget.isInteractive) {
+    //   _movableWidget.onChanged!(value);
+    // }
+
     markNeedsPaint();
     markNeedsSemanticsUpdate();
   }
 
   void _handleDragStart(DragStartDetails details) {
-    _movablePointer.setIsInteractive = true;
+    if (_pointerType is RenderLinearGaugeWidgetPointer) {
+      _movableWidget.setIsInteractive = true;
+    } else if (_pointerType is RenderLinearGaugeShapePointer) {
+      _movablePointer.setIsInteractive = true;
+    }
     markNeedsLayout();
     markNeedsSemanticsUpdate();
   }
 
   void _handleDragEnd(DragEndDetails details) {
     restrictPointerChange = false;
+    restrictWidgetPointerChange = false;
     _horizontalDrag.dispose();
     _verticalDrag.dispose();
   }
