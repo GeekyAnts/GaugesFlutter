@@ -165,6 +165,20 @@ class RenderCurve extends RenderBox {
     markNeedsPaint();
   }
 
+  double getLinearGaugeStart() {
+    if (linearGauge.customLabels!.isNotEmpty) {
+      return linearGauge.customLabels!.first.value!;
+    }
+    return linearGauge.start!;
+  }
+
+  double getLinearGaugeEnd() {
+    if (linearGauge.customLabels!.isNotEmpty) {
+      return linearGauge.customLabels!.last.value!;
+    }
+    return linearGauge.end!;
+  }
+
   // Method to Calculate the First & Last Offsets of the Curve
   OffsetTuple? getStartAndEndOffsets(
     GaugeOrientation orientation,
@@ -366,8 +380,8 @@ class RenderCurve extends RenderBox {
   }
 
   double valueToPixel(double value) {
-    final double pixel = ((value - linearGauge.start!) /
-            (linearGauge.end! - linearGauge.start!)) *
+    final double pixel = ((value - getLinearGaugeStart()) /
+            (getLinearGaugeEnd() - getLinearGaugeStart())) *
         RenderLinearGaugeContainer.gaugeEnd;
     return pixel;
   }
@@ -409,7 +423,7 @@ class RenderCurve extends RenderBox {
     yAxisForGaugeContainer = RenderLinearGauge.yAxisForGaugeContainer;
 
     var firstOff =
-        LinearGaugeLabel.primaryRulers[linearGauge.start!.toString()]![0];
+        LinearGaugeLabel.primaryRulers[getLinearGaugeStart().toString()]![0];
 
     // Drawing CustomCurves
 
