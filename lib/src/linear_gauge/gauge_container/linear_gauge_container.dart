@@ -50,6 +50,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
         secondaryRulerPerInterval:
             linearGauge.rulers!.secondaryRulerPerInterval!,
         fillExtend: linearGauge.fillExtend,
+        linearGradient: linearGauge.linearGaugeBoxDecoration!.linearGradient,
         textStyle: linearGauge.rulers!.textStyle!);
   }
 
@@ -89,6 +90,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
       ..setCustomLabels = linearGauge.customLabels!
       ..setSecondaryRulerPerInterval =
           linearGauge.rulers!.secondaryRulerPerInterval!
+      ..setLinearGradient = linearGauge.linearGaugeBoxDecoration!.linearGradient
       ..setTextStyle = linearGauge.rulers!.textStyle!;
   }
 }
@@ -126,6 +128,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     required double extendLinearGauge,
     required List<CustomRulerLabel> customLabel,
     required TextStyle textStyle,
+    required LinearGradient? linearGradient,
   })  : _start = start,
         _end = end,
         _value = value,
@@ -156,6 +159,7 @@ class RenderLinearGaugeContainer extends RenderBox {
         _borderRadius = borderRadius,
         _fillExtend = fillExtend,
         _edgeStyle = edgeStyle,
+        _linearGradient = linearGradient,
         _isHorizontalOrientation =
             gaugeOrientation == GaugeOrientation.horizontal,
         _textStyle = textStyle;
@@ -341,6 +345,20 @@ class RenderLinearGaugeContainer extends RenderBox {
 
     _secondaryRulersWidth = secondaryRulersWidth;
     markNeedsLayout();
+  }
+
+  /// Gets the linearGradient assigned to [RenderLinearGaugeContainer].
+  LinearGradient? get linearGradient => _linearGradient;
+  LinearGradient? _linearGradient;
+
+  /// Sets the LinearGradient for [RenderValueBar].
+  set setLinearGradient(LinearGradient? value) {
+    if (value == _linearGradient) {
+      return;
+    }
+
+    _linearGradient = value;
+    markNeedsPaint();
   }
 
   ///
@@ -769,6 +787,11 @@ class RenderLinearGaugeContainer extends RenderBox {
 
     double totalWidth = end;
 
+    if (linearGradient != null) {
+      _linearGaugeContainerPaint.shader =
+          linearGradient!.createShader(gaugeContainer);
+    }
+
     if (getBorderRadius != null) {
       var rectangularBox = _getRoundedContainer(
         gaugeContainer: gaugeContainer,
@@ -884,6 +907,7 @@ class RenderLinearGaugeContainer extends RenderBox {
       }
 
       _linearGaugeRangePaint.color = rangeLinearGauge![i].color;
+
       if (rangeLinearGauge![i].borderRadius != null) {
         roundedGaugeContainer = _getRoundedContainer(
           gaugeContainer: gaugeContainer,
@@ -984,6 +1008,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     Canvas canvas = context.canvas;
     xAxisForGaugeContainer = offset.dx;
     yAxisForGaugeContainer = offset.dy;
+
     _setLinearGaugeContainerPaint();
     _paintGaugeContainer(canvas, size, offset);
   }

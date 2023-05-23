@@ -206,10 +206,21 @@ class ValueBar extends LeafRenderObjectWidget {
   final Curve animationType;
 
   ///
-  /// `linearGradient` Sets the gradient background of the [LinearGauge] Container
-  ///  * NOTE : If `linearGradient` is given in [LinearGaugeBoxDecoration] the `color` property will be ignored
+  /// `linearGradient` Sets the gradient background of the [ValueBar]
+  ///  * NOTE : If `linearGradient` is given in [ValueBar] the `color` property will be ignored
   ///
   /// ```dart
+  /// LinearGauge (
+  ///  valueBar: [
+  /// ValueBar(
+  ///   linearGradient: LinearGradient(
+  ///    colors: [Colors.blue, Colors.pink],),
+  ///    value: 20,
+  ///    enableAnimation: true,
+  ///    animationType: Curves.linear
+  ///  )])
+  /// ```
+  ///
   /// const LinearGauge(
   ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
   ///
