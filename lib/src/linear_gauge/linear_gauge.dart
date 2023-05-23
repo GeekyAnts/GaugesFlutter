@@ -629,13 +629,9 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
     }
     if (widget.valueBar != null && widget.valueBar!.isNotEmpty) {
       for (final ValueBar valueBar in widget.valueBar!) {
-        if (valueBar.enableAnimation && valueBar.animationDuration > 0) {
-          _addChild(valueBar, _valueBarAnimations[i],
-              _valueBarAnimationControllers[i]);
-          i++;
-        } else {
-          _addChild(valueBar, null, null);
-        }
+        _addChild(
+            valueBar, _valueBarAnimations[i], _valueBarAnimationControllers[i]);
+        i++;
       }
     }
     if (widget.rulers!.rulerPosition == RulerPosition.center) {
@@ -653,13 +649,9 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
 
     if (widget.pointers != null && widget.pointers!.isNotEmpty) {
       for (final dynamic pointer in widget.pointers!) {
-        if (pointer.enableAnimation && pointer.animationDuration > 0) {
-          _addChild(
-              pointer, _pointerAnimations[j], _pointerAnimationControllers[j]);
-          j++;
-        } else {
-          _addChild(pointer, null, null);
-        }
+        _addChild(
+            pointer, _pointerAnimations[j], _pointerAnimationControllers[j]);
+        j++;
       }
     }
 
