@@ -259,10 +259,24 @@ class RenderValueBar extends RenderBox {
     }
   }
 
+  double getLinearGaugeStart() {
+    if (linearGauge.customLabels!.isNotEmpty) {
+      return linearGauge.customLabels!.first.value!;
+    }
+    return linearGauge.start!;
+  }
+
+  double getLinearGaugeEnd() {
+    if (linearGauge.customLabels!.isNotEmpty) {
+      return linearGauge.customLabels!.last.value!;
+    }
+    return linearGauge.end!;
+  }
+
   double calculateValueBarWidth() {
     // Start and End values of the Linear Gauge
-    double endValue = linearGauge.end!;
-    double startValue = linearGauge.start!;
+    double endValue = getLinearGaugeEnd();
+    double startValue = getLinearGaugeStart();
 
     //  width of the value bar in pixels based on the value
     double valueBarWidth = ((value - startValue) / (endValue - startValue)) *

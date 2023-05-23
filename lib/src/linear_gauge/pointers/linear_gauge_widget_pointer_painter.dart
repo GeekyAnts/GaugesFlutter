@@ -149,6 +149,13 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
     markNeedsLayout();
   }
 
+  double getLinearGaugeStart() {
+    if (linearGauge.customLabels!.isNotEmpty) {
+      return linearGauge.customLabels!.first.value!;
+    }
+    return linearGauge.start!;
+  }
+
   void _addAnimationListener() {
     _pointerAnimation.addListener(markNeedsPaint);
   }
@@ -212,7 +219,7 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
   double getAnimatedAxisPoint(
       double endPoint, double animationValue, LinearGauge linearGauge) {
     Offset startPointOffset =
-        LinearGaugeLabel.primaryRulers[linearGauge.start.toString()]!.first;
+        LinearGaugeLabel.primaryRulers[getLinearGaugeStart().toString()]!.first;
     double startPoint =
         (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
             ? startPointOffset.dx

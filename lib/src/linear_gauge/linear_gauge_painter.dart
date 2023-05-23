@@ -1240,8 +1240,16 @@ class RenderLinearGauge extends RenderBox
     }
   }
 
+  setCustomLabelStartEnd() {
+    if (getCustomLabels!.isNotEmpty) {
+      _start = getCustomLabels!.first.value!;
+      _end = getCustomLabels!.last.value!;
+    }
+  }
+
   @override
   void performLayout() {
+    setCustomLabelStartEnd();
     filterShapePointers(getPointers);
     RenderBox? child = firstChild;
     while (child != null) {

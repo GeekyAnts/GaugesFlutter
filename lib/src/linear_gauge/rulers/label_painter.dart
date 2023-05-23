@@ -231,6 +231,13 @@ class RenderRulerLabel extends RenderBox {
     return paintColor.withOpacity(animationValue * paintColor.opacity);
   }
 
+  setCustomLabelStartEnd() {
+    if (getCustomLabels!.isNotEmpty) {
+      _start = getCustomLabels!.first.value!;
+      _end = getCustomLabels!.last.value!;
+    }
+  }
+
   calculateStartAndEndLabelSize() {
     _startLabelSize = _linearGaugeLabel.getLabelSize(
         textStyle: getTextStyle,
@@ -256,6 +263,7 @@ class RenderRulerLabel extends RenderBox {
   @override
   void performLayout() {
     Size _axisActualSize;
+    setCustomLabelStartEnd();
     calculateStartAndEndLabelSize();
 
     double actualParentWidth;
