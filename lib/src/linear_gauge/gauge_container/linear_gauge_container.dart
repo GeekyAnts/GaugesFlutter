@@ -663,20 +663,20 @@ class RenderLinearGaugeContainer extends RenderBox {
     return largestPointer;
   }
 
-  double getLargestWidgetPointerSize() {
-    if (RenderLinearGauge.getWidgetPointers!.isNotEmpty) {
-      RenderLinearGaugeWidgetPointer? largestPointer =
-          getLargestWidgetPointer(RenderLinearGauge.getWidgetPointers);
+  // double getLargestWidgetPointerSize() {
+  //   if (RenderLinearGauge.getWidgetPointers!.isNotEmpty) {
+  //     RenderLinearGaugeWidgetPointer? largestPointer =
+  //         getLargestWidgetPointer(RenderLinearGauge.getWidgetPointers);
 
-      if (getGaugeOrientation == GaugeOrientation.vertical) {
-        return largestPointer?.size.width ?? 0;
-      } else {
-        return largestPointer?.size.width ?? 0;
-      }
-    } else {
-      return 0;
-    }
-  }
+  //     if (getGaugeOrientation == GaugeOrientation.vertical) {
+  //       return largestPointer?.size.width ?? 0;
+  //     } else {
+  //       return largestPointer?.size.width ?? 0;
+  //     }
+  //   } else {
+  //     return 0;
+  //   }
+  // }
 
   void _setLinearGaugeContainerPaint() {
     _linearGaugeContainerPaint.color =

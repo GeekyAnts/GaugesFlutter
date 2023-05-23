@@ -66,6 +66,7 @@ class RenderLinearGauge extends RenderBox
         _showLabel = showLabel,
         _valueBarRenderObject = <RenderValueBar>[],
         _renderCurves = <RenderCurve>[],
+        _widgetPointers = <RenderLinearGaugeWidgetPointer>[],
         _shapePointers = <RenderLinearGaugeShapePointer>[] {
     _horizontalDrag = HorizontalDragGestureRecognizer()
       ..onUpdate = _handleDragUpdate
@@ -401,10 +402,10 @@ class RenderLinearGauge extends RenderBox
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _axisActualSize;
-  static final List<RenderLinearGaugeWidgetPointer> _widgetPointers =
-      <RenderLinearGaugeWidgetPointer>[];
-  static List<RenderLinearGaugeWidgetPointer>? get getWidgetPointers =>
-      _widgetPointers;
+  late List<RenderLinearGaugeWidgetPointer> _widgetPointers;
+
+  // static List<RenderLinearGaugeWidgetPointer>? get getWidgetPointers =>
+  //     _widgetPointers;
 
   late final List<RenderLinearGaugeShapePointer> _shapePointers;
   late final List<RenderValueBar> _valueBarRenderObject;
@@ -1271,8 +1272,7 @@ class RenderLinearGauge extends RenderBox
     RenderBox? childRef = firstChild;
     while (childRef != null) {
       final childParentData = childRef.parentData as MultiChildLayoutParentData;
-      if (childRef.runtimeType == RenderLinearGaugeContainer ||
-          childRef.runtimeType == RenderLinearGaugeWidgetPointer) {
+      if (childRef.runtimeType == RenderLinearGaugeContainer) {
         childParentData.offset =
             Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
       }
