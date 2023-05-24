@@ -72,6 +72,12 @@ class RenderRadialGaugeContainer extends RenderBox {
       startAngle = endAngle;
       endAngle = temp;
     }
+    int calculateNumOfDivisions(int steps, double start, double end) {
+      double range = end - start.toDouble();
+      int numOfDivisions = range ~/ steps;
+
+      return numOfDivisions;
+    }
 
     var thickness = getRadialGauge.track.thickness;
     double shortestSide = size.shortestSide;
@@ -79,7 +85,10 @@ class RenderRadialGaugeContainer extends RenderBox {
     double rulerLength =
         getRadialGauge.track.trackStyle.primaryRulersHeight ?? 10;
     double arcLength = endAngle - startAngle; // length of the arc in radians
-    const int numParts = 10; // number of parts to divide the arc into
+    double numParts = calculateNumOfDivisions(getRadialGauge.track.steps,
+            getRadialGauge.track.start, getRadialGauge.track.end)
+        .toDouble();
+    // .toDouble(); // number of parts to divide the arc into
     double partAngle = arcLength / numParts; // angle of each part in radians
     double radius = shortestSide / 2 - thickness; // radius of the arc
     final center = offset + size.center(Offset.zero);
@@ -173,7 +182,8 @@ class RenderRadialGaugeContainer extends RenderBox {
       double end = _radialGauge.track.end;
       double valueRange = (end - start);
 
-      double exactValue = start + ((l / range) * valueRange).roundToDouble();
+      double exactValue =
+          start + double.parse(((l / range) * valueRange).toStringAsFixed(2));
 
       textPainter.text = TextSpan(
           text: exactValue.toString(),
