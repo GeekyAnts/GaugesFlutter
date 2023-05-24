@@ -39,7 +39,7 @@ class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
             ),
           ],
           gaugeOrientation: GaugeOrientation.vertical,
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
               rulerPosition: RulerPosition.left, inverseRulers: true),
         ),
       ),

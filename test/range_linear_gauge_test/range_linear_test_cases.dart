@@ -470,9 +470,9 @@ List startAndEndTest = [
 
 List borderRadius = [
   {
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.top,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -508,9 +508,9 @@ List borderRadius = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.left,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),

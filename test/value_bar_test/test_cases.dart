@@ -31,9 +31,9 @@ List valueTestsHorizontal = [
     'Do': 'ValueBar should be drawn till 35 value',
   },
   {
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -239,9 +239,9 @@ List valueTestsVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -438,10 +438,10 @@ List extendLinearGauge = [
   },
   {
     'extendLinearGauge': 100.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -456,10 +456,10 @@ List extendLinearGauge = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 50.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -474,9 +474,9 @@ List extendLinearGauge = [
   {
     'extendLinearGauge': 50.0,
     'fillExtend': true,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.top,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -491,9 +491,9 @@ List extendLinearGauge = [
   {
     'extendLinearGauge': 50.0,
     'fillExtend': true,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.bottom,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -509,9 +509,9 @@ List extendLinearGauge = [
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 50.0,
     'fillExtend': true,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.left,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -527,9 +527,9 @@ List extendLinearGauge = [
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 50.0,
     'fillExtend': true,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.right,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -546,9 +546,9 @@ List extendLinearGauge = [
 List borderRadiusHorizontal = [
   {
     'extendLinearGauge': 10.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.top,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -565,9 +565,9 @@ List borderRadiusHorizontal = [
     'Do': 'ValueBar should be drawn with starting edge of 50 border radius',
   },
   {
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.top,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -585,9 +585,9 @@ List borderRadiusHorizontal = [
   },
   {
     'extendLinearGauge': 10.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.top,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -607,9 +607,9 @@ List borderRadiusVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 10.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.left,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -628,9 +628,9 @@ List borderRadiusVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.right,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -650,9 +650,9 @@ List borderRadiusVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 10.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.right,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),

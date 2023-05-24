@@ -3,7 +3,7 @@ import 'dart:ui';
 abstract class BaseRulerStyle {
   const BaseRulerStyle({
     this.primaryRulersHeight,
-    this.primaryRulersWidth,
+    this.primaryRulersWidth = 5.0,
     this.primaryRulerColor,
     this.secondaryRulersHeight,
     this.secondaryRulersWidth,

@@ -60,7 +60,7 @@ class _MyShadersState extends State<MyShaders> {
                     // thickness: 200,
                     // backgroundColor: Colors.green.shade100,
                     ),
-                rulers: const RulerStyle(
+                rulers: RulerStyle(
                   rulerPosition: RulerPosition.center,
                   inverseRulers: true,
                   // secondaryRulersHeight: 300,

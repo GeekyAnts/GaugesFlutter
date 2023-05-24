@@ -13,7 +13,7 @@ List shaderPaintHorizontal = [
         ),
       ),
     ],
-    "rulers": const RulerStyle(
+    "rulers": RulerStyle(
       rulerPosition: RulerPosition.bottom,
       showPrimaryRulers: false,
       showLabel: false,
@@ -46,7 +46,7 @@ List shaderPaintVertical = [
       ),
     ],
     "gaugeOrientation": GaugeOrientation.vertical,
-    "rulers": const RulerStyle(
+    "rulers": RulerStyle(
       rulerPosition: RulerPosition.right,
       showPrimaryRulers: false,
       showLabel: false,

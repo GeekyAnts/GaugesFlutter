@@ -62,13 +62,13 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
           //   CustomRulerLabel(text: "50", value: 50),
           //   CustomRulerLabel(text: "100", value: 100),
           // ],
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
             inverseRulers: true,
             rulerPosition: RulerPosition.center,
             labelOffset: 10,
             rulersOffset: 10,
             primaryRulersHeight: 30,
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
               fontFamily: 'Roboto',
               color: Colors.black,
             ),

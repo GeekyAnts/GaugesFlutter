@@ -53,7 +53,7 @@ class _PointerAlignmentExampleState extends State<PointerAlignmentExample> {
             pointerAlignment: PointerAlignment.center,
           ),
         ],
-        rulers: const RulerStyle(
+        rulers: RulerStyle(
           inverseRulers: false,
           rulerPosition: RulerPosition.left,
         ),

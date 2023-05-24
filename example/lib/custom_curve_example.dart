@@ -18,7 +18,7 @@ class CustomCurveExample extends StatelessWidget {
           CustomCurve(
               midPoint: 50, midHeight: 100, curvePosition: CurvePosition.top)
         ],
-        rulers: const RulerStyle(rulerPosition: RulerPosition.bottom),
+        rulers: RulerStyle(rulerPosition: RulerPosition.bottom),
       ),
     );
   }
