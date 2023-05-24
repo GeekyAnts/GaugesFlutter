@@ -75,7 +75,7 @@ class RenderRadialGaugeContainer extends RenderBox {
     int calculateNumOfDivisions(int steps, double start, double end) {
       double range = end - start.toDouble();
       int numOfDivisions = range ~/ steps;
-      print(numOfDivisions);
+
       return numOfDivisions;
     }
 

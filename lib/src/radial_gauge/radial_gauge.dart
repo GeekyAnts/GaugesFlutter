@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/pointer/needle_pointer.dart';
+import 'package:geekyants_flutter_gauges/src/radial_gauge/pointer/needle_pointer_painter.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_state.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_track.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/valuebar/radial_value_bar.dart';
+import 'package:geekyants_flutter_gauges/src/radial_gauge/valuebar/radial_value_bar_painter.dart';
 
 /// Creates a Radial Gauge Widget to display the values in a Radial Scale.
 /// The widget can be customized using the properties available in [RadialGauge].
@@ -204,7 +206,7 @@ class RenderRadialGauge extends RenderBox
 
       if (child is RenderRadialGaugeContainer) {
         childParentData.offset = Offset(size.width, size.height);
-        print("RadialGaugeContainer ${childParentData.offset}");
+
         final childConstraints = BoxConstraints(
           maxWidth: size.width,
           maxHeight: size.height,
