@@ -48,7 +48,34 @@ class RadialGauge extends StatefulWidget {
   /// ```
   ///
   final RadialTrack track;
+
+  ///
+  /// The [NeedlePointer] is a Pointer that is  displayed  from the center in
+  /// the Radial Gauge.
+  ///
+  /// ```dart
+  /// RadialGauge(
+  ///  needlePointer: NeedlePointer(
+  ///     value: 10,
+  ///    needleColor: Colors.red,
+  ///     ),
+  /// ),
+  /// ```
+  ///
   final NeedlePointer? needlePointer;
+
+  ///
+  /// The [RadialValueBar] is used to display the value in the Radial Gauge.
+  ///
+  /// ```dart
+  /// RadialGauge(
+  ///   valueBar: RadialValueBar(
+  ///     value: 10,
+  ///    color: Colors.red,
+  ///    ),
+  /// ),
+  /// ```
+  ///
   final RadialValueBar? valueBar;
 
   @override
@@ -79,11 +106,6 @@ class _RadialGaugeState extends State<RadialGauge> {
       radialGauge: widget,
     ));
 
-    // if (widget.needlePointer != null) {
-    //   _radialGaugeWidgets.add(w!);
-    // }
-
-//!
     if (widget.needlePointer != null) {
       _addChild(widget.needlePointer!, null, null);
     }

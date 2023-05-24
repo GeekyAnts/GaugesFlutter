@@ -7,6 +7,8 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import '../radial_gauge.dart';
 import '../radial_gauge_state.dart';
 
+///
+/// [RadialValueBar] is used to render the value bar in the [RadialGauge].
 class RadialValueBar extends LeafRenderObjectWidget {
   const RadialValueBar({
     Key? key,
