@@ -8,7 +8,7 @@ void main() {
       body: LinearGauge(
         start: 0,
         end: 100,
-        rulers: const RulerStyle(
+        rulers: RulerStyle(
           rulerPosition: RulerPosition.bottom,
         ),
       ),

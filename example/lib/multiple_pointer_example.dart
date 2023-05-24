@@ -14,7 +14,7 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
               inverseRulers: false, rulerPosition: RulerPosition.bottom),
           valueBar: const [
             ValueBar(value: 23, color: Colors.red),

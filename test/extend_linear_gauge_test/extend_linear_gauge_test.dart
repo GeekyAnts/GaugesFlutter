@@ -61,9 +61,9 @@ class MyExtendLinearGaugeTest extends StatelessWidget {
             extendLinearGauge: extendLinearGauge ?? 0,
             gaugeOrientation: gaugeOrientation ?? GaugeOrientation.horizontal,
             rulers: rulers ??
-                const RulerStyle(
+                RulerStyle(
                   rulerPosition: RulerPosition.center,
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontFamily: 'Roboto',
                     color: Colors.black,
                   ),

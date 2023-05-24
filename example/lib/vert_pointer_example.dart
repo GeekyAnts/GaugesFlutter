@@ -32,7 +32,7 @@ class VerticalValueBarExample extends StatelessWidget {
             ),
           ],
           gaugeOrientation: GaugeOrientation.vertical,
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
             inverseRulers: false,
             rulerPosition: RulerPosition.left,
           ),

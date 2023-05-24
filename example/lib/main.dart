@@ -24,38 +24,39 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: LinearGauge(
-          gaugeOrientation: GaugeOrientation.horizontal,
+        child: RadialGauge(track: RadialTrack(start: 0, end: 100)),
+        // child: LinearGauge(
+        //   gaugeOrientation: GaugeOrientation.horizontal,
 
-          // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 80),
-          pointers: [
-            Pointer(
-                value: value,
-                isInteractive: true,
-                width: 30,
-                height: 50,
-                color: Colors.transparent,
-                onChanged: (value) {
-                  setState(() {
-                    this.value = value;
-                  });
-                },
-                shape: PointerShape.circle)
-          ],
-          valueBar: [ValueBar(value: value)],
+        //   // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 80),
+        //   pointers: [
+        //     Pointer(
+        //         value: value,
+        //         isInteractive: true,
+        //         width: 30,
+        //         height: 50,
+        //         color: Colors.transparent,
+        //         onChanged: (value) {
+        //           setState(() {
+        //             this.value = value;
+        //           });
+        //         },
+        //         shape: PointerShape.circle)
+        //   ],
+        //   valueBar: [ValueBar(value: value)],
 
-          rulers: const RulerStyle(
-            inverseRulers: false,
-            rulerPosition: RulerPosition.bottom,
-            labelOffset: 10,
-            rulersOffset: 10,
-            primaryRulersHeight: 30,
-            textStyle: TextStyle(
-              fontFamily: 'Roboto',
-              color: Colors.black,
-            ),
-          ),
-        ),
+        //   rulers: RulerStyle(
+        //     inverseRulers: false,
+        //     rulerPosition: RulerPosition.bottom,
+        //     labelOffset: 10,
+        //     rulersOffset: 10,
+        //     primaryRulersHeight: 30,
+        //     textStyle: const TextStyle(
+        //       fontFamily: 'Roboto',
+        //       color: Colors.black,
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }
