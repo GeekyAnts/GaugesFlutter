@@ -7,6 +7,7 @@ class RadialTrack {
     required this.start,
     required this.end,
     this.startAngle = 140,
+    this.steps = 10,
     this.endAngle = 400,
     this.color = Colors.grey,
     this.hideStartLabel = false,
@@ -25,16 +26,60 @@ class RadialTrack {
     Widget? child,
   });
 
+  ///
+  /// The [start] property is used to set the start value of the Radial Gauge.
+  ///
   final double start;
+
+  ///
+  /// The [end] property is used to set the end value of the Radial Gauge.
+  ///
   final double end;
+
+  ///
+  /// The [startAngle] property is used to set the start angle of the Radial Gauge.
+  /// The default value is 140.
+  ///
   final double startAngle;
+
+  ///
+  /// The [endAngle] property is used to set the end angle of the Radial Gauge.
+  /// The default value is 400.
   final double endAngle;
+
+  ///
+  /// The [steps] property is used to set the number of steps in the Radial Gauge.
+  /// The default value is 10.
+  ///
+  final int steps;
+
+  ///
+  /// The [gradient] property is used to set the gradient of the Radial Gauge.
+  ///
   final LinearGradient? gradient;
+
+  ///
+  /// The [color] property is used to set the color of the Radial Gauge.
+  ///
   final Color color;
+
+  ///
+  /// The [hideStartLabel] property is used to hide the start label of the Radial Gauge.
+  ///
   final bool hideStartLabel;
 
+  ///
+  /// The [thickness] property is used to set the thickness of the Radial Gauge.
+  ///
   final double thickness;
+
+  ///
+  /// The [hideTrack] property is used to hide the track of the Radial Gauge.
+  ///
   final bool hideTrack;
+
+  ///
+  ///
   final TrackStyle trackStyle;
 }
 

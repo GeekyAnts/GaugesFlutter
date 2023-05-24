@@ -22,41 +22,19 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
   double value = 50;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: RadialGauge(track: RadialTrack(start: 0, end: 100)),
-        // child: LinearGauge(
-        //   gaugeOrientation: GaugeOrientation.horizontal,
-
-        //   // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 80),
-        //   pointers: [
-        //     Pointer(
-        //         value: value,
-        //         isInteractive: true,
-        //         width: 30,
-        //         height: 50,
-        //         color: Colors.transparent,
-        //         onChanged: (value) {
-        //           setState(() {
-        //             this.value = value;
-        //           });
-        //         },
-        //         shape: PointerShape.circle)
-        //   ],
-        //   valueBar: [ValueBar(value: value)],
-
-        //   rulers: RulerStyle(
-        //     inverseRulers: false,
-        //     rulerPosition: RulerPosition.bottom,
-        //     labelOffset: 10,
-        //     rulersOffset: 10,
-        //     primaryRulersHeight: 30,
-        //     textStyle: const TextStyle(
-        //       fontFamily: 'Roboto',
-        //       color: Colors.black,
-        //     ),
-        //   ),
-        // ),
+        child: RadialGauge(
+          needlePointer: NeedlePointer(value: 5),
+          track: RadialTrack(
+            steps: 1,
+            startAngle: 0,
+            endAngle: 360,
+            hideTrack: true,
+            start: 0,
+            end: 12,
+          ),
+        ),
       ),
     );
   }
