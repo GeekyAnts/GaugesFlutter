@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import '../../../geekyants_flutter_gauges.dart';
+import '../linear_gauge_painter.dart';
 
 class RenderValueBar extends RenderBox {
   RenderValueBar({
@@ -32,6 +32,7 @@ class RenderValueBar extends RenderBox {
         _linearGradient = linearGradient;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
+  late double gaugeEnd;
 
   late Size _axisActualSize;
 
@@ -280,8 +281,7 @@ class RenderValueBar extends RenderBox {
 
     //  width of the value bar in pixels based on the value
     double valueBarWidth = ((value - startValue) / (endValue - startValue)) *
-        (RenderLinearGaugeContainer.gaugeEnd -
-            2 * linearGauge.extendLinearGauge!);
+        (gaugeEnd - 2 * linearGauge.extendLinearGauge!);
 
     return valueBarWidth;
   }
@@ -361,6 +361,9 @@ class RenderValueBar extends RenderBox {
 
   @override
   void performLayout() {
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
+    gaugeEnd = parentDataRef.gaugeEnd;
+
     final double valueBarWidth = calculateValueBarWidth();
 
     if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
@@ -375,14 +378,9 @@ class RenderValueBar extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    // xAxisForGaugeContainer = offset.dx;
-    // yAxisForGaugeContainer = offset.dy;
-    drawValueBar(
-        canvas,
-        RenderLinearGaugeContainer.gaugeStart,
-        RenderLinearGaugeContainer.gaugeEnd,
-        RenderLinearGaugeContainer.gaugeEnd,
-        linearGauge,
-        offset);
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
+
+    drawValueBar(canvas, parentDataRef.gaugeStart, parentDataRef.gaugeEnd,
+        parentDataRef.gaugeEnd, linearGauge, offset);
   }
 }

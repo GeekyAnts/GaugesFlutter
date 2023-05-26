@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_label.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 
 import '../../../geekyants_flutter_gauges.dart';
@@ -32,6 +30,7 @@ class RenderCurve extends RenderBox {
         _paintStyle = paintStyle;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
+  late double gaugeStart, gaugeEnd;
 
   LinearGauge get linearGauge => _linearGauge;
   LinearGauge _linearGauge;
@@ -269,19 +268,17 @@ class RenderCurve extends RenderBox {
     }
 
     final double midPointInPixel = valueToPixel(calculatedValue) +
-        RenderLinearGaugeContainer.gaugeStart +
+        gaugeStart +
         linearGauge.extendLinearGauge!;
-    final double endValueInPX =
-        RenderLinearGaugeContainer.gaugeEnd - valueToPixel(end!);
+    final double endValueInPX = gaugeEnd - valueToPixel(end!);
 
     final OffsetTuple? tuple = getStartAndEndOffsets(
       linearGauge.gaugeOrientation!,
       curvePosition,
       offset,
       linearGauge.linearGaugeBoxDecoration!.thickness!,
-      RenderLinearGaugeContainer.gaugeEnd +
-          RenderLinearGaugeContainer.gaugeStart,
-      RenderLinearGaugeContainer.gaugeStart,
+      gaugeEnd + gaugeStart,
+      gaugeStart,
       xAxisForGaugeContainer,
       yAxisForGaugeContainer,
       linearGauge,
@@ -382,12 +379,14 @@ class RenderCurve extends RenderBox {
   double valueToPixel(double value) {
     final double pixel = ((value - getLinearGaugeStart()) /
             (getLinearGaugeEnd() - getLinearGaugeStart())) *
-        RenderLinearGaugeContainer.gaugeEnd;
+        gaugeEnd;
     return pixel;
   }
 
   @override
   void performLayout() {
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
+
     double greatestHeight = 0;
     double currentGreatestHeight = startHeight!;
     if (midHeight! > currentGreatestHeight) {
@@ -400,6 +399,9 @@ class RenderCurve extends RenderBox {
     if (currentGreatestHeight > greatestHeight) {
       greatestHeight = currentGreatestHeight;
     }
+
+    gaugeStart = parentDataRef.gaugeStart;
+    gaugeEnd = parentDataRef.gaugeEnd;
 
     double startInPixel = valueToPixel(start!);
     double endInPixel = valueToPixel(end!);
@@ -419,34 +421,26 @@ class RenderCurve extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = RenderLinearGauge.xAxisForGaugeContainer;
-    yAxisForGaugeContainer = RenderLinearGauge.yAxisForGaugeContainer;
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
 
-    var firstOff =
-        LinearGaugeLabel.primaryRulers[getLinearGaugeStart().toString()]![0];
+    xAxisForGaugeContainer = parentDataRef.xAxisForGaugeContainer;
+    yAxisForGaugeContainer = parentDataRef.yAxisForGaugeContainer;
+
+    var firstOff = parentDataRef
+        .linearGaugeLabel.primaryRulers[getLinearGaugeStart().toString()]![0];
 
     // Drawing CustomCurves
 
     if (linearGauge.rulers!.inverseRulers!) {
       if (linearGauge.gaugeOrientation == GaugeOrientation.horizontal) {
-        firstOff = Offset(
-            RenderLinearGaugeContainer.gaugeEnd -
-                firstOff.dx +
-                RenderLinearGaugeContainer.gaugeStart * 2,
-            firstOff.dy);
+        firstOff = Offset(gaugeEnd - firstOff.dx + gaugeStart * 2, firstOff.dy);
       } else {
-        firstOff = Offset(
-            firstOff.dx,
-            RenderLinearGaugeContainer.gaugeEnd -
-                firstOff.dy +
-                RenderLinearGaugeContainer.gaugeStart * 2);
+        firstOff = Offset(firstOff.dx, gaugeEnd - firstOff.dy + gaugeStart * 2);
       }
     }
     double value = valueToPixel(midPoint);
     if (linearGauge.rulers!.inverseRulers!) {
-      value = RenderLinearGaugeContainer.gaugeEnd -
-          value +
-          RenderLinearGaugeContainer.gaugeStart * 2;
+      value = gaugeEnd - value + gaugeStart * 2;
     }
     drawCurve(canvas, linearGauge, value, firstOff);
   }

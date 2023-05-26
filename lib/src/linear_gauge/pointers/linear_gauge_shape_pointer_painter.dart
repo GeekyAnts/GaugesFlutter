@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 
 import '../../../geekyants_flutter_gauges.dart';
 import '../linear_gauge_label.dart';
+import '../linear_gauge_painter.dart';
 
 class RenderLinearGaugeShapePointer extends RenderOpacity {
   RenderLinearGaugeShapePointer({
@@ -44,6 +44,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
         _enableAnimation = enableAnimation;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
+  late LinearGaugeLabel linearGaugeLabel;
 
   /// Gets the value to [RenderLinearGaugeShapePointer].
   double? get value => _value;
@@ -348,7 +349,6 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
   // Method to draw the Text for  Pointers
   void _drawLabel(Canvas canvas, Offset offset, QuarterTurns quarterTurns,
       RulerPosition rulerPosition, LinearGauge linearGauge) {
-    double gaugeThickness = linearGauge.linearGaugeBoxDecoration!.thickness!;
     GaugeOrientation gaugeOrientation = linearGauge.gaugeOrientation!;
 
     final TextPainter textPainter = TextPainter(
@@ -497,8 +497,6 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
               ? textWidth * 2
               : textHeight * 3;
 
-          var isTriangle = (shape == PointerShape.triangle) ? height : width;
-
           offset = Offset(
               offset.dx - xAxisTurn, offset.dy - textHeight + height / 2);
           break;
@@ -507,7 +505,6 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
                   quarterTurns == QuarterTurns.two)
               ? 0
               : -textHeight;
-          var isTriangle = (shape == PointerShape.triangle) ? height : width;
 
           offset = Offset(offset.dx + width + xAxisTurn,
               offset.dy - textHeight + height / 2);
@@ -572,7 +569,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
   double getAnimatedAxisPoint(
       double endPoint, double animationValue, LinearGauge linearGauge) {
     Offset startPointOffset =
-        LinearGaugeLabel.primaryRulers[getStart().toString()]!.first;
+        linearGaugeLabel.primaryRulers[getStart().toString()]!.first;
     double startPoint =
         (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
             ? startPointOffset.dx
@@ -608,7 +605,6 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
 
     final paint = Paint();
     paint.color = color;
-    final base = width / 2;
 
     center = applyAnimations(linearGauge, center);
 
@@ -742,6 +738,8 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
+    linearGaugeLabel = parentDataRef.linearGaugeLabel;
 
     if (getPointerAnimation.value > 0) {
       drawPointer(shape, canvas, linearGauge, offset);

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 import 'dart:math' as math;
 import '../linear_gauge_label.dart';
 
@@ -167,11 +166,10 @@ class RenderLinearGaugeContainer extends RenderBox {
   final Paint _linearGaugeContainerPaint = Paint();
   final Paint _linearGaugeRangePaint = Paint();
   final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
-  late Size _startLabelSize, _endLabelSize, _axisActualSize;
+  late Size _axisActualSize;
   List<Pointer> filteredShapePointers = [];
 
-  static late double gaugeStart, gaugeEnd;
-  static late Size startLabelSize, endLabelSize;
+  late double gaugeStart, gaugeEnd;
   late bool _isHorizontalOrientation;
   late double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
 
@@ -218,6 +216,8 @@ class RenderLinearGaugeContainer extends RenderBox {
     _steps = steps;
     markNeedsPaint();
   }
+
+  LinearGaugeLabel get linearGaugeLabel => _linearGaugeLabel;
 
   ///
   /// Getter and Setter for the [_gaugeAnimation] parameter.
@@ -560,31 +560,6 @@ class RenderLinearGaugeContainer extends RenderBox {
     super.detach();
   }
 
-  calculateStartAndEndLabelSize() {
-    _startLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle,
-        value: !getInversedRulers
-            ? getCustomLabels!.isEmpty
-                ? getStart.toInt().toString()
-                : getCustomLabels!.first.text
-            : getCustomLabels!.isEmpty
-                ? getEnd.toInt().toString()
-                : getCustomLabels!.last.text);
-
-    _endLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle,
-        value: !getInversedRulers
-            ? getCustomLabels!.isEmpty
-                ? getEnd.toInt().toString()
-                : getCustomLabels!.last.text
-            : getCustomLabels!.isEmpty
-                ? getStart.toInt().toString()
-                : getCustomLabels!.first.text);
-
-    startLabelSize = _startLabelSize;
-    endLabelSize = _endLabelSize;
-  }
-
   calculateStartAndEndOffsetOfGauge() {
     Offset offset = Offset(
       0,
@@ -602,20 +577,20 @@ class RenderLinearGaugeContainer extends RenderBox {
     if (showLabel) {
       end = GaugeOrientation.horizontal == getGaugeOrientation
           ? size.width -
-              ((_endLabelSize.width / 2) +
-                  (_startLabelSize.width / 2) +
+              ((linearGaugeLabel.endLabelSize.width / 2) +
+                  (linearGaugeLabel.startLabelSize.width / 2) +
                   (largestPointerWidth))
           : (size.height -
-              ((_endLabelSize.height / 2) +
-                  (_startLabelSize.height / 2) +
+              ((linearGaugeLabel.endLabelSize.height / 2) +
+                  (linearGaugeLabel.startLabelSize.height / 2) +
                   (largestPointerWidth)));
 
       start = GaugeOrientation.horizontal == getGaugeOrientation
           ? (offset.dx +
-              (_startLabelSize.width / 2) +
+              (linearGaugeLabel.startLabelSize.width / 2) +
               (largestPointerWidth / 2))
           : (offset.dx +
-              (_startLabelSize.height / 2) +
+              (linearGaugeLabel.startLabelSize.height / 2) +
               (largestPointerWidth / 2));
     } else {
       end = GaugeOrientation.horizontal == getGaugeOrientation
@@ -702,6 +677,8 @@ class RenderLinearGaugeContainer extends RenderBox {
   }
 
   void _calculateRulerPoints() {
+    _linearGaugeLabel.calculateStartAndEndLabelSize(
+        getTextStyle, getStart, getEnd, getCustomLabels!, getInversedRulers);
     if (getCustomLabels!.isEmpty) {
       double screenSize = getGaugeOrientation == GaugeOrientation.horizontal
           ? 3 * size.width
@@ -734,8 +711,8 @@ class RenderLinearGaugeContainer extends RenderBox {
     }
 
     _linearGaugeLabel.generateOffSetsForLabel(
-        _startLabelSize,
-        _endLabelSize,
+        linearGaugeLabel.startLabelSize,
+        linearGaugeLabel.endLabelSize,
         size,
         getEnd,
         getPrimaryRulersHeight,
@@ -973,8 +950,6 @@ class RenderLinearGaugeContainer extends RenderBox {
   @override
   void performLayout() {
     filterShapePointers(getPointers);
-    calculateStartAndEndLabelSize();
-
     double parentWidgetSize;
 
     final double actualParentWidth = constraints.maxWidth;
@@ -994,8 +969,8 @@ class RenderLinearGaugeContainer extends RenderBox {
 
     size = _axisActualSize;
 
-    calculateStartAndEndOffsetOfGauge();
     _calculateRulerPoints();
+    calculateStartAndEndOffsetOfGauge();
   }
 
   @override

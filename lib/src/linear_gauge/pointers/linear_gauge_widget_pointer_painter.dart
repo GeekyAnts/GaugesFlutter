@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 
 import '../../../geekyants_flutter_gauges.dart';
 import '../linear_gauge_label.dart';
+import '../linear_gauge_painter.dart';
 
 class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
   RenderLinearGaugeWidgetPointer({
@@ -28,6 +28,7 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
         _enableAnimation = enableAnimation;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
+  late LinearGaugeLabel linearGaugeLabel;
 
   /// Gets the value to [RenderLinearGaugeWidgetPointer].
   double? get value => _value;
@@ -219,7 +220,7 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
   double getAnimatedAxisPoint(
       double endPoint, double animationValue, LinearGauge linearGauge) {
     Offset startPointOffset =
-        LinearGaugeLabel.primaryRulers[getLinearGaugeStart().toString()]!.first;
+        linearGaugeLabel.primaryRulers[getLinearGaugeStart().toString()]!.first;
     double startPoint =
         (linearGauge.gaugeOrientation! == GaugeOrientation.horizontal)
             ? startPointOffset.dx
@@ -241,6 +242,9 @@ class RenderLinearGaugeWidgetPointer extends RenderProxyBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
+    linearGaugeLabel = parentDataRef.linearGaugeLabel;
+
     if (getPointerAnimation.value > 0) {
       drawPointer(canvas, offset, linearGauge, context);
     }
