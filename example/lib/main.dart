@@ -21,11 +21,20 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        color: Colors.pink.withOpacity(0.1),
         child: LinearGauge(
+          gaugeOrientation: GaugeOrientation.vertical,
+          valueBar: [
+            ValueBar(
+              value: 20,
+              position: ValueBarPosition.left,
+              offset: 300,
+            )
+          ],
           enableGaugeAnimation: true,
           rulers: const RulerStyle(
-            rulerPosition: RulerPosition.bottom,
+            rulerPosition: RulerPosition.right,
           ),
         ),
       ),
