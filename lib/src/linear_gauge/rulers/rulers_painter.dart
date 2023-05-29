@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
 import 'dart:math' as math;
 import '../../../geekyants_flutter_gauges.dart';
@@ -50,7 +49,7 @@ class RenderRulers extends RenderBox {
   final Paint _primaryRulersPaint = Paint();
   final Paint _secondaryRulersPaint = Paint();
   late double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
-  final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
+  LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
   late bool _isHorizontalOrientation;
   late Size _axisActualSize;
 
@@ -410,10 +409,11 @@ class RenderRulers extends RenderBox {
 
   @override
   void performLayout() {
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
     double parentWidgetSize;
 
     final double actualParentWidth =
-        RenderLinearGaugeContainer.gaugeEnd - getExtendLinearGauge * 2;
+        parentDataRef.gaugeEnd - getExtendLinearGauge * 2;
 
     parentWidgetSize = actualParentWidth;
 
@@ -432,8 +432,11 @@ class RenderRulers extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = RenderLinearGauge.xAxisForGaugeContainer;
-    yAxisForGaugeContainer = RenderLinearGauge.yAxisForGaugeContainer;
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
+
+    xAxisForGaugeContainer = parentDataRef.xAxisForGaugeContainer;
+    yAxisForGaugeContainer = parentDataRef.yAxisForGaugeContainer;
+    _linearGaugeLabel = parentDataRef.linearGaugeLabel;
     _setPrimaryRulersPaint();
     _setSecondaryRulersPaint();
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 class PointerAlignmentExample extends StatefulWidget {
-  PointerAlignmentExample({super.key});
+  const PointerAlignmentExample({super.key});
 
   @override
   State<PointerAlignmentExample> createState() =>

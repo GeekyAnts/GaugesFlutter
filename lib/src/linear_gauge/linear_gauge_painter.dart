@@ -13,8 +13,8 @@ import 'gauge_container/linear_gauge_container.dart';
 
 class RenderLinearGauge extends RenderBox
     with
-        ContainerRenderObjectMixin<RenderBox, MultiChildLayoutParentData>,
-        RenderBoxContainerDefaultsMixin<RenderBox, MultiChildLayoutParentData>,
+        ContainerRenderObjectMixin<RenderBox, LinearGaugeParentData>,
+        RenderBoxContainerDefaultsMixin<RenderBox, LinearGaugeParentData>,
         DebugOverflowIndicatorMixin {
   RenderLinearGauge({
     required double start,
@@ -117,7 +117,7 @@ class RenderLinearGauge extends RenderBox
       leftWidgetPointerHeight,
       widgetPointerMaxOfRightAndCenter,
       widgetPointerMaxOfLeftAndCenter = 0;
-  static double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
+  double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
   double spacingForGauge = 0;
   List<Pointer> filteredShapePointers = [];
 
@@ -399,10 +399,10 @@ class RenderLinearGauge extends RenderBox
   ///
   double get getPointerSpace => _pointerSpace;
   final double _pointerSpace = 0;
-  final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
+  LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _axisActualSize;
-  late List<RenderLinearGaugeWidgetPointer> _widgetPointers;
+  late final List<RenderLinearGaugeWidgetPointer> _widgetPointers;
 
   // static List<RenderLinearGaugeWidgetPointer>? get getWidgetPointers =>
   //     _widgetPointers;
@@ -640,13 +640,13 @@ class RenderLinearGauge extends RenderBox
   }
 
   Offset getPointerOffset(dynamic pointer) {
-    double start = RenderLinearGaugeContainer.gaugeStart;
-    double end = RenderLinearGaugeContainer.gaugeEnd;
+    double start = gaugeStart;
+    double end = gaugeEnd;
 
     gaugeEnd = end;
     gaugeStart = start;
     var verticalFirstOffset =
-        LinearGaugeLabel.primaryRulers[getStart.toString()]!;
+        _linearGaugeLabel.primaryRulers[getStart.toString()]!;
     Offset offset = verticalFirstOffset.first;
     double valueInPX = !getInversedRulers
         ? (pointer.value! - getStart) /
@@ -890,21 +890,21 @@ class RenderLinearGauge extends RenderBox
 
   positionPointer() {
     if (_shapePointers.isNotEmpty) {
-      _shapePointers.forEach((element) {
+      for (var element in _shapePointers) {
         _positionPointer(element);
-      });
+      }
     }
 
     if (_widgetPointers.isNotEmpty) {
-      _widgetPointers.forEach((element) {
+      for (var element in _widgetPointers) {
         _positionPointer(element);
-      });
+      }
     }
   }
 
   Offset _layoutRulerOffset(RenderRulers ruler) {
-    List<Offset> value = LinearGaugeLabel.primaryRulers.values.first;
-    List<Offset> lastValue = LinearGaugeLabel.primaryRulers.values.last;
+    List<Offset> value = _linearGaugeLabel.primaryRulers.values.first;
+    List<Offset> lastValue = _linearGaugeLabel.primaryRulers.values.last;
 
     if (getInversedRulers) {
       List<Offset> temp = value;
@@ -963,19 +963,18 @@ class RenderLinearGauge extends RenderBox
   }
 
   Offset _layoutRulerLabelOffset(RenderRulerLabel label) {
-    List<Offset> value = LinearGaugeLabel.primaryRulers.values.first;
-    List<Offset> lastValue = LinearGaugeLabel.primaryRulers.values.last;
+    List<Offset> value = _linearGaugeLabel.primaryRulers.values.first;
+    List<Offset> lastValue = _linearGaugeLabel.primaryRulers.values.last;
     double effectiveLabelWidth, effectiveLabelHeight;
     if (getInversedRulers) {
       List<Offset> temp = value;
       value = lastValue;
       lastValue = temp;
-      effectiveLabelWidth =
-          RenderLinearGaugeContainer.startLabelSize.width / 1.5;
+      effectiveLabelWidth = _linearGaugeLabel.startLabelSize.width / 1.5;
     } else {
-      effectiveLabelWidth = RenderLinearGaugeContainer.startLabelSize.width;
+      effectiveLabelWidth = _linearGaugeLabel.startLabelSize.width;
     }
-    effectiveLabelHeight = RenderLinearGaugeContainer.startLabelSize.height;
+    effectiveLabelHeight = _linearGaugeLabel.startLabelSize.height;
 
     double? y;
     double? x;
@@ -1043,8 +1042,8 @@ class RenderLinearGauge extends RenderBox
   }
 
   Offset _calculateOffsetForValueBar(RenderValueBar valueBar) {
-    double start = RenderLinearGaugeContainer.gaugeStart;
-    double end = RenderLinearGaugeContainer.gaugeEnd;
+    double start = gaugeStart;
+    double end = gaugeEnd;
     // Start and End values of the Linear Gauge
     double endValue = getEnd;
     double startOffset, topOffset;
@@ -1138,9 +1137,9 @@ class RenderLinearGauge extends RenderBox
 
   positionValueBars() {
     if (_valueBarRenderObject.isNotEmpty) {
-      _valueBarRenderObject.forEach((element) {
+      for (var element in _valueBarRenderObject) {
         _setOffsetOfValueBar(element);
-      });
+      }
     }
   }
 
@@ -1192,8 +1191,8 @@ class RenderLinearGauge extends RenderBox
   }
 
   Offset _calculateOffsetForCurve(RenderCurve curve) {
-    List<Offset> value = LinearGaugeLabel.primaryRulers.values.first;
-    List<Offset> lastValue = LinearGaugeLabel.primaryRulers.values.last;
+    List<Offset> value = _linearGaugeLabel.primaryRulers.values.first;
+    List<Offset> lastValue = _linearGaugeLabel.primaryRulers.values.last;
 
     double startInPixel = valueToPixel(curve.start!);
     double endInPixel = valueToPixel(curve.end!);
@@ -1248,9 +1247,9 @@ class RenderLinearGauge extends RenderBox
 
   positionCurves() {
     if (_renderCurves.isNotEmpty) {
-      _renderCurves.forEach((element) {
+      for (var element in _renderCurves) {
         _setOffsetForCurve(element);
-      });
+      }
     }
   }
 
@@ -1265,27 +1264,18 @@ class RenderLinearGauge extends RenderBox
   void performLayout() {
     setCustomLabelStartEnd();
     filterShapePointers(getPointers);
+
+    //first layout the container & widget pointer bcz their calculations used in other children
+
     RenderBox? child = firstChild;
-    while (child != null) {
-      final childParentData = child.parentData as MultiChildLayoutParentData;
-
-      child.layout(
-          BoxConstraints.loose(
-              Size(constraints.maxWidth, constraints.maxHeight)),
-          parentUsesSize: true);
-
-      child = childParentData.nextSibling;
-    }
+    layoutContainerAndWidgetPointer(child);
     size = computeDryLayout(constraints);
+
     RenderBox? childRef = firstChild;
-    while (childRef != null) {
-      final childParentData = childRef.parentData as MultiChildLayoutParentData;
-      if (childRef.runtimeType == RenderLinearGaugeContainer) {
-        childParentData.offset =
-            Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
-      }
-      childRef = childParentData.nextSibling;
-    }
+    layoutOtherChildren(childRef, child);
+
+    // setting offsets of the children
+
     positionRulers();
     if (showLabel) {
       positionRulerLabel();
@@ -1293,6 +1283,52 @@ class RenderLinearGauge extends RenderBox
     positionValueBars();
     positionPointer();
     positionCurves();
+  }
+
+  void layoutOtherChildren(RenderBox? childRef, RenderBox? child) {
+    while (childRef != null) {
+      final childParentData = childRef.parentData as LinearGaugeParentData;
+      RenderLinearGaugeContainer? containerRef;
+
+      if (childRef.runtimeType == RenderLinearGaugeContainer) {
+        containerRef = childRef as RenderLinearGaugeContainer;
+        gaugeStart = containerRef.gaugeStart;
+        gaugeEnd = containerRef.gaugeEnd;
+        _linearGaugeLabel = containerRef.linearGaugeLabel;
+        childParentData.offset =
+            Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
+      }
+      childParentData.yAxisForGaugeContainer = yAxisForGaugeContainer;
+      childParentData.xAxisForGaugeContainer = xAxisForGaugeContainer;
+      childParentData.gaugeStart = gaugeStart;
+      childParentData.gaugeEnd = gaugeEnd;
+      childParentData.linearGaugeLabel = _linearGaugeLabel;
+      if (child is! RenderLinearGaugeContainer ||
+          child is! RenderLinearGaugeWidgetPointer) {
+        childRef.layout(
+            BoxConstraints.loose(
+                Size(constraints.maxWidth, constraints.maxHeight)),
+            parentUsesSize: true);
+      }
+
+      childRef = childParentData.nextSibling;
+    }
+  }
+
+  layoutContainerAndWidgetPointer(RenderBox? child) {
+    while (child != null) {
+      final childParentData = child.parentData as LinearGaugeParentData;
+
+      if (child is RenderLinearGaugeContainer ||
+          child is RenderLinearGaugeWidgetPointer) {
+        child.layout(
+            BoxConstraints.loose(
+                Size(constraints.maxWidth, constraints.maxHeight)),
+            parentUsesSize: true);
+      }
+
+      child = childParentData.nextSibling;
+    }
   }
 
   List<CustomCurve> getCustomCurveByPosition(
@@ -2092,8 +2128,9 @@ class RenderLinearGauge extends RenderBox
 
   @override
   void setupParentData(RenderBox child) {
-    if (child.parentData is! MultiChildLayoutParentData) {
-      child.parentData = MultiChildLayoutParentData();
+    if (child.parentData is! LinearGaugeParentData) {
+      child.parentData = LinearGaugeParentData(xAxisForGaugeContainer,
+          yAxisForGaugeContainer, gaugeStart, gaugeEnd, LinearGaugeLabel());
     }
   }
 
@@ -2106,8 +2143,7 @@ class RenderLinearGauge extends RenderBox
   }
 
   double valueToPixel(double value) {
-    final double pixel = ((value - getStart) / (getEnd - getStart)) *
-        RenderLinearGaugeContainer.gaugeEnd;
+    final double pixel = ((value - getStart) / (getEnd - getStart)) * gaugeEnd;
 
     return pixel;
   }
@@ -2194,4 +2230,18 @@ class RenderLinearGauge extends RenderBox
     _horizontalDrag.dispose();
     _verticalDrag.dispose();
   }
+}
+
+class LinearGaugeParentData extends MultiChildLayoutParentData {
+  double xAxisForGaugeContainer;
+  double yAxisForGaugeContainer;
+  double gaugeStart;
+  double gaugeEnd;
+  LinearGaugeLabel linearGaugeLabel;
+  LinearGaugeParentData(
+      this.xAxisForGaugeContainer,
+      this.yAxisForGaugeContainer,
+      this.gaugeStart,
+      this.gaugeEnd,
+      this.linearGaugeLabel);
 }

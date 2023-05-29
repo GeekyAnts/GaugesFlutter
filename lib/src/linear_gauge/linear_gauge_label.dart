@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
-import 'dart:math' as math;
 
 class LinearGaugeLabel {
   String? text;
@@ -11,9 +10,10 @@ class LinearGaugeLabel {
 
   // Will be adding other members as required
 
-  static final List<LinearGaugeLabel> _linearGaugeLabel = [];
+  final List<LinearGaugeLabel> _linearGaugeLabel = [];
+  late Size _startLabelSize, _endLabelSize;
 
-  static final Map<String, List<Offset>> primaryRulers = {};
+  final Map<String, List<Offset>> primaryRulers = {};
   final TextPainter _textPainter =
       TextPainter(textDirection: TextDirection.ltr);
 
@@ -338,7 +338,33 @@ class LinearGaugeLabel {
     return Size(_textPainter.width, _textPainter.height);
   }
 
+  calculateStartAndEndLabelSize(TextStyle textStyle, double start, double end,
+      List<CustomRulerLabel> customLabels, bool inversedRulers) {
+    _startLabelSize = getLabelSize(
+        textStyle: textStyle,
+        value: !inversedRulers
+            ? customLabels.isEmpty
+                ? start.toInt().toString()
+                : customLabels.first.text
+            : customLabels.isEmpty
+                ? end.toInt().toString()
+                : customLabels.last.text);
+
+    _endLabelSize = getLabelSize(
+        textStyle: textStyle,
+        value: !inversedRulers
+            ? customLabels.isEmpty
+                ? end.toInt().toString()
+                : customLabels.last.text
+            : customLabels.isEmpty
+                ? start.toInt().toString()
+                : customLabels.first.text);
+  }
+
   List<LinearGaugeLabel> get getListOfLabel => _linearGaugeLabel;
+
+  Size get startLabelSize => _startLabelSize;
+  Size get endLabelSize => _endLabelSize;
 
   Map<String, List<Offset>> get getPrimaryRulersOffset => primaryRulers;
 }

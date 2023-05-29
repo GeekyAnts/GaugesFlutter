@@ -4,7 +4,6 @@ import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.d
 import '../../../geekyants_flutter_gauges.dart';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
-import '../gauge_container/linear_gauge_container.dart';
 import '../linear_gauge_label.dart';
 
 class RenderRulerLabel extends RenderBox {
@@ -40,11 +39,11 @@ class RenderRulerLabel extends RenderBox {
         _customLabels = customLabel,
         _textStyle = textStyle;
 
-  final LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
+  LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
   late bool _isHorizontalOrientation;
   late Size _startLabelSize, _endLabelSize;
 
-  static late double gaugeStart, gaugeEnd;
+  late double gaugeStart, gaugeEnd;
   late double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
 
   ///
@@ -238,55 +237,34 @@ class RenderRulerLabel extends RenderBox {
     }
   }
 
-  calculateStartAndEndLabelSize() {
-    _startLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle,
-        value: !getInversedRulers
-            ? getCustomLabels!.isEmpty
-                ? getStart.toString()
-                : getCustomLabels!.first.text
-            : getCustomLabels!.isEmpty
-                ? getEnd.toString()
-                : getCustomLabels!.last.text);
-
-    _endLabelSize = _linearGaugeLabel.getLabelSize(
-        textStyle: getTextStyle,
-        value: !getInversedRulers
-            ? getCustomLabels!.isEmpty
-                ? getEnd.toString()
-                : getCustomLabels!.last.text
-            : getCustomLabels!.isEmpty
-                ? getStart.toString()
-                : getCustomLabels!.first.text);
-  }
-
   @override
   void performLayout() {
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
+    _startLabelSize = parentDataRef.linearGaugeLabel.startLabelSize;
+    _endLabelSize = parentDataRef.linearGaugeLabel.endLabelSize;
+    gaugeStart = parentDataRef.gaugeStart;
+    gaugeEnd = parentDataRef.gaugeEnd;
     Size _axisActualSize;
     setCustomLabelStartEnd();
-    calculateStartAndEndLabelSize();
 
     double actualParentWidth;
     if (_isHorizontalOrientation) {
       if (!getInversedRulers) {
-        actualParentWidth = (RenderLinearGaugeContainer.endLabelSize.width +
-                RenderLinearGaugeContainer.gaugeEnd) -
-            getExtendLinearGauge * 2;
+        actualParentWidth =
+            (_endLabelSize.width + gaugeEnd) - getExtendLinearGauge * 2;
       } else {
-        actualParentWidth = (RenderLinearGaugeContainer.startLabelSize.width +
-                RenderLinearGaugeContainer.gaugeEnd) -
-            getExtendLinearGauge * 2;
+        actualParentWidth =
+            (_startLabelSize.width + gaugeEnd) - getExtendLinearGauge * 2;
       }
     } else {
-      actualParentWidth = (RenderLinearGaugeContainer.endLabelSize.height +
-              RenderLinearGaugeContainer.gaugeEnd) -
-          getExtendLinearGauge * 2;
+      actualParentWidth =
+          (_endLabelSize.height + gaugeEnd) - getExtendLinearGauge * 2;
     }
 
     double effectiveLabelHeight;
 
     if (_isHorizontalOrientation) {
-      effectiveLabelHeight = RenderLinearGaugeContainer.startLabelSize.height;
+      effectiveLabelHeight = _startLabelSize.height;
     } else {
       effectiveLabelHeight =
           math.max(_startLabelSize.width, _endLabelSize.width);
@@ -441,8 +419,12 @@ class RenderRulerLabel extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     Canvas canvas = context.canvas;
-    xAxisForGaugeContainer = RenderLinearGauge.xAxisForGaugeContainer;
-    yAxisForGaugeContainer = RenderLinearGauge.yAxisForGaugeContainer;
+    LinearGaugeParentData parentDataRef = parentData as LinearGaugeParentData;
+
+    xAxisForGaugeContainer = parentDataRef.xAxisForGaugeContainer;
+    yAxisForGaugeContainer = parentDataRef.yAxisForGaugeContainer;
+    _linearGaugeLabel = parentDataRef.linearGaugeLabel;
+
     int count = 0;
     _linearGaugeLabel.getPrimaryRulersOffset.forEach((key, value) {
       _drawLabels(canvas, _linearGaugeLabel.getListOfLabel[count].text!,
