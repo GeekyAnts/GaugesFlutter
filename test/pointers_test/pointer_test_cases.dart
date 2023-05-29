@@ -4,7 +4,7 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 List valueTests = [
   // Circle TestCases
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 0,
       pointerPosition: PointerPosition.top,
@@ -13,7 +13,7 @@ List valueTests = [
     'Do': 'Pointer should be drawn at 0 value with with circle shape',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 50,
       pointerPosition: PointerPosition.top,
@@ -22,7 +22,7 @@ List valueTests = [
     'Do': 'Pointer should be drawn at 0 value with with circle shape',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 100,
       pointerPosition: PointerPosition.top,
@@ -33,7 +33,7 @@ List valueTests = [
 
   // Rectangle TestCases
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 0,
       pointerPosition: PointerPosition.top,
@@ -42,7 +42,7 @@ List valueTests = [
     'Do': 'Pointer should be drawn at 0 value with with rectangle shape',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 50,
       pointerPosition: PointerPosition.top,
@@ -51,7 +51,7 @@ List valueTests = [
     'Do': 'Pointer should be drawn at 0 value with with rectangle shape',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 100,
       pointerPosition: PointerPosition.top,
@@ -62,7 +62,7 @@ List valueTests = [
 
   //Triangle TestCases
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 0,
       pointerPosition: PointerPosition.top,
@@ -71,7 +71,7 @@ List valueTests = [
     'Do': 'Pointer should be drawn at 0 value with with triangle shape',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 50,
       pointerPosition: PointerPosition.top,
@@ -80,7 +80,7 @@ List valueTests = [
     'Do': 'Pointer should be drawn at 0 value with with triangle shape',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 100,
       pointerPosition: PointerPosition.top,
@@ -91,7 +91,7 @@ List valueTests = [
 
   //Diamond TestCases
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 0,
       pointerPosition: PointerPosition.top,
@@ -100,7 +100,7 @@ List valueTests = [
     'Do': 'Pointer should be drawn at 0 value with with diamond shape',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 50,
       pointerPosition: PointerPosition.top,
@@ -109,7 +109,7 @@ List valueTests = [
     'Do': 'Pointer should be drawn at 0 value with with diamond shape',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 100,
       pointerPosition: PointerPosition.top,
@@ -122,7 +122,7 @@ List valueTests = [
 List positionTestCases = [
   {
     // Circle TestCases with PointerPosition
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 50,
       pointerPosition: PointerPosition.top,
@@ -132,7 +132,7 @@ List positionTestCases = [
         'Pointer should be drawn at 50 value with with Circle shape  and pointerPosition.top',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 50,
       pointerPosition: PointerPosition.center,
@@ -142,7 +142,7 @@ List positionTestCases = [
         'Pointer should be drawn at 50 value with with Circle shape and pointerPosition.center',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 50,
       pointerPosition: PointerPosition.bottom,
@@ -154,7 +154,7 @@ List positionTestCases = [
 
   // Rectangle TestCases with PointerPosition
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 50,
       pointerPosition: PointerPosition.top,
@@ -164,7 +164,7 @@ List positionTestCases = [
         'Pointer should be drawn at 50 value with with Rectangle shape and pointerPosition.top',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 50,
       pointerPosition: PointerPosition.center,
@@ -174,7 +174,7 @@ List positionTestCases = [
         'Pointer should be drawn at 50 value with with Rectangle shape and pointerPosition.center',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 50,
       pointerPosition: PointerPosition.bottom,
@@ -186,7 +186,7 @@ List positionTestCases = [
 
   // Triangle TestCases with PointerPosition
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 50,
       pointerPosition: PointerPosition.top,
@@ -196,7 +196,7 @@ List positionTestCases = [
         'Pointer should be drawn at 50 value with with Triangle shape and pointerPosition.top',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 50,
       pointerPosition: PointerPosition.center,
@@ -206,7 +206,7 @@ List positionTestCases = [
         'Pointer should be drawn at 50 value with with Triangle shape and pointerPosition.center',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 50,
       pointerPosition: PointerPosition.bottom,
@@ -218,7 +218,7 @@ List positionTestCases = [
 
   // Diamond TestCases with PointerPosition
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 50,
       pointerPosition: PointerPosition.top,
@@ -228,7 +228,7 @@ List positionTestCases = [
         'Pointer should be drawn at 50 value with with Diamond shape and pointerPosition.top',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 50,
       pointerPosition: PointerPosition.center,
@@ -238,7 +238,7 @@ List positionTestCases = [
         'Pointer should be drawn at 50 value with with Diamond shape and pointerPosition.center',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 50,
       pointerPosition: PointerPosition.bottom,
@@ -253,7 +253,7 @@ List valueTestCasesVertical = [
   // Circle TestCases
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 0,
       pointerPosition: PointerPosition.left,
@@ -263,7 +263,7 @@ List valueTestCasesVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 50,
       pointerPosition: PointerPosition.left,
@@ -273,7 +273,7 @@ List valueTestCasesVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 100,
       pointerPosition: PointerPosition.left,
@@ -285,7 +285,7 @@ List valueTestCasesVertical = [
   // Rectangle TestCases
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 0,
       pointerPosition: PointerPosition.left,
@@ -295,7 +295,7 @@ List valueTestCasesVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 50,
       pointerPosition: PointerPosition.left,
@@ -305,7 +305,7 @@ List valueTestCasesVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 100,
       pointerPosition: PointerPosition.left,
@@ -317,7 +317,7 @@ List valueTestCasesVertical = [
   //Triangle TestCases
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 0,
       pointerPosition: PointerPosition.left,
@@ -327,7 +327,7 @@ List valueTestCasesVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 50,
       pointerPosition: PointerPosition.left,
@@ -337,7 +337,7 @@ List valueTestCasesVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 100,
       pointerPosition: PointerPosition.left,
@@ -349,7 +349,7 @@ List valueTestCasesVertical = [
   //Diamond TestCases
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 0,
       pointerPosition: PointerPosition.left,
@@ -359,7 +359,7 @@ List valueTestCasesVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 50,
       pointerPosition: PointerPosition.left,
@@ -369,7 +369,7 @@ List valueTestCasesVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 100,
       pointerPosition: PointerPosition.left,
@@ -383,7 +383,7 @@ List edgeCases = [
   //Cirlce TestCases
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       width: 150,
       value: 0,
@@ -394,7 +394,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       width: 150,
       value: 100,
@@ -406,7 +406,7 @@ List edgeCases = [
   //Rectangle TestCases
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       width: 150,
       height: 10,
@@ -418,7 +418,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       width: 150,
       height: 10,
@@ -431,7 +431,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       width: 10,
       height: 150,
@@ -443,7 +443,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       width: 10,
       height: 150,
@@ -458,7 +458,7 @@ List edgeCases = [
   // Triangle TestCases
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       width: 150,
       height: 20,
@@ -471,7 +471,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       width: 150,
       height: 20,
@@ -484,7 +484,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       width: 20,
       height: 150,
@@ -497,7 +497,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       width: 20,
       height: 150,
@@ -512,7 +512,7 @@ List edgeCases = [
   //Diamond TestCases
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       width: 150,
       height: 20,
@@ -525,7 +525,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       width: 150,
       height: 20,
@@ -538,7 +538,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       width: 20,
       height: 150,
@@ -551,7 +551,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       width: 20,
       height: 150,
@@ -566,7 +566,7 @@ List edgeCases = [
   // Edge Cases Circle
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       width: 20,
       value: 100,
@@ -578,7 +578,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       width: 20,
       value: 100,
@@ -592,7 +592,7 @@ List edgeCases = [
   // Edge Cases Rectangle
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       width: 20,
       value: 100,
@@ -604,7 +604,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       width: 20,
       value: 100,
@@ -618,7 +618,7 @@ List edgeCases = [
   // Edge Cases Triangle
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       width: 20,
       value: 100,
@@ -630,7 +630,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       width: 20,
       value: 100,
@@ -644,7 +644,7 @@ List edgeCases = [
   // Edge Cases Diamond
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       width: 20,
       value: 100,
@@ -656,7 +656,7 @@ List edgeCases = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       width: 20,
       value: 100,
@@ -672,7 +672,7 @@ List showLabelTests = [
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
     'showLabel': false,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 0,
@@ -686,7 +686,7 @@ List showLabelTests = [
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
     'showLabel': false,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 100,
@@ -700,7 +700,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 50,
       width: 50,
       shape: PointerShape.triangle,
@@ -714,7 +714,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 50,
       width: 50,
       shape: PointerShape.triangle,
@@ -731,7 +731,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 0,
@@ -745,7 +745,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 100,
@@ -759,7 +759,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 30,
       width: 30,
       shape: PointerShape.circle,
@@ -773,7 +773,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 30,
       width: 30,
       shape: PointerShape.circle,
@@ -789,7 +789,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 0,
@@ -803,7 +803,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 100,
@@ -817,7 +817,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 30,
       width: 30,
       shape: PointerShape.rectangle,
@@ -831,7 +831,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 30,
       width: 30,
       shape: PointerShape.rectangle,
@@ -847,7 +847,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 0,
@@ -861,7 +861,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 100,
@@ -875,7 +875,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 30,
       width: 30,
       shape: PointerShape.diamond,
@@ -889,7 +889,7 @@ List showLabelTests = [
   {
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 30,
       width: 30,
       shape: PointerShape.diamond,
@@ -906,7 +906,7 @@ List showLabelTests = [
     'showLabel': false,
     'inverse': true,
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 0,
@@ -921,7 +921,7 @@ List showLabelTests = [
     'inverse': true,
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 100,
@@ -936,7 +936,7 @@ List showLabelTests = [
     'inverse': true,
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 30,
       width: 30,
       shape: PointerShape.triangle,
@@ -952,7 +952,7 @@ List showLabelTests = [
     'inverse': true,
     'showLabel': false,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       height: 30,
       width: 30,
       shape: PointerShape.triangle,
@@ -969,7 +969,7 @@ List showLabelTests = [
 List colorTests = [
   //Circle
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 50,
@@ -980,7 +980,7 @@ List colorTests = [
   },
   // Rectangle
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 50,
@@ -991,7 +991,7 @@ List colorTests = [
   },
   // Triangle
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 50,
@@ -1002,7 +1002,7 @@ List colorTests = [
   },
   // Diamond
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 50,
@@ -1016,7 +1016,7 @@ List colorTests = [
 List valueLabelTests = [
   // For value 50
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 50,
@@ -1032,7 +1032,7 @@ List valueLabelTests = [
   },
   // For Value 0
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 0,
@@ -1048,7 +1048,7 @@ List valueLabelTests = [
   },
   //For value 100
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 100,
@@ -1063,7 +1063,7 @@ List valueLabelTests = [
     'Do': 'Should display value label for pointer',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 100,
@@ -1084,7 +1084,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   //circle center
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 50,
@@ -1095,7 +1095,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 0,
@@ -1106,7 +1106,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 100,
@@ -1120,7 +1120,7 @@ List extendLinearGaugePointerTestsHorizontal = [
 
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 50,
@@ -1131,7 +1131,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 0,
@@ -1142,7 +1142,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 100,
@@ -1156,7 +1156,7 @@ List extendLinearGaugePointerTestsHorizontal = [
 
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 50,
@@ -1167,7 +1167,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 0,
@@ -1178,7 +1178,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 100,
@@ -1198,7 +1198,7 @@ List extendLinearGaugePointerTestsHorizontal = [
         color: Colors.black,
       ),
     ),
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 0,
@@ -1214,7 +1214,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   //triangle with random values and positions
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 60,
@@ -1225,7 +1225,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 0,
@@ -1236,7 +1236,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 100,
@@ -1256,7 +1256,7 @@ List extendLinearGaugePointerTestsHorizontal = [
         color: Colors.black,
       ),
     ),
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 100,
@@ -1270,7 +1270,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   //diamond with random values and positions
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 20,
@@ -1281,7 +1281,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 80,
@@ -1302,7 +1302,7 @@ List extendLinearGaugePointerTestsHorizontal = [
         color: Colors.black,
       ),
     ),
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 80,
@@ -1315,7 +1315,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 0,
@@ -1329,7 +1329,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 100,
@@ -1340,7 +1340,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 10.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 90,
@@ -1355,7 +1355,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   //rectangle with random values and positions
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 30,
@@ -1366,7 +1366,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 0,
@@ -1385,7 +1385,7 @@ List extendLinearGaugePointerTestsHorizontal = [
         color: Colors.black,
       ),
     ),
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 0,
@@ -1397,7 +1397,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 0,
@@ -1410,7 +1410,7 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 50.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 100,
@@ -1426,7 +1426,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 50,
@@ -1439,7 +1439,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 0,
@@ -1462,7 +1462,7 @@ List extendLinearGaugePointerTestsVertical = [
         color: Colors.black,
       ),
     ),
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 0,
@@ -1478,7 +1478,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       color: Colors.blue,
       value: 90,
@@ -1494,7 +1494,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 50,
@@ -1507,7 +1507,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 0,
@@ -1531,7 +1531,7 @@ List extendLinearGaugePointerTestsVertical = [
       ),
     ),
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 0,
@@ -1547,7 +1547,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       color: Colors.blue,
       value: 30,
@@ -1565,7 +1565,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 50,
@@ -1586,7 +1586,7 @@ List extendLinearGaugePointerTestsVertical = [
       ),
     ),
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 50,
@@ -1599,7 +1599,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 0,
@@ -1615,7 +1615,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       color: Colors.blue,
       value: 30,
@@ -1633,7 +1633,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 100.0,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 50,
@@ -1646,7 +1646,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 0,
@@ -1662,7 +1662,7 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 30,
@@ -1686,7 +1686,7 @@ List extendLinearGaugePointerTestsVertical = [
         color: Colors.black,
       ),
     ),
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       color: Colors.blue,
       value: 30,
@@ -1712,7 +1712,7 @@ List inverseValueTests = [
   //  Inverse Circle TestCases with PointerPosition
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 30,
       pointerPosition: PointerPosition.top,
@@ -1723,7 +1723,7 @@ List inverseValueTests = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 30,
       pointerPosition: PointerPosition.center,
@@ -1734,7 +1734,7 @@ List inverseValueTests = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -1747,7 +1747,7 @@ List inverseValueTests = [
   // Inverse Rectangle TestCases with PointerPosition
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 30,
       pointerPosition: PointerPosition.top,
@@ -1758,7 +1758,7 @@ List inverseValueTests = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 30,
       pointerPosition: PointerPosition.center,
@@ -1769,7 +1769,7 @@ List inverseValueTests = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -1782,7 +1782,7 @@ List inverseValueTests = [
   // Inverse Triangle TestCases with PointerPosition
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 30,
       pointerPosition: PointerPosition.top,
@@ -1793,7 +1793,7 @@ List inverseValueTests = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 30,
       pointerPosition: PointerPosition.center,
@@ -1804,7 +1804,7 @@ List inverseValueTests = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -1817,7 +1817,7 @@ List inverseValueTests = [
   // Inverse Diamond TestCases with PointerPosition
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 30,
       pointerPosition: PointerPosition.top,
@@ -1828,7 +1828,7 @@ List inverseValueTests = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 30,
       pointerPosition: PointerPosition.center,
@@ -1839,7 +1839,7 @@ List inverseValueTests = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -1853,7 +1853,7 @@ List inverseValueTests = [
 List pointerAlignmentTestsHorizontal = [
   // for circle
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -1864,7 +1864,7 @@ List pointerAlignmentTestsHorizontal = [
         'Pointer should be drawn at 30 value with circle shape and pointerPosition.bottom and start alignment',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -1875,7 +1875,7 @@ List pointerAlignmentTestsHorizontal = [
         'Pointer should be drawn at 30 value with circle shape and pointerPosition.bottom and center alignment',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -1886,7 +1886,7 @@ List pointerAlignmentTestsHorizontal = [
         'Pointer should be drawn at 30 value with circle shape and pointerPosition.bottom and end alignment',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 60,
       width: 30,
@@ -1899,7 +1899,7 @@ List pointerAlignmentTestsHorizontal = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 60,
       pointerPosition: PointerPosition.top,
@@ -1911,7 +1911,7 @@ List pointerAlignmentTestsHorizontal = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 60,
       pointerPosition: PointerPosition.top,
@@ -1923,7 +1923,7 @@ List pointerAlignmentTestsHorizontal = [
   },
   // for rectangle
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -1934,7 +1934,7 @@ List pointerAlignmentTestsHorizontal = [
         'Pointer should be drawn at 30 value with rectangle shape and pointerPosition.bottom and start alignment',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 60,
       width: 30,
@@ -1947,7 +1947,7 @@ List pointerAlignmentTestsHorizontal = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 60,
       pointerPosition: PointerPosition.top,
@@ -1959,7 +1959,7 @@ List pointerAlignmentTestsHorizontal = [
   },
   //for triangle
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -1970,7 +1970,7 @@ List pointerAlignmentTestsHorizontal = [
         'Pointer should be drawn at 30 value with triangle shape and pointerPosition.bottom and start alignment',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 60,
       width: 30,
@@ -1983,7 +1983,7 @@ List pointerAlignmentTestsHorizontal = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 60,
       pointerPosition: PointerPosition.top,
@@ -1995,7 +1995,7 @@ List pointerAlignmentTestsHorizontal = [
   },
   //for diamond
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 30,
       pointerPosition: PointerPosition.bottom,
@@ -2006,7 +2006,7 @@ List pointerAlignmentTestsHorizontal = [
         'Pointer should be drawn at 30 value with diamond shape and pointerPosition.bottom and start alignment',
   },
   {
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 60,
       width: 30,
@@ -2019,7 +2019,7 @@ List pointerAlignmentTestsHorizontal = [
   },
   {
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 60,
       pointerPosition: PointerPosition.top,
@@ -2035,7 +2035,7 @@ List pointerAlignmentTestsVertical = [
   //for circles
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 20,
       pointerPosition: PointerPosition.left,
@@ -2047,7 +2047,7 @@ List pointerAlignmentTestsVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 20,
       pointerPosition: PointerPosition.left,
@@ -2059,7 +2059,7 @@ List pointerAlignmentTestsVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 20,
       pointerPosition: PointerPosition.left,
@@ -2071,7 +2071,7 @@ List pointerAlignmentTestsVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 60,
       width: 30,
@@ -2086,7 +2086,7 @@ List pointerAlignmentTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.circle,
       value: 60,
       pointerPosition: PointerPosition.left,
@@ -2099,7 +2099,7 @@ List pointerAlignmentTestsVertical = [
 
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.rectangle,
       value: 60,
       width: 50,
@@ -2115,7 +2115,7 @@ List pointerAlignmentTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.diamond,
       value: 90,
       width: 30,
@@ -2131,7 +2131,7 @@ List pointerAlignmentTestsVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'inverse': true,
-    'pointer': Pointer(
+    'pointer': const Pointer(
       shape: PointerShape.triangle,
       value: 10,
       width: 50,

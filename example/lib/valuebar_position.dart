@@ -35,7 +35,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
               height: 100,
               width: 100,
               color: Colors.black.withOpacity(0.3),
-              labelStyle: TextStyle(color: Colors.black),
+              labelStyle: const TextStyle(color: Colors.black),
               pointerPosition: PointerPosition.top,
             ),
             // ShapePointer(

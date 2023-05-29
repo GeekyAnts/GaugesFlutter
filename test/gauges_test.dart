@@ -14,7 +14,7 @@ void main() {
       showLinearGaugeContainer: true,
       gaugeOrientation: GaugeOrientation.horizontal,
       labelTopMargin: 0.0,
-      pointers: [
+      pointers: const [
         Pointer(
           value: 0,
           shape: PointerShape.triangle,

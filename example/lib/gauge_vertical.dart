@@ -25,7 +25,7 @@ class _MyVerticalGaugeState extends State<MyVerticalGauge> {
             rulers: RulerStyle(
               primaryRulersWidth: 10,
               primaryRulersHeight: 30,
-              primaryRulerColor: Color(0xff310072),
+              primaryRulerColor: const Color(0xff310072),
               inverseRulers: false,
               showLabel: false,
               showSecondaryRulers: false,

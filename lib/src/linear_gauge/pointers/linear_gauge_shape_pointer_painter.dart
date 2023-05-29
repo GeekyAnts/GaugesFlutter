@@ -473,7 +473,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
               offset.dy + height + yAxisTurn);
           break;
         case PointerPosition.center:
-          var yAxisTurn;
+          var yAxisTurn = 0.0;
           if (gaugeOrientation == GaugeOrientation.horizontal) {
             yAxisTurn = (quarterTurns == QuarterTurns.zero ||
                     quarterTurns == QuarterTurns.two)

@@ -1,24 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/src/base/base_ruler_style.dart';
 
+/// The [RadialTrack] is used to set the track of the Radial Gauge.
+///
+/// The [start] property is used to set the start value of the Radial Gauge.
+/// The [end] property is used to set the end value of the Radial Gauge.
+/// The [startAngle] property is used to set the start angle of the Radial Gauge.
+/// The [endAngle] property is used to set the end angle of the Radial Gauge.
+///
+/// ``` dart
+/// RadialGauge(
+///          track: RadialTrack(
+///            start: 0,
+///            end: 100,
+///           startAngle: 0,
+///           endAngle: 360,
+///         ),
+///     ),
+/// ```
+///
 class RadialTrack {
+  /// The [RadialTrack] is used to set the track of the Radial Gauge.
+  ///
+  /// The [start] property is used to set the start value of the Radial Gauge.
+  /// The [end] property is used to set the end value of the Radial Gauge.
+  /// The [startAngle] property is used to set the start angle of the Radial Gauge.
+  /// The [endAngle] property is used to set the end angle of the Radial Gauge.
+  ///
+  /// ``` dart
+  /// RadialGauge(
+  ///          track: RadialTrack(
+  ///            start: 0,
+  ///            end: 100,
+  ///           startAngle: 0,
+  ///           endAngle: 360,
+  ///         ),
+  ///     ),
+  /// ```
+  ///
   const RadialTrack({
     Key? key,
     required this.start,
     required this.end,
-    this.startAngle = 140,
+    this.startAngle = -30,
     this.steps = 10,
-    this.endAngle = 400,
+    this.endAngle = 210,
     this.color = Colors.grey,
-    this.hideStartLabel = false,
+    this.hideLabels = false,
     this.hideTrack = false,
     this.thickness = 10,
     this.trackStyle = const TrackStyle(
-      primaryRulersHeight: 20,
+      primaryRulersHeight: 10,
       primaryRulerColor: Colors.black54,
       secondaryRulerColor: Colors.grey,
       inverseRulers: false,
-      secondaryRulersHeight: 10,
+      secondaryRulersHeight: 5,
       primaryRulersWidth: 1.0,
       secondaryRulerPerInterval: 1.0,
     ),
@@ -64,9 +100,9 @@ class RadialTrack {
   final Color color;
 
   ///
-  /// The [hideStartLabel] property is used to hide the start label of the Radial Gauge.
+  /// The [hideLabels] property is used to hide the start label of the Radial Gauge.
   ///
-  final bool hideStartLabel;
+  final bool hideLabels;
 
   ///
   /// The [thickness] property is used to set the thickness of the Radial Gauge.
@@ -79,6 +115,7 @@ class RadialTrack {
   final bool hideTrack;
 
   ///
+  /// The [trackStyle] property is used to customize the track of the Radial Gauge.
   ///
   final TrackStyle trackStyle;
 }

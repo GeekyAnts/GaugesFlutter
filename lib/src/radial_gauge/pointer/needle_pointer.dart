@@ -2,7 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_state.dart';
 import 'needle_pointer_painter.dart';
 
+///
+/// Creates a needle pointer for [RadialGauge].
+///
+///```dart
+///  RadialGauge(
+///   needlePointer: [
+///     NeedlePointer(value: 30),
+///   ],
+///   track: RadialTrack(
+///     start: 0,
+///     end: 100,
+///   ),
+///  ),
+/// ```
 class NeedlePointer extends LeafRenderObjectWidget {
+  /// Creates a needle pointer for [RadialGauge].
+  ///
+  ///```dart
+  ///  RadialGauge(
+  ///   needlePointer: [
+  ///     NeedlePointer(value: 30),
+  ///   ],
+  ///   track: RadialTrack(
+  ///     start: 0,
+  ///     end: 100,
+  ///   ),
+  ///  ),
+  /// ```
   const NeedlePointer(
       {Key? key,
       required this.value,
@@ -10,7 +37,7 @@ class NeedlePointer extends LeafRenderObjectWidget {
       this.color = Colors.red,
       this.tailColor = Colors.red,
       this.needleWidth = 10,
-      this.needleHeight = 350,
+      this.needleHeight = 150,
       this.tailRadius = 20})
       : super(key: key);
 

@@ -1,8 +1,5 @@
 import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import '../../../geekyants_flutter_gauges.dart';
 
 class RenderRadialValueBar extends RenderBox {
@@ -12,7 +9,6 @@ class RenderRadialValueBar extends RenderBox {
     required Color color,
     required LinearGradient? gradient,
     required double valueBarThickness,
-    required double borderRadius,
     required RadialGauge radialGauge,
     required double radialOffset,
   })  : _value = value,
@@ -21,7 +17,6 @@ class RenderRadialValueBar extends RenderBox {
         _radialOffset = radialOffset,
         _radialGauge = radialGauge,
         _valueBarThickness = valueBarThickness,
-        _borderRadius = borderRadius,
         super();
 
   RadialGauge get getRadialGauge => _radialGauge!;
@@ -64,14 +59,6 @@ class RenderRadialValueBar extends RenderBox {
     markNeedsPaint();
   }
 
-  double get getBorderRadius => _borderRadius;
-  double _borderRadius;
-  set setBorderRadius(double borderRadius) {
-    if (_borderRadius == borderRadius) return;
-    _borderRadius = borderRadius;
-    markNeedsPaint();
-  }
-
   LinearGradient get getLinearGradient => _gradient;
   LinearGradient _gradient;
   set setLinearGradient(LinearGradient linearGradient) {
@@ -98,9 +85,12 @@ class RenderRadialValueBar extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
+    final center = offset;
+    final LinearGradient gradient = getLinearGradient;
 
-    double startAngle = getRadialGauge.track.startAngle * (pi / 180);
-    double endAngle = getRadialGauge.track.endAngle * (pi / 180);
+    // Angles in radians
+    double startAngle = (getRadialGauge.track.startAngle - 180) * (pi / 180);
+    double endAngle = (getRadialGauge.track.endAngle - 180) * (pi / 180);
 
     double value = (_value - getRadialGauge.track.start) /
         (getRadialGauge.track.end - getRadialGauge.track.start) *
@@ -108,15 +98,12 @@ class RenderRadialValueBar extends RenderBox {
 
     final double angle = startAngle + (value / 100) * (endAngle - startAngle);
     endAngle = angle;
+
     if (startAngle > endAngle) {
       final double temp = startAngle;
       startAngle = endAngle;
       endAngle = temp;
     }
-
-    final center = offset;
-
-    final LinearGradient gradient = getLinearGradient;
 
     final Paint containerPaint = Paint()
       ..color = _color
@@ -128,9 +115,11 @@ class RenderRadialValueBar extends RenderBox {
 
     double arcLength = endAngle - startAngle;
     double shortestSide = size.shortestSide;
-    double radius = shortestSide / 2.0 -
-        getRadialGauge.track.thickness +
-        getRadialOffset; //
+    double radius =
+        shortestSide / 2.0 - getRadialGauge.track.thickness - getRadialOffset;
+    // getRadialGauge.track.thickness -
+    // getRadialOffset -
+    // getValueBarThickness; //
 
     Rect c = Rect.fromCircle(center: center, radius: radius);
     canvas.drawArc(c, startAngle, arcLength, false, containerPaint);

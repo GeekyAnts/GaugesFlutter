@@ -20,8 +20,10 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 /// ```
 ///
 ///
+///
+
 class Pointer extends LeafRenderObjectWidget implements BasePointer {
-  Pointer({
+  const Pointer({
     Key? key,
     required this.value,
     this.height = 10.0,
@@ -51,7 +53,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
   /// ),
   /// ```
   @override
-  double value;
+  final double value;
 
   ///
   /// `height` Sets the height of the pointer on the [LinearGauge]
@@ -91,7 +93,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
   ///   ),
   /// ```
 
-  bool isInteractive;
+  final bool isInteractive;
 
   ///
   /// `color` Sets the color of the pointer on the [LinearGauge]

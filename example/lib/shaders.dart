@@ -64,7 +64,7 @@ class _MyShadersState extends State<MyShaders> {
                   rulerPosition: RulerPosition.center,
                   inverseRulers: true,
                   // secondaryRulersHeight: 300,
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontSize: 12,
                   ),
                   // rulersOffset: 20,

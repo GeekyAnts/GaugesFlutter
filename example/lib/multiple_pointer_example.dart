@@ -19,7 +19,7 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
           valueBar: const [
             ValueBar(value: 23, color: Colors.red),
           ],
-          pointers: [
+          pointers: const [
             Pointer(
               value: 28,
               width: 20,
