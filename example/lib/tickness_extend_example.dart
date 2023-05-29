@@ -33,7 +33,7 @@ class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
               width: 20,
               value: 150,
               showLabel: false,
-              labelStyle: const TextStyle(
+              labelStyle: TextStyle(
                 color: Colors.black,
               ),
             ),

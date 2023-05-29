@@ -1045,14 +1045,12 @@ class RenderLinearGauge extends RenderBox
     double start = gaugeStart;
     double end = gaugeEnd;
     // Start and End values of the Linear Gauge
-    double endValue = getEnd;
     double startOffset, topOffset;
-    double startValue = getStart;
 
     //  width of the value bar in pixels based on the value
-    double valueBarWidth =
-        ((valueBar.value - startValue) / (endValue - startValue)) *
-            (end - 2 * getExtendLinearGauge);
+    // double valueBarWidth =
+    //     ((valueBar.value - startValue) / (endValue - startValue)) *
+    //         (end - 2 * getExtendLinearGauge);
 
     double totalValOffset = _getOffsetHeight(
         valueBar.position, getThickness, valueBar.offset, valueBar);
@@ -1064,12 +1062,6 @@ class RenderLinearGauge extends RenderBox
         startValue = !getInversedRulers
             ? (startValue + getExtendLinearGauge)
             : (startValue - getExtendLinearGauge);
-      } else {
-        if (getEnd == valueBar.value) {
-          valueBarWidth += 2 * getExtendLinearGauge;
-        } else {
-          valueBarWidth += getExtendLinearGauge;
-        }
       }
       topOffset = totalValOffset;
 
@@ -1088,12 +1080,6 @@ class RenderLinearGauge extends RenderBox
         barTop = !getInversedRulers
             ? (barTop - getExtendLinearGauge)
             : (barTop + getExtendLinearGauge);
-      } else {
-        if (getEnd == valueBar.value) {
-          valueBarWidth += 2 * getExtendLinearGauge;
-        } else {
-          valueBarWidth += getExtendLinearGauge;
-        }
       }
       startOffset = barLeft;
 
