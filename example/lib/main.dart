@@ -1,4 +1,3 @@
-import 'package:example/valuebar_position.dart';
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
@@ -22,13 +21,12 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   double value = 50;
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
         color: Colors.pink.withOpacity(0.1),
         child: LinearGauge(
           gaugeOrientation: GaugeOrientation.vertical,
-          valueBar: [
+          valueBar: const [
             ValueBar(
               value: 20,
               position: ValueBarPosition.left,
@@ -36,7 +34,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
             )
           ],
           enableGaugeAnimation: true,
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
             rulerPosition: RulerPosition.right,
           ),
         ),
