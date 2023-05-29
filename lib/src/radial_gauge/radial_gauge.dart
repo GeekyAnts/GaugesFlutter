@@ -224,13 +224,12 @@ class _RadialGaugeState extends State<RadialGauge> {
 
 class RRadialGauge extends MultiChildRenderObjectWidget {
   // ignore: prefer_const_constructors_in_immutables
-  final RadialGauge rGauge;
   RRadialGauge({
     Key? key,
     required this.rGauge,
     required List<Widget> children,
   }) : super(key: key, children: children);
-
+  final RadialGauge rGauge;
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderRadialGauge(
