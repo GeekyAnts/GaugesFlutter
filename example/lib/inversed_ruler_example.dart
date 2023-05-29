@@ -19,7 +19,7 @@ class InversedRulerExample extends StatelessWidget {
                 ],
                 // linearGaugeBoxDecoration:
                 //     LinearGaugeBoxDecoration(borderRadius: 20, height: 50),
-                rulers: const RulerStyle(
+                rulers: RulerStyle(
                     rulerPosition: RulerPosition.bottom, inverseRulers: true),
                 customLabels: const [
                   CustomRulerLabel(text: "\$10", value: 10),

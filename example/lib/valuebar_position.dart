@@ -14,73 +14,65 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          animationGap: 0.5,
-          animationDuration: 5000,
-          extendLinearGauge: 10,
-
-          fillExtend: false,
           gaugeOrientation: GaugeOrientation.horizontal,
-          enableGaugeAnimation: true,
-          start: 0,
-          end: 100,
-          steps: 10,
-          valueBar: [
-            ValueBar(
-                value: 100,
-                valueBarThickness: 10,
-                enableAnimation: false,
-                color: Colors.blue.shade300,
-                animationType: Curves.bounceInOut),
-            ValueBar(
-                value: 50,
-                valueBarThickness: 10,
-                offset: 10,
-                position: ValueBarPosition.bottom,
-                color: Colors.orange.shade300,
-                animationType: Curves.bounceInOut),
-            ValueBar(
-                value: 70,
-                valueBarThickness: 10,
-                offset: 20,
-                position: ValueBarPosition.bottom,
-                color: Colors.indigo.shade300,
-                animationType: Curves.bounceInOut),
-          ],
+
+          // curves: [
+          //   CustomCurve(
+          //     curvePosition: CurvePosition.top,
+          //     midPoint: 50,
+          //     start: 10,
+          //     end: 50,
+          //     startHeight: 100,
+          //     endHeight: 100,
+          //     midHeight: 100,
+          //   )
+          // ],
+          // linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 80),
           pointers: [
             Pointer(
-                value: 55,
-                shape: PointerShape.triangle,
-                animationDuration: 2000,
-                // enableAnimation: false,
-                animationType: Curves.ease,
-                pointerAlignment: PointerAlignment.center,
-                height: 20,
-                width: 20,
+              value: 90,
+              shape: PointerShape.circle,
+              height: 100,
+              width: 100,
+              color: Colors.black.withOpacity(0.3),
+              labelStyle: const TextStyle(color: Colors.black),
+              pointerPosition: PointerPosition.top,
+            ),
+            // ShapePointer(
+            //   value: 0,
+            //   shape: PointerShape.circle,
+            //   height: 200,
+            //   // height: 20,
+            //   pointerPosition: PointerPosition.top,
+            //   pointerAlignment: PointerAlignment.center,
+            // )
+            // ,
+            WidgetPointer(
+                value: 50,
                 pointerPosition: PointerPosition.center,
-                color: Colors.grey[800]),
-            Pointer(
-                value: 100,
-                shape: PointerShape.circle,
-                showLabel: true,
-                labelStyle: const TextStyle(color: Colors.amber),
-                animationDuration: 3000,
-                animationType: Curves.bounceIn,
-                // pointerAlignment: PointerAlignment.end,
-                height: 50,
-                width: 20,
-                pointerPosition: PointerPosition.top,
-                color: Colors.grey[800]),
+                child: Container(
+                  height: 100,
+                  width: 60,
+                  color: Colors.amber,
+                ))
           ],
-          // rangeLinearGauge: [
-          //   RangeLinearGauge(color: Colors.red, start: 0, end: 50),
-          //   RangeLinearGauge(color: Colors.yellow, start: 50, end: 100)
+          // extendLinearGauge: 10,
+          // customLabels: const [
+          //   CustomRulerLabel(text: "0", value: 0),
+          //   CustomRulerLabel(text: "50", value: 50),
+          //   CustomRulerLabel(text: "100", value: 100),
           // ],
-          linearGaugeBoxDecoration:
-              const LinearGaugeBoxDecoration(thickness: 10),
-          rulers: const RulerStyle(
-              inverseRulers: true,
-              rulerPosition: RulerPosition.top,
-              showLabel: true),
+          rulers: RulerStyle(
+            inverseRulers: true,
+            rulerPosition: RulerPosition.center,
+            labelOffset: 10,
+            rulersOffset: 10,
+            primaryRulersHeight: 30,
+            textStyle: const TextStyle(
+              fontFamily: 'Roboto',
+              color: Colors.black,
+            ),
+          ),
         ),
       ),
     );

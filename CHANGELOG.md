@@ -1,3 +1,13 @@
+## [1.0.1] - 30 May 2023
+
+**Fixes**
+
+- Re Architechtured Linear Gauge
+- Support for Pointer Interactivity
+- Support for Widget Pointers
+- Each Element is Now converted as Widgets
+- Support for Radial Gauge[Pre-Release]
+
 ## [1.0.0+5] - 3 May 2023
 
 **Fixes**

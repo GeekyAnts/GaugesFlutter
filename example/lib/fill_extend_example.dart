@@ -20,7 +20,7 @@ class _FillExtendExampleState extends State<FillExtendExample> {
           enableGaugeAnimation: true,
           gaugeOrientation: GaugeOrientation.vertical,
           // valueBar: [ValueBar(value: 100)],
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
             inverseRulers: false,
             rulerPosition: RulerPosition.left,
           ),

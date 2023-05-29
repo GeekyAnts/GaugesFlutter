@@ -4,25 +4,33 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 List valueTests = [
   // Without MidHeight
   {
-    'curves': [CustomCurve(midPoint: 50, curvePosition: CurvePosition.bottom)],
+    'curves': [
+      const CustomCurve(midPoint: 50, curvePosition: CurvePosition.bottom)
+    ],
     'gaugeOrientation': GaugeOrientation.horizontal,
     'name': 'custom-curve-midpoint-50-bottom',
     'Do': 'Custom Curve with midPoint 50 and curvePosition bottom',
   },
   {
-    'curves': [CustomCurve(midPoint: 50, curvePosition: CurvePosition.top)],
+    'curves': [
+      const CustomCurve(midPoint: 50, curvePosition: CurvePosition.top)
+    ],
     'gaugeOrientation': GaugeOrientation.horizontal,
     'name': 'custom-curve-midpoint-50-top',
     'Do': 'Custom Curve with midPoint 50 and curvePosition top',
   },
   {
-    'curves': [CustomCurve(midPoint: 50, curvePosition: CurvePosition.left)],
+    'curves': [
+      const CustomCurve(midPoint: 50, curvePosition: CurvePosition.left)
+    ],
     'gaugeOrientation': GaugeOrientation.vertical,
     'name': 'custom-curve-midpoint-50-vertical-left',
     'Do': 'Custom Curve with midPoint 50 and curvePosition left',
   },
   {
-    'curves': [CustomCurve(midPoint: 50, curvePosition: CurvePosition.right)],
+    'curves': [
+      const CustomCurve(midPoint: 50, curvePosition: CurvePosition.right)
+    ],
     'gaugeOrientation': GaugeOrientation.vertical,
     'name': 'custom-curve-midpoint-50-vertical-right',
     'Do': 'Custom Curve with midPoint 50 and curvePosition right',
@@ -32,13 +40,13 @@ List valueTests = [
 List concaveConvexTests = [
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 100,
           midHeight: -90,
           endHeight: 100,
           curvePosition: CurvePosition.top),
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 100,
           midHeight: -90,
@@ -53,13 +61,13 @@ List concaveConvexTests = [
   //Left and right
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 100,
           midHeight: -90,
           endHeight: 100,
           curvePosition: CurvePosition.left),
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 100,
           midHeight: -90,
@@ -73,13 +81,13 @@ List concaveConvexTests = [
   },
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 00,
           midHeight: 100,
           endHeight: 00,
           curvePosition: CurvePosition.top),
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 00,
           midHeight: 100,
@@ -94,13 +102,13 @@ List concaveConvexTests = [
   //Left and right
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 00,
           midHeight: 100,
           endHeight: 00,
           curvePosition: CurvePosition.left),
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 00,
           midHeight: 100,
@@ -117,7 +125,7 @@ List concaveConvexTests = [
 List bezierTests = [
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 0,
           startHeight: 00,
           midHeight: 150,
@@ -125,7 +133,7 @@ List bezierTests = [
           curveStyle: CurveStyle.bezier,
           color: Colors.blue,
           curvePosition: CurvePosition.bottom),
-      CustomCurve(
+      const CustomCurve(
           midPoint: 0,
           startHeight: 00,
           midHeight: 150,
@@ -139,7 +147,7 @@ List bezierTests = [
   },
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 0,
           startHeight: 00,
           midHeight: 150,
@@ -147,7 +155,7 @@ List bezierTests = [
           curveStyle: CurveStyle.bezier,
           color: Colors.blue,
           curvePosition: CurvePosition.left),
-      CustomCurve(
+      const CustomCurve(
           midPoint: 0,
           startHeight: 00,
           midHeight: 150,
@@ -161,7 +169,7 @@ List bezierTests = [
   },
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 100,
           startHeight: 00,
           midHeight: 150,
@@ -169,7 +177,7 @@ List bezierTests = [
           curveStyle: CurveStyle.bezier,
           color: Colors.blue,
           curvePosition: CurvePosition.bottom),
-      CustomCurve(
+      const CustomCurve(
           midPoint: 100,
           startHeight: 00,
           midHeight: 150,
@@ -183,7 +191,7 @@ List bezierTests = [
   },
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 100,
           startHeight: 00,
           midHeight: 150,
@@ -191,7 +199,7 @@ List bezierTests = [
           curveStyle: CurveStyle.bezier,
           color: Colors.blue,
           curvePosition: CurvePosition.left),
-      CustomCurve(
+      const CustomCurve(
           midPoint: 100,
           startHeight: 00,
           midHeight: 150,
@@ -209,7 +217,7 @@ List extendLinearGaugeTests = [
   {
     'extendLinearGauge': 30.0,
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 10,
           startHeight: 0,
           midHeight: 100,
@@ -217,7 +225,7 @@ List extendLinearGaugeTests = [
           curveStyle: CurveStyle.bezier,
           curvePosition: CurvePosition.top,
           color: Colors.blue),
-      CustomCurve(
+      const CustomCurve(
         midPoint: 10,
         startHeight: 0,
         midHeight: 100,
@@ -235,7 +243,7 @@ List extendLinearGaugeTests = [
   {
     'extendLinearGauge': 30.0,
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 10,
           startHeight: 0,
           midHeight: 100,
@@ -243,7 +251,7 @@ List extendLinearGaugeTests = [
           curveStyle: CurveStyle.bezier,
           curvePosition: CurvePosition.left,
           color: Colors.blue),
-      CustomCurve(
+      const CustomCurve(
         midPoint: 10,
         startHeight: 0,
         midHeight: 100,
@@ -261,7 +269,7 @@ List extendLinearGaugeTests = [
   {
     'extendLinearGauge': 30.0,
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 10,
           startHeight: 0,
           midHeight: 100,
@@ -269,7 +277,7 @@ List extendLinearGaugeTests = [
           curveStyle: CurveStyle.linear,
           curvePosition: CurvePosition.top,
           color: Colors.blue),
-      CustomCurve(
+      const CustomCurve(
         midPoint: 10,
         startHeight: 0,
         midHeight: 100,
@@ -286,7 +294,7 @@ List extendLinearGaugeTests = [
   {
     'extendLinearGauge': 30.0,
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 10,
           startHeight: 0,
           midHeight: 100,
@@ -294,7 +302,7 @@ List extendLinearGaugeTests = [
           curveStyle: CurveStyle.linear,
           curvePosition: CurvePosition.left,
           color: Colors.blue),
-      CustomCurve(
+      const CustomCurve(
         midPoint: 10,
         startHeight: 0,
         midHeight: 100,
@@ -313,7 +321,7 @@ List extendLinearGaugeTests = [
 List strokeTests = [
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 0,
           midHeight: 100,
@@ -322,7 +330,7 @@ List strokeTests = [
           paintStyle: PaintStyle.stroke,
           curvePosition: CurvePosition.top,
           color: Colors.blue),
-      CustomCurve(
+      const CustomCurve(
         midPoint: 50,
         startHeight: 0,
         midHeight: 100,
@@ -339,7 +347,7 @@ List strokeTests = [
   // Left and right
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           midPoint: 50,
           startHeight: 0,
           midHeight: 100,
@@ -348,7 +356,7 @@ List strokeTests = [
           paintStyle: PaintStyle.stroke,
           curvePosition: CurvePosition.left,
           color: Colors.blue),
-      CustomCurve(
+      const CustomCurve(
         midPoint: 50,
         startHeight: 0,
         midHeight: 100,
@@ -367,7 +375,7 @@ List strokeTests = [
 List startAndEndTests = [
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           start: 10,
           end: 90,
           midPoint: 50,
@@ -377,7 +385,7 @@ List startAndEndTests = [
           curveStyle: CurveStyle.bezier,
           curvePosition: CurvePosition.top,
           color: Colors.blue),
-      CustomCurve(
+      const CustomCurve(
         start: 30,
         midPoint: 60,
         end: 80,
@@ -396,7 +404,7 @@ List startAndEndTests = [
   // left and right
   {
     'curves': [
-      CustomCurve(
+      const CustomCurve(
           start: 10,
           end: 90,
           midPoint: 50,
@@ -406,7 +414,7 @@ List startAndEndTests = [
           curveStyle: CurveStyle.bezier,
           curvePosition: CurvePosition.left,
           color: Colors.blue),
-      CustomCurve(
+      const CustomCurve(
         start: 30,
         midPoint: 60,
         end: 80,

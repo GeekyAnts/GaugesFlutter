@@ -18,6 +18,7 @@ class MyGaugeExample extends StatefulWidget {
 }
 
 class _MyGaugeExampleState extends State<MyGaugeExample> {
+  double value = 50;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +26,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
         color: Colors.pink.withOpacity(0.1),
         child: LinearGauge(
           gaugeOrientation: GaugeOrientation.vertical,
-          valueBar: [
+          valueBar: const [
             ValueBar(
               value: 20,
               position: ValueBarPosition.left,
@@ -33,7 +34,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
             )
           ],
           enableGaugeAnimation: true,
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
             rulerPosition: RulerPosition.right,
           ),
         ),

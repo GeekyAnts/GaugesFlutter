@@ -21,14 +21,13 @@ class LinearGaugeBoxDecoration {
   ///
   /// An immutable description of how to paint a box of [LinearGauge].
   ///
-  const LinearGaugeBoxDecoration({
-    this.backgroundColor = Colors.grey,
-    this.thickness = 4.0,
-    this.linearGradient,
-    this.borderRadius,
-    this.linearGaugeValueColor = Colors.blue,
-    this.edgeStyle = LinearEdgeStyle.bothCurve,
-  });
+  const LinearGaugeBoxDecoration(
+      {this.backgroundColor = Colors.grey,
+      this.thickness = 4.0,
+      this.borderRadius,
+      this.linearGaugeValueColor = Colors.blue,
+      this.edgeStyle = LinearEdgeStyle.bothCurve,
+      this.linearGradient});
 
   ///
   /// `color` Set the Color of the [LinearGauge] Container
@@ -52,22 +51,6 @@ class LinearGaugeBoxDecoration {
   // ),
   /// ```
   final double? thickness;
-
-  ///
-  /// `linearGradient` Sets the gradient background of the [LinearGauge] Container
-  ///  * NOTE : If `linearGradient` is given in [LinearGaugeBoxDecoration] the `color` property will be ignored
-  ///
-  /// ```dart
-  /// const LinearGauge(
-  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
-  ///
-  ///              linearGradient: LinearGradient(
-  ///                colors: [Colors.blue, Colors.pink],
-  ///              ),
-  ///            ),
-  ///          ),
-  /// ```
-  final LinearGradient? linearGradient;
 
   ///
   /// `borderRadius` Set corners to soft edges/rounded  of the [LinearGauge] Container
@@ -120,4 +103,20 @@ class LinearGaugeBoxDecoration {
   ///          ),
   /// ```
   final LinearEdgeStyle? edgeStyle;
+
+  ///
+  /// `linearGradient` Sets the gradient background of the [LinearGauge] Container
+  ///  * NOTE : If `linearGradient` is given in [LinearGaugeBoxDecoration] the `color` property will be ignored
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///             linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+  ///
+  ///              linearGradient: LinearGradient(
+  ///                colors: [Colors.blue, Colors.pink],
+  ///              ),
+  ///            ),
+  ///          ),
+  /// ```
+  final LinearGradient? linearGradient;
 }

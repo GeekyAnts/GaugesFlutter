@@ -17,7 +17,7 @@ void main() {
             inverseRuler: testCase['inverse'] as bool?,
             thickness: testCase['gaugeThickness'] as double?,
             rulerPosition: testCase['rulerPosition'] as RulerPosition?,
-            pointer: testCase['pointer'] as Pointer?,
+            pointer: testCase['pointer'] as BasePointer?,
             gaugeOrientation: testCase['gaugeOrientation'] as GaugeOrientation?,
           ),
           surfaceSize: const Size(1200, 900),
@@ -38,7 +38,7 @@ void main() {
             extendLinearGauge: testCase['extendLinearGauge'] as double?,
             inverseRuler: testCase['inverse'] as bool?,
             rulerPosition: testCase['rulerPosition'] as RulerPosition?,
-            pointer: testCase['pointer'] as Pointer?,
+            pointer: testCase['pointer'] as BasePointer?,
             gaugeOrientation: testCase['gaugeOrientation'] as GaugeOrientation?,
           ),
           surfaceSize: const Size(1200, 900),
@@ -55,7 +55,7 @@ class MyPointerTestLinearGauge extends StatelessWidget {
   final double? thickness;
   final double? extendLinearGauge;
   final GaugeOrientation? gaugeOrientation;
-  final Pointer? pointer;
+  final BasePointer? pointer;
   final RulerStyle? rulers;
 
   final bool? inverseRuler;

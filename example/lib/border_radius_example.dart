@@ -46,7 +46,7 @@ class _BorderRadiusExampleState extends State<BorderRadiusExample> {
             edgeStyle: LinearEdgeStyle.bothCurve,
           ),
           gaugeOrientation: GaugeOrientation.horizontal,
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
             inverseRulers: false,
             rulerPosition: RulerPosition.top,
           ),
