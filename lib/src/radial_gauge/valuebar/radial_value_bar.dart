@@ -17,6 +17,18 @@ import '../radial_gauge_state.dart';
 /// ```
 ///
 class RadialValueBar extends LeafRenderObjectWidget {
+  ///
+  /// [RadialValueBar] is used to render the value bar in the [RadialGauge].
+  ///
+  /// ```dart
+  ///  RadialGauge(
+  ///  valueBar: RadialValueBar(
+  ///   value: 10,
+  ///  color: Colors.blue,
+  ///       ),
+  ///    ),
+  /// ```
+  ///
   const RadialValueBar({
     Key? key,
     required this.value,

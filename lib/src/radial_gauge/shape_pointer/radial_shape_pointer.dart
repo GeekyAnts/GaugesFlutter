@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_state.dart';
 
+/// [RadialShapePointer] is used to render the shape pointer in the [RadialGauge].
+
 class RadialShapePointer extends LeafRenderObjectWidget {
+  /// [RadialShapePointer] is used to render the shape pointer in the [RadialGauge].
   const RadialShapePointer({
     super.key,
     required this.value,

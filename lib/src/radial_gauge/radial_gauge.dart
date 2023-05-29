@@ -19,8 +19,20 @@ import 'package:geekyants_flutter_gauges/src/radial_gauge/valuebar/radial_value_
 ///    ],
 /// ),
 /// ```
-
 class RadialGauge extends StatefulWidget {
+  /// Creates a Radial Gauge Widget to display the values in a Radial Scale.
+  /// The widget can be customized using the properties available in [RadialGauge].
+  ///
+  /// ```dart
+  /// RadialGauge(
+  ///   track: [
+  ///     RadialTrack(
+  ///       start: 0,
+  ///       end: 100,
+  ///      ),
+  ///    ],
+  /// ),
+  /// ```
   const RadialGauge({
     Key? key,
     required this.track,

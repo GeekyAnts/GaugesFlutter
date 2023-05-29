@@ -20,6 +20,24 @@ import 'package:geekyants_flutter_gauges/src/base/base_ruler_style.dart';
 /// ```
 ///
 class RadialTrack {
+  /// The [RadialTrack] is used to set the track of the Radial Gauge.
+  ///
+  /// The [start] property is used to set the start value of the Radial Gauge.
+  /// The [end] property is used to set the end value of the Radial Gauge.
+  /// The [startAngle] property is used to set the start angle of the Radial Gauge.
+  /// The [endAngle] property is used to set the end angle of the Radial Gauge.
+  ///
+  /// ``` dart
+  /// RadialGauge(
+  ///          track: RadialTrack(
+  ///            start: 0,
+  ///            end: 100,
+  ///           startAngle: 0,
+  ///           endAngle: 360,
+  ///         ),
+  ///     ),
+  /// ```
+  ///
   const RadialTrack({
     Key? key,
     required this.start,
