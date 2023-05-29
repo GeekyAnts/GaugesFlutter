@@ -701,6 +701,7 @@ class _LinearGauge extends State<LinearGauge> with TickerProviderStateMixin {
 
 class _RLinearGauge extends MultiChildRenderObjectWidget {
   final LinearGauge lGauge;
+  // ignore: prefer_const_constructors_in_immutables
   _RLinearGauge({
     Key? key,
     required this.lGauge,
