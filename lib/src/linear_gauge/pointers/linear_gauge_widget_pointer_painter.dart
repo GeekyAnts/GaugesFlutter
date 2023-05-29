@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import '../../../geekyants_flutter_gauges.dart';
 import '../linear_gauge_label.dart';
 import '../linear_gauge_painter.dart';

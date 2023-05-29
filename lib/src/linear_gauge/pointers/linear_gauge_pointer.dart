@@ -49,7 +49,7 @@ abstract class BasePointer {
   /// ),
   /// ),
   /// ```
-  double value;
+  final double value;
 
   ///
   /// Pointer Position on the [LinearGauge]  sets the position of `pointer` on the [LinearGauge]

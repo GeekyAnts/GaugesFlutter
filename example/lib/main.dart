@@ -6,38 +6,9 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyValueBarPosition(),
+      home: MyGaugeExample(),
     ),
   );
-}
-
-class MyValueBarPosition extends StatefulWidget {
-  const MyValueBarPosition({super.key});
-
-  @override
-  State<MyValueBarPosition> createState() => _MyValueBarPositionState();
-}
-
-class _MyValueBarPositionState extends State<MyValueBarPosition> {
-  double value = 50;
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: RadialGauge(
-          needlePointer: NeedlePointer(value: 5),
-          track: RadialTrack(
-            steps: 1,
-            startAngle: 0,
-            endAngle: 360,
-            hideTrack: true,
-            start: 0,
-            end: 12,
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class MyGaugeExample extends StatefulWidget {

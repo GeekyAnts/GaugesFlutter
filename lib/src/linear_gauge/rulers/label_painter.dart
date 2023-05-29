@@ -244,7 +244,7 @@ class RenderRulerLabel extends RenderBox {
     _endLabelSize = parentDataRef.linearGaugeLabel.endLabelSize;
     gaugeStart = parentDataRef.gaugeStart;
     gaugeEnd = parentDataRef.gaugeEnd;
-    Size _axisActualSize;
+    Size axisActualSize;
     setCustomLabelStartEnd();
 
     double actualParentWidth;
@@ -275,12 +275,12 @@ class RenderRulerLabel extends RenderBox {
     }
 
     if (_isHorizontalOrientation) {
-      _axisActualSize = Size(actualParentWidth, effectiveLabelHeight);
+      axisActualSize = Size(actualParentWidth, effectiveLabelHeight);
     } else {
-      _axisActualSize = Size(effectiveLabelHeight, actualParentWidth);
+      axisActualSize = Size(effectiveLabelHeight, actualParentWidth);
     }
 
-    size = _axisActualSize;
+    size = axisActualSize;
   }
 
   void _drawLabels(

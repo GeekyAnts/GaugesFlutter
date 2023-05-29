@@ -15,7 +15,7 @@ class _PointerAlignmentExampleState extends State<PointerAlignmentExample> {
     return Center(
       child: LinearGauge(
         gaugeOrientation: GaugeOrientation.vertical,
-        pointers: [
+        pointers: const [
           Pointer(
             color: Colors.red,
             value: 30,

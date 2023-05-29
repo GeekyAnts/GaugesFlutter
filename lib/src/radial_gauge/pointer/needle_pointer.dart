@@ -10,7 +10,7 @@ class NeedlePointer extends LeafRenderObjectWidget {
       this.color = Colors.red,
       this.tailColor = Colors.red,
       this.needleWidth = 10,
-      this.needleHeight = 350,
+      this.needleHeight = 150,
       this.tailRadius = 20})
       : super(key: key);
 

@@ -1,8 +1,5 @@
 import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import '../../../geekyants_flutter_gauges.dart';
 
 class RenderNeedlePointer extends RenderBox {
@@ -112,7 +109,8 @@ class RenderNeedlePointer extends RenderBox {
     final canvas = context.canvas;
     final center = offset;
 
-    Rect circle = Rect.fromLTWH(offset.dx, offset.dy, size.width, _tailRadius);
+    Rect circle = Rect.fromLTWH(offset.dx - getTailRadius / 2,
+        offset.dy - getTailRadius / 2, _tailRadius, _tailRadius);
     Path circlePath = Path()..addOval(circle);
 
     double strokeWidth = _needleWidth;
@@ -123,30 +121,54 @@ class RenderNeedlePointer extends RenderBox {
     double gaugeEnd = _radialGauge!.track.end;
 
     double value = calculateValueAngle(_value, gaugeStart, gaugeEnd);
-    double startAngle = _radialGauge!.track.startAngle * (pi / 180);
-    double endAngle = _radialGauge!.track.endAngle * (pi / 180);
+    double startAngle = (_radialGauge!.track.startAngle - 180) * (pi / 180);
+    double endAngle = (_radialGauge!.track.endAngle - 180) * (pi / 180);
 
-    final double needleMultiplier = _needleHeight;
+    final maxH = size.shortestSide / 2 * getRadialGauge.radiusFactor;
+
+    final double needleMultiplier = _needleHeight.clamp(0, maxH - 40);
 
     final double angle = startAngle + (value / 100) * (endAngle - startAngle);
 
-    final double needleEndX =
-        center.dx + getTailRadius / 2 + needleMultiplier * cos(angle);
-    final double needleEndY =
-        center.dy + getTailRadius / 2 + needleMultiplier * sin(angle);
+    double needleEndX = center.dx + needleMultiplier * cos(angle);
+    double needleEndY = center.dy + needleMultiplier * sin(angle);
+    double needleStartX = center.dx;
+    double needleStartY = center.dy;
 
     final needlePaint = Paint()
       ..color = _color
       ..strokeWidth = strokeWidth
-      ..shader = gradient.createShader(Rect.fromPoints(
-        Offset(center.dx + getTailRadius / 2, center.dy + getTailRadius / 2),
-        Offset(needleEndX, needleEndY),
-      ))
+      ..shader = gradient.createShader(
+        Rect.fromPoints(
+          Offset(needleStartX, needleStartY),
+          Offset(needleEndX, needleEndY),
+        ),
+      )
       ..strokeCap = StrokeCap.round;
-    canvas.drawLine(
-        Offset(center.dx + getTailRadius / 2, center.dy + getTailRadius / 2),
-        Offset(needleEndX, needleEndY),
-        needlePaint);
+
+    //  Simple Needle
+    // canvas.drawLine(Offset(needleStartX, needleStartY),
+    //     Offset(needleEndX, needleEndY), needlePaint);
+
+    // Needle Path
+    Path needlePath = Path();
+    needlePath.moveTo(offset.dx + getTailRadius / 2 * cos(angle + pi / 2),
+        offset.dy - getTailRadius / 2 * sin(angle - pi / 2));
+    needlePath.lineTo(needleStartX + getTailRadius / 2 * cos(angle - pi / 2),
+        needleStartY - (getTailRadius / 2) * sin(angle + pi / 2));
+
+    double temp1 = 30;
+    needlePath.moveTo(offset.dx + temp1 * cos(angle + pi / 2),
+        offset.dy - temp1 * sin(angle - pi / 2));
+    needlePath.lineTo(needleStartX + temp1 * cos(angle - pi / 2),
+        needleStartY - (temp1) * sin(angle + pi / 2));
+
+    needlePath.lineTo(needleEndX, needleEndY);
+    // Offset c = Offset(offset.dx, offset.dy - getTailRadius);
+    // canvas.drawCircle(c, 100, Paint()..color = Colors.black);
+    needlePath.close();
+    //* Needle  Pointer paint
+    canvas.drawPath(needlePath, needlePaint);
 
     canvas.drawPath(circlePath, Paint()..color = _tailColor);
   }
