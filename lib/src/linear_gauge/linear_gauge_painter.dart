@@ -1461,7 +1461,7 @@ class RenderLinearGauge extends RenderBox
       xAxisForGaugeContainer = pointerMaxOfLeftAndCenter!;
 
       if (leftCurveMaxHeight! <= pointerMaxOfLeftAndCenter!) {
-        valueBarMaxOfLeftAndCenter = 0;
+        leftCurveMaxHeight = 0;
       } else {
         xAxisForGaugeContainer = leftCurveMaxHeight!;
         pointerMaxOfLeftAndCenter = xAxisForGaugeContainer;
@@ -1483,7 +1483,7 @@ class RenderLinearGauge extends RenderBox
       }
 
       if (rightCurveMaxHeight! <= spacingForGauge) {
-        pointerMaxOfRightAndCenter = 0;
+        rightCurveMaxHeight = 0;
       } else {
         getEffectiveRulersWidth = rightCurveMaxHeight!;
         rulersOffset = 0;

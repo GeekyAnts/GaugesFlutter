@@ -22,15 +22,22 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
   double value = 50;
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: RadialGauge(
-          needlePointer: [
-            NeedlePointer(value: 30),
+
+    return Scaffold(
+      body: Container(
+        color: Colors.pink.withOpacity(0.1),
+        child: LinearGauge(
+          gaugeOrientation: GaugeOrientation.vertical,
+          valueBar: [
+            ValueBar(
+              value: 20,
+              position: ValueBarPosition.left,
+              offset: 300,
+            )
           ],
-          track: RadialTrack(
-            start: 0,
-            end: 100,
+          enableGaugeAnimation: true,
+          rulers: const RulerStyle(
+            rulerPosition: RulerPosition.right,
           ),
         ),
       ),
