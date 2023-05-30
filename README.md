@@ -123,7 +123,7 @@ There are different customization options available for pointers and value bar.
 ### **RangeLinearGauge**
 
 The `RangeLinearGauge` class enables you to customize the ruler appearance in the `LinearGauge`. You can display multiple ranges by providing a list of `RangeLinearGauge` values, and customize the color, start, and end values to match your requirements.
-<p align='center'><img src="example/screens/rangegauge.png" alt="accessibility text"></p>
+
 <p align='center'><img src="example/screens/range-1.png" alt="accessibility text"></p>
 <p align='center'><img src="example/screens/range-2.png" alt="accessibility text"></p>
 
