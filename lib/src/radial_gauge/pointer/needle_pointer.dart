@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_state.dart';
 import 'needle_pointer_painter.dart';
 
@@ -37,8 +38,9 @@ class NeedlePointer extends LeafRenderObjectWidget {
       this.color = Colors.red,
       this.tailColor = Colors.red,
       this.needleWidth = 10,
-      this.needleHeight = 150,
-      this.tailRadius = 20})
+      this.needleHeight = 300,
+      this.needleStyle = NeedleStyle.gaugeNeedle,
+      this.tailRadius = 80})
       : super(key: key);
 
   final double value;
@@ -48,6 +50,7 @@ class NeedlePointer extends LeafRenderObjectWidget {
   final double tailRadius;
   final LinearGradient? gradient;
   final Color tailColor;
+  final NeedleStyle needleStyle;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -58,6 +61,7 @@ class NeedlePointer extends LeafRenderObjectWidget {
       radialGauge: scope.rGauge,
       value: value,
       tailColor: tailColor,
+      needleStyle: needleStyle,
       color: color,
       needleHeight: needleHeight,
       needleWidth: needleWidth,
@@ -76,6 +80,7 @@ class NeedlePointer extends LeafRenderObjectWidget {
       ..setGradient = gradient ?? LinearGradient(colors: [color, color])
       ..setNeedleHeight = needleHeight
       ..setTailRadius = tailRadius
+      ..setNeedleStyle = needleStyle
       ..setNeedleWidth = needleWidth
       ..setRadialGauge = scope.rGauge;
   }

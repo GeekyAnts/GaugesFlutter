@@ -11,6 +11,7 @@ class RenderNeedlePointer extends RenderBox {
     required double needleHeight,
     required double tailRadius,
     required double needleWidth,
+    required NeedleStyle needleStyle,
     required Color tailColor,
     required LinearGradient gradient,
 
@@ -22,6 +23,7 @@ class RenderNeedlePointer extends RenderBox {
         _needleHeight = needleHeight,
         _tailRadius = tailRadius,
         _tailColor = tailColor,
+        _needleStyle = needleStyle,
         _needleWidth = needleWidth,
         super();
 
@@ -38,6 +40,14 @@ class RenderNeedlePointer extends RenderBox {
   set setRadialGauge(RadialGauge radialGauge) {
     if (_radialGauge == radialGauge) return;
     _radialGauge = radialGauge;
+    markNeedsPaint();
+  }
+
+  NeedleStyle get getNeedleStyle => _needleStyle;
+  NeedleStyle _needleStyle;
+  set setNeedleStyle(NeedleStyle needleStyle) {
+    if (_needleStyle == needleStyle) return;
+    _needleStyle = needleStyle;
     markNeedsPaint();
   }
 
@@ -146,10 +156,6 @@ class RenderNeedlePointer extends RenderBox {
       )
       ..strokeCap = StrokeCap.round;
 
-    //  Simple Needle
-    // canvas.drawLine(Offset(needleStartX, needleStartY),
-    //     Offset(needleEndX, needleEndY), needlePaint);
-
     // Needle Path
     Path needlePath = Path();
     needlePath.moveTo(offset.dx + getTailRadius / 2 * cos(angle + pi / 2),
@@ -167,10 +173,16 @@ class RenderNeedlePointer extends RenderBox {
     // Offset c = Offset(offset.dx, offset.dy - getTailRadius);
     // canvas.drawCircle(c, 100, Paint()..color = Colors.black);
     needlePath.close();
-    //* Needle  Pointer paint
-    canvas.drawPath(needlePath, needlePaint);
 
-    canvas.drawPath(circlePath, Paint()..color = _tailColor);
+// Needle  Pointer paint
+    if (getNeedleStyle == NeedleStyle.gaugeNeedle) {
+      canvas.drawPath(needlePath, needlePaint);
+      canvas.drawPath(circlePath, Paint()..color = _tailColor);
+    } else {
+      //  Simple Needle
+      canvas.drawLine(Offset(needleStartX, needleStartY),
+          Offset(needleEndX, needleEndY), needlePaint);
+    }
   }
 
   double calculateValueAngle(double value, double gaugeStart, double gaugeEnd) {
