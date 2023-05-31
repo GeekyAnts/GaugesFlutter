@@ -159,12 +159,12 @@ RadialValueBar
 The `RadialValueBar` is used within the RadialGauge to represent a value on the gauge using a horizontal bar. It provides a visual indication of the current value within the range of the radial track.
 
 
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-1.png" alt="radial png"  height=300>
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-2.png" alt="radial png"  height=300>
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-3.png" alt="radial png"  height=300>
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-5.png" alt="radial png"  height=300>
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-4.png" alt="radial png"  height=300>
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-6.png" alt="radial png"  height=300>
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-1.png" alt="radial png"  height=200>
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-2.png" alt="radial png"  height=200>
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-3.png" alt="radial png"  height=200>
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-5.png" alt="radial png"  height=200>
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-4.png" alt="radial png"  height=200>
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-6.png" alt="radial png"  height=200>
 
 
 ## License
