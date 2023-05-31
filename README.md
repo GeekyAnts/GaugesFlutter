@@ -147,6 +147,16 @@ The `Pointer` is interactive , it responds to user horizontal & vertical drag.
 
 <p align='center'><img src="example/screens/interactivity.gif" alt="animations gif"  height=140></p>
 
+### **Radial Gauge (PRE-RELEASE)**
+
+
+
+<img src="example/screens/radial-1.png" alt="radial png"  height=300>
+<img src="example/screens/radial-2.png" alt="radial png"  height=300>
+<img src="example/screens/radial-3.png" alt="radial png"  height=300>
+<img src="example/screens/radial-5.png" alt="radial png"  height=300>
+<img src="example/screens/radial-4.png" alt="radial png"  height=300>
+<img src="example/screens/radial-6.png" alt="radial png"  height=300>
 
 
 ## License
