@@ -31,6 +31,7 @@ To fully explore the capabilities of our Linear Gauge, we recommend checking out
 
 - [Getting Started](#getting-started)
 - [Linear Gauge Features](#customization)
+
   - [Orientation](#gauge-orientation)
   - [Ruler Style](#rulerStyle)
   - [Pointer](#pointer)
@@ -39,6 +40,8 @@ To fully explore the capabilities of our Linear Gauge, we recommend checking out
   - [Custom Curve](#customCurve)
   - [Animation](#animation)
   - [Interactivity](#interactivity)
+
+- [Radial Gauge](#radial-gauge-pre-release)
 
 - [Demo Application](#demo-application)
 - [Credits](#credits)
@@ -95,11 +98,9 @@ The linearGauge can be oriented vertically or horizontally. The orientation can 
 
 <p align="center"><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/default-horizontal.png" alt="accessibility text" height=300></p>
 
-
 - `GaugeOrientation.vertical`: The gauge will be oriented vertically, with the minimum value at the bottom and the maximum value at the top.
 
 <p align="center"><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/default-vertical.png" alt="accessibility text" height=700></p>
-
 
 ### **RulerStyle**:
 
@@ -119,15 +120,12 @@ There are different customization options available for pointers and value bar.
 
 <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/valuebar.png" alt="accessibility text">
 
-
 ### **RangeLinearGauge**
 
 The `RangeLinearGauge` class enables you to customize the ruler appearance in the `LinearGauge`. You can display multiple ranges by providing a list of `RangeLinearGauge` values, and customize the color, start, and end values to match your requirements.
 
 <p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/range-1.png" alt="accessibility text"></p>
 <p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/range-2.png" alt="accessibility text"></p>
-
-
 
 ### **CustomCurve**
 
@@ -158,10 +156,8 @@ The `NeedlePointer` widget allows you to create a Needle Pointer and Customize i
 RadialValueBar
 The `RadialValueBar` is used within the RadialGauge to represent a value on the gauge using a horizontal bar. It provides a visual indication of the current value within the range of the radial track.
 
-
 <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-1.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-2.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-3.png" alt="radial png"  height=200>
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-5.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-4.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-6.png" alt="radial png"  height=200>
-
+<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-5.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/mesuring.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-6.png" alt="radial png"  height=200>
 
 ## License
 
