@@ -22,7 +22,7 @@ void main() {
         )
       ],
       linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(),
-      rulers: const RulerStyle(
+      rulers: RulerStyle(
         primaryRulerColor: Colors.black54,
         primaryRulersWidth: 1.0,
         primaryRulersHeight: 15.0,
@@ -30,7 +30,7 @@ void main() {
         secondaryRulersWidth: 1.0,
         secondaryRulerColor: Colors.grey,
         secondaryRulerPerInterval: 1.0,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontSize: 12.0,
           color: Color.fromARGB(255, 86, 86, 86),
           fontStyle: FontStyle.normal,

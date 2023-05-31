@@ -65,9 +65,9 @@ class MyValuBarTestLinearGauge extends StatelessWidget {
             gaugeOrientation: gaugeOrientation ?? GaugeOrientation.horizontal,
             valueBar: valueBar,
             rulers: rulers ??
-                const RulerStyle(
+                RulerStyle(
                   rulerPosition: RulerPosition.center,
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontFamily: 'Roboto',
                     color: Colors.black,
                   ),

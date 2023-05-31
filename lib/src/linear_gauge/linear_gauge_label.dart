@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_painter.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
+import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
 
 class LinearGaugeLabel {
   String? text;
@@ -10,8 +11,9 @@ class LinearGaugeLabel {
   // Will be adding other members as required
 
   final List<LinearGaugeLabel> _linearGaugeLabel = [];
+  late Size _startLabelSize, _endLabelSize;
 
-  late final Map<String, List<Offset>> primaryRulers = {};
+  final Map<String, List<Offset>> primaryRulers = {};
   final TextPainter _textPainter =
       TextPainter(textDirection: TextDirection.ltr);
 
@@ -59,10 +61,13 @@ class LinearGaugeLabel {
       bool isRulersInversed,
       GaugeOrientation orientation,
       double extendLinearGauge,
-      RenderLinearGauge linearGauge) {
+      RenderLinearGaugeContainer linearGauge) {
     primaryRulers.clear();
     late Offset a;
     late Offset b;
+    // double largestPointerSize = math.max(linearGauge.getLargestPointerSize(),
+    //     linearGauge.getLargestWidgetPointerSize());
+
     double largestPointerSize = linearGauge.getLargestPointerSize();
 
     if (orientation == GaugeOrientation.horizontal) {
@@ -203,7 +208,7 @@ class LinearGaugeLabel {
     double rulersOffset,
     GaugeOrientation gaugeOrientation,
     double linearGaugeHeight,
-    RenderLinearGauge linearGauge,
+    RenderRulers rulers,
   ) {
     Iterable<List<Offset>> offset = primaryRulers.values;
     Iterable<String> keys = primaryRulers.keys;
@@ -228,13 +233,13 @@ class LinearGaugeLabel {
             switch (rulerPosition) {
               case RulerPosition.top:
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(
-                    x, -rulersOffset + linearGauge.yAxisForGaugeContainer);
+                secondaryRulerStartPoint =
+                    Offset(x, -rulersOffset + rulers.yAxisForGaugeContainer);
 
                 secondaryRulerEndPoint = Offset(
                     x,
                     -(height + rulersOffset - y) +
-                        linearGauge.yAxisForGaugeContainer);
+                        rulers.yAxisForGaugeContainer);
                 break;
               case RulerPosition.center:
                 if (gaugeOrientation == GaugeOrientation.horizontal) {
@@ -244,21 +249,21 @@ class LinearGaugeLabel {
                       x,
                       (y / 2) -
                           ((height - linearGaugeHeight) / 2) +
-                          linearGauge.yAxisForGaugeContainer);
+                          rulers.yAxisForGaugeContainer);
                   //the y co-ordinate of the ending point is halved from it's original position
-                  secondaryRulerEndPoint = Offset(
-                      x, (height) / 2 + linearGauge.yAxisForGaugeContainer);
+                  secondaryRulerEndPoint =
+                      Offset(x, (height) / 2 + rulers.yAxisForGaugeContainer);
                 } else {
                   //the staring point is shifted half of the secondary ruler height from the
                   //center of the gauge container
                   secondaryRulerStartPoint = Offset(
                       (x / 2) -
                           ((height - linearGaugeHeight) / 2) +
-                          linearGauge.xAxisForGaugeContainer,
+                          rulers.xAxisForGaugeContainer,
                       y);
                   //the y co-ordinate of the ending point is halved from it's original position
                   secondaryRulerEndPoint = Offset(
-                      (((height) / 2) + linearGauge.xAxisForGaugeContainer), y);
+                      (((height) / 2) + rulers.xAxisForGaugeContainer), y);
                 }
                 break;
               case RulerPosition.bottom:
@@ -266,36 +271,35 @@ class LinearGaugeLabel {
 
                 secondaryRulerStartPoint = Offset(
                   x,
-                  y + rulersOffset + linearGauge.yAxisForGaugeContainer,
+                  y + rulersOffset + rulers.yAxisForGaugeContainer,
                 );
 
                 secondaryRulerEndPoint = Offset(
                   x,
-                  height + rulersOffset + linearGauge.yAxisForGaugeContainer,
+                  height + rulersOffset + rulers.yAxisForGaugeContainer,
                 );
 
                 break;
               case RulerPosition.right:
 
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(
-                    x + rulersOffset + linearGauge.xAxisForGaugeContainer, y);
+                secondaryRulerStartPoint =
+                    Offset(x + rulersOffset + rulers.xAxisForGaugeContainer, y);
 
                 secondaryRulerEndPoint = Offset(
-                    rulersOffset + height + linearGauge.xAxisForGaugeContainer,
-                    (y));
+                    rulersOffset + height + rulers.xAxisForGaugeContainer, (y));
 
                 break;
               case RulerPosition.left:
 
                 //the value 5 for the offset y axis is the height parameter for the secondary rulers
-                secondaryRulerStartPoint = Offset(
-                    -rulersOffset + linearGauge.xAxisForGaugeContainer, y);
+                secondaryRulerStartPoint =
+                    Offset(-rulersOffset + rulers.xAxisForGaugeContainer, y);
                 secondaryRulerEndPoint = Offset(
                     -(rulersOffset +
                         height -
                         x -
-                        linearGauge.xAxisForGaugeContainer),
+                        rulers.xAxisForGaugeContainer),
                     y);
 
                 break;
@@ -315,7 +319,7 @@ class LinearGaugeLabel {
               }
             }
             secondaryRulersPaint.color =
-                linearGauge.setAnimatedColor(secondaryRulersPaint.color);
+                rulers.setAnimatedColor(secondaryRulersPaint.color);
 
             canvas.drawLine(secondaryRulerStartPoint, secondaryRulerEndPoint,
                 secondaryRulersPaint);
@@ -334,7 +338,33 @@ class LinearGaugeLabel {
     return Size(_textPainter.width, _textPainter.height);
   }
 
+  calculateStartAndEndLabelSize(TextStyle textStyle, double start, double end,
+      List<CustomRulerLabel> customLabels, bool inversedRulers) {
+    _startLabelSize = getLabelSize(
+        textStyle: textStyle,
+        value: !inversedRulers
+            ? customLabels.isEmpty
+                ? start.toInt().toString()
+                : customLabels.first.text
+            : customLabels.isEmpty
+                ? end.toInt().toString()
+                : customLabels.last.text);
+
+    _endLabelSize = getLabelSize(
+        textStyle: textStyle,
+        value: !inversedRulers
+            ? customLabels.isEmpty
+                ? end.toInt().toString()
+                : customLabels.last.text
+            : customLabels.isEmpty
+                ? start.toInt().toString()
+                : customLabels.first.text);
+  }
+
   List<LinearGaugeLabel> get getListOfLabel => _linearGaugeLabel;
+
+  Size get startLabelSize => _startLabelSize;
+  Size get endLabelSize => _endLabelSize;
 
   Map<String, List<Offset>> get getPrimaryRulersOffset => primaryRulers;
 }

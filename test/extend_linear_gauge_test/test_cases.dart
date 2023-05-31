@@ -22,9 +22,9 @@ List extendLinearGaugeTest = [
     'Do': 'Linear gauge of 20 thickness should we extended by 100',
   },
   {
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.bottom,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -61,9 +61,9 @@ List extendLinearGaugeTest = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.right,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),

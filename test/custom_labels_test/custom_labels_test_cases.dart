@@ -149,7 +149,7 @@ List rulerPositionTestCases = [
 List valueBarTestCases = [
   {
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'valueBar': [ValueBar(value: 75)],
+    'valueBar': [const ValueBar(value: 75)],
     'customLabels': const [
       CustomRulerLabel(text: "0", value: 0),
       CustomRulerLabel(text: "50", value: 50),
@@ -161,7 +161,7 @@ List valueBarTestCases = [
   {
     'inverse': true,
     'gaugeOrientation': GaugeOrientation.horizontal,
-    'valueBar': [ValueBar(value: 75)],
+    'valueBar': [const ValueBar(value: 75)],
     'customLabels': const [
       CustomRulerLabel(text: "0", value: 0),
       CustomRulerLabel(text: "50", value: 50),
@@ -174,7 +174,7 @@ List valueBarTestCases = [
   // Vertical Gauge Orientation
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'valueBar': [ValueBar(value: 75)],
+    'valueBar': [const ValueBar(value: 75)],
     'customLabels': const [
       CustomRulerLabel(text: "0", value: 0),
       CustomRulerLabel(text: "50", value: 50),
@@ -186,7 +186,7 @@ List valueBarTestCases = [
   {
     'inverse': true,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'valueBar': [ValueBar(value: 75)],
+    'valueBar': [const ValueBar(value: 75)],
     'customLabels': const [
       CustomRulerLabel(text: "0", value: 0),
       CustomRulerLabel(text: "50", value: 50),

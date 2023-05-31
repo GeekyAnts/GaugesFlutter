@@ -1,14 +1,27 @@
-## [1.0.0+5] - 3 May 2023
+## 1.0.1
+
+**Fixes**
+
+- Re Architechtured `LinearGauge`
+- Support for `Pointer` Interactivity
+- Support for Widget Pointers
+- Each element is now converted as `RenderObject`
+
+**Features**
+
+- Support for `RadialGauge` [Pre-Release]
+
+## 1.0.0+5
 
 **Fixes**
 
 - Updated Readme and docs
 
-## [1.0.0+4] - 3 May 2023
+## 1.0.0+4
 
 **Fixes**
 
-- Support for Labels on Pointers
+- Support for Labels on `Pointers`
 
 **Feature**
 

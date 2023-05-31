@@ -4,9 +4,9 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 List linearGaugeContainerBorderRadiusHorizontal = [
   {
     'extendLinearGauge': 10.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.top,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -18,9 +18,9 @@ List linearGaugeContainerBorderRadiusHorizontal = [
         'Linear Gauge container should be drawn with starting edge of 10 border radius',
   },
   {
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.top,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -33,9 +33,9 @@ List linearGaugeContainerBorderRadiusHorizontal = [
   },
   {
     'extendLinearGauge': 10.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.top,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -55,9 +55,9 @@ List linearGaugeContainerBorderRadiusVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 10.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.left,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -70,9 +70,9 @@ List linearGaugeContainerBorderRadiusVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.right,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -86,9 +86,9 @@ List linearGaugeContainerBorderRadiusVertical = [
   {
     'gaugeOrientation': GaugeOrientation.vertical,
     'extendLinearGauge': 10.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.right,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
