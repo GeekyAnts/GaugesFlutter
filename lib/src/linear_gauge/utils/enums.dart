@@ -52,3 +52,8 @@ enum CurveStyle { linear, bezier }
 /// Paint Style of the Curve on the Gauge.
 ///
 enum PaintStyle { fill, stroke }
+
+///
+/// Style of the Needle on the Gauge.
+///
+enum NeedleStyle { gaugeNeedle, flatNeedle }
