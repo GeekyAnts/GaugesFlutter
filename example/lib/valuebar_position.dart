@@ -19,7 +19,7 @@ class _MyValueBarPositionState extends State<MyValueBarPosition> {
         child: Center(
           child: LinearGauge(
             gaugeOrientation: GaugeOrientation.horizontal,
-            linearGaugeBoxDecoration: LinearGaugeBoxDecoration(
+            linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(
                 thickness: 10,
                 linearGradient: LinearGradient(colors: [
                   Color.fromARGB(255, 114, 191, 255),
