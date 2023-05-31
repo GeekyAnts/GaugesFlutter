@@ -481,7 +481,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   set setInversedRulers(bool val) {
     if (_inversedRulers == val) return;
     _inversedRulers = val;
-    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///

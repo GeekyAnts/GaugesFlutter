@@ -412,7 +412,7 @@ class RenderLinearGauge extends RenderBox
   late final List<RenderCurve> _renderCurves;
 
   late final RenderRulers _renderRulerElement;
-  late final RenderRulerLabel _renderRulerLabel;
+  RenderRulerLabel? _renderRulerLabel;
 
   /// Adds the widget render object to widget pointer collection.
   void addWidgetPointer(RenderLinearGaugeWidgetPointer widgetPointer) {
@@ -1037,8 +1037,8 @@ class RenderLinearGauge extends RenderBox
 
   positionRulerLabel() {
     final MultiChildLayoutParentData? childParentData =
-        _renderRulerLabel.parentData as MultiChildLayoutParentData?;
-    childParentData!.offset = _layoutRulerLabelOffset(_renderRulerLabel);
+        _renderRulerLabel?.parentData as MultiChildLayoutParentData?;
+    childParentData!.offset = _layoutRulerLabelOffset(_renderRulerLabel!);
   }
 
   Offset _calculateOffsetForValueBar(RenderValueBar valueBar) {
@@ -1280,6 +1280,7 @@ class RenderLinearGauge extends RenderBox
         containerRef = childRef as RenderLinearGaugeContainer;
         gaugeStart = containerRef.gaugeStart;
         gaugeEnd = containerRef.gaugeEnd;
+
         _linearGaugeLabel = containerRef.linearGaugeLabel;
         childParentData.offset =
             Offset(xAxisForGaugeContainer, yAxisForGaugeContainer);
