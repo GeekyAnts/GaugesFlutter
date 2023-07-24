@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../../../geekyants_flutter_gauges.dart';
 
@@ -8,10 +9,12 @@ class RenderNeedlePointer extends RenderBox {
     required double value,
     required Color color,
     required RadialGauge radialGauge,
+    required ValueChanged<double>? onChanged,
     required double needleHeight,
     required double tailRadius,
     required double needleWidth,
     required NeedleStyle needleStyle,
+    required bool isInteractive,
     required Color tailColor,
     required LinearGradient gradient,
 
@@ -20,10 +23,12 @@ class RenderNeedlePointer extends RenderBox {
         _color = color,
         _radialGauge = radialGauge,
         _gradient = gradient,
+        _onChanged = onChanged,
         _needleHeight = needleHeight,
         _tailRadius = tailRadius,
         _tailColor = tailColor,
         _needleStyle = needleStyle,
+        _isInteractive = isInteractive,
         _needleWidth = needleWidth,
         super();
 
@@ -35,6 +40,17 @@ class RenderNeedlePointer extends RenderBox {
     markNeedsPaint();
   }
 
+  ValueChanged<double>? get onChanged => _onChanged;
+  ValueChanged<double>? _onChanged;
+  set onChanged(ValueChanged<double>? value) {
+    if (value == _onChanged) {
+      return;
+    }
+    _onChanged = value;
+  }
+
+  //getter and setter for value
+
   RadialGauge get getRadialGauge => _radialGauge!;
   RadialGauge? _radialGauge;
   set setRadialGauge(RadialGauge radialGauge) {
@@ -42,6 +58,20 @@ class RenderNeedlePointer extends RenderBox {
     _radialGauge = radialGauge;
     markNeedsPaint();
   }
+
+  // Sets the Interaction for [RenderNeedlePointer].
+  set setIsInteractive(bool value) {
+    if (value == _isInteractive) {
+      return;
+    }
+
+    _isInteractive = value;
+    markNeedsPaint();
+  }
+
+  // Gets the Interaction assigned to [RenderNeedlePointer].
+  bool get isInteractive => _isInteractive;
+  bool _isInteractive;
 
   NeedleStyle get getNeedleStyle => _needleStyle;
   NeedleStyle _needleStyle;
@@ -100,24 +130,30 @@ class RenderNeedlePointer extends RenderBox {
   }
 
   @override
-  bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    return false;
-  }
-
-  @override
-  Size computeDryLayout(BoxConstraints constraints) {
-    return constraints.constrain(constraints.biggest);
+  bool hitTestSelf(Offset position) {
+    Offset calulatedPosition = localToGlobal(position);
+    if (needlePointerRect.contains(calulatedPosition)) {
+      return true;
+    } else {
+      return false;
+    }
+    // Return false if the position is outside the needlePointerRect
   }
 
   @override
   void performLayout() {
-    size = computeDryLayout(constraints);
+    // size = Size(_needleWidth + _tailRadius, _needleHeight);
+    size = Size(constraints.maxWidth, constraints.maxHeight);
   }
+
+  late Path needlePointerRect;
 
   @override
   void paint(PaintingContext context, Offset offset) {
     final canvas = context.canvas;
-    final center = offset;
+    offset = Offset(size.width * getRadialGauge.xCenterCoordinate + offset.dx,
+        size.height * getRadialGauge.yCenterCoordinate + offset.dy);
+    final center = Offset(offset.dx + _needleWidth, offset.dy + _needleHeight);
 
     Rect circle = Rect.fromLTWH(offset.dx - getTailRadius / 2,
         offset.dy - getTailRadius / 2, _tailRadius, _tailRadius);
@@ -134,16 +170,19 @@ class RenderNeedlePointer extends RenderBox {
     double startAngle = (_radialGauge!.track.startAngle - 180) * (pi / 180);
     double endAngle = (_radialGauge!.track.endAngle - 180) * (pi / 180);
 
-    final maxH = size.shortestSide / 2 * getRadialGauge.radiusFactor;
+    final maxH = size.shortestSide / 2 * getRadialGauge.radiusFactor -
+        2 * getRadialGauge.track.thickness;
 
-    final double needleMultiplier = _needleHeight.clamp(0, maxH - 40);
+    final double needleMultiplier = _needleHeight.clamp(0, maxH);
 
     final double angle = startAngle + (value / 100) * (endAngle - startAngle);
 
-    double needleEndX = center.dx + needleMultiplier * cos(angle);
-    double needleEndY = center.dy + needleMultiplier * sin(angle);
-    double needleStartX = center.dx;
-    double needleStartY = center.dy;
+    double needleEndX =
+        center.dx + needleMultiplier * cos(angle) - _needleWidth;
+    double needleEndY =
+        center.dy + needleMultiplier * sin(angle) - _needleHeight;
+    double needleStartX = center.dx - _needleWidth;
+    double needleStartY = center.dy - _needleHeight;
 
     final needlePaint = Paint()
       ..color = _color
@@ -174,6 +213,8 @@ class RenderNeedlePointer extends RenderBox {
     // canvas.drawCircle(c, 100, Paint()..color = Colors.black);
     needlePath.close();
 
+    needlePointerRect = needlePath;
+    // canvas.drawPath(needlePath, Paint()..color = Colors.green);
 // Needle  Pointer paint
     if (getNeedleStyle == NeedleStyle.gaugeNeedle) {
       canvas.drawPath(needlePath, needlePaint);
@@ -191,3 +232,26 @@ class RenderNeedlePointer extends RenderBox {
     return newValue;
   }
 }
+
+// @override
+// void applyPaintTransform(RenderBox child, Matrix4 transform) {
+//   if (child is RenderNeedlePointer) {
+//     final centerX = size.width / 2;
+//     final centerY = size.height / 2;
+
+//     transform.translate(centerX, centerY);
+//     double value = calculateValueAngle(
+//         child.getValue, getRadialGauge.track.start, getRadialGauge.track.end);
+//     double startAngle = (getRadialGauge.track.startAngle - 180) * (pi / 180);
+//     double endAngle = (getRadialGauge.track.endAngle - 180) * (pi / 180);
+//     double angle = startAngle + (value / 100) * (endAngle - startAngle);
+//     double toRotateAngle = angle - (pi / 2);
+//     transform.rotateZ(toRotateAngle); // Specify the rotation in radians
+//     transform.translate(
+//         -centerX - child.getNeedleWidth / 2 - child.getTailRadius / 2,
+//         -centerY - child.getNeedleHeight + child.getTailRadius / 2);
+
+//     super.applyPaintTransform(child, transform);
+//     markNeedsLayout();
+//   }
+// }

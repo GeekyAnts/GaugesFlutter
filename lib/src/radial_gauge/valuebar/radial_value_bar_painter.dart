@@ -115,11 +115,10 @@ class RenderRadialValueBar extends RenderBox {
 
     double arcLength = endAngle - startAngle;
     double shortestSide = size.shortestSide;
-    double radius =
-        shortestSide / 2.0 - getRadialGauge.track.thickness - getRadialOffset;
-    // getRadialGauge.track.thickness -
-    // getRadialOffset -
-    // getValueBarThickness; //
+    double radius = (shortestSide / 2.0 -
+            getRadialGauge.track.thickness -
+            getRadialOffset) *
+        getRadialGauge.radiusFactor;
 
     Rect c = Rect.fromCircle(center: center, radius: radius);
     canvas.drawArc(c, startAngle, arcLength, false, containerPaint);

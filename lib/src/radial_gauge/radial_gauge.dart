@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:geekyants_flutter_gauges/src/radial_gauge/pointer/needle_pointer_painter.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_container.dart';
+import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_painter.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_state.dart';
-import 'package:geekyants_flutter_gauges/src/radial_gauge/valuebar/radial_value_bar_painter.dart';
 
 /// Creates a Radial Gauge Widget to display the values in a Radial Scale.
 /// The widget can be customized using the properties available in [RadialGauge].
@@ -42,6 +40,7 @@ class RadialGauge extends StatefulWidget {
     this.radiusFactor = 1,
     this.shapePointer = const [],
     this.needlePointer = const [],
+    this.widgetPointer = const [],
     // List<RadialTrack>? track,
   }) : super(key: key);
 
@@ -109,6 +108,23 @@ class RadialGauge extends StatefulWidget {
   /// ```
   ///
   final List<RadialShapePointer>? shapePointer;
+
+  ///
+  /// The list of [RadialWidgetPointer] to be displayed in the Radial Gauge.
+  ///
+  /// ```dart
+  /// RadialGauge(
+  ///     track: RadialTrack(
+  ///          start: 0,
+  ///          end: 100,
+  ///       ),
+  ///   widgetPointer: [
+  ///   RadialWidgetPointer(value: 10, child: FlutterLogo()),
+  ///   ],
+  /// ),
+  /// ```
+  ///
+  final List<RadialWidgetPointer>? widgetPointer;
 
   ///
   /// The list of [RadialTrack] to be displayed in the Radial Gauge.
@@ -190,6 +206,11 @@ class _RadialGaugeState extends State<RadialGauge> {
         _addChild(widget.needlePointer![i], null, null);
       }
     }
+    if (widget.widgetPointer != null) {
+      for (int i = 0; i < widget.widgetPointer!.length; i++) {
+        _addChild(widget.widgetPointer![i], null, null);
+      }
+    }
     if (widget.valueBar != null) {
       for (int i = 0; i < widget.valueBar!.length; i++) {
         _addChild(widget.valueBar![i], null, null);
@@ -253,191 +274,5 @@ class RRadialGauge extends MultiChildRenderObjectWidget {
       ..setXCenterCoordinate = rGauge.xCenterCoordinate
       ..setYCenterCoordinate = rGauge.yCenterCoordinate
       ..setNeedlePointer = rGauge.needlePointer!;
-  }
-}
-
-class RenderRadialGauge extends RenderBox
-    with
-        ContainerRenderObjectMixin<RenderBox, MultiChildLayoutParentData>,
-        RenderBoxContainerDefaultsMixin<RenderBox, MultiChildLayoutParentData>,
-        DebugOverflowIndicatorMixin {
-  RenderRadialGauge({
-    Key? key,
-    required RadialTrack track,
-    required double radiusFactor,
-    required double xCenterCoordinate,
-    required double yCenterCoordinate,
-    required List<NeedlePointer>? needlePointer,
-    required List<RadialShapePointer>? shapePointer,
-    required List<RadialValueBar>? valueBar,
-  })  : _track = track,
-        _needlePointer = needlePointer,
-        _valueBar = valueBar,
-        _xCenterCoordinate = xCenterCoordinate,
-        _radiusFactor = radiusFactor,
-        _shapePointer = shapePointer,
-        _yCenterCoordinate = yCenterCoordinate,
-        super();
-
-  double gaugeHeight = 0;
-  double gaugeWidth = 0;
-  double valueBarTopHeight = 0, valueBarWidth = 0;
-
-  List<RadialShapePointer>? get getShapePointer => _shapePointer;
-  List<RadialShapePointer>? _shapePointer;
-
-  set setShapePointer(List<RadialShapePointer>? shapePointer) {
-    if (_shapePointer == shapePointer) return;
-    _shapePointer = shapePointer;
-
-    markNeedsPaint();
-  }
-
-  double get getRadiusFactor => _radiusFactor;
-  double _radiusFactor;
-  set setRadiusFactor(double radiusFactor) {
-    if (_radiusFactor == radiusFactor) return;
-    _radiusFactor = radiusFactor;
-    markNeedsPaint();
-  }
-
-  double get xCenterCoordinate => _xCenterCoordinate;
-  double _xCenterCoordinate;
-  set setXCenterCoordinate(double xCenterCoordinate) {
-    if (_xCenterCoordinate == xCenterCoordinate) return;
-    _xCenterCoordinate = xCenterCoordinate;
-    markNeedsPaint();
-  }
-
-  double get yCenterCoordinate => _yCenterCoordinate;
-  double _yCenterCoordinate;
-  set setYCenterCoordinate(double yCenterCoordinate) {
-    if (_yCenterCoordinate == yCenterCoordinate) return;
-    _yCenterCoordinate = yCenterCoordinate;
-    markNeedsPaint();
-  }
-
-  RadialTrack get getTrack => _track;
-  RadialTrack _track;
-  set setTrack(RadialTrack track) {
-    if (_track == track) return;
-    _track = track;
-    markNeedsPaint();
-  }
-
-  List<RadialValueBar> get getValueBar => _valueBar!;
-  List<RadialValueBar>? _valueBar;
-  set setValueBar(List<RadialValueBar>? valueBar) {
-    if (_valueBar == valueBar) return;
-    _valueBar = valueBar;
-    markNeedsPaint();
-  }
-
-  List<NeedlePointer> get getNeedlePointer => _needlePointer!;
-  List<NeedlePointer>? _needlePointer;
-  set setNeedlePointer(List<NeedlePointer>? needlePointer) {
-    if (_needlePointer == needlePointer) return;
-    _needlePointer = needlePointer;
-    markNeedsPaint();
-  }
-
-  late double? extraH;
-  @override
-  void performLayout() {
-    size = computeDryLayout(constraints);
-
-    RenderBox? child = firstChild;
-
-    while (child != null) {
-      final MultiChildLayoutParentData childParentData =
-          child.parentData as MultiChildLayoutParentData;
-
-      if (child is RenderRadialValueBar) {
-        childParentData.offset = Offset(
-            size.width * xCenterCoordinate, size.height * yCenterCoordinate);
-
-        extraH = (child.getRadialOffset);
-        final childConstraints = BoxConstraints(
-          maxWidth: size.width,
-          maxHeight: size.height,
-        );
-        child.layout(childConstraints, parentUsesSize: true);
-      } else if (child is RenderRadialGaugeContainer) {
-        childParentData.offset = Offset((size.width * xCenterCoordinate),
-            (size.height * yCenterCoordinate));
-
-        final childConstraints = BoxConstraints(
-          maxWidth: size.width,
-          maxHeight: size.height,
-        );
-
-        child.layout(childConstraints, parentUsesSize: true);
-      } else if (child is RenderNeedlePointer) {
-        childParentData.offset = Offset(
-            size.width * xCenterCoordinate, size.height * yCenterCoordinate);
-        final childConstraints = BoxConstraints(
-          maxWidth: size.shortestSide - getTrack.thickness,
-          maxHeight: size.shortestSide - getTrack.thickness,
-        );
-        child.layout(childConstraints, parentUsesSize: true);
-      } else if (child is RenderRadialShapePointer) {
-        childParentData.offset = Offset(
-            size.width * xCenterCoordinate, size.height * yCenterCoordinate);
-        child.layout(constraints, parentUsesSize: true);
-      } else {
-        childParentData.offset =
-            Offset(((size.width) / 2), ((size.height) / 2));
-      }
-
-      child = childParentData.nextSibling;
-    }
-  }
-
-  late double kheight;
-  late double kwidth;
-  double kDefaultRadialGaugeSize = 350.0;
-
-  @override
-  Size computeDryLayout(BoxConstraints constraints) {
-    final double actualHeight = constraints.hasBoundedHeight
-        ? constraints.maxHeight
-        : kDefaultRadialGaugeSize;
-    final double actualWidth = constraints.hasBoundedWidth
-        ? constraints.maxWidth
-        : kDefaultRadialGaugeSize;
-
-    kheight = actualHeight;
-    kwidth = actualWidth;
-
-    Size s = Size(actualWidth, actualHeight);
-
-    return constraints.constrain(s);
-  }
-
-  getRadialGaugeContainerSize() {
-    Offset c = Offset(kheight / 2, kwidth / 2);
-
-    final Rect rect =
-        Rect.fromCenter(center: c, width: kwidth, height: kheight);
-
-    return rect.size;
-  }
-
-  @override
-  void setupParentData(RenderObject child) {
-    if (child.parentData is! MultiChildLayoutParentData) {
-      child.parentData = MultiChildLayoutParentData();
-    }
-  }
-
-  @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    final bool isHit = super.defaultHitTestChildren(result, position: position);
-    return isHit;
-  }
-
-  @override
-  void paint(PaintingContext context, Offset offset) {
-    defaultPaint(context, offset);
   }
 }
