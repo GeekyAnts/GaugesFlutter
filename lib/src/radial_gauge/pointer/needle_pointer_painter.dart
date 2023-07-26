@@ -202,11 +202,11 @@ class RenderNeedlePointer extends RenderBox {
     needlePath.lineTo(needleStartX + getTailRadius / 2 * cos(angle - pi / 2),
         needleStartY - (getTailRadius / 2) * sin(angle + pi / 2));
 
-    double temp1 = 30;
-    needlePath.moveTo(offset.dx + temp1 * cos(angle + pi / 2),
-        offset.dy - temp1 * sin(angle - pi / 2));
-    needlePath.lineTo(needleStartX + temp1 * cos(angle - pi / 2),
-        needleStartY - (temp1) * sin(angle + pi / 2));
+    double needleWidth = _needleWidth;
+    needlePath.moveTo(offset.dx + needleWidth * cos(angle + pi / 2),
+        offset.dy - needleWidth * sin(angle - pi / 2));
+    needlePath.lineTo(needleStartX + needleWidth * cos(angle - pi / 2),
+        needleStartY - (needleWidth) * sin(angle + pi / 2));
 
     needlePath.lineTo(needleEndX, needleEndY);
     // Offset c = Offset(offset.dx, offset.dy - getTailRadius);
@@ -223,6 +223,7 @@ class RenderNeedlePointer extends RenderBox {
       //  Simple Needle
       canvas.drawLine(Offset(needleStartX, needleStartY),
           Offset(needleEndX, needleEndY), needlePaint);
+      canvas.drawPath(circlePath, Paint()..color = _tailColor);
     }
   }
 

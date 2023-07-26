@@ -6,6 +6,22 @@ import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_state.dar
 ///
 /// [RadialShapePointer] is used to render the shape pointer in the [RadialGauge].
 ///
+/// Currently Only Supports Circle Shape Pointers.
+///
+/// ```dart
+///RadialGauge(
+///   track: const RadialTrack(start: 0, end: 100),
+///   shapePointer: [
+///     RadialShapePointer(
+///       value: value,
+///       color: Colors.pink,
+///       height: 20,
+///       width: 20,
+///     ),
+///   ],
+/// ),
+/// ```
+///
 
 class RadialShapePointer extends LeafRenderObjectWidget {
   /// [RadialShapePointer] is used to render the shape pointer in the [RadialGauge].
