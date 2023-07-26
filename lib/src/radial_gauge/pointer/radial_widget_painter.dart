@@ -1,9 +1,6 @@
 import 'dart:math';
-
 import 'package:flutter/rendering.dart';
-
 import '../../../geekyants_flutter_gauges.dart';
-import '../radial_gauge_painter.dart';
 
 class RenderRadialWidgetPointer extends RenderProxyBox {
   RenderRadialWidgetPointer({
@@ -67,12 +64,6 @@ class RenderRadialWidgetPointer extends RenderProxyBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    Canvas canvas = context.canvas;
-    final RenderBox? parentBox = parent as RenderBox?;
-
-    RadialGaugeParentData parentDataRef = parentData as RadialGaugeParentData;
-    final double width = parentDataRef.width;
-
     double gaugeStart = _radialGauge.track.start;
     double gaugeEnd = _radialGauge.track.end;
 
