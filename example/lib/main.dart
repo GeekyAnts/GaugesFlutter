@@ -5,56 +5,62 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyGaugeExample(),
+      home: RadialGaugeExample(),
     ),
   );
 }
 
-class MyGaugeExample extends StatefulWidget {
-  const MyGaugeExample({Key? key}) : super(key: key);
+///
+/// The following code  is a Simple Example of [LinearGauge] Widget.
+/// You can customize the [LinearGauge] Widget as per your need.
+///
+class LinearGaugeExample extends StatefulWidget {
+  const LinearGaugeExample({Key? key}) : super(key: key);
 
   @override
-  State<MyGaugeExample> createState() => _MyGaugeExampleState();
+  State<LinearGaugeExample> createState() => _LinearGaugeExampleState();
 }
 
-class _MyGaugeExampleState extends State<MyGaugeExample> {
-  double value = 50;
-  bool inverseRulers = false;
-
+class _LinearGaugeExampleState extends State<LinearGaugeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  inverseRulers = !inverseRulers;
-                  setState(() {});
-                },
-                child: const Text("Inverse Rulers")),
-            Container(
-              color: Colors.pink.withOpacity(0.1),
-              child: LinearGauge(
-                gaugeOrientation: GaugeOrientation.horizontal,
-                valueBar: [
-                  ValueBar(
-                    value: value,
-                    offset: 20,
-                    position: ValueBarPosition.top,
-                  )
-                ],
-                enableGaugeAnimation: true,
-                rulers: RulerStyle(
-                  rulerPosition: RulerPosition.bottom,
-                  inverseRulers: inverseRulers,
-                  showLabel: inverseRulers,
-                ),
-              ),
+        child: LinearGauge(
+          gaugeOrientation: GaugeOrientation.horizontal,
+          enableGaugeAnimation: true,
+          rulers: RulerStyle(
+            rulerPosition: RulerPosition.bottom,
+          ),
+          pointers: const [
+            Pointer(
+              value: 50,
+              shape: PointerShape.circle,
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+///
+/// The following code  is a Simple Example of [RadialGauge] Widget.
+/// You can customize the [RadialGauge] Widget as per your need.
+///
+class RadialGaugeExample extends StatelessWidget {
+  const RadialGaugeExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: RadialGauge(
+        track: RadialTrack(start: 0, end: 100),
+        shapePointer: [
+          RadialShapePointer(
+            value: 50,
+          ),
+        ],
       ),
     );
   }
