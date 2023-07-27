@@ -59,10 +59,10 @@ class RadialGaugeExample extends StatefulWidget {
 class _RadialGaugeExampleState extends State<RadialGaugeExample> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
       body: RadialGauge(
-        track: const RadialTrack(
+        track: RadialTrack(
             color: Colors.grey,
             start: 0,
             end: 100,
