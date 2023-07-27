@@ -165,7 +165,7 @@ Default **`startAngle`** : -30°
 
 Default **`endAngle`**`: 210°
 
-<p align='center'><img src="./example/screens/radial-angles.png" alt="animations gif"  height=440></p>
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-angles.png" alt="radial-angels"  height=440></p>
 
 #### **Radii Customization**
 
@@ -181,13 +181,13 @@ Default **`xCoordinate`** : 0.5
 
 Default **`yCoordinate`**`: 0.5
 
-<p align='center'><img src="./example/screens/radial-coordinates.gif" alt="animations gif"  height=440></p>
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-coordinates.gif" alt="radial coordinates"  height=440></p>
 
 # Needle Pointer
 
 The NeedlePointer is a powerful component that enables you to create and customize Needle Pointers for your gauges. With this widget, you have the flexibility to design multiple Needle Pointers and adjust their styles using the **`gaugeNeedle`** and **`plainneedle`** enums.
 
-<p align='center'><img src="./example/screens/radial-needle.png" alt="animations gif"  height=440></p>
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-needle.png" alt="radial-needle"  height=440></p>
 
 # Shape Pointer
 
@@ -195,21 +195,21 @@ The RadialShapePointer allows you to add Shape Pointer to your Gauge.The shape c
 
 > Currently, Only Circle Shape is supported
 
-<p align='center'><img src="./example/screens/radial-pointer.png" alt="animations gif"  height=440></p>
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-pointer.png" alt="radial-pointer"  height=440></p>
 
 # Radial Value Bar
 
 The RadialValueBar is a crucial component used within the RadialGauge to visually represent a specific value on the gauge using a bar. This bar provides users with a clear and intuitive indication of the current value within the defined range of the radial track.
 
-<p align='center'><img src="./example/screens/radial-valueBar.png" alt="animations gif"  height=440></p>
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-valueBar.png" alt="radial-valuebar"  height=440></p>
 
 # Interactivity Radial
 
 In the Radial Gauge, the `NeedlePointer` and `RadialShapePointer` can be set to interactive, making them respond to user's horizontal and vertical drag.
 
-<p align='center'><img src="./example/screens/shape-interactive.gif" alt="animations gif"  height=140></p>
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/shape-interactive.gif" alt="pointer-interactive gif"  height=440></p>
 
-<p align='center'><img src="./example/screens/needle-interactive.gif" alt="animations gif"  height=140></p>
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/needle-interactive.gif" alt="needle-interactive gif"  height=440></p>
 
 ## License
 
