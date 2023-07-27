@@ -25,6 +25,7 @@ class RenderRadialWidgetPointer extends RenderProxyBox {
     }
     _value = value;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   /// Sets  isInteractive for  [RadialWidgetPointer].
@@ -35,6 +36,7 @@ class RenderRadialWidgetPointer extends RenderProxyBox {
 
     _isInteractive = value;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   RadialGauge get radialGauge => _radialGauge;
@@ -46,6 +48,7 @@ class RenderRadialWidgetPointer extends RenderProxyBox {
 
     _radialGauge = value;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   /// Gets  isInteractive for  [RadialWidgetPointer].

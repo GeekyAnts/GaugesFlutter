@@ -38,6 +38,7 @@ class RenderNeedlePointer extends RenderBox {
     if (_gradient == gradient) return;
     _gradient = gradient;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   ValueChanged<double>? get onChanged => _onChanged;
@@ -47,6 +48,8 @@ class RenderNeedlePointer extends RenderBox {
       return;
     }
     _onChanged = value;
+    markNeedsPaint();
+    markNeedsLayout();
   }
 
   //getter and setter for value
@@ -57,6 +60,7 @@ class RenderNeedlePointer extends RenderBox {
     if (_radialGauge == radialGauge) return;
     _radialGauge = radialGauge;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   // Sets the Interaction for [RenderNeedlePointer].
@@ -67,6 +71,7 @@ class RenderNeedlePointer extends RenderBox {
 
     _isInteractive = value;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   // Gets the Interaction assigned to [RenderNeedlePointer].
@@ -79,6 +84,7 @@ class RenderNeedlePointer extends RenderBox {
     if (_needleStyle == needleStyle) return;
     _needleStyle = needleStyle;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   double get getValue => _value;
@@ -87,6 +93,7 @@ class RenderNeedlePointer extends RenderBox {
     if (_value == value) return;
     _value = value;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   double get getNeedleWidth => _needleWidth;
@@ -95,6 +102,7 @@ class RenderNeedlePointer extends RenderBox {
     if (_needleWidth == needleWidth) return;
     _needleWidth = needleWidth;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   double get getTailRadius => _tailRadius;
@@ -103,6 +111,7 @@ class RenderNeedlePointer extends RenderBox {
     if (_tailRadius == tailRadius) return;
     _tailRadius = tailRadius;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   double get getNeedleHeight => _needleHeight;
@@ -111,6 +120,7 @@ class RenderNeedlePointer extends RenderBox {
     if (_needleHeight == needleHeight) return;
     _needleHeight = needleHeight;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   Color get getTailColor => _tailColor;
@@ -119,6 +129,7 @@ class RenderNeedlePointer extends RenderBox {
     if (_tailColor == tailColor) return;
     _tailColor = tailColor;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   Color get getColor => _color;
@@ -127,6 +138,7 @@ class RenderNeedlePointer extends RenderBox {
     if (_color == color) return;
     _color = color;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   @override

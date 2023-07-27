@@ -61,6 +61,7 @@ class RenderRadialGauge extends RenderBox
     _shapePointer = shapePointer;
 
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   double get getRadiusFactor => _radiusFactor;
@@ -69,6 +70,7 @@ class RenderRadialGauge extends RenderBox
     if (_radiusFactor == radiusFactor) return;
     _radiusFactor = radiusFactor;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   double get xCenterCoordinate => _xCenterCoordinate;
@@ -77,6 +79,7 @@ class RenderRadialGauge extends RenderBox
     if (_xCenterCoordinate == xCenterCoordinate) return;
     _xCenterCoordinate = xCenterCoordinate;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   double get yCenterCoordinate => _yCenterCoordinate;
@@ -85,6 +88,7 @@ class RenderRadialGauge extends RenderBox
     if (_yCenterCoordinate == yCenterCoordinate) return;
     _yCenterCoordinate = yCenterCoordinate;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   RadialTrack get getTrack => _track;
@@ -93,6 +97,7 @@ class RenderRadialGauge extends RenderBox
     if (_track == track) return;
     _track = track;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   List<RadialValueBar> get getValueBar => _valueBar!;
@@ -101,6 +106,7 @@ class RenderRadialGauge extends RenderBox
     if (_valueBar == valueBar) return;
     _valueBar = valueBar;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   List<NeedlePointer> get getNeedlePointer => _needlePointer!;
@@ -109,6 +115,7 @@ class RenderRadialGauge extends RenderBox
     if (_needlePointer == needlePointer) return;
     _needlePointer = needlePointer;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   late Offset centOffset;

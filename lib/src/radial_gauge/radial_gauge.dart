@@ -269,6 +269,8 @@ class RRadialGauge extends MultiChildRenderObjectWidget {
       BuildContext context, covariant RenderRadialGauge renderObject) {
     renderObject
       ..setTrack = rGauge.track
+      ..setXCenterCoordinate = rGauge.xCenterCoordinate
+      ..setYCenterCoordinate = rGauge.yCenterCoordinate
       ..setValueBar = rGauge.valueBar
       ..setShapePointer = rGauge.shapePointer
       ..setXCenterCoordinate = rGauge.xCenterCoordinate

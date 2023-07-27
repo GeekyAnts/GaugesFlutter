@@ -48,17 +48,35 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
 /// The following code  is a Simple Example of [RadialGauge] Widget.
 /// You can customize the [RadialGauge] Widget as per your need.
 ///
-class RadialGaugeExample extends StatelessWidget {
+
+class RadialGaugeExample extends StatefulWidget {
   const RadialGaugeExample({super.key});
 
   @override
+  State<RadialGaugeExample> createState() => _RadialGaugeExampleState();
+}
+
+class _RadialGaugeExampleState extends State<RadialGaugeExample> {
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
       body: RadialGauge(
-        track: RadialTrack(start: 0, end: 100),
-        shapePointer: [
-          RadialShapePointer(
-            value: 50,
+        track: const RadialTrack(
+            color: Colors.grey,
+            start: 0,
+            end: 100,
+            trackStyle: TrackStyle(
+                showLastLabel: false,
+                secondaryRulerColor: Colors.grey,
+                secondaryRulerPerInterval: 3)),
+        needlePointer: [
+          NeedlePointer(
+            value: 30,
+            color: Colors.red,
+            tailColor: Colors.black,
+            tailRadius: 0,
+            needleStyle: NeedleStyle.flatNeedle,
           ),
         ],
       ),

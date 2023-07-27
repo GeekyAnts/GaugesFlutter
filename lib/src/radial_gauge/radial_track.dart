@@ -63,7 +63,6 @@ class RadialTrack {
       secondaryRulerPerInterval: 4.0,
     ),
     this.gradient,
-    Widget? child,
   });
 
   ///

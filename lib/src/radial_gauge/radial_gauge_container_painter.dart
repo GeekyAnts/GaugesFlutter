@@ -17,6 +17,7 @@ class RenderRadialGaugeContainer extends RenderBox {
     if (_radialGauge == radialGauge) return;
     _radialGauge = radialGauge;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   @override
