@@ -1,67 +1,24 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:geekyants_flutter_gauges/src/radial_gauge/radial_gauge_state.dart';
 
-/// [RadialShapePointer] is used to render the shape pointer in the [RadialGauge].
-
-class RadialShapePointer extends LeafRenderObjectWidget {
-  /// [RadialShapePointer] is used to render the shape pointer in the [RadialGauge].
-  const RadialShapePointer({
-    super.key,
-    required this.value,
-    this.color = Colors.red,
-    this.height = 10,
-    this.width = 10,
-    this.shape = PointerShape.triangle,
-  });
-
-  final double value;
-  final Color color;
-  final double height;
-  final double width;
-  final PointerShape shape;
-
-  @override
-  RenderObject createRenderObject(BuildContext context) {
-    final RadialGaugeState scope = RadialGaugeState.of(context);
-
-    return RenderRadialShapePointer(
-      value: value,
-      color: color,
-      height: height,
-      width: width,
-      shape: shape,
-      radialGauge: scope.rGauge,
-    );
-  }
-
-  @override
-  void updateRenderObject(
-      BuildContext context, RenderRadialShapePointer renderObject) {
-    final RadialGaugeState scope = RadialGaugeState.of(context);
-    renderObject
-      ..setValue = value
-      ..setRadialGauge = scope.rGauge
-      ..setColor = color
-      ..setHeight = height
-      ..setWidth = width
-      ..setShape = shape;
-  }
-}
+import '../../../geekyants_flutter_gauges.dart';
 
 class RenderRadialShapePointer extends RenderBox {
   RenderRadialShapePointer({
     required double value,
     required Color color,
     required double height,
+    required ValueChanged<double>? onChanged,
     required double width,
+    required bool isInteractive,
     required PointerShape shape,
     required RadialGauge radialGauge,
   })  : _value = value,
         _color = color,
         _height = height,
+        _onChanged = onChanged,
+        _isInteractive = isInteractive,
         _width = width,
         _shape = shape,
         _radialGauge = radialGauge;
@@ -79,14 +36,43 @@ class RenderRadialShapePointer extends RenderBox {
   }
 
   @override
-  bool hitTestSelf(Offset position) {
-    return true;
-  }
-
-  @override
   void performLayout() {
     size = Size(constraints.maxWidth, constraints.maxHeight);
   }
+
+  @override
+  bool hitTestSelf(Offset position) {
+    Offset calculatedPosition = localToGlobal(position);
+
+    if (pointerRect.contains(calculatedPosition)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  ValueChanged<double>? get onChanged => _onChanged;
+  ValueChanged<double>? _onChanged;
+  set onChanged(ValueChanged<double>? value) {
+    if (value == _onChanged) {
+      return;
+    }
+    _onChanged = value;
+  }
+
+  // Sets the Interaction for [RenderNeedlePointer].
+  set setIsInteractive(bool value) {
+    if (value == _isInteractive) {
+      return;
+    }
+
+    _isInteractive = value;
+    markNeedsPaint();
+  }
+
+  // Gets the Interaction assigned to [RenderNeedlePointer].
+  bool get isInteractive => _isInteractive;
+  bool _isInteractive;
 
   set setValue(double value) {
     if (_value == value) {
@@ -136,14 +122,20 @@ class RenderRadialShapePointer extends RenderBox {
     markNeedsPaint();
   }
 
+  late Rect pointerRect;
+
   @override
   void paint(PaintingContext context, Offset offset) {
     final canvas = context.canvas;
 
     double gaugeStart = _radialGauge.track.start;
     double gaugeEnd = _radialGauge.track.end;
+    // final center = Offset(offset.dx, offset.dy);
 
-    final center = offset;
+    final center = Offset(
+        size.width * _radialGauge.xCenterCoordinate + offset.dx,
+        size.height * _radialGauge.yCenterCoordinate + offset.dy);
+
     double value = calculateValueAngle(_value, gaugeStart, gaugeEnd);
     double startAngle = (_radialGauge.track.startAngle - 180) * (pi / 180);
     double endAngle = (_radialGauge.track.endAngle - 180) * (pi / 180);
@@ -153,15 +145,22 @@ class RenderRadialShapePointer extends RenderBox {
     double needleLength = 30;
     double needleWidth = 10;
     final pointerPath = Path();
+
     // double pointerOffset = 430 + 0;
     double pointerOffset =
         (size.shortestSide / 2 - _radialGauge.track.thickness) *
             _radialGauge.radiusFactor;
-    // needleEndY = center.dy + 250 * sin(angle);
+
+    double circlePointerOffset =
+        (size.shortestSide / 2 - _radialGauge.track.thickness) *
+            _radialGauge.radiusFactor;
+
     double pointerEndX = center.dx + pointerOffset * cos(angle);
     double pointerEndY = center.dy + pointerOffset * sin(angle);
-    // needleEndX = center.dx + 250 * cos(angle);
-    // // needleEndX = center.dx + getTailRadius / 2 + needleMultiplier * cos(angle);
+
+    double circlePointerEndX = center.dx + circlePointerOffset * cos(angle);
+    double circlePointerEndY = center.dy + circlePointerOffset * sin(angle);
+
     pointerPath.moveTo(pointerEndX, pointerEndY);
     pointerPath.lineTo(
       pointerEndX - needleWidth * cos(angle + pi / 2),
@@ -177,9 +176,13 @@ class RenderRadialShapePointer extends RenderBox {
     );
     pointerPath.close();
 
-    canvas.drawCircle(
-        Offset(pointerEndX, pointerEndY), _width, Paint()..color = _color);
-    // canvas.drawPath(pointerPath, Paint()..color = Colors.red);
+    pointerRect = Rect.fromCircle(
+        center: Offset(pointerEndX, pointerEndY), radius: _width);
+
+    // canvas.drawRect(pointerRect, Paint()..color = _color);
+    canvas.drawCircle(Offset(circlePointerEndX, circlePointerEndY), _width,
+        Paint()..color = _color);
+    // canvas.drawPath(pointerPath, Paint()..color = _color);
   }
 
   double calculateValueAngle(double value, double gaugeStart, double gaugeEnd) {

@@ -1,3 +1,18 @@
+## 1.0.2
+
+**Features**
+
+- Support for Multiple Needle Pointers
+- Support for Multiple Shape Pointers
+- Interactivity for Needle Pointers in `RadialGauge`
+- Interactivity for Shape Pointers in `RadialGauge`
+
+**Fixes**
+
+- More control over positioning `RadialGauge`
+- Refactored `RadialGauge`
+- More control over styling of `NeedlePointer`
+
 ## 1.0.1
 
 **Fixes**

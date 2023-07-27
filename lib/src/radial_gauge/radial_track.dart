@@ -50,6 +50,10 @@ class RadialTrack {
     this.hideTrack = false,
     this.thickness = 10,
     this.trackStyle = const TrackStyle(
+      labelStyle: TextStyle(
+        fontSize: 12,
+        color: Colors.black,
+      ),
       primaryRulersHeight: 25,
       primaryRulerColor: Colors.black54,
       secondaryRulerColor: Colors.grey,
@@ -59,7 +63,6 @@ class RadialTrack {
       secondaryRulerPerInterval: 4.0,
     ),
     this.gradient,
-    Widget? child,
   });
 
   ///
@@ -121,6 +124,21 @@ class RadialTrack {
 }
 
 class TrackStyle extends BaseRulerStyle {
+  ///
+  /// The [showFirstLabel] property is used to show/Hide the first label of the Radial Gauge.
+  ///
+  final bool showFirstLabel;
+
+  ///
+  /// The [showLastLabel] property is used to show/Hide the last label of the Radial Gauge.
+  ///
+  final bool showLastLabel;
+
+  ///
+  /// The [labelStyle] property is used to customize the label of the Radial Gauge.
+  ///
+  final TextStyle? labelStyle;
+
   const TrackStyle({
     super.primaryRulersHeight,
     super.primaryRulerColor = Colors.black54,
@@ -135,5 +153,8 @@ class TrackStyle extends BaseRulerStyle {
     super.labelOffset = 0,
     super.rulersOffset = 0,
     super.inverseRulers = false,
+    this.showFirstLabel = true,
+    this.showLastLabel = true,
+    this.labelStyle,
   });
 }

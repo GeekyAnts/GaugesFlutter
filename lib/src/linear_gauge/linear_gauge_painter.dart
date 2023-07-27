@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
-// ignore: implementation_imports
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/curve/custom_curve_painter.dart';
 import 'dart:math' as math;
@@ -2232,3 +2231,5 @@ class LinearGaugeParentData extends MultiChildLayoutParentData {
       this.gaugeEnd,
       this.linearGaugeLabel);
 }
+
+// class Temp implements MouseTrackerAnnotation {}

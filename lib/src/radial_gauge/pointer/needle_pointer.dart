@@ -37,13 +37,16 @@ class NeedlePointer extends LeafRenderObjectWidget {
       this.gradient,
       this.color = Colors.red,
       this.tailColor = Colors.red,
-      this.needleWidth = 10,
+      this.needleWidth = 30,
       this.needleHeight = 300,
+      this.onChanged,
+      this.isInteractive = false,
       this.needleStyle = NeedleStyle.gaugeNeedle,
       this.tailRadius = 80})
       : super(key: key);
 
   final double value;
+  final bool isInteractive;
   final Color color;
   final double needleHeight;
   final double needleWidth;
@@ -51,6 +54,7 @@ class NeedlePointer extends LeafRenderObjectWidget {
   final LinearGradient? gradient;
   final Color tailColor;
   final NeedleStyle needleStyle;
+  final ValueChanged<double>? onChanged;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -62,8 +66,10 @@ class NeedlePointer extends LeafRenderObjectWidget {
       value: value,
       tailColor: tailColor,
       needleStyle: needleStyle,
+      isInteractive: isInteractive,
       color: color,
       needleHeight: needleHeight,
+      onChanged: onChanged,
       needleWidth: needleWidth,
       tailRadius: tailRadius,
     );
@@ -76,10 +82,12 @@ class NeedlePointer extends LeafRenderObjectWidget {
     renderObject
       ..setValue = value
       ..setColor = color
+      ..setIsInteractive = isInteractive
       ..setTailColor = tailColor
       ..setGradient = gradient ?? LinearGradient(colors: [color, color])
       ..setNeedleHeight = needleHeight
       ..setTailRadius = tailRadius
+      ..onChanged = onChanged
       ..setNeedleStyle = needleStyle
       ..setNeedleWidth = needleWidth
       ..setRadialGauge = scope.rGauge;
