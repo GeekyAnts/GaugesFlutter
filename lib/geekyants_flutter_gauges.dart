@@ -34,4 +34,5 @@ export './src/radial_gauge/radial_gauge.dart';
 export './src/radial_gauge/radial_track.dart';
 export 'src/radial_gauge/pointer/needle_pointer.dart';
 export 'src/radial_gauge/valuebar/radial_value_bar.dart';
-export 'src/radial_gauge/shape_pointer/radial_shape_pointer.dart';
+export 'src/radial_gauge/pointer/radial_shape_pointer.dart';
+export 'src/radial_gauge/pointer/radial_widget_pointer.dart';

@@ -30,7 +30,7 @@ To fully explore the capabilities of our Linear Gauge, we recommend checking out
 ## Table of contents
 
 - [Getting Started](#getting-started)
-- [Linear Gauge Features](#customization)
+- [Linear Gauge](#linear-gauge)
 
   - [Orientation](#gauge-orientation)
   - [Ruler Style](#rulerStyle)
@@ -41,7 +41,13 @@ To fully explore the capabilities of our Linear Gauge, we recommend checking out
   - [Animation](#animation)
   - [Interactivity](#interactivity)
 
-- [Radial Gauge](#radial-gauge-pre-release)
+- [Radial Gauge](#radial-gauge)
+
+  - [Position](#position)
+  - [Needle Pointer](#needle-pointer)
+  - [Shape Pointer](#shape-pointer)
+  - [Radial Value Bar](#radial-value-bar)
+  - [Interactivity](#interactivity-radial)
 
 - [Demo Application](#demo-application)
 - [Credits](#credits)
@@ -88,7 +94,7 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
 }
 ```
 
-## Customization
+## Linear Gauge
 
 ### **Gauge Orientation**:
 
@@ -145,19 +151,65 @@ The `Pointer` is interactive , it responds to user horizontal & vertical drag.
 
 <p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/interactivity.gif" alt="animations gif"  height=140></p>
 
-### **Radial Gauge (PRE-RELEASE)**
+## **Radial Gauge**
 
 A `Radial Gauge` is a graphical representation used to visualize and display a value within a circular format. It consists of several components, including a radial track, a needle pointer, and a value bar. The radial track represents the range or scale of values that the gauge can display, with the ability for users to set the start and end points of the track.
-Customization:
-RadialTrack
-The `RadialTrack` widget is used to create a radial track component for the radial gauge in Flutter. It provides a customizable visual representation of the scale or range of values on the gauge. With this you can change properties like startAngle endAngle radiusFactor and much more
-Needle Pointer
-The `NeedlePointer` widget allows you to create a Needle Pointer and Customize it
-RadialValueBar
-The `RadialValueBar` is used within the RadialGauge to represent a value on the gauge using a horizontal bar. It provides a visual indication of the current value within the range of the radial track.
 
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-1.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-2.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-3.png" alt="radial png"  height=200>
-<img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-5.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/mesuring.png" alt="radial png"  height=200> <img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-6.png" alt="radial png"  height=200>
+### **Position**:
+
+#### **Angles**
+
+The RadialGauge can be easily laid out at different angles around its center. You have the freedom to specify the starting and ending angles, defining the arc over which the gauge will be displayed. This feature is particularly useful when you want to display multiple gauges side by side or need to emphasize a specific range on the gauge.
+
+Default **`startAngle`** : -30°
+
+Default **`endAngle`**`: 210°
+
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-angles.png" alt="radial-angels"  height=440></p>
+
+#### **Radii Customization**
+
+`radiusFactor` can be used to size the adjust the scaling factor of the radius and change the radius of the gauge accordingly.
+
+#### **X and Y Coordinates**
+
+To precisely position the RadialGauge on your canvas or user interface, you can set the x and y coordinates of its center. This way, you can easily integrate the gauge into your existing layout or place it at specific locations as per your application's design requirements.
+
+By combining these layout options, you can create stunning and interactive radial gauges that effectively present data to your users, whether it's for monitoring, analytics, or any other visualization needs.
+
+Default **`xCoordinate`** : 0.5
+
+Default **`yCoordinate`**`: 0.5
+
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-coordinates.gif" alt="radial coordinates"  height=440></p>
+
+# Needle Pointer
+
+The NeedlePointer is a powerful component that enables you to create and customize Needle Pointers for your gauges. With this widget, you have the flexibility to design multiple Needle Pointers and adjust their styles using the **`gaugeNeedle`** and **`plainneedle`** enums.
+
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-needle.png" alt="radial-needle"  height=440></p>
+
+# Shape Pointer
+
+The RadialShapePointer allows you to add Shape Pointer to your Gauge.The shape can be customized using properties such as color, width and height.
+
+> Currently, Only Circle Shape is supported
+
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-pointer.png" alt="radial-pointer"  height=440></p>
+
+# Radial Value Bar
+
+The RadialValueBar is a crucial component used within the RadialGauge to visually represent a specific value on the gauge using a bar. This bar provides users with a clear and intuitive indication of the current value within the defined range of the radial track.
+
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-valueBar.png" alt="radial-valuebar"  height=440></p>
+
+# Interactivity Radial
+
+In the Radial Gauge, the `NeedlePointer` and `RadialShapePointer` can be set to interactive, making them respond to user's horizontal and vertical drag.
+
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/shape-interactive.gif" alt="pointer-interactive gif"  height=440></p>
+
+<p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/needle-interactive.gif" alt="needle-interactive gif"  height=440></p>
 
 ## License
 
