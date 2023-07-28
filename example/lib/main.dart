@@ -63,20 +63,12 @@ class _RadialGaugeExampleState extends State<RadialGaugeExample> {
       backgroundColor: Colors.white,
       body: RadialGauge(
         track: RadialTrack(
-            color: Colors.grey,
-            start: 0,
-            end: 100,
-            trackStyle: TrackStyle(
-                showLastLabel: false,
-                secondaryRulerColor: Colors.grey,
-                secondaryRulerPerInterval: 3)),
+          start: 0,
+          end: 100,
+        ),
         needlePointer: [
           NeedlePointer(
             value: 30,
-            color: Colors.red,
-            tailColor: Colors.black,
-            tailRadius: 0,
-            needleStyle: NeedleStyle.flatNeedle,
           ),
         ],
       ),
