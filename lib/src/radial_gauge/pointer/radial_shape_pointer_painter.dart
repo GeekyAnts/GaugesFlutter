@@ -46,6 +46,8 @@ class RenderRadialShapePointer extends RenderBox {
 
     if (pointerRect.contains(calculatedPosition)) {
       return true;
+    } else if (pointerRect.contains(position)) {
+      return true;
     } else {
       return false;
     }
