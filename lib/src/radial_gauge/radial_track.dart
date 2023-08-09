@@ -126,6 +126,16 @@ class RadialTrack {
   ///
   /// The [mapTrackLabel] property is used to customize the track labels of the Radial Gauge.
   ///
+  /// ``` dart
+  /// RadialGauge(
+  ///          track: RadialTrack(
+  ///            start: 0,
+  ///            end: 100,
+  ///            mapTrackLabel: (double value) => "${value.round()}€",
+  ///         ),
+  ///     ),
+  /// ```
+  ///
   final String Function(double)? mapTrackLabel;
 }
 
