@@ -54,6 +54,9 @@ class RenderRadialGaugeContainer extends RenderBox {
       ..strokeWidth = getRadialGauge.track.trackStyle.secondaryRulersWidth!
       ..style = PaintingStyle.stroke;
 
+    final mapTrackLabel = getRadialGauge.track.mapTrackLabel ??
+        (double value) => value.toString();
+
     // Loop to draw the Rulers and Labels
     for (int i = 0; i <= numParts; i++) {
       double rulerOffset = getRadialGauge.track.trackStyle.rulersOffset ?? 0;
@@ -130,7 +133,7 @@ class RenderRadialGaugeContainer extends RenderBox {
           start + double.parse(((l / range) * valueRange).toStringAsFixed(2));
       Color textColor = Colors.black;
       textPainter.text = TextSpan(
-          text: exactValue.toString(),
+          text: mapTrackLabel(exactValue),
           style: getRadialGauge.track.trackStyle.labelStyle ??
               TextStyle(color: textColor, fontWeight: FontWeight.bold));
       textPainter.layout();

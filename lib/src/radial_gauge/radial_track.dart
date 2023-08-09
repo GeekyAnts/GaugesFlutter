@@ -63,6 +63,7 @@ class RadialTrack {
       secondaryRulerPerInterval: 4.0,
     ),
     this.gradient,
+    this.mapTrackLabel,
   });
 
   ///
@@ -121,6 +122,11 @@ class RadialTrack {
   /// The [trackStyle] property is used to customize the track of the Radial Gauge.
   ///
   final TrackStyle trackStyle;
+
+  ///
+  /// The [mapTrackLabel] property is used to customize the track labels of the Radial Gauge.
+  ///
+  final String Function(double)? mapTrackLabel;
 }
 
 class TrackStyle extends BaseRulerStyle {
