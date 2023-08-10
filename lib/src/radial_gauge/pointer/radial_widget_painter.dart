@@ -70,11 +70,17 @@ class RenderRadialWidgetPointer extends RenderProxyBox {
     double gaugeStart = _radialGauge.track.start;
     double gaugeEnd = _radialGauge.track.end;
 
-    // final center = Offset(offset.dx, offset.dy);
+    double containerWidth = constraints.maxWidth;
+    double containerHeight = constraints.maxHeight;
+    double containerShortestSide = min(containerWidth, containerHeight);
+    final childSize = child?.computeDryLayout(constraints);
+    final childOffsetX = (childSize?.width ?? 0.0) / 2;
+    final childOffsetY = (childSize?.height ?? 0.0) / 2;
+
     final center = Offset(
-        1440 * _radialGauge.xCenterCoordinate -
-            2 * _radialGauge.track.thickness,
-        900 * _radialGauge.yCenterCoordinate - _radialGauge.track.thickness);
+        containerWidth * _radialGauge.xCenterCoordinate + offset.dx,
+        containerHeight * _radialGauge.yCenterCoordinate + offset.dy);
+
     double value = calculateValueAngle(_value, gaugeStart, gaugeEnd);
     double startAngle = (_radialGauge.track.startAngle - 180) * (pi / 180);
     double endAngle = (_radialGauge.track.endAngle - 180) * (pi / 180);
@@ -82,12 +88,14 @@ class RenderRadialWidgetPointer extends RenderProxyBox {
     final double angle = startAngle + (value / 100) * (endAngle - startAngle);
 
     double circlePointerOffset =
-        (900 / 2 - _radialGauge.track.thickness) * _radialGauge.radiusFactor;
+        (containerShortestSide / 2 - _radialGauge.track.thickness) *
+            _radialGauge.radiusFactor;
 
-    double circlePointerEndX = center.dx + circlePointerOffset * cos(angle);
-    double circlePointerEndY = center.dy + circlePointerOffset * sin(angle);
-    // canvas.drawCircle(Offset(circlePointerEndX, circlePointerEndY), 30,
-    //     Paint()..color = Colors.red);
+    double circlePointerEndX =
+        center.dx + circlePointerOffset * cos(angle) - childOffsetX;
+    double circlePointerEndY =
+        center.dy + circlePointerOffset * sin(angle) - childOffsetY;
+
     super.paint(context, Offset(circlePointerEndX, circlePointerEndY));
   }
 
