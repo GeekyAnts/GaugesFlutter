@@ -21,7 +21,7 @@ class _RadialGaugeCustomLabelState extends State<RadialGaugeCustomLabel> {
             color: Colors.grey,
             start: 0,
             end: 100,
-            mapTrackLabel: (double value) => "${value.round()}€",
+            trackLabelFormater: (double value) => "${value.round()}€",
             trackStyle: const TrackStyle(
               showFirstLabel: false,
               showLastLabel: false,

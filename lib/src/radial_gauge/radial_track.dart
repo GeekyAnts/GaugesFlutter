@@ -63,7 +63,7 @@ class RadialTrack {
       secondaryRulerPerInterval: 4.0,
     ),
     this.gradient,
-    this.mapTrackLabel,
+    this.trackLabelFormater,
   });
 
   ///
@@ -124,19 +124,19 @@ class RadialTrack {
   final TrackStyle trackStyle;
 
   ///
-  /// The [mapTrackLabel] property is used to customize the track labels of the Radial Gauge.
+  /// The [trackLabelFormater] property is used to customize the track labels of the Radial Gauge.
   ///
   /// ``` dart
   /// RadialGauge(
   ///          track: RadialTrack(
   ///            start: 0,
   ///            end: 100,
-  ///            mapTrackLabel: (double value) => "${value.round()}€",
+  ///            trackLabelFormater: (double value) => "${value.round()}€",
   ///         ),
   ///     ),
   /// ```
   ///
-  final String Function(double)? mapTrackLabel;
+  final String Function(double)? trackLabelFormater;
 }
 
 class TrackStyle extends BaseRulerStyle {

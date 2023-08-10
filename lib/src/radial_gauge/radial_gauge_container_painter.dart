@@ -54,8 +54,8 @@ class RenderRadialGaugeContainer extends RenderBox {
       ..strokeWidth = getRadialGauge.track.trackStyle.secondaryRulersWidth!
       ..style = PaintingStyle.stroke;
 
-    final mapTrackLabel = getRadialGauge.track.mapTrackLabel ??
-        (double value) => value.toString();
+    final trackLabelFormater = getRadialGauge.track.trackLabelFormater ??
+        (double value) => ((value * 10).round() / 10).toString();
 
     // Loop to draw the Rulers and Labels
     for (int i = 0; i <= numParts; i++) {
@@ -114,13 +114,10 @@ class RenderRadialGaugeContainer extends RenderBox {
       final TextPainter textPainter =
           TextPainter(textDirection: TextDirection.ltr);
 
-      const String labelFormat = '%d';
       final double langle =
           startAngle + i * partAngle; // the angle of the current ruler
       // the y coordinate of the label
-      final String label = labelFormat.replaceAll(
-          '%d', ((langle - startAngle) * 180 / pi).round().toString());
-      double l = double.parse(label);
+      double l = (langle - startAngle) * 180 / pi;
       double sAngle = _radialGauge.track.startAngle;
       double eAngle = _radialGauge.track.endAngle;
 
@@ -129,11 +126,10 @@ class RenderRadialGaugeContainer extends RenderBox {
       double end = _radialGauge.track.end;
       double valueRange = (end - start);
 
-      double exactValue =
-          start + double.parse(((l / range) * valueRange).toStringAsFixed(2));
+      double exactValue = start + ((l / range) * valueRange);
       Color textColor = Colors.black;
       textPainter.text = TextSpan(
-          text: mapTrackLabel(exactValue),
+          text: trackLabelFormater(exactValue),
           style: getRadialGauge.track.trackStyle.labelStyle ??
               TextStyle(color: textColor, fontWeight: FontWeight.bold));
       textPainter.layout();
