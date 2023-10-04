@@ -37,7 +37,7 @@ class NeedlePointer extends LeafRenderObjectWidget {
       this.gradient,
       this.color = Colors.red,
       this.tailColor = Colors.red,
-      this.needleWidth = 30,
+      this.needleWidth = 40,
       this.needleHeight = 300,
       this.onChanged,
       this.isInteractive = false,
