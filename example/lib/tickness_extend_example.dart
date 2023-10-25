@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 class ThicknessExtendExample extends StatefulWidget {
   const ThicknessExtendExample({super.key});
@@ -17,14 +17,15 @@ class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
           start: 100,
           end: 200,
           extendLinearGauge: 10,
-          valueBar: [
+          valueBar: const [
             ValueBar(
                 value: 190,
                 valueBarThickness: 10,
                 position: ValueBarPosition.left)
           ],
-          enableAnimation: true,
-          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 20),
+          enableGaugeAnimation: true,
+          linearGaugeBoxDecoration:
+              const LinearGaugeBoxDecoration(thickness: 20),
           pointers: const [
             Pointer(
               shape: PointerShape.triangle,
@@ -38,7 +39,7 @@ class _ThicknessExtendExampleState extends State<ThicknessExtendExample> {
             ),
           ],
           gaugeOrientation: GaugeOrientation.vertical,
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
               rulerPosition: RulerPosition.left, inverseRulers: true),
         ),
       ),

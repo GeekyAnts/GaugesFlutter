@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 class MyVerticalRange extends StatefulWidget {
   const MyVerticalRange({super.key});
@@ -27,9 +27,10 @@ class _MyVerticalRangeState extends State<MyVerticalRange> {
               color: Colors.green,
             ),
           ],
-          linearGaugeBoxDecoration: LinearGaugeBoxDecoration(thickness: 10),
+          linearGaugeBoxDecoration:
+              const LinearGaugeBoxDecoration(thickness: 10),
           gaugeOrientation: GaugeOrientation.horizontal,
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
             rulersOffset: 10,
             labelOffset: 10,
             inverseRulers: true,

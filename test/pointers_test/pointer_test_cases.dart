@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 List valueTests = [
   // Circle TestCases
@@ -1190,10 +1190,10 @@ List extendLinearGaugePointerTestsHorizontal = [
 
   {
     'extendLinearGauge': 100.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -1248,10 +1248,10 @@ List extendLinearGaugePointerTestsHorizontal = [
 
   {
     'extendLinearGauge': 100.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -1294,10 +1294,10 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -1377,10 +1377,10 @@ List extendLinearGaugePointerTestsHorizontal = [
   },
   {
     'extendLinearGauge': 100.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -1454,10 +1454,10 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -1522,10 +1522,10 @@ List extendLinearGaugePointerTestsVertical = [
   },
   {
     'extendLinearGauge': 100.0,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -1577,10 +1577,10 @@ List extendLinearGaugePointerTestsVertical = [
   },
   {
     'gaugeOrientation': GaugeOrientation.vertical,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),
@@ -1678,10 +1678,10 @@ List extendLinearGaugePointerTestsVertical = [
   {
     'extendLinearGauge': 100.0,
     'gaugeOrientation': GaugeOrientation.vertical,
-    'rulers': const RulerStyle(
+    'rulers': RulerStyle(
       rulerPosition: RulerPosition.center,
       inverseRulers: true,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: 'Roboto',
         color: Colors.black,
       ),

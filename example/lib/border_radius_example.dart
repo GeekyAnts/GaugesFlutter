@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 class BorderRadiusExample extends StatefulWidget {
   const BorderRadiusExample({super.key});
@@ -15,7 +15,7 @@ class _BorderRadiusExampleState extends State<BorderRadiusExample> {
       body: Center(
         child: LinearGauge(
           steps: 10,
-          enableAnimation: true,
+          enableGaugeAnimation: true,
           fillExtend: false,
           extendLinearGauge: 9,
           // valueBar: [
@@ -46,7 +46,7 @@ class _BorderRadiusExampleState extends State<BorderRadiusExample> {
             edgeStyle: LinearEdgeStyle.bothCurve,
           ),
           gaugeOrientation: GaugeOrientation.horizontal,
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
             inverseRulers: false,
             rulerPosition: RulerPosition.top,
           ),

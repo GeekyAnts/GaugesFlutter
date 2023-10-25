@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 class FillExtendExample extends StatefulWidget {
   const FillExtendExample({super.key});
@@ -17,10 +17,10 @@ class _FillExtendExampleState extends State<FillExtendExample> {
           extendLinearGauge: 20,
           fillExtend: true,
           steps: 10,
-          enableAnimation: true,
+          enableGaugeAnimation: true,
           gaugeOrientation: GaugeOrientation.vertical,
           // valueBar: [ValueBar(value: 100)],
-          rulers: const RulerStyle(
+          rulers: RulerStyle(
             inverseRulers: false,
             rulerPosition: RulerPosition.left,
           ),

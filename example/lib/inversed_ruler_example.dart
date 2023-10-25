@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 class InversedRulerExample extends StatelessWidget {
   const InversedRulerExample({super.key});
@@ -13,14 +13,13 @@ class InversedRulerExample extends StatelessWidget {
           children: [
             SizedBox(
               child: LinearGauge(
-                value: 15,
                 rangeLinearGauge: [
                   RangeLinearGauge(color: Colors.red, start: 10, end: 20),
                   RangeLinearGauge(color: Colors.orange, start: 20, end: 30),
                 ],
                 // linearGaugeBoxDecoration:
                 //     LinearGaugeBoxDecoration(borderRadius: 20, height: 50),
-                rulers: const RulerStyle(
+                rulers: RulerStyle(
                     rulerPosition: RulerPosition.bottom, inverseRulers: true),
                 customLabels: const [
                   CustomRulerLabel(text: "\$10", value: 10),

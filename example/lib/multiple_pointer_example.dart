@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 class MultiplePointerExample extends StatefulWidget {
   const MultiplePointerExample({super.key});
@@ -16,10 +16,10 @@ class _MultiplePointerExampleState extends State<MultiplePointerExample> {
         child: LinearGauge(
           rulers: RulerStyle(
               inverseRulers: false, rulerPosition: RulerPosition.bottom),
-          valueBar: [
+          valueBar: const [
             ValueBar(value: 23, color: Colors.red),
           ],
-          pointers: [
+          pointers: const [
             Pointer(
               value: 28,
               width: 20,

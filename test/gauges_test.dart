@@ -1,9 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
-import 'package:geekyants_flutter_gauges/linear_gauge/linear_gauge_painter.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
 void main() {
   late LinearGauge linearGauge;
@@ -12,6 +9,7 @@ void main() {
       start: 0,
       end: 1000,
       steps: 0,
+      // ignore: deprecated_member_use_from_same_package
       value: 0,
       showLinearGaugeContainer: true,
       gaugeOrientation: GaugeOrientation.horizontal,
@@ -24,7 +22,7 @@ void main() {
         )
       ],
       linearGaugeBoxDecoration: const LinearGaugeBoxDecoration(),
-      rulers: const RulerStyle(
+      rulers: RulerStyle(
         primaryRulerColor: Colors.black54,
         primaryRulersWidth: 1.0,
         primaryRulersHeight: 15.0,
@@ -32,7 +30,7 @@ void main() {
         secondaryRulersWidth: 1.0,
         secondaryRulerColor: Colors.grey,
         secondaryRulerPerInterval: 1.0,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontSize: 12.0,
           color: Color.fromARGB(255, 86, 86, 86),
           fontStyle: FontStyle.normal,
@@ -53,6 +51,7 @@ void main() {
       );
       expect(linearGauge.start, 0.0);
       expect(linearGauge.end, 1000.0);
+
       expect(linearGauge.value, 0);
       expect(linearGauge.steps, 0);
       expect(linearGauge.showLinearGaugeContainer, true);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geekyants_flutter_gauges/gauges.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
 import 'test_cases.dart';
@@ -61,9 +61,9 @@ class MyExtendLinearGaugeTest extends StatelessWidget {
             extendLinearGauge: extendLinearGauge ?? 0,
             gaugeOrientation: gaugeOrientation ?? GaugeOrientation.horizontal,
             rulers: rulers ??
-                const RulerStyle(
+                RulerStyle(
                   rulerPosition: RulerPosition.center,
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontFamily: 'Roboto',
                     color: Colors.black,
                   ),
