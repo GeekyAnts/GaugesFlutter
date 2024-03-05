@@ -12,7 +12,6 @@
 /// ```
 ///
 ///
-
 class CustomRulerLabel {
   const CustomRulerLabel({
     required this.text,
