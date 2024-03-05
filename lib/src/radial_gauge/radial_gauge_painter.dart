@@ -135,7 +135,7 @@ class RenderRadialGauge extends RenderBox
           child.parentData as RadialGaugeParentData;
 
       if (child is RenderRadialShapePointer) {
-        childParentData.offset = const Offset(0, 0);
+        childParentData.offset = Offset.zero;
         centOffset = childParentData.offset;
         final childConstrainst = BoxConstraints(
           maxWidth: size.width,
@@ -144,7 +144,7 @@ class RenderRadialGauge extends RenderBox
 
         child.layout(childConstrainst, parentUsesSize: true);
       } else if (child is RenderRadialWidgetPointer) {
-        childParentData.offset = const Offset(0, 0);
+        childParentData.offset = Offset.zero;
         final childConstrainst = BoxConstraints(
           maxWidth: size.width,
           maxHeight: size.height,
@@ -169,7 +169,7 @@ class RenderRadialGauge extends RenderBox
         );
         child.layout(childConstraints, parentUsesSize: true);
       } else if (child is RenderNeedlePointer) {
-        childParentData.offset = const Offset(0, 0);
+        childParentData.offset = Offset.zero;
         centOffset = childParentData.offset;
         final childConstraints = BoxConstraints(
           maxWidth: size.width,
