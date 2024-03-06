@@ -1,3 +1,4 @@
+import 'package:example/gauge_vertical.dart';
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 
@@ -5,7 +6,7 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RadialGaugeExample(),
+      home: MyVerticalGauge(),
     ),
   );
 }
