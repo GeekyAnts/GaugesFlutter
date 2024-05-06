@@ -194,6 +194,12 @@ Default **`endAngle`**`: 210°
 
 <p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-angles.png" alt="radial-angels"  height=440></p>
 
+#### Custom Track Labels
+
+The labels displayed on the RadialGauge track can easily be formated to your need.
+
+<p align='center'><img src="example/screens/radial-custom-track-label.png" alt="radial-gauge-custom-track-label"  height=440></p>
+
 #### **Radii Customization**
 
 `radiusFactor` can be used to size the adjust the scaling factor of the radius and change the radius of the gauge accordingly.
