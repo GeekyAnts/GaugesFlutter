@@ -1,13 +1,18 @@
-## 1.0.3
+## 1.0.4
 
 **Features**
 
 - Add Custom Track Labels to Radial Gauge
-- Fixed Drawing of `Pointer` over `valueBar`
 
 **Fixes**
 
 - Fixed needle-gap issue in Radial Gauge
+
+## 1.0.3
+
+**Fixes**
+
+- Fixed Drawing of `Pointer` over `valueBar`
 
 ## 1.0.2
 
