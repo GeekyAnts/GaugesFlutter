@@ -52,6 +52,7 @@ class MyValuBarTestLinearGauge extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         fontFamily: 'Roboto',
+        useMaterial3: false,
       ),
       home: Scaffold(
         appBar: AppBar(

@@ -43,9 +43,7 @@ class MyExtendLinearGaugeTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Roboto',
-      ),
+      theme: ThemeData(fontFamily: 'Roboto', useMaterial3: false),
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Default LinearGauge"),
