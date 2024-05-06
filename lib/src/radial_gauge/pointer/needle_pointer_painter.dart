@@ -200,6 +200,7 @@ class RenderNeedlePointer extends RenderBox {
 
     final needlePaint = Paint()
       ..color = _color
+      ..style = PaintingStyle.fill
       ..strokeWidth = strokeWidth
       ..shader = gradient.createShader(
         Rect.fromPoints(
