@@ -49,6 +49,7 @@ class MyPointerTestLinearGauge extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        useMaterial3: false,
         fontFamily: 'Roboto',
       ),
       home: Scaffold(
