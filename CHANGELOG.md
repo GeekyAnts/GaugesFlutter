@@ -1,3 +1,13 @@
+## 1.0.3
+
+**Features**
+
+- Add Custom Track Labels to Radial Gauge
+
+**Fixes**
+
+- Fixed needle-gap issue in Radial Gauge
+
 ## 1.0.2
 
 **Features**
