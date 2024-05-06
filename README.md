@@ -65,7 +65,7 @@ This will add a line like this to your package's pubspec.yaml (and run an implic
 ```dart
 dependencies:
   geekyants_flutter_gauges: 1.0.3
-```
+
 
 ## Usage
 
@@ -76,6 +76,8 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 ```
 
 Use it as below
+
+# Linear Gauge usage
 
 ```dart
 class _MyGaugeExampleState extends State<MyGaugeExample> {
@@ -89,6 +91,31 @@ class _MyGaugeExampleState extends State<MyGaugeExample> {
           ),
         ),
       ),
+    );
+  }
+}
+```
+
+# Radial Gauge usage
+
+```dart
+class _MyGaugeExampleState extends State<MyGaugeExample> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: RadialGauge(
+        track: RadialTrack(
+          start: 0,
+          end: 100,
+        ),
+        needlePointer: [
+          NeedlePointer(
+            value: 30,
+            ),
+          ],
+        ),
+      )
     );
   }
 }
@@ -167,6 +194,12 @@ Default **`endAngle`**`: 210°
 
 <p align='center'><img src="https://raw.githubusercontent.com/GeekyAnts/GaugesFlutter/main/example/screens/radial-angles.png" alt="radial-angels"  height=440></p>
 
+#### Custom Track Labels
+
+The labels displayed on the RadialGauge track can easily be formated to your need.
+
+<p align='center'><img src="example/screens/radial-custom-track-label.png" alt="radial-gauge-custom-track-label"  height=440></p>
+
 #### **Radii Customization**
 
 `radiusFactor` can be used to size the adjust the scaling factor of the radius and change the radius of the gauge accordingly.
@@ -224,3 +257,7 @@ In the Radial Gauge, the `NeedlePointer` and `RadialShapePointer` can be set to 
 ## Credits
 
 Made with ❤️ by <a href="https://geekyants.com/" ><img src="https://s3.ap-southeast-1.amazonaws.com/cdn.elitmus.com/sy0zfezmfdovlb4vaz6siv1l7g30" height="17"/></a>
+
+```
+
+```

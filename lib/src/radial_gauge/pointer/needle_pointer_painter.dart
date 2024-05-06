@@ -146,6 +146,8 @@ class RenderNeedlePointer extends RenderBox {
     Offset calulatedPosition = localToGlobal(position);
     if (needlePointerRect.contains(calulatedPosition)) {
       return true;
+    } else if (needlePointerRect.contains(position)) {
+      return true;
     } else {
       return false;
     }
@@ -182,8 +184,8 @@ class RenderNeedlePointer extends RenderBox {
     double startAngle = (_radialGauge!.track.startAngle - 180) * (pi / 180);
     double endAngle = (_radialGauge!.track.endAngle - 180) * (pi / 180);
 
-    final maxH = size.shortestSide / 2 * getRadialGauge.radiusFactor -
-        2 * getRadialGauge.track.thickness;
+    final maxH = size.shortestSide / (2 * getRadialGauge.radiusFactor) -
+        (2 * getRadialGauge.track.thickness);
 
     final double needleMultiplier = _needleHeight.clamp(0, maxH);
 
@@ -198,6 +200,7 @@ class RenderNeedlePointer extends RenderBox {
 
     final needlePaint = Paint()
       ..color = _color
+      ..style = PaintingStyle.fill
       ..strokeWidth = strokeWidth
       ..shader = gradient.createShader(
         Rect.fromPoints(
@@ -221,8 +224,7 @@ class RenderNeedlePointer extends RenderBox {
         needleStartY - (needleWidth) * sin(angle + pi / 2));
 
     needlePath.lineTo(needleEndX, needleEndY);
-    // Offset c = Offset(offset.dx, offset.dy - getTailRadius);
-    // canvas.drawCircle(c, 100, Paint()..color = Colors.black);
+
     needlePath.close();
 
     needlePointerRect = needlePath;
