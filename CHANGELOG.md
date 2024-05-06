@@ -1,10 +1,3 @@
-## 1.0.3
-
-**Fixes**
-
-- Fixed Drawing of `Pointer` over `valueBar`
-
-
 ## 1.0.2
 
 **Features**
