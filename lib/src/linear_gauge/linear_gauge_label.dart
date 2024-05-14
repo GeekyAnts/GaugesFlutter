@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
+import 'package:intl/intl.dart' show NumberFormat;
 
 class LinearGaugeLabel {
   String? text;
@@ -18,6 +19,7 @@ class LinearGaugeLabel {
       TextPainter(textDirection: TextDirection.ltr);
 
   void addLabels({
+    NumberFormat? labelFormat,
     required double distanceValueInRangeOfHundred,
     required double start,
     required double end,
@@ -25,13 +27,25 @@ class LinearGaugeLabel {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
-      _linearGaugeLabel.add(LinearGaugeLabel(text: i.toString(), value: i));
+      String stringValue;
+      if (labelFormat != null) {
+        stringValue = labelFormat.format(i);
+      } else {
+        stringValue = i.toString();
+      }
+      _linearGaugeLabel.add(LinearGaugeLabel(text: stringValue, value: i));
     }
 
     final LinearGaugeLabel localLabel =
         _linearGaugeLabel[_linearGaugeLabel.length - 1];
     if (localLabel.value != end && localLabel.value! < end) {
-      _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
+      String stringValue;
+      if (labelFormat != null) {
+        stringValue = labelFormat.format(end);
+      } else {
+        stringValue = end.toString();
+      }
+      _linearGaugeLabel.add(LinearGaugeLabel(text: stringValue, value: end));
     }
   }
 

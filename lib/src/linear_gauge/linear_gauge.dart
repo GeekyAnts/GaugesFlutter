@@ -7,6 +7,7 @@ import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label_painter.d
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_painter.dart';
+import 'package:intl/intl.dart' show NumberFormat;
 import 'linear_gauge_painter.dart';
 
 /// Creates a LinearGauge Widget to display the values in a linear scale. The
@@ -44,6 +45,7 @@ class LinearGauge extends StatefulWidget {
     Key? key,
     this.start = 0,
     this.end = 100,
+    this.labelFormat,
     this.steps = 0,
     @Deprecated('Use ValueBar instead') this.value = 0,
     this.gaugeOrientation = GaugeOrientation.horizontal,
@@ -154,6 +156,19 @@ class LinearGauge extends StatefulWidget {
   /// ```
   ///
   final double? steps;
+
+  ///
+  /// `labelFormat` Sets the format of the label of the [LinearGauge] using [NumberFormat]
+  ///
+  /// default is to `NumberFormat('#.##')`
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///   labelFormat : NumberFormat.currency(locale: "en_US", symbol: "\$"),
+  /// ),
+  /// ```
+  ///
+  final NumberFormat? labelFormat;
 
   ///
   /// `extendLinearGauge` Sets the rulers & labels away from the ending points of [LinearGauge] Container
@@ -712,6 +727,7 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
     return RenderLinearGauge(
       start: lGauge.start!,
       end: lGauge.end!,
+      labelFormat: lGauge.labelFormat ?? NumberFormat('#.##'),
       steps: lGauge.steps!,
       gaugeOrientation: lGauge.gaugeOrientation!,
       primaryRulersWidth: lGauge.rulers!.primaryRulersWidth!,
@@ -741,6 +757,7 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       BuildContext context, RenderLinearGauge renderObject) {
     renderObject
       ..setCustomLabels = lGauge.customLabels!
+      ..setNumberFormat = lGauge.labelFormat ?? NumberFormat('#.##')
       ..setGaugeOrientation = lGauge.gaugeOrientation!
       ..setPrimaryRulersHeight = lGauge.rulers!.primaryRulersHeight!
       ..setPrimaryRulersWidth = lGauge.rulers!.primaryRulersWidth!
