@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show NumberFormat;
 import 'dart:math' as math;
 import '../linear_gauge_label.dart';
 
@@ -20,7 +20,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     return RenderLinearGaugeContainer(
         start: linearGauge.start!,
         end: linearGauge.end!,
-        numberFormat: linearGauge.numberFormat ?? NumberFormat('#.##'),
+        numberFormat: linearGauge.labelFormat ?? NumberFormat('#.##'),
         value: linearGauge.value!,
         steps: linearGauge.steps!,
         gaugeOrientation: linearGauge.gaugeOrientation!,
@@ -61,7 +61,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     renderObject
       ..setStart = linearGauge.start!
       ..setEnd = linearGauge.end!
-      ..setNumberFormat = linearGauge.numberFormat ?? NumberFormat('#.##')
+      ..setNumberFormat = linearGauge.labelFormat ?? NumberFormat('#.##')
       ..setValue = linearGauge.value!
       ..setSteps = linearGauge.steps!
       ..setGaugeOrientation = linearGauge.gaugeOrientation!
@@ -714,7 +714,7 @@ class RenderLinearGaugeContainer extends RenderBox {
       }
 
       _linearGaugeLabel.addLabels(
-        numberFormat: getNumberFormat,
+        labelFormat: getNumberFormat,
         distanceValueInRangeOfHundred: getSteps == 0.0 ? interval : getSteps,
         start: getStart,
         end: getEnd,

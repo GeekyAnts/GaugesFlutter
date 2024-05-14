@@ -19,7 +19,7 @@ class LinearGaugeLabel {
       TextPainter(textDirection: TextDirection.ltr);
 
   void addLabels({
-    NumberFormat? numberFormat,
+    NumberFormat? labelFormat,
     required double distanceValueInRangeOfHundred,
     required double start,
     required double end,
@@ -27,21 +27,25 @@ class LinearGaugeLabel {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
-      String temp;
-      if (numberFormat != null) {
-        temp = numberFormat.format(i);
+      String stringValue;
+      if (labelFormat != null) {
+        stringValue = labelFormat.format(i);
       } else {
-        temp = i.toString();
+        stringValue = i.toString();
       }
-      _linearGaugeLabel.add(LinearGaugeLabel(text: temp, value: i));
-      // _linearGaugeLabel
-      //     .add(LinearGaugeLabel(text: i.toStringAsFixed(2), value: i));
+      _linearGaugeLabel.add(LinearGaugeLabel(text: stringValue, value: i));
     }
 
     final LinearGaugeLabel localLabel =
         _linearGaugeLabel[_linearGaugeLabel.length - 1];
     if (localLabel.value != end && localLabel.value! < end) {
-      _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
+      String stringValue;
+      if (labelFormat != null) {
+        stringValue = labelFormat.format(end);
+      } else {
+        stringValue = end.toString();
+      }
+      _linearGaugeLabel.add(LinearGaugeLabel(text: stringValue, value: end));
     }
   }
 

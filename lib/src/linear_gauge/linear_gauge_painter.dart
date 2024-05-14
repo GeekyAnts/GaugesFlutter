@@ -21,7 +21,7 @@ class RenderLinearGauge extends RenderBox
   RenderLinearGauge({
     required double start,
     required double end,
-    required NumberFormat numberFormat,
+    required NumberFormat labelFormat,
     required double steps,
     required GaugeOrientation gaugeOrientation,
     required TextStyle textStyle,
@@ -147,8 +147,6 @@ class RenderLinearGauge extends RenderBox
   double get getStart => _start;
   double _start;
   set setStart(double start) {
-    log('Setting start as $start');
-
     if (_start == start) return;
     _start = start;
     markNeedsPaint();
@@ -165,11 +163,11 @@ class RenderLinearGauge extends RenderBox
     markNeedsPaint();
   }
 
-  get getNumberFormat => _numberFormat;
-  NumberFormat? _numberFormat;
-  set setNumberFormat(NumberFormat? numberFormat) {
-    if (_numberFormat == numberFormat) return;
-    _numberFormat = numberFormat;
+  get getLabelFormat => _labelFormat;
+  NumberFormat? _labelFormat;
+  set setNumberFormat(NumberFormat? labelFormat) {
+    if (_labelFormat == labelFormat) return;
+    _labelFormat = labelFormat;
     markNeedsPaint();
   }
 

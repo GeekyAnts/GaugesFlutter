@@ -36,8 +36,8 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
         child: Column(
           children: [
             LinearGauge(
-              numberFormat:
-                  NumberFormat.currency(decimalDigits: 1, symbol: 'F'),
+              // numberFormat:
+              //     NumberFormat.currency(decimalDigits: 1, symbol: 'F'),
               start: -70.33,
               end: 62.4444,
               gaugeOrientation: GaugeOrientation.horizontal,
@@ -70,29 +70,34 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
 /// You can customize the [RadialGauge] Widget as per your need.
 ///
 
-// class RadialGaugeExample extends StatefulWidget {
-//   const RadialGaugeExample({super.key});
+class RadialGaugeExample extends StatefulWidget {
+  const RadialGaugeExample({super.key});
 
-//   @override
-//   State<RadialGaugeExample> createState() => _RadialGaugeExampleState();
-// }
+  @override
+  State<RadialGaugeExample> createState() => _RadialGaugeExampleState();
+}
 
-// class _RadialGaugeExampleState extends State<RadialGaugeExample> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       body: RadialGauge(
-//         track: RadialTrack(
-//           start: 0,
-//           end: 100,
-//         ),
-//         needlePointer: [
-//           NeedlePointer(
-//             value: 30,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+class _RadialGaugeExampleState extends State<RadialGaugeExample> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: RadialGauge(
+        track: RadialTrack(
+          // trackLabelFormater: (value) {
+          //   return NumberFormat.currency(
+          //           locale: 'en_US', name: 'R', decimalDigits: 3)
+          //       .format(value);
+          // },
+          start: -70.33,
+          end: 62.4444,
+        ),
+        needlePointer: [
+          NeedlePointer(
+            value: 30,
+          ),
+        ],
+      ),
+    );
+  }
+}

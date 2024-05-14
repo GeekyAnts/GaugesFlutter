@@ -45,7 +45,7 @@ class LinearGauge extends StatefulWidget {
     Key? key,
     this.start = 0,
     this.end = 100,
-    this.numberFormat,
+    this.labelFormat,
     this.steps = 0,
     @Deprecated('Use ValueBar instead') this.value = 0,
     this.gaugeOrientation = GaugeOrientation.horizontal,
@@ -157,8 +157,18 @@ class LinearGauge extends StatefulWidget {
   ///
   final double? steps;
 
-  //!
-  final NumberFormat? numberFormat;
+  ///
+  /// `labelFormat` Sets the format of the label of the [LinearGauge] using [NumberFormat]
+  ///
+  /// default is to `NumberFormat('#.##')`
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///   labelFormat : NumberFormat.currency(locale: "en_US", symbol: "\$"),
+  /// ),
+  /// ```
+  ///
+  final NumberFormat? labelFormat;
 
   ///
   /// `extendLinearGauge` Sets the rulers & labels away from the ending points of [LinearGauge] Container
@@ -717,7 +727,7 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
     return RenderLinearGauge(
       start: lGauge.start!,
       end: lGauge.end!,
-      numberFormat: lGauge.numberFormat ?? NumberFormat('#.##'),
+      labelFormat: lGauge.labelFormat ?? NumberFormat('#.##'),
       steps: lGauge.steps!,
       gaugeOrientation: lGauge.gaugeOrientation!,
       primaryRulersWidth: lGauge.rulers!.primaryRulersWidth!,
@@ -747,7 +757,7 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       BuildContext context, RenderLinearGauge renderObject) {
     renderObject
       ..setCustomLabels = lGauge.customLabels!
-      ..setNumberFormat = lGauge.numberFormat!
+      ..setNumberFormat = lGauge.labelFormat ?? NumberFormat('#.##')
       ..setGaugeOrientation = lGauge.gaugeOrientation!
       ..setPrimaryRulersHeight = lGauge.rulers!.primaryRulersHeight!
       ..setPrimaryRulersWidth = lGauge.rulers!.primaryRulersWidth!
