@@ -1,12 +1,15 @@
 import 'package:example/gauge_vertical.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
+// import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyVerticalGauge(),
+      home: LinearGaugeExample(),
     ),
   );
 }
@@ -23,21 +26,38 @@ class LinearGaugeExample extends StatefulWidget {
 }
 
 class _LinearGaugeExampleState extends State<LinearGaugeExample> {
+  NumberFormat formatter =
+      NumberFormat.currency(locale: 'en_US', name: 'Rupees');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: LinearGauge(
-          gaugeOrientation: GaugeOrientation.horizontal,
-          enableGaugeAnimation: true,
-          rulers: RulerStyle(
-            rulerPosition: RulerPosition.bottom,
-          ),
-          pointers: const [
-            Pointer(
-              value: 50,
-              shape: PointerShape.circle,
+        child: Column(
+          children: [
+            LinearGauge(
+              numberFormat:
+                  NumberFormat.currency(decimalDigits: 1, symbol: 'F'),
+              start: -70.33,
+              end: 62.4444,
+              gaugeOrientation: GaugeOrientation.horizontal,
+              enableGaugeAnimation: true,
+              rulers: RulerStyle(
+                rulerPosition: RulerPosition.bottom,
+              ),
+              pointers: const [
+                Pointer(
+                  value: 50,
+                  shape: PointerShape.circle,
+                ),
+              ],
             ),
+            // SfLinearGauge(
+            //   showAxisTrack: true,
+            //   minimum: -70.333333,
+            //   numberFormat: NumberFormat.currency(decimalDigits: 1, symbol: ''),
+            //   maximum: 62.4,
+            // )
           ],
         ),
       ),
@@ -50,29 +70,29 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
 /// You can customize the [RadialGauge] Widget as per your need.
 ///
 
-class RadialGaugeExample extends StatefulWidget {
-  const RadialGaugeExample({super.key});
+// class RadialGaugeExample extends StatefulWidget {
+//   const RadialGaugeExample({super.key});
 
-  @override
-  State<RadialGaugeExample> createState() => _RadialGaugeExampleState();
-}
+//   @override
+//   State<RadialGaugeExample> createState() => _RadialGaugeExampleState();
+// }
 
-class _RadialGaugeExampleState extends State<RadialGaugeExample> {
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.white,
-      body: RadialGauge(
-        track: RadialTrack(
-          start: 0,
-          end: 100,
-        ),
-        needlePointer: [
-          NeedlePointer(
-            value: 30,
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class _RadialGaugeExampleState extends State<RadialGaugeExample> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       body: RadialGauge(
+//         track: RadialTrack(
+//           start: 0,
+//           end: 100,
+//         ),
+//         needlePointer: [
+//           NeedlePointer(
+//             value: 30,
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

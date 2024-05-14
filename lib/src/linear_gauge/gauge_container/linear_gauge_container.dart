@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
+import 'package:intl/intl.dart';
 import 'dart:math' as math;
 import '../linear_gauge_label.dart';
 
@@ -19,6 +20,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     return RenderLinearGaugeContainer(
         start: linearGauge.start!,
         end: linearGauge.end!,
+        numberFormat: linearGauge.numberFormat ?? NumberFormat('#.##'),
         value: linearGauge.value!,
         steps: linearGauge.steps!,
         gaugeOrientation: linearGauge.gaugeOrientation!,
@@ -59,6 +61,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     renderObject
       ..setStart = linearGauge.start!
       ..setEnd = linearGauge.end!
+      ..setNumberFormat = linearGauge.numberFormat ?? NumberFormat('#.##')
       ..setValue = linearGauge.value!
       ..setSteps = linearGauge.steps!
       ..setGaugeOrientation = linearGauge.gaugeOrientation!
@@ -98,6 +101,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   RenderLinearGaugeContainer({
     required double start,
     required double end,
+    required NumberFormat numberFormat,
     required double steps,
     required double value,
     required GaugeOrientation gaugeOrientation,
@@ -130,6 +134,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     required LinearGradient? linearGradient,
   })  : _start = start,
         _end = end,
+        _numberFormat = numberFormat,
         _value = value,
         _steps = steps,
         _gaugeOrientation = gaugeOrientation,
@@ -181,6 +186,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   set setStart(double start) {
     if (_start == start) return;
     _start = start;
+    // _start = double.parse(start.toStringAsFixed(2));
     markNeedsPaint();
   }
 
@@ -202,6 +208,14 @@ class RenderLinearGaugeContainer extends RenderBox {
       return;
     }
     _value = val;
+    markNeedsPaint();
+  }
+
+  NumberFormat get getNumberFormat => _numberFormat ?? NumberFormat('#.##');
+  NumberFormat? _numberFormat;
+  set setNumberFormat(NumberFormat? numberFormat) {
+    if (_numberFormat == numberFormat) return;
+    _numberFormat = numberFormat;
     markNeedsPaint();
   }
 
@@ -700,6 +714,7 @@ class RenderLinearGaugeContainer extends RenderBox {
       }
 
       _linearGaugeLabel.addLabels(
+        numberFormat: getNumberFormat,
         distanceValueInRangeOfHundred: getSteps == 0.0 ? interval : getSteps,
         start: getStart,
         end: getEnd,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
@@ -7,6 +9,7 @@ import 'package:geekyants_flutter_gauges/src/linear_gauge/linear_gauge_label.dar
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/label_painter.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/rulers/rulers_painter.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/value_bar/valuebar_painter.dart';
+import 'package:intl/intl.dart' show NumberFormat;
 
 import 'gauge_container/linear_gauge_container.dart';
 
@@ -18,6 +21,7 @@ class RenderLinearGauge extends RenderBox
   RenderLinearGauge({
     required double start,
     required double end,
+    required NumberFormat numberFormat,
     required double steps,
     required GaugeOrientation gaugeOrientation,
     required TextStyle textStyle,
@@ -143,6 +147,8 @@ class RenderLinearGauge extends RenderBox
   double get getStart => _start;
   double _start;
   set setStart(double start) {
+    log('Setting start as $start');
+
     if (_start == start) return;
     _start = start;
     markNeedsPaint();
@@ -156,6 +162,14 @@ class RenderLinearGauge extends RenderBox
   set setEnd(end) {
     if (_end == end) return;
     _end = end;
+    markNeedsPaint();
+  }
+
+  get getNumberFormat => _numberFormat;
+  NumberFormat? _numberFormat;
+  set setNumberFormat(NumberFormat? numberFormat) {
+    if (_numberFormat == numberFormat) return;
+    _numberFormat = numberFormat;
     markNeedsPaint();
   }
 
