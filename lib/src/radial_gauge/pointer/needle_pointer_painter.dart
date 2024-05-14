@@ -144,6 +144,7 @@ class RenderNeedlePointer extends RenderBox {
   @override
   bool hitTestSelf(Offset position) {
     Offset calulatedPosition = localToGlobal(position);
+
     if (needlePointerRect.contains(calulatedPosition)) {
       return true;
     } else if (needlePointerRect.contains(position)) {
@@ -210,6 +211,14 @@ class RenderNeedlePointer extends RenderBox {
       )
       ..strokeCap = StrokeCap.round;
 
+//!
+    Path path = Path()
+      ..moveTo(needleStartX, needleStartY)
+      ..lineTo(needleEndX, needleEndY);
+    // ..addOval(
+    //     Rect.fromCircle(center: Offset(needleEndX, needleEndY), radius: 10));
+    canvas.drawPath(path, Paint()..color = Colors.orange);
+
     // Needle Path
     Path needlePath = Path();
     needlePath.moveTo(offset.dx + getTailRadius / 2 * cos(angle + pi / 2),
@@ -227,17 +236,70 @@ class RenderNeedlePointer extends RenderBox {
 
     needlePath.close();
 
-    needlePointerRect = needlePath;
-    // canvas.drawPath(needlePath, Paint()..color = Colors.green);
+    Path apath = Path()
+      ..moveTo(needleStartX, needleStartY)
+      ..lineTo(needleEndX, needleEndY)
+      ..close();
+    final pathMetrics = apath.computeMetrics();
+    final hitTestWidth =
+        _needleWidth; // adjust this to change the hit test area width
+
+    final dx = needleEndX - needleStartX;
+    final dy = needleEndY - needleStartY;
+
+    final norm = sqrt(dx * dx + dy * dy);
+    final perpX = -dy / norm * hitTestWidth / 2;
+    final perpY = dx / norm * hitTestWidth / 2;
+
+    final hitTestPath = Path()
+      ..moveTo(needleStartX + perpX, needleStartY + perpY)
+      ..lineTo(needleEndX + perpX, needleEndY + perpY)
+      ..lineTo(needleEndX - perpX, needleEndY - perpY)
+      ..lineTo(needleStartX - perpX, needleStartY - perpY)
+      ..close();
+    final widerPath = Path()
+      ..addRect(Rect.fromPoints(
+        Offset(needleStartX + cos(angle - pi / 2),
+            needleStartY + sin(angle + pi / 2)),
+        Offset(
+            needleEndX + cos(angle - pi / 2), needleEndY + sin(angle + pi / 2)),
+      ));
+
+    needlePointerRect =
+        _needleStyle == NeedleStyle.gaugeNeedle ? needlePath : widerPath;
+
+    canvas.drawPath(hitTestPath, Paint()..color = Colors.black
+        // ..strokeWidth = 10
+        // ..shader
+        );
+    _needleStyle == NeedleStyle.gaugeNeedle ? print("A") : print("B");
+    // canvas.drawPath(needlePath, Paint()..color = Colors.blue.withOpacity(0.3));
 // Needle  Pointer paint
     if (getNeedleStyle == NeedleStyle.gaugeNeedle) {
       canvas.drawPath(needlePath, needlePaint);
       canvas.drawPath(circlePath, Paint()..color = _tailColor);
     } else {
+      print('Came here');
+      Path apath = Path()
+        ..moveTo(needleStartX, needleStartY)
+        ..lineTo(needleEndX, needleEndY)
+        ..close();
+
       //  Simple Needle
       canvas.drawLine(Offset(needleStartX, needleStartY),
           Offset(needleEndX, needleEndY), needlePaint);
       canvas.drawPath(circlePath, Paint()..color = _tailColor);
+      // canvas.drawPath(
+      //     apath,
+      //     Paint()
+      //       ..color = Colors.green
+      //       ..strokeWidth = 10
+      //       ..shader
+      //       ..strokeWidth = needleWidth
+      //       ..style = PaintingStyle.stroke);
+      // canvas.drawLine(Offset(needleStartX, needleStartY),
+      // Offset(needleEndX, needleEndY), needlePaint);
+      // canvas.drawPath(circlePath, Paint()..color = _tailColor);
     }
   }
 
