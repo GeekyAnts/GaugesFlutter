@@ -826,6 +826,8 @@ class RenderLinearGaugeElement extends MultiChildRenderObjectElement {
       renderObject.removeValueBar(child);
     } else if (child is RenderCurve) {
       renderObject.removeCurve(child);
+    } else if (child is RenderRulerLabel) {
+      renderObject.removeRulerLabel(child);
     }
   }
 }

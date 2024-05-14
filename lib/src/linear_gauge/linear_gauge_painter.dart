@@ -337,7 +337,17 @@ class RenderLinearGauge extends RenderBox
   }
 
   LinearGaugeLabel get getLinearGaugeLabel {
+    markNeedsPaint();
+    markNeedsLayout();
     return _linearGaugeLabel;
+  }
+
+  LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
+  set setLinearGaugeLabel(LinearGaugeLabel val) {
+    if (_linearGaugeLabel == val) return;
+    _linearGaugeLabel = val;
+    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -408,7 +418,6 @@ class RenderLinearGauge extends RenderBox
   ///
   double get getPointerSpace => _pointerSpace;
   final double _pointerSpace = 0;
-  LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _axisActualSize;
   late final List<RenderLinearGaugeWidgetPointer> _widgetPointers;
@@ -455,7 +464,14 @@ class RenderLinearGauge extends RenderBox
 
   /// Adds the ruler render object to widget .
   void addRulerLabel(RenderRulerLabel label) {
+    print('Called');
     _renderRulerLabel = label;
+    markNeedsLayout();
+  }
+
+  /// Remove the ruler label render object from widget .
+  void removeRulerLabel(RenderRulerLabel label) {
+    _renderRulerLabel = null;
     markNeedsLayout();
   }
 

@@ -61,7 +61,8 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     renderObject
       ..setStart = linearGauge.start!
       ..setEnd = linearGauge.end!
-      ..setTrackLabelFormater = linearGauge.trackLabelFormat!
+      ..setTrackLabelFormater = linearGauge.trackLabelFormat ??
+          ((double value) => ((value * 10).round() / 10).toString())
       ..setValue = linearGauge.value!
       ..setSteps = linearGauge.steps!
       ..setGaugeOrientation = linearGauge.gaugeOrientation!
@@ -187,6 +188,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     if (_start == start) return;
     _start = start;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -198,6 +200,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     if (_end == end) return;
     _end = end;
     markNeedsPaint();
+    markNeedsLayout();
   }
 
   get getTrackLabelFormater => _trackLabelFormater;
@@ -690,6 +693,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   }
 
   void _calculateRulerPoints() {
+    print("Called _calculateRulerPoints");
     _linearGaugeLabel.calculateStartAndEndLabelSize(
         getTextStyle, getStart, getEnd, getCustomLabels!, getInversedRulers);
     if (getCustomLabels!.isEmpty) {

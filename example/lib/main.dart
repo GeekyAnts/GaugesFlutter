@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:example/gauge_vertical.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
@@ -18,6 +21,7 @@ void main() {
 /// The following code  is a Simple Example of [LinearGauge] Widget.
 /// You can customize the [LinearGauge] Widget as per your need.
 ///
+
 class LinearGaugeExample extends StatefulWidget {
   const LinearGaugeExample({Key? key}) : super(key: key);
 
@@ -26,8 +30,8 @@ class LinearGaugeExample extends StatefulWidget {
 }
 
 class _LinearGaugeExampleState extends State<LinearGaugeExample> {
-  NumberFormat formatter =
-      NumberFormat.currency(locale: 'en_US', name: 'Rupees');
+  double startVal = 0.0;
+  ValueNotifier<double> value = ValueNotifier<double>(0.0);
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +40,8 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
         child: Column(
           children: [
             LinearGauge(
-              trackLabelFormat: (value) {
-                return '\$ ${value.toStringAsFixed(1)}';
-              },
-              // numberFormat:
-              //     NumberFormat.currency(decimalDigits: 1, symbol: 'F'),
-              start: -70.33,
-              end: 62.4444,
+              start: startVal,
+              end: 100,
               gaugeOrientation: GaugeOrientation.horizontal,
               enableGaugeAnimation: true,
               rulers: RulerStyle(
@@ -55,51 +54,22 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
                 ),
               ],
             ),
-            // SfLinearGauge(
-            //   showAxisTrack: true,
-            //   minimum: -70.333333,
-            //   numberFormat: NumberFormat.currency(decimalDigits: 1, symbol: ''),
-            //   maximum: 62.4,
-            // )
+            TextButton(
+                onPressed: () {
+                  if (startVal == 0.0) {
+                    setState(() {
+                      startVal = 50.0;
+                    });
+                  } else {
+                    setState(() {
+                      startVal = 0.0;
+                    });
+                  }
+                  log(startVal.toString());
+                },
+                child: const Text('Toggle Start'))
           ],
         ),
-      ),
-    );
-  }
-}
-
-///
-/// The following code  is a Simple Example of [RadialGauge] Widget.
-/// You can customize the [RadialGauge] Widget as per your need.
-///
-
-class RadialGaugeExample extends StatefulWidget {
-  const RadialGaugeExample({super.key});
-
-  @override
-  State<RadialGaugeExample> createState() => _RadialGaugeExampleState();
-}
-
-class _RadialGaugeExampleState extends State<RadialGaugeExample> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: RadialGauge(
-        track: RadialTrack(
-          // trackLabelFormater: (value) {
-          //   return NumberFormat.currency(
-          //           locale: 'en_US', name: 'R', decimalDigits: 3)
-          //       .format(value);
-          // },
-          start: -70.33,
-          end: 62.4444,
-        ),
-        needlePointer: [
-          NeedlePointer(
-            value: 30,
-          ),
-        ],
       ),
     );
   }
