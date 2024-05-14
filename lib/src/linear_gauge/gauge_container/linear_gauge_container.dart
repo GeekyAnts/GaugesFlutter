@@ -19,6 +19,8 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     return RenderLinearGaugeContainer(
         start: linearGauge.start!,
         end: linearGauge.end!,
+        trackLabelFormater: linearGauge.trackLabelFormat ??
+            (double value) => ((value * 10).round() / 10).toString(),
         value: linearGauge.value!,
         steps: linearGauge.steps!,
         gaugeOrientation: linearGauge.gaugeOrientation!,
@@ -59,6 +61,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     renderObject
       ..setStart = linearGauge.start!
       ..setEnd = linearGauge.end!
+      ..setTrackLabelFormater = linearGauge.trackLabelFormat!
       ..setValue = linearGauge.value!
       ..setSteps = linearGauge.steps!
       ..setGaugeOrientation = linearGauge.gaugeOrientation!
@@ -98,6 +101,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   RenderLinearGaugeContainer({
     required double start,
     required double end,
+    required final String Function(double)? trackLabelFormater,
     required double steps,
     required double value,
     required GaugeOrientation gaugeOrientation,
@@ -130,6 +134,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     required LinearGradient? linearGradient,
   })  : _start = start,
         _end = end,
+        _trackLabelFormater = trackLabelFormater,
         _value = value,
         _steps = steps,
         _gaugeOrientation = gaugeOrientation,
@@ -192,6 +197,14 @@ class RenderLinearGaugeContainer extends RenderBox {
   set setEnd(end) {
     if (_end == end) return;
     _end = end;
+    markNeedsPaint();
+  }
+
+  get getTrackLabelFormater => _trackLabelFormater;
+  String Function(double)? _trackLabelFormater;
+  set setTrackLabelFormater(String Function(double)? trackLabelFormater) {
+    if (_trackLabelFormater == trackLabelFormater) return;
+    _trackLabelFormater = trackLabelFormater;
     markNeedsPaint();
   }
 
@@ -700,6 +713,7 @@ class RenderLinearGaugeContainer extends RenderBox {
       }
 
       _linearGaugeLabel.addLabels(
+        trackLableFormatter: getTrackLabelFormater,
         distanceValueInRangeOfHundred: getSteps == 0.0 ? interval : getSteps,
         start: getStart,
         end: getEnd,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/linear_gauge/gauge_container/linear_gauge_container.dart';
@@ -18,6 +20,7 @@ class LinearGaugeLabel {
       TextPainter(textDirection: TextDirection.ltr);
 
   void addLabels({
+    required trackLableFormatter,
     required double distanceValueInRangeOfHundred,
     required double start,
     required double end,
@@ -25,13 +28,16 @@ class LinearGaugeLabel {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
-      _linearGaugeLabel.add(LinearGaugeLabel(text: i.toString(), value: i));
+      text = trackLableFormatter(i);
+
+      _linearGaugeLabel.add(LinearGaugeLabel(text: text, value: i));
     }
 
     final LinearGaugeLabel localLabel =
         _linearGaugeLabel[_linearGaugeLabel.length - 1];
     if (localLabel.value != end && localLabel.value! < end) {
-      _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
+      String text = ((end * 10).round() / 10).toString();
+      _linearGaugeLabel.add(LinearGaugeLabel(text: text, value: end));
     }
   }
 

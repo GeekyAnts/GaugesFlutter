@@ -18,6 +18,7 @@ class RenderLinearGauge extends RenderBox
   RenderLinearGauge({
     required double start,
     required double end,
+    required String Function(double)? trackLabelFormat,
     required double steps,
     required GaugeOrientation gaugeOrientation,
     required TextStyle textStyle,
@@ -42,6 +43,7 @@ class RenderLinearGauge extends RenderBox
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
+        _trackLabelFormat = trackLabelFormat,
         _steps = steps,
         _gaugeOrientation = gaugeOrientation,
         _textStyle = textStyle,
@@ -265,6 +267,14 @@ class RenderLinearGauge extends RenderBox
     if (_rulerPosition == val) return;
     _rulerPosition = val;
     markNeedsLayout();
+  }
+
+  String Function(double)? get getTrackLabelFormat => _trackLabelFormat;
+  String Function(double)? _trackLabelFormat;
+  set setTrackLabelFormat(String Function(double)? val) {
+    if (_trackLabelFormat == val) return;
+    _trackLabelFormat = val;
+    markNeedsPaint();
   }
 
   double get getLabelOffset => _labelOffset;

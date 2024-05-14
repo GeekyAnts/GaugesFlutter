@@ -45,6 +45,7 @@ class LinearGauge extends StatefulWidget {
     this.start = 0,
     this.end = 100,
     this.steps = 0,
+    this.trackLabelFormat,
     @Deprecated('Use ValueBar instead') this.value = 0,
     this.gaugeOrientation = GaugeOrientation.horizontal,
     this.showLinearGaugeContainer = true,
@@ -143,6 +144,19 @@ class LinearGauge extends StatefulWidget {
   /// ```
   ///
   final double? end;
+
+  ///
+  /// `trackLabelFormat` Sets the format of the label of the [LinearGauge] labels
+  ///
+  /// ```dart
+  /// const LinearGauge(
+  ///  trackLabelFormat : value) {
+  ///              return '\$ ${value.toStringAsFixed(1)}';
+  ///         },
+  ///     ),
+  /// ```
+  ///
+  final String Function(double)? trackLabelFormat;
 
   ///
   /// `steps` Sets the interval between label of the [LinearGauge] Container
@@ -712,6 +726,7 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
     return RenderLinearGauge(
       start: lGauge.start!,
       end: lGauge.end!,
+      trackLabelFormat: lGauge.trackLabelFormat,
       steps: lGauge.steps!,
       gaugeOrientation: lGauge.gaugeOrientation!,
       primaryRulersWidth: lGauge.rulers!.primaryRulersWidth!,
@@ -741,6 +756,7 @@ class _RLinearGauge extends MultiChildRenderObjectWidget {
       BuildContext context, RenderLinearGauge renderObject) {
     renderObject
       ..setCustomLabels = lGauge.customLabels!
+      ..setTrackLabelFormat = lGauge.trackLabelFormat
       ..setGaugeOrientation = lGauge.gaugeOrientation!
       ..setPrimaryRulersHeight = lGauge.rulers!.primaryRulersHeight!
       ..setPrimaryRulersWidth = lGauge.rulers!.primaryRulersWidth!
