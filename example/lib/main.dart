@@ -1,12 +1,7 @@
 import 'dart:developer';
 
-import 'package:example/gauge_vertical.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-// import 'package:syncfusion_flutter_gauges/gauges.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   runApp(
@@ -40,8 +35,11 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
         child: Column(
           children: [
             LinearGauge(
-              start: startVal,
-              end: 100,
+              trackLabelFormat: (p0) {
+                return ' ${p0.toStringAsFixed(2)}';
+              },
+              start: -70.33,
+              end: 62.4444,
               gaugeOrientation: GaugeOrientation.horizontal,
               enableGaugeAnimation: true,
               rulers: RulerStyle(

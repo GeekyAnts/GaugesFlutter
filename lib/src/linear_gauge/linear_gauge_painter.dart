@@ -464,7 +464,6 @@ class RenderLinearGauge extends RenderBox
 
   /// Adds the ruler render object to widget .
   void addRulerLabel(RenderRulerLabel label) {
-    print('Called');
     _renderRulerLabel = label;
     markNeedsLayout();
   }
@@ -2257,5 +2256,3 @@ class LinearGaugeParentData extends MultiChildLayoutParentData {
       this.gaugeEnd,
       this.linearGaugeLabel);
 }
-
-// class Temp implements MouseTrackerAnnotation {}

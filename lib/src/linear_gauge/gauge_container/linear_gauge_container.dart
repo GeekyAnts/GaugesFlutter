@@ -19,7 +19,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     return RenderLinearGaugeContainer(
         start: linearGauge.start!,
         end: linearGauge.end!,
-        trackLabelFormater: linearGauge.trackLabelFormat ??
+        trackLabelFormat: linearGauge.trackLabelFormat ??
             (double value) => ((value * 10).round() / 10).toString(),
         value: linearGauge.value!,
         steps: linearGauge.steps!,
@@ -61,7 +61,7 @@ class LinearGaugeContainer extends LeafRenderObjectWidget {
     renderObject
       ..setStart = linearGauge.start!
       ..setEnd = linearGauge.end!
-      ..setTrackLabelFormater = linearGauge.trackLabelFormat ??
+      ..setTrackLabelFormat = linearGauge.trackLabelFormat ??
           ((double value) => ((value * 10).round() / 10).toString())
       ..setValue = linearGauge.value!
       ..setSteps = linearGauge.steps!
@@ -102,7 +102,7 @@ class RenderLinearGaugeContainer extends RenderBox {
   RenderLinearGaugeContainer({
     required double start,
     required double end,
-    required final String Function(double)? trackLabelFormater,
+    required final String Function(double)? trackLabelFormat,
     required double steps,
     required double value,
     required GaugeOrientation gaugeOrientation,
@@ -135,7 +135,7 @@ class RenderLinearGaugeContainer extends RenderBox {
     required LinearGradient? linearGradient,
   })  : _start = start,
         _end = end,
-        _trackLabelFormater = trackLabelFormater,
+        _trackLabelFormat = trackLabelFormat,
         _value = value,
         _steps = steps,
         _gaugeOrientation = gaugeOrientation,
@@ -203,11 +203,11 @@ class RenderLinearGaugeContainer extends RenderBox {
     markNeedsLayout();
   }
 
-  get getTrackLabelFormater => _trackLabelFormater;
-  String Function(double)? _trackLabelFormater;
-  set setTrackLabelFormater(String Function(double)? trackLabelFormater) {
-    if (_trackLabelFormater == trackLabelFormater) return;
-    _trackLabelFormater = trackLabelFormater;
+  get trackLabelFormat => _trackLabelFormat;
+  String Function(double)? _trackLabelFormat;
+  set setTrackLabelFormat(String Function(double)? trackLabelFormat) {
+    if (_trackLabelFormat == trackLabelFormat) return;
+    _trackLabelFormat = trackLabelFormat;
     markNeedsPaint();
   }
 
@@ -672,28 +672,12 @@ class RenderLinearGaugeContainer extends RenderBox {
     return largestPointer;
   }
 
-  // double getLargestWidgetPointerSize() {
-  //   if (RenderLinearGauge.getWidgetPointers!.isNotEmpty) {
-  //     RenderLinearGaugeWidgetPointer? largestPointer =
-  //         getLargestWidgetPointer(RenderLinearGauge.getWidgetPointers);
-
-  //     if (getGaugeOrientation == GaugeOrientation.vertical) {
-  //       return largestPointer?.size.width ?? 0;
-  //     } else {
-  //       return largestPointer?.size.width ?? 0;
-  //     }
-  //   } else {
-  //     return 0;
-  //   }
-  // }
-
   void _setLinearGaugeContainerPaint() {
     _linearGaugeContainerPaint.color =
         setAnimatedColor(getLinearGaugeContainerBgColor);
   }
 
   void _calculateRulerPoints() {
-    print("Called _calculateRulerPoints");
     _linearGaugeLabel.calculateStartAndEndLabelSize(
         getTextStyle, getStart, getEnd, getCustomLabels!, getInversedRulers);
     if (getCustomLabels!.isEmpty) {
@@ -717,7 +701,7 @@ class RenderLinearGaugeContainer extends RenderBox {
       }
 
       _linearGaugeLabel.addLabels(
-        trackLableFormatter: getTrackLabelFormater,
+        trackLabelFormat: trackLabelFormat,
         distanceValueInRangeOfHundred: getSteps == 0.0 ? interval : getSteps,
         start: getStart,
         end: getEnd,
