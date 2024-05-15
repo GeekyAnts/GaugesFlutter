@@ -157,7 +157,6 @@ class RenderNeedlePointer extends RenderBox {
 
   @override
   void performLayout() {
-    // size = Size(_needleWidth + _tailRadius, _needleHeight);
     size = Size(constraints.maxWidth, constraints.maxHeight);
   }
 
@@ -211,14 +210,6 @@ class RenderNeedlePointer extends RenderBox {
       )
       ..strokeCap = StrokeCap.round;
 
-//!
-    Path path = Path()
-      ..moveTo(needleStartX, needleStartY)
-      ..lineTo(needleEndX, needleEndY);
-    // ..addOval(
-    //     Rect.fromCircle(center: Offset(needleEndX, needleEndY), radius: 10));
-    canvas.drawPath(path, Paint()..color = Colors.orange);
-
     // Needle Path
     Path needlePath = Path();
     needlePath.moveTo(offset.dx + getTailRadius / 2 * cos(angle + pi / 2),
@@ -236,13 +227,7 @@ class RenderNeedlePointer extends RenderBox {
 
     needlePath.close();
 
-    Path apath = Path()
-      ..moveTo(needleStartX, needleStartY)
-      ..lineTo(needleEndX, needleEndY)
-      ..close();
-    final pathMetrics = apath.computeMetrics();
-    final hitTestWidth =
-        _needleWidth; // adjust this to change the hit test area width
+    final hitTestWidth = _needleWidth;
 
     final dx = needleEndX - needleStartX;
     final dy = needleEndY - needleStartY;
@@ -257,49 +242,19 @@ class RenderNeedlePointer extends RenderBox {
       ..lineTo(needleEndX - perpX, needleEndY - perpY)
       ..lineTo(needleStartX - perpX, needleStartY - perpY)
       ..close();
-    final widerPath = Path()
-      ..addRect(Rect.fromPoints(
-        Offset(needleStartX + cos(angle - pi / 2),
-            needleStartY + sin(angle + pi / 2)),
-        Offset(
-            needleEndX + cos(angle - pi / 2), needleEndY + sin(angle + pi / 2)),
-      ));
 
     needlePointerRect =
-        _needleStyle == NeedleStyle.gaugeNeedle ? needlePath : widerPath;
+        _needleStyle == NeedleStyle.gaugeNeedle ? needlePath : hitTestPath;
 
-    canvas.drawPath(hitTestPath, Paint()..color = Colors.black
-        // ..strokeWidth = 10
-        // ..shader
-        );
-    _needleStyle == NeedleStyle.gaugeNeedle ? print("A") : print("B");
-    // canvas.drawPath(needlePath, Paint()..color = Colors.blue.withOpacity(0.3));
 // Needle  Pointer paint
     if (getNeedleStyle == NeedleStyle.gaugeNeedle) {
       canvas.drawPath(needlePath, needlePaint);
       canvas.drawPath(circlePath, Paint()..color = _tailColor);
     } else {
-      print('Came here');
-      Path apath = Path()
-        ..moveTo(needleStartX, needleStartY)
-        ..lineTo(needleEndX, needleEndY)
-        ..close();
-
       //  Simple Needle
       canvas.drawLine(Offset(needleStartX, needleStartY),
           Offset(needleEndX, needleEndY), needlePaint);
       canvas.drawPath(circlePath, Paint()..color = _tailColor);
-      // canvas.drawPath(
-      //     apath,
-      //     Paint()
-      //       ..color = Colors.green
-      //       ..strokeWidth = 10
-      //       ..shader
-      //       ..strokeWidth = needleWidth
-      //       ..style = PaintingStyle.stroke);
-      // canvas.drawLine(Offset(needleStartX, needleStartY),
-      // Offset(needleEndX, needleEndY), needlePaint);
-      // canvas.drawPath(circlePath, Paint()..color = _tailColor);
     }
   }
 
@@ -309,26 +264,3 @@ class RenderNeedlePointer extends RenderBox {
     return newValue;
   }
 }
-
-// @override
-// void applyPaintTransform(RenderBox child, Matrix4 transform) {
-//   if (child is RenderNeedlePointer) {
-//     final centerX = size.width / 2;
-//     final centerY = size.height / 2;
-
-//     transform.translate(centerX, centerY);
-//     double value = calculateValueAngle(
-//         child.getValue, getRadialGauge.track.start, getRadialGauge.track.end);
-//     double startAngle = (getRadialGauge.track.startAngle - 180) * (pi / 180);
-//     double endAngle = (getRadialGauge.track.endAngle - 180) * (pi / 180);
-//     double angle = startAngle + (value / 100) * (endAngle - startAngle);
-//     double toRotateAngle = angle - (pi / 2);
-//     transform.rotateZ(toRotateAngle); // Specify the rotation in radians
-//     transform.translate(
-//         -centerX - child.getNeedleWidth / 2 - child.getTailRadius / 2,
-//         -centerY - child.getNeedleHeight + child.getTailRadius / 2);
-
-//     super.applyPaintTransform(child, transform);
-//     markNeedsLayout();
-//   }
-// }

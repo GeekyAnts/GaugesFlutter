@@ -69,17 +69,18 @@ class RenderRadialWidgetPointer extends RenderProxyBox {
   void paint(PaintingContext context, Offset offset) {
     double gaugeStart = _radialGauge.track.start;
     double gaugeEnd = _radialGauge.track.end;
-
-    // final center = Offset(offset.dx, offset.dy);
     double containerWidth = constraints.maxWidth;
     double containerHeight = constraints.maxHeight;
     double containerShortestSide = min(containerWidth, containerHeight);
+
     final childSize = child?.computeDryLayout(constraints);
     final childOffsetX = (childSize?.width ?? 0.0) / 2;
     final childOffsetY = (childSize?.height ?? 0.0) / 2;
+
     final center = Offset(
         containerWidth * _radialGauge.xCenterCoordinate + offset.dx,
         containerHeight * _radialGauge.yCenterCoordinate + offset.dy);
+
     double value = calculateValueAngle(_value, gaugeStart, gaugeEnd);
     double startAngle = (_radialGauge.track.startAngle - 180) * (pi / 180);
     double endAngle = (_radialGauge.track.endAngle - 180) * (pi / 180);
@@ -95,8 +96,6 @@ class RenderRadialWidgetPointer extends RenderProxyBox {
     double circlePointerEndY =
         center.dy + circlePointerOffset * sin(angle) - childOffsetY;
 
-    // canvas.drawCircle(Offset(circlePointerEndX, circlePointerEndY), 30,
-    //     Paint()..color = Colors.red);
     super.paint(context, Offset(circlePointerEndX, circlePointerEndY));
   }
 

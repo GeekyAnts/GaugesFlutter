@@ -6,7 +6,7 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RadialGaugeExample(),
+      home: MyVerticalGauge(),
     ),
   );
 }
@@ -58,28 +58,18 @@ class RadialGaugeExample extends StatefulWidget {
 }
 
 class _RadialGaugeExampleState extends State<RadialGaugeExample> {
-  double value = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
       body: RadialGauge(
-        track: const RadialTrack(
+        track: RadialTrack(
           start: 0,
           end: 100,
         ),
         needlePointer: [
           NeedlePointer(
-            isInteractive: true,
-            onChanged: (v) {
-              setState(() {
-                value = v;
-              });
-            },
-            needleHeight: 1000,
-            color: Colors.red.withOpacity(0.4),
-            needleStyle: NeedleStyle.flatNeedle,
-            value: value,
+            value: 30,
           ),
         ],
       ),
