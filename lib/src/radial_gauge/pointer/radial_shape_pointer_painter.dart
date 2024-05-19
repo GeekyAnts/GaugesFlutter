@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 import '../../../geekyants_flutter_gauges.dart';
 
@@ -132,8 +133,8 @@ class RenderRadialShapePointer extends RenderBox {
 
     double gaugeStart = _radialGauge.track.start;
     double gaugeEnd = _radialGauge.track.end;
-    // final center = Offset(offset.dx, offset.dy);
 
+    // Determining the center of the Gauge based on the size and the center coordinate
     final center = Offset(
         size.width * _radialGauge.xCenterCoordinate + offset.dx,
         size.height * _radialGauge.yCenterCoordinate + offset.dy);
@@ -144,11 +145,10 @@ class RenderRadialShapePointer extends RenderBox {
 
     final double angle = startAngle + (value / 100) * (endAngle - startAngle);
 
-    double needleLength = 30;
-    double needleWidth = 10;
+    double needleLength = _height;
+    double needleWidth = _width;
     final pointerPath = Path();
 
-    // double pointerOffset = 430 + 0;
     double pointerOffset =
         (size.shortestSide / 2 - _radialGauge.track.thickness) *
             _radialGauge.radiusFactor;
@@ -163,6 +163,10 @@ class RenderRadialShapePointer extends RenderBox {
     double circlePointerEndX = center.dx + circlePointerOffset * cos(angle);
     double circlePointerEndY = center.dy + circlePointerOffset * sin(angle);
 
+    if (_shape == PointerShape.circle) {
+      canvas.drawCircle(Offset(circlePointerEndX, circlePointerEndY), 10,
+          Paint()..color = _color);
+    }
     pointerPath.moveTo(pointerEndX, pointerEndY);
     pointerPath.lineTo(
       pointerEndX - needleWidth * cos(angle + pi / 2),
@@ -177,14 +181,66 @@ class RenderRadialShapePointer extends RenderBox {
       pointerEndY + needleWidth * sin(angle + pi / 2),
     );
     pointerPath.close();
-
     pointerRect = Rect.fromCircle(
         center: Offset(pointerEndX, pointerEndY), radius: _width);
 
-    // canvas.drawRect(pointerRect, Paint()..color = _color);
-    canvas.drawCircle(Offset(circlePointerEndX, circlePointerEndY), _width,
-        Paint()..color = _color);
-    // canvas.drawPath(pointerPath, Paint()..color = _color);
+    double rectWidth = _width; // Define the width of the rectangle
+    double rectHeight = _height; // Define the height of the rectangle
+
+    double rectOffset = (size.shortestSide / 2 - _radialGauge.track.thickness) *
+        _radialGauge.radiusFactor;
+
+    double rectCenterX = center.dx + rectOffset * cos(angle);
+    double rectCenterY = center.dy + rectOffset * sin(angle);
+
+    // Define the corner points relative to the rectangle's center
+    Offset topLeft = Offset(
+      rectCenterX - rectWidth / 2,
+      rectCenterY - rectHeight / 2,
+    );
+    Offset topRight = Offset(
+      rectCenterX + rectWidth / 2,
+      rectCenterY - rectHeight / 2,
+    );
+    Offset bottomRight = Offset(
+      rectCenterX + rectWidth / 2,
+      rectCenterY + rectHeight / 2,
+    );
+    Offset bottomLeft = Offset(
+      rectCenterX - rectWidth / 2,
+      rectCenterY + rectHeight / 2,
+    );
+
+    topLeft = rotatePoint(topLeft, angle, Offset(rectCenterX, rectCenterY));
+    topRight = rotatePoint(topRight, angle, Offset(rectCenterX, rectCenterY));
+    bottomRight =
+        rotatePoint(bottomRight, angle, Offset(rectCenterX, rectCenterY));
+    bottomLeft =
+        rotatePoint(bottomLeft, angle, Offset(rectCenterX, rectCenterY));
+
+    // Draw the rotated rectangle
+    final rectPaint = Paint()..color = Colors.red;
+    //Draw the rectangle ->>
+    if (_shape == PointerShape.rectangle) {
+      canvas.drawPath(
+        Path()
+          ..moveTo(topLeft.dx, topLeft.dy)
+          ..lineTo(topRight.dx, topRight.dy)
+          ..lineTo(bottomRight.dx, bottomRight.dy)
+          ..lineTo(bottomLeft.dx, bottomLeft.dy)
+          ..close(),
+        rectPaint,
+      );
+    }
+  }
+
+  // Rotate the points around the center
+  Offset rotatePoint(Offset point, double angle, Offset center) {
+    double dx = point.dx - center.dx;
+    double dy = point.dy - center.dy;
+    double rotatedX = dx * cos(angle) - dy * sin(angle);
+    double rotatedY = dx * sin(angle) + dy * cos(angle);
+    return Offset(rotatedX + center.dx, rotatedY + center.dy);
   }
 
   double calculateValueAngle(double value, double gaugeStart, double gaugeEnd) {

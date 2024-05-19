@@ -6,7 +6,7 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LinearGaugeExample(),
+      home: RadialGaugeExample(),
     ),
   );
 }
@@ -44,12 +44,7 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
             CustomRulerLabel(text: "Hello One", value: value),
             CustomRulerLabel(text: "Hello Two", value: 60),
           ],
-          pointers: const [
-            Pointer(
-              value: 50,
-              shape: PointerShape.circle,
-            ),
-          ],
+          pointers: [],
         ),
       ),
     );
@@ -69,19 +64,36 @@ class RadialGaugeExample extends StatefulWidget {
 }
 
 class _RadialGaugeExampleState extends State<RadialGaugeExample> {
+  double value = 20;
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.white,
+    return Scaffold(
+      backgroundColor: Colors.black,
       body: RadialGauge(
         track: RadialTrack(
+          trackStyle: TrackStyle(
+              primaryRulerColor: Colors.blueAccent,
+              secondaryRulerColor: Colors.blueGrey),
+          color: Colors.white,
           start: 0,
           end: 100,
+          startAngle: 0,
+          endAngle: 360,
         ),
-        needlePointer: [
-          NeedlePointer(
-            value: 30,
-          ),
+        shapePointer: [
+          RadialShapePointer(
+            color: Colors.red,
+            width: 10,
+            height: 30,
+            isInteractive: true,
+            onChanged: (v) {
+              setState(() {
+                value = v;
+              });
+            },
+            value: value,
+            shape: PointerShape.rectangle,
+          )
         ],
       ),
     );
