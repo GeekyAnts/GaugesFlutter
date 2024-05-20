@@ -144,6 +144,7 @@ class RenderNeedlePointer extends RenderBox {
   @override
   bool hitTestSelf(Offset position) {
     Offset calulatedPosition = localToGlobal(position);
+
     if (needlePointerRect.contains(calulatedPosition)) {
       return true;
     } else if (needlePointerRect.contains(position)) {
@@ -156,7 +157,6 @@ class RenderNeedlePointer extends RenderBox {
 
   @override
   void performLayout() {
-    // size = Size(_needleWidth + _tailRadius, _needleHeight);
     size = Size(constraints.maxWidth, constraints.maxHeight);
   }
 
@@ -227,8 +227,25 @@ class RenderNeedlePointer extends RenderBox {
 
     needlePath.close();
 
-    needlePointerRect = needlePath;
-    // canvas.drawPath(needlePath, Paint()..color = Colors.green);
+    final hitTestWidth = _needleWidth;
+
+    final dx = needleEndX - needleStartX;
+    final dy = needleEndY - needleStartY;
+
+    final norm = sqrt(dx * dx + dy * dy);
+    final perpX = -dy / norm * hitTestWidth / 2;
+    final perpY = dx / norm * hitTestWidth / 2;
+
+    final hitTestPath = Path()
+      ..moveTo(needleStartX + perpX, needleStartY + perpY)
+      ..lineTo(needleEndX + perpX, needleEndY + perpY)
+      ..lineTo(needleEndX - perpX, needleEndY - perpY)
+      ..lineTo(needleStartX - perpX, needleStartY - perpY)
+      ..close();
+
+    needlePointerRect =
+        _needleStyle == NeedleStyle.gaugeNeedle ? needlePath : hitTestPath;
+
 // Needle  Pointer paint
     if (getNeedleStyle == NeedleStyle.gaugeNeedle) {
       canvas.drawPath(needlePath, needlePaint);
@@ -247,26 +264,3 @@ class RenderNeedlePointer extends RenderBox {
     return newValue;
   }
 }
-
-// @override
-// void applyPaintTransform(RenderBox child, Matrix4 transform) {
-//   if (child is RenderNeedlePointer) {
-//     final centerX = size.width / 2;
-//     final centerY = size.height / 2;
-
-//     transform.translate(centerX, centerY);
-//     double value = calculateValueAngle(
-//         child.getValue, getRadialGauge.track.start, getRadialGauge.track.end);
-//     double startAngle = (getRadialGauge.track.startAngle - 180) * (pi / 180);
-//     double endAngle = (getRadialGauge.track.endAngle - 180) * (pi / 180);
-//     double angle = startAngle + (value / 100) * (endAngle - startAngle);
-//     double toRotateAngle = angle - (pi / 2);
-//     transform.rotateZ(toRotateAngle); // Specify the rotation in radians
-//     transform.translate(
-//         -centerX - child.getNeedleWidth / 2 - child.getTailRadius / 2,
-//         -centerY - child.getNeedleHeight + child.getTailRadius / 2);
-
-//     super.applyPaintTransform(child, transform);
-//     markNeedsLayout();
-//   }
-// }
