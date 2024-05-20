@@ -66,6 +66,12 @@ class LinearGauge extends StatefulWidget {
     this.curves = const [],
   })  : assert(() {
           if (customLabels!.isNotEmpty) {
+            if (valueBar != []) {
+              assert(
+                  valueBar!.every(
+                      (element) => element.value >= customLabels.first.value!),
+                  "Valuebar value should be greater than or equal to customLabels start value");
+            }
             assert(customLabels.length >= 2,
                 "At least two CustomRulerLabel should be added");
 
