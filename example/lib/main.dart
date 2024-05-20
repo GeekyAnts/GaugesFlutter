@@ -72,6 +72,7 @@ class _RadialGaugeExampleState extends State<RadialGaugeExample> {
       body: RadialGauge(
         track: RadialTrack(
           trackStyle: TrackStyle(
+              labelStyle: TextStyle(color: Colors.white),
               primaryRulerColor: Colors.blueAccent,
               secondaryRulerColor: Colors.blueGrey),
           color: Colors.white,
@@ -83,8 +84,8 @@ class _RadialGaugeExampleState extends State<RadialGaugeExample> {
         shapePointer: [
           RadialShapePointer(
             color: Colors.red,
-            width: 10,
-            height: 30,
+            width: 40,
+            height: 40,
             isInteractive: true,
             onChanged: (v) {
               setState(() {

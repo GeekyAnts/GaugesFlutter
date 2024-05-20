@@ -129,8 +129,7 @@ class RenderRadialShapePointer extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final canvas = context.canvas;
-
+    final Canvas canvas = context.canvas;
     double gaugeStart = _radialGauge.track.start;
     double gaugeEnd = _radialGauge.track.end;
 
@@ -145,70 +144,70 @@ class RenderRadialShapePointer extends RenderBox {
 
     final double angle = startAngle + (value / 100) * (endAngle - startAngle);
 
-    double needleLength = _height;
-    double needleWidth = _width;
+    double pointerLength = _height;
+    double pointerWidth = _width;
     final pointerPath = Path();
 
     double pointerOffset =
         (size.shortestSide / 2 - _radialGauge.track.thickness) *
             _radialGauge.radiusFactor;
 
-    double circlePointerOffset =
-        (size.shortestSide / 2 - _radialGauge.track.thickness) *
-            _radialGauge.radiusFactor;
-
     double pointerEndX = center.dx + pointerOffset * cos(angle);
     double pointerEndY = center.dy + pointerOffset * sin(angle);
 
-    double circlePointerEndX = center.dx + circlePointerOffset * cos(angle);
-    double circlePointerEndY = center.dy + circlePointerOffset * sin(angle);
+    pointerRect = Rect.fromCenter(
+      center: Offset(pointerEndX, pointerEndY),
+      width: pointerWidth,
+      height: pointerLength,
+    );
+    //!Handle the interaction of POinterREct
+    // canvas.drawRect(pointerRect, Paint()..color = Colors.green);
 
     if (_shape == PointerShape.circle) {
-      canvas.drawCircle(Offset(circlePointerEndX, circlePointerEndY), 10,
-          Paint()..color = _color);
+      drawCirclePointer(canvas, center, pointerOffset, angle);
+    } else if (_shape == PointerShape.rectangle) {
+      drawTrianglePointer(
+          canvas, center, pointerOffset, angle, pointerWidth, pointerLength);
+
+      // drawRectanglePointer(
+      //     canvas, center, pointerOffset, angle, pointerWidth, pointerLength);
     }
-    pointerPath.moveTo(pointerEndX, pointerEndY);
-    pointerPath.lineTo(
-      pointerEndX - needleWidth * cos(angle + pi / 2),
-      pointerEndY - needleWidth * sin(angle + pi / 2),
-    );
-    pointerPath.lineTo(
-      pointerEndX - (needleLength - needleWidth) * cos(angle),
-      pointerEndY - (needleLength - needleWidth) * sin(angle),
-    );
-    pointerPath.lineTo(
-      pointerEndX + needleWidth * cos(angle + pi / 2),
-      pointerEndY + needleWidth * sin(angle + pi / 2),
-    );
-    pointerPath.close();
-    pointerRect = Rect.fromCircle(
-        center: Offset(pointerEndX, pointerEndY), radius: _width);
+  }
 
-    double rectWidth = _width; // Define the width of the rectangle
-    double rectHeight = _height; // Define the height of the rectangle
+  void drawCirclePointer(
+      Canvas canvas, Offset center, double pointerOffset, double angle) {
+    double circlePointerEndX = center.dx + pointerOffset * cos(angle);
+    double circlePointerEndY = center.dy + pointerOffset * sin(angle);
 
-    double rectOffset = (size.shortestSide / 2 - _radialGauge.track.thickness) *
-        _radialGauge.radiusFactor;
+    canvas.drawCircle(
+      Offset(circlePointerEndX, circlePointerEndY),
+      10,
+      Paint()..color = _color,
+    );
+  }
 
+  void drawRectanglePointer(Canvas canvas, Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double rectOffset = pointerOffset;
     double rectCenterX = center.dx + rectOffset * cos(angle);
     double rectCenterY = center.dy + rectOffset * sin(angle);
 
     // Define the corner points relative to the rectangle's center
     Offset topLeft = Offset(
-      rectCenterX - rectWidth / 2,
-      rectCenterY - rectHeight / 2,
+      rectCenterX - width / 2,
+      rectCenterY - height / 2,
     );
     Offset topRight = Offset(
-      rectCenterX + rectWidth / 2,
-      rectCenterY - rectHeight / 2,
+      rectCenterX + width / 2,
+      rectCenterY - height / 2,
     );
     Offset bottomRight = Offset(
-      rectCenterX + rectWidth / 2,
-      rectCenterY + rectHeight / 2,
+      rectCenterX + width / 2,
+      rectCenterY + height / 2,
     );
     Offset bottomLeft = Offset(
-      rectCenterX - rectWidth / 2,
-      rectCenterY + rectHeight / 2,
+      rectCenterX - width / 2,
+      rectCenterY + height / 2,
     );
 
     topLeft = rotatePoint(topLeft, angle, Offset(rectCenterX, rectCenterY));
@@ -220,18 +219,89 @@ class RenderRadialShapePointer extends RenderBox {
 
     // Draw the rotated rectangle
     final rectPaint = Paint()..color = Colors.red;
-    //Draw the rectangle ->>
-    if (_shape == PointerShape.rectangle) {
-      canvas.drawPath(
-        Path()
-          ..moveTo(topLeft.dx, topLeft.dy)
-          ..lineTo(topRight.dx, topRight.dy)
-          ..lineTo(bottomRight.dx, bottomRight.dy)
-          ..lineTo(bottomLeft.dx, bottomLeft.dy)
-          ..close(),
-        rectPaint,
-      );
-    }
+    canvas.drawPath(
+      Path()
+        ..moveTo(topLeft.dx, topLeft.dy)
+        ..lineTo(topRight.dx, topRight.dy)
+        ..lineTo(bottomRight.dx, bottomRight.dy)
+        ..lineTo(bottomLeft.dx, bottomLeft.dy)
+        ..close(),
+      rectPaint,
+    );
+  }
+
+  void drawTrianglePointer(Canvas canvas, Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double triangleOffset = pointerOffset - _height;
+    double triangleCenterX = center.dx + triangleOffset * cos(angle);
+    double triangleCenterY = center.dy + triangleOffset * sin(angle);
+
+    // Define the corner points relative to the triangle's center
+    Offset apex = Offset(
+      triangleCenterX + height * cos(angle),
+      triangleCenterY + height * sin(angle),
+    );
+    Offset baseRight = Offset(
+      triangleCenterX - width / 2 * cos(angle + pi / 2),
+      triangleCenterY - width / 2 * sin(angle + pi / 2),
+    );
+    Offset baseLeft = Offset(
+      triangleCenterX - width / 2 * cos(angle - pi / 2),
+      triangleCenterY - width / 2 * sin(angle - pi / 2),
+    );
+
+    // Draw the rotated triangle
+    final trianglePaint = Paint()..color = Colors.green;
+    canvas.drawPath(
+      Path()
+        ..moveTo(apex.dx, apex.dy)
+        ..lineTo(baseRight.dx, baseRight.dy)
+        ..lineTo(baseLeft.dx, baseLeft.dy)
+        ..close(),
+      trianglePaint,
+    );
+  }
+
+  void drawDiamondPointer(Canvas canvas, Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double diamondOffset = pointerOffset;
+    double diamondCenterX = center.dx + diamondOffset * cos(angle);
+    double diamondCenterY = center.dy + diamondOffset * sin(angle);
+
+    // Define the corner points relative to the diamond's center
+    Offset top = Offset(
+      diamondCenterX,
+      diamondCenterY - height / 2,
+    );
+    Offset right = Offset(
+      diamondCenterX + width / 2,
+      diamondCenterY,
+    );
+    Offset bottom = Offset(
+      diamondCenterX,
+      diamondCenterY + height / 2,
+    );
+    Offset left = Offset(
+      diamondCenterX - width / 2,
+      diamondCenterY,
+    );
+
+    top = rotatePoint(top, angle, Offset(diamondCenterX, diamondCenterY));
+    right = rotatePoint(right, angle, Offset(diamondCenterX, diamondCenterY));
+    bottom = rotatePoint(bottom, angle, Offset(diamondCenterX, diamondCenterY));
+    left = rotatePoint(left, angle, Offset(diamondCenterX, diamondCenterY));
+
+    // Draw the rotated diamond
+    final diamondPaint = Paint()..color = Colors.blue;
+    canvas.drawPath(
+      Path()
+        ..moveTo(top.dx, top.dy)
+        ..lineTo(right.dx, right.dy)
+        ..lineTo(bottom.dx, bottom.dy)
+        ..lineTo(left.dx, left.dy)
+        ..close(),
+      diamondPaint,
+    );
   }
 
   // Rotate the points around the center
