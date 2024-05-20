@@ -18,6 +18,7 @@ class LinearGaugeLabel {
       TextPainter(textDirection: TextDirection.ltr);
 
   void addLabels({
+    required trackLabelFormat,
     required double distanceValueInRangeOfHundred,
     required double start,
     required double end,
@@ -25,13 +26,16 @@ class LinearGaugeLabel {
     _linearGaugeLabel.clear();
 
     for (double i = start; i <= end; i += distanceValueInRangeOfHundred) {
-      _linearGaugeLabel.add(LinearGaugeLabel(text: i.toString(), value: i));
+      text = trackLabelFormat(i);
+
+      _linearGaugeLabel.add(LinearGaugeLabel(text: text, value: i));
     }
 
     final LinearGaugeLabel localLabel =
         _linearGaugeLabel[_linearGaugeLabel.length - 1];
     if (localLabel.value != end && localLabel.value! < end) {
-      _linearGaugeLabel.add(LinearGaugeLabel(text: end.toString(), value: end));
+      String text = trackLabelFormat(end);
+      _linearGaugeLabel.add(LinearGaugeLabel(text: text, value: end));
     }
   }
 

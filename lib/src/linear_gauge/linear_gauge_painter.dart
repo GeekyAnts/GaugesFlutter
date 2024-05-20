@@ -18,6 +18,7 @@ class RenderLinearGauge extends RenderBox
   RenderLinearGauge({
     required double start,
     required double end,
+    required String Function(double)? trackLabelFormat,
     required double steps,
     required GaugeOrientation gaugeOrientation,
     required TextStyle textStyle,
@@ -42,6 +43,7 @@ class RenderLinearGauge extends RenderBox
   })  : assert(start < end, "Start should be grater then end"),
         _start = start,
         _end = end,
+        _trackLabelFormat = trackLabelFormat,
         _steps = steps,
         _gaugeOrientation = gaugeOrientation,
         _textStyle = textStyle,
@@ -267,6 +269,14 @@ class RenderLinearGauge extends RenderBox
     markNeedsLayout();
   }
 
+  String Function(double)? get getTrackLabelFormat => _trackLabelFormat;
+  String Function(double)? _trackLabelFormat;
+  set setTrackLabelFormat(String Function(double)? val) {
+    if (_trackLabelFormat == val) return;
+    _trackLabelFormat = val;
+    markNeedsPaint();
+  }
+
   double get getLabelOffset => _labelOffset;
   double _labelOffset;
   set setLabelOffset(double val) {
@@ -327,7 +337,17 @@ class RenderLinearGauge extends RenderBox
   }
 
   LinearGaugeLabel get getLinearGaugeLabel {
+    markNeedsPaint();
+    markNeedsLayout();
     return _linearGaugeLabel;
+  }
+
+  LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
+  set setLinearGaugeLabel(LinearGaugeLabel val) {
+    if (_linearGaugeLabel == val) return;
+    _linearGaugeLabel = val;
+    markNeedsPaint();
+    markNeedsLayout();
   }
 
   ///
@@ -398,7 +418,6 @@ class RenderLinearGauge extends RenderBox
   ///
   double get getPointerSpace => _pointerSpace;
   final double _pointerSpace = 0;
-  LinearGaugeLabel _linearGaugeLabel = LinearGaugeLabel();
 
   late Size _axisActualSize;
   late final List<RenderLinearGaugeWidgetPointer> _widgetPointers;
@@ -446,6 +465,12 @@ class RenderLinearGauge extends RenderBox
   /// Adds the ruler render object to widget .
   void addRulerLabel(RenderRulerLabel label) {
     _renderRulerLabel = label;
+    markNeedsLayout();
+  }
+
+  /// Remove the ruler label render object from widget .
+  void removeRulerLabel(RenderRulerLabel label) {
+    _renderRulerLabel = null;
     markNeedsLayout();
   }
 
@@ -2231,5 +2256,3 @@ class LinearGaugeParentData extends MultiChildLayoutParentData {
       this.gaugeEnd,
       this.linearGaugeLabel);
 }
-
-// class Temp implements MouseTrackerAnnotation {}
