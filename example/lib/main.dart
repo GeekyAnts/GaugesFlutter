@@ -6,7 +6,7 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyVerticalGauge(),
+      home: LinearGaugeExample(),
     ),
   );
 }
@@ -23,6 +23,7 @@ class LinearGaugeExample extends StatefulWidget {
 }
 
 class _LinearGaugeExampleState extends State<LinearGaugeExample> {
+  double value = 20;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +34,16 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
           rulers: RulerStyle(
             rulerPosition: RulerPosition.bottom,
           ),
+          valueBar: [
+            ValueBar(
+              value: 20,
+              offset: 300,
+            )
+          ],
+          customLabels: [
+            CustomRulerLabel(text: "Hello One", value: value),
+            CustomRulerLabel(text: "Hello Two", value: 60),
+          ],
           pointers: const [
             Pointer(
               value: 50,
