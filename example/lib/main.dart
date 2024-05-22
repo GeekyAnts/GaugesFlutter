@@ -78,11 +78,12 @@ class _RadialGaugeExampleState extends State<RadialGaugeExample> {
           color: Colors.white,
           start: 0,
           end: 100,
-          startAngle: 0,
-          endAngle: 360,
+          // startAngle: 0,
+          // endAngle: 360,
         ),
         shapePointer: [
           RadialShapePointer(
+            // offset: -30,
             color: Colors.red,
             width: 40,
             height: 40,
@@ -93,7 +94,7 @@ class _RadialGaugeExampleState extends State<RadialGaugeExample> {
               });
             },
             value: value,
-            shape: PointerShape.rectangle,
+            shape: PointerShape.triangle,
           )
         ],
       ),

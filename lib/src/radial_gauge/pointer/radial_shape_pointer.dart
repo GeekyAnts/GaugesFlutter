@@ -31,6 +31,7 @@ class RadialShapePointer extends LeafRenderObjectWidget {
   const RadialShapePointer({
     super.key,
     required this.value,
+    this.offset = 0,
     this.color = Colors.red,
     this.height = 10,
     this.width = 10,
@@ -43,6 +44,11 @@ class RadialShapePointer extends LeafRenderObjectWidget {
   /// `value` sets the value of the [RadialShapePointer] on the [RadialGauge]
   ///
   final double value;
+
+  ///
+  /// `offset` sets the offset of the [RadialShapePointer] on the [RadialGauge]
+  ///
+  final double offset;
 
   ///
   /// `color` sets the color of the [RadialShapePointer] on the [RadialGauge]
@@ -90,6 +96,7 @@ class RadialShapePointer extends LeafRenderObjectWidget {
     return RenderRadialShapePointer(
       value: value,
       color: color,
+      offset: offset,
       height: height,
       width: width,
       isInteractive: isInteractive,
@@ -107,6 +114,7 @@ class RadialShapePointer extends LeafRenderObjectWidget {
       ..setValue = value
       ..setRadialGauge = scope.rGauge
       ..setColor = color
+      ..setOffset = offset
       ..setHeight = height
       ..setWidth = width
       ..onChanged = onChanged

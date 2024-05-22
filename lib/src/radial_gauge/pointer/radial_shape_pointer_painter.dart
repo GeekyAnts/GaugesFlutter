@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
 import '../../../geekyants_flutter_gauges.dart';
 
@@ -10,6 +9,7 @@ class RenderRadialShapePointer extends RenderBox {
     required double value,
     required Color color,
     required double height,
+    required double offset,
     required ValueChanged<double>? onChanged,
     required double width,
     required bool isInteractive,
@@ -22,11 +22,13 @@ class RenderRadialShapePointer extends RenderBox {
         _isInteractive = isInteractive,
         _width = width,
         _shape = shape,
+        _offset = offset,
         _radialGauge = radialGauge;
 
   double _value;
   Color _color;
   double _height;
+  double _offset;
   double _width;
   PointerShape _shape;
   RadialGauge _radialGauge;
@@ -61,6 +63,15 @@ class RenderRadialShapePointer extends RenderBox {
       return;
     }
     _onChanged = value;
+  }
+
+  // sets the offset for [RenderNeedlePointer].
+  set setOffset(double value) {
+    if (value == _offset) {
+      return;
+    }
+    _offset = value;
+    markNeedsPaint();
   }
 
   // Sets the Interaction for [RenderNeedlePointer].
@@ -146,11 +157,13 @@ class RenderRadialShapePointer extends RenderBox {
 
     double pointerLength = _height;
     double pointerWidth = _width;
-    final pointerPath = Path();
+
+    // final pointerPath = Path();
 
     double pointerOffset =
         (size.shortestSide / 2 - _radialGauge.track.thickness) *
-            _radialGauge.radiusFactor;
+                _radialGauge.radiusFactor +
+            _offset;
 
     double pointerEndX = center.dx + pointerOffset * cos(angle);
     double pointerEndY = center.dy + pointerOffset * sin(angle);
@@ -164,14 +177,94 @@ class RenderRadialShapePointer extends RenderBox {
     // canvas.drawRect(pointerRect, Paint()..color = Colors.green);
 
     if (_shape == PointerShape.circle) {
+      double radius = 10; // Example radius
+      pointerRect = Rect.fromCircle(
+          center: Offset(pointerEndX, pointerEndY), radius: radius);
       drawCirclePointer(canvas, center, pointerOffset, angle);
     } else if (_shape == PointerShape.rectangle) {
+      pointerRect = calculateBoundingBoxForRectangle(
+          center, pointerOffset, angle, pointerWidth, pointerLength);
+      drawRectanglePointer(
+          canvas, center, pointerOffset, angle, pointerWidth, pointerLength);
+    } else if (_shape == PointerShape.triangle) {
+      pointerRect = calculateBoundingBoxForTriangle(
+          center, pointerOffset, angle, pointerWidth, pointerLength);
       drawTrianglePointer(
           canvas, center, pointerOffset, angle, pointerWidth, pointerLength);
-
-      // drawRectanglePointer(
-      //     canvas, center, pointerOffset, angle, pointerWidth, pointerLength);
+    } else if (_shape == PointerShape.diamond) {
+      drawDiamondPointer(
+          canvas, center, pointerOffset, angle, pointerWidth, pointerLength);
     }
+  }
+
+  Rect calculateBoundingBoxForRectangle(Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double rectOffset = pointerOffset;
+    double rectCenterX = center.dx + rectOffset * cos(angle);
+    double rectCenterY = center.dy + rectOffset * sin(angle);
+
+    Offset topLeft = Offset(
+      rectCenterX - width / 2,
+      rectCenterY - height / 2,
+    );
+    Offset topRight = Offset(
+      rectCenterX + width / 2,
+      rectCenterY - height / 2,
+    );
+    Offset bottomRight = Offset(
+      rectCenterX + width / 2,
+      rectCenterY + height / 2,
+    );
+    Offset bottomLeft = Offset(
+      rectCenterX - width / 2,
+      rectCenterY + height / 2,
+    );
+
+    topLeft = rotatePoint(topLeft, angle, Offset(rectCenterX, rectCenterY));
+    topRight = rotatePoint(topRight, angle, Offset(rectCenterX, rectCenterY));
+    bottomRight =
+        rotatePoint(bottomRight, angle, Offset(rectCenterX, rectCenterY));
+    bottomLeft =
+        rotatePoint(bottomLeft, angle, Offset(rectCenterX, rectCenterY));
+
+    // Calculate the bounding box
+    double minX =
+        [topLeft.dx, topRight.dx, bottomRight.dx, bottomLeft.dx].reduce(min);
+    double maxX =
+        [topLeft.dx, topRight.dx, bottomRight.dx, bottomLeft.dx].reduce(max);
+    double minY =
+        [topLeft.dy, topRight.dy, bottomRight.dy, bottomLeft.dy].reduce(min);
+    double maxY =
+        [topLeft.dy, topRight.dy, bottomRight.dy, bottomLeft.dy].reduce(max);
+
+    return Rect.fromLTRB(minX, minY, maxX, maxY);
+  }
+
+  Rect calculateBoundingBoxForTriangle(Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double triangleOffset = pointerOffset - _height;
+    double triangleCenterX = center.dx + triangleOffset * cos(angle);
+    double triangleCenterY = center.dy + triangleOffset * sin(angle);
+
+    Offset apex = Offset(
+      triangleCenterX + height * cos(angle),
+      triangleCenterY + height * sin(angle),
+    );
+    Offset baseRight = Offset(
+      triangleCenterX - width / 2 * cos(angle + pi / 2),
+      triangleCenterY - width / 2 * sin(angle + pi / 2),
+    );
+    Offset baseLeft = Offset(
+      triangleCenterX - width / 2 * cos(angle - pi / 2),
+      triangleCenterY - width / 2 * sin(angle - pi / 2),
+    );
+
+    double minX = [apex.dx, baseRight.dx, baseLeft.dx].reduce(min);
+    double maxX = [apex.dx, baseRight.dx, baseLeft.dx].reduce(max);
+    double minY = [apex.dy, baseRight.dy, baseLeft.dy].reduce(min);
+    double maxY = [apex.dy, baseRight.dy, baseLeft.dy].reduce(max);
+
+    return Rect.fromLTRB(minX, minY, maxX, maxY);
   }
 
   void drawCirclePointer(
