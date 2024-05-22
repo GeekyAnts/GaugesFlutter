@@ -83,7 +83,6 @@ class _RadialGaugeExampleState extends State<RadialGaugeExample> {
         ),
         shapePointer: [
           RadialShapePointer(
-            // offset: -30,
             color: Colors.red,
             width: 40,
             height: 40,

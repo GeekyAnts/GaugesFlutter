@@ -173,7 +173,7 @@ class RenderRadialShapePointer extends RenderBox {
       width: pointerWidth,
       height: pointerLength,
     );
-    //!Handle the interaction of POinterREct
+
     // canvas.drawRect(pointerRect, Paint()..color = Colors.green);
 
     if (_shape == PointerShape.circle) {
