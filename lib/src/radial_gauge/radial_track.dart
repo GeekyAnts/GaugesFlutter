@@ -51,8 +51,10 @@ class RadialTrack {
     this.thickness = 10,
     this.trackStyle = const TrackStyle(
       labelStyle: TextStyle(
-        fontSize: 12,
-        color: Colors.black,
+        fontSize: 12.0,
+        color: Color.fromARGB(255, 86, 86, 86),
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.normal,
       ),
       primaryRulersHeight: 25,
       primaryRulerColor: Colors.black54,
@@ -171,6 +173,11 @@ class TrackStyle extends BaseRulerStyle {
     super.inverseRulers = false,
     this.showFirstLabel = true,
     this.showLastLabel = true,
-    this.labelStyle,
+    this.labelStyle = const TextStyle(
+      fontSize: 12.0,
+      color: Color.fromARGB(255, 86, 86, 86),
+      fontStyle: FontStyle.normal,
+      fontWeight: FontWeight.normal,
+    ),
   });
 }
