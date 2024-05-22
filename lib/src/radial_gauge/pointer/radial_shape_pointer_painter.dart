@@ -9,6 +9,7 @@ class RenderRadialShapePointer extends RenderBox {
     required double value,
     required Color color,
     required double height,
+    required double offset,
     required ValueChanged<double>? onChanged,
     required double width,
     required bool isInteractive,
@@ -21,11 +22,13 @@ class RenderRadialShapePointer extends RenderBox {
         _isInteractive = isInteractive,
         _width = width,
         _shape = shape,
+        _offset = offset,
         _radialGauge = radialGauge;
 
   double _value;
   Color _color;
   double _height;
+  double _offset;
   double _width;
   PointerShape _shape;
   RadialGauge _radialGauge;
@@ -60,6 +63,15 @@ class RenderRadialShapePointer extends RenderBox {
       return;
     }
     _onChanged = value;
+  }
+
+  // sets the offset for [RenderNeedlePointer].
+  set setOffset(double value) {
+    if (value == _offset) {
+      return;
+    }
+    _offset = value;
+    markNeedsPaint();
   }
 
   // Sets the Interaction for [RenderNeedlePointer].
@@ -128,12 +140,11 @@ class RenderRadialShapePointer extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final canvas = context.canvas;
-
+    final Canvas canvas = context.canvas;
     double gaugeStart = _radialGauge.track.start;
     double gaugeEnd = _radialGauge.track.end;
-    // final center = Offset(offset.dx, offset.dy);
 
+    // Determining the center of the Gauge based on the size and the center coordinate
     final center = Offset(
         size.width * _radialGauge.xCenterCoordinate + offset.dx,
         size.height * _radialGauge.yCenterCoordinate + offset.dy);
@@ -144,47 +155,255 @@ class RenderRadialShapePointer extends RenderBox {
 
     final double angle = startAngle + (value / 100) * (endAngle - startAngle);
 
-    double needleLength = 30;
-    double needleWidth = 10;
-    final pointerPath = Path();
+    double pointerLength = _height;
+    double pointerWidth = _width;
 
-    // double pointerOffset = 430 + 0;
+    // final pointerPath = Path();
+
     double pointerOffset =
         (size.shortestSide / 2 - _radialGauge.track.thickness) *
-            _radialGauge.radiusFactor;
-
-    double circlePointerOffset =
-        (size.shortestSide / 2 - _radialGauge.track.thickness) *
-            _radialGauge.radiusFactor;
+                _radialGauge.radiusFactor +
+            _offset;
 
     double pointerEndX = center.dx + pointerOffset * cos(angle);
     double pointerEndY = center.dy + pointerOffset * sin(angle);
 
-    double circlePointerEndX = center.dx + circlePointerOffset * cos(angle);
-    double circlePointerEndY = center.dy + circlePointerOffset * sin(angle);
-
-    pointerPath.moveTo(pointerEndX, pointerEndY);
-    pointerPath.lineTo(
-      pointerEndX - needleWidth * cos(angle + pi / 2),
-      pointerEndY - needleWidth * sin(angle + pi / 2),
+    pointerRect = Rect.fromCenter(
+      center: Offset(pointerEndX, pointerEndY),
+      width: pointerWidth,
+      height: pointerLength,
     );
-    pointerPath.lineTo(
-      pointerEndX - (needleLength - needleWidth) * cos(angle),
-      pointerEndY - (needleLength - needleWidth) * sin(angle),
-    );
-    pointerPath.lineTo(
-      pointerEndX + needleWidth * cos(angle + pi / 2),
-      pointerEndY + needleWidth * sin(angle + pi / 2),
-    );
-    pointerPath.close();
 
-    pointerRect = Rect.fromCircle(
-        center: Offset(pointerEndX, pointerEndY), radius: _width);
+    // canvas.drawRect(pointerRect, Paint()..color = Colors.green);
 
-    // canvas.drawRect(pointerRect, Paint()..color = _color);
-    canvas.drawCircle(Offset(circlePointerEndX, circlePointerEndY), _width,
-        Paint()..color = _color);
-    // canvas.drawPath(pointerPath, Paint()..color = _color);
+    if (_shape == PointerShape.circle) {
+      double radius = 10; // Example radius
+      pointerRect = Rect.fromCircle(
+          center: Offset(pointerEndX, pointerEndY), radius: radius);
+      drawCirclePointer(canvas, center, pointerOffset, angle);
+    } else if (_shape == PointerShape.rectangle) {
+      pointerRect = calculateBoundingBoxForRectangle(
+          center, pointerOffset, angle, pointerWidth, pointerLength);
+      drawRectanglePointer(
+          canvas, center, pointerOffset, angle, pointerWidth, pointerLength);
+    } else if (_shape == PointerShape.triangle) {
+      pointerRect = calculateBoundingBoxForTriangle(
+          center, pointerOffset, angle, pointerWidth, pointerLength);
+      drawTrianglePointer(
+          canvas, center, pointerOffset, angle, pointerWidth, pointerLength);
+    } else if (_shape == PointerShape.diamond) {
+      drawDiamondPointer(
+          canvas, center, pointerOffset, angle, pointerWidth, pointerLength);
+    }
+  }
+
+  Rect calculateBoundingBoxForRectangle(Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double rectOffset = pointerOffset;
+    double rectCenterX = center.dx + rectOffset * cos(angle);
+    double rectCenterY = center.dy + rectOffset * sin(angle);
+
+    Offset topLeft = Offset(
+      rectCenterX - width / 2,
+      rectCenterY - height / 2,
+    );
+    Offset topRight = Offset(
+      rectCenterX + width / 2,
+      rectCenterY - height / 2,
+    );
+    Offset bottomRight = Offset(
+      rectCenterX + width / 2,
+      rectCenterY + height / 2,
+    );
+    Offset bottomLeft = Offset(
+      rectCenterX - width / 2,
+      rectCenterY + height / 2,
+    );
+
+    topLeft = rotatePoint(topLeft, angle, Offset(rectCenterX, rectCenterY));
+    topRight = rotatePoint(topRight, angle, Offset(rectCenterX, rectCenterY));
+    bottomRight =
+        rotatePoint(bottomRight, angle, Offset(rectCenterX, rectCenterY));
+    bottomLeft =
+        rotatePoint(bottomLeft, angle, Offset(rectCenterX, rectCenterY));
+
+    // Calculate the bounding box
+    double minX =
+        [topLeft.dx, topRight.dx, bottomRight.dx, bottomLeft.dx].reduce(min);
+    double maxX =
+        [topLeft.dx, topRight.dx, bottomRight.dx, bottomLeft.dx].reduce(max);
+    double minY =
+        [topLeft.dy, topRight.dy, bottomRight.dy, bottomLeft.dy].reduce(min);
+    double maxY =
+        [topLeft.dy, topRight.dy, bottomRight.dy, bottomLeft.dy].reduce(max);
+
+    return Rect.fromLTRB(minX, minY, maxX, maxY);
+  }
+
+  Rect calculateBoundingBoxForTriangle(Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double triangleOffset = pointerOffset - _height;
+    double triangleCenterX = center.dx + triangleOffset * cos(angle);
+    double triangleCenterY = center.dy + triangleOffset * sin(angle);
+
+    Offset apex = Offset(
+      triangleCenterX + height * cos(angle),
+      triangleCenterY + height * sin(angle),
+    );
+    Offset baseRight = Offset(
+      triangleCenterX - width / 2 * cos(angle + pi / 2),
+      triangleCenterY - width / 2 * sin(angle + pi / 2),
+    );
+    Offset baseLeft = Offset(
+      triangleCenterX - width / 2 * cos(angle - pi / 2),
+      triangleCenterY - width / 2 * sin(angle - pi / 2),
+    );
+
+    double minX = [apex.dx, baseRight.dx, baseLeft.dx].reduce(min);
+    double maxX = [apex.dx, baseRight.dx, baseLeft.dx].reduce(max);
+    double minY = [apex.dy, baseRight.dy, baseLeft.dy].reduce(min);
+    double maxY = [apex.dy, baseRight.dy, baseLeft.dy].reduce(max);
+
+    return Rect.fromLTRB(minX, minY, maxX, maxY);
+  }
+
+  void drawCirclePointer(
+      Canvas canvas, Offset center, double pointerOffset, double angle) {
+    double circlePointerEndX = center.dx + pointerOffset * cos(angle);
+    double circlePointerEndY = center.dy + pointerOffset * sin(angle);
+
+    canvas.drawCircle(
+      Offset(circlePointerEndX, circlePointerEndY),
+      10,
+      Paint()..color = _color,
+    );
+  }
+
+  void drawRectanglePointer(Canvas canvas, Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double rectOffset = pointerOffset;
+    double rectCenterX = center.dx + rectOffset * cos(angle);
+    double rectCenterY = center.dy + rectOffset * sin(angle);
+
+    // Define the corner points relative to the rectangle's center
+    Offset topLeft = Offset(
+      rectCenterX - width / 2,
+      rectCenterY - height / 2,
+    );
+    Offset topRight = Offset(
+      rectCenterX + width / 2,
+      rectCenterY - height / 2,
+    );
+    Offset bottomRight = Offset(
+      rectCenterX + width / 2,
+      rectCenterY + height / 2,
+    );
+    Offset bottomLeft = Offset(
+      rectCenterX - width / 2,
+      rectCenterY + height / 2,
+    );
+
+    topLeft = rotatePoint(topLeft, angle, Offset(rectCenterX, rectCenterY));
+    topRight = rotatePoint(topRight, angle, Offset(rectCenterX, rectCenterY));
+    bottomRight =
+        rotatePoint(bottomRight, angle, Offset(rectCenterX, rectCenterY));
+    bottomLeft =
+        rotatePoint(bottomLeft, angle, Offset(rectCenterX, rectCenterY));
+
+    // Draw the rotated rectangle
+    final rectPaint = Paint()..color = Colors.red;
+    canvas.drawPath(
+      Path()
+        ..moveTo(topLeft.dx, topLeft.dy)
+        ..lineTo(topRight.dx, topRight.dy)
+        ..lineTo(bottomRight.dx, bottomRight.dy)
+        ..lineTo(bottomLeft.dx, bottomLeft.dy)
+        ..close(),
+      rectPaint,
+    );
+  }
+
+  void drawTrianglePointer(Canvas canvas, Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double triangleOffset = pointerOffset - _height;
+    double triangleCenterX = center.dx + triangleOffset * cos(angle);
+    double triangleCenterY = center.dy + triangleOffset * sin(angle);
+
+    // Define the corner points relative to the triangle's center
+    Offset apex = Offset(
+      triangleCenterX + height * cos(angle),
+      triangleCenterY + height * sin(angle),
+    );
+    Offset baseRight = Offset(
+      triangleCenterX - width / 2 * cos(angle + pi / 2),
+      triangleCenterY - width / 2 * sin(angle + pi / 2),
+    );
+    Offset baseLeft = Offset(
+      triangleCenterX - width / 2 * cos(angle - pi / 2),
+      triangleCenterY - width / 2 * sin(angle - pi / 2),
+    );
+
+    // Draw the rotated triangle
+    final trianglePaint = Paint()..color = Colors.green;
+    canvas.drawPath(
+      Path()
+        ..moveTo(apex.dx, apex.dy)
+        ..lineTo(baseRight.dx, baseRight.dy)
+        ..lineTo(baseLeft.dx, baseLeft.dy)
+        ..close(),
+      trianglePaint,
+    );
+  }
+
+  void drawDiamondPointer(Canvas canvas, Offset center, double pointerOffset,
+      double angle, double width, double height) {
+    double diamondOffset = pointerOffset;
+    double diamondCenterX = center.dx + diamondOffset * cos(angle);
+    double diamondCenterY = center.dy + diamondOffset * sin(angle);
+
+    // Define the corner points relative to the diamond's center
+    Offset top = Offset(
+      diamondCenterX,
+      diamondCenterY - height / 2,
+    );
+    Offset right = Offset(
+      diamondCenterX + width / 2,
+      diamondCenterY,
+    );
+    Offset bottom = Offset(
+      diamondCenterX,
+      diamondCenterY + height / 2,
+    );
+    Offset left = Offset(
+      diamondCenterX - width / 2,
+      diamondCenterY,
+    );
+
+    top = rotatePoint(top, angle, Offset(diamondCenterX, diamondCenterY));
+    right = rotatePoint(right, angle, Offset(diamondCenterX, diamondCenterY));
+    bottom = rotatePoint(bottom, angle, Offset(diamondCenterX, diamondCenterY));
+    left = rotatePoint(left, angle, Offset(diamondCenterX, diamondCenterY));
+
+    // Draw the rotated diamond
+    final diamondPaint = Paint()..color = Colors.blue;
+    canvas.drawPath(
+      Path()
+        ..moveTo(top.dx, top.dy)
+        ..lineTo(right.dx, right.dy)
+        ..lineTo(bottom.dx, bottom.dy)
+        ..lineTo(left.dx, left.dy)
+        ..close(),
+      diamondPaint,
+    );
+  }
+
+  // Rotate the points around the center
+  Offset rotatePoint(Offset point, double angle, Offset center) {
+    double dx = point.dx - center.dx;
+    double dy = point.dy - center.dy;
+    double rotatedX = dx * cos(angle) - dy * sin(angle);
+    double rotatedY = dx * sin(angle) + dy * cos(angle);
+    return Offset(rotatedX + center.dx, rotatedY + center.dy);
   }
 
   double calculateValueAngle(double value, double gaugeStart, double gaugeEnd) {

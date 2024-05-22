@@ -6,7 +6,7 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyVerticalGauge(),
+      home: RadialGaugeExample(),
     ),
   );
 }
@@ -23,6 +23,7 @@ class LinearGaugeExample extends StatefulWidget {
 }
 
 class _LinearGaugeExampleState extends State<LinearGaugeExample> {
+  double value = 20;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,12 +34,17 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
           rulers: RulerStyle(
             rulerPosition: RulerPosition.bottom,
           ),
-          pointers: const [
-            Pointer(
-              value: 50,
-              shape: PointerShape.circle,
-            ),
+          valueBar: [
+            ValueBar(
+              value: 20,
+              offset: 300,
+            )
           ],
+          customLabels: [
+            CustomRulerLabel(text: "Hello One", value: value),
+            CustomRulerLabel(text: "Hello Two", value: 60),
+          ],
+          pointers: [],
         ),
       ),
     );
@@ -58,19 +64,37 @@ class RadialGaugeExample extends StatefulWidget {
 }
 
 class _RadialGaugeExampleState extends State<RadialGaugeExample> {
+  double value = 20;
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.white,
+    return Scaffold(
+      backgroundColor: Colors.black,
       body: RadialGauge(
         track: RadialTrack(
+          trackStyle: TrackStyle(
+              labelStyle: TextStyle(color: Colors.white),
+              primaryRulerColor: Colors.blueAccent,
+              secondaryRulerColor: Colors.blueGrey),
+          color: Colors.white,
           start: 0,
           end: 100,
+          // startAngle: 0,
+          // endAngle: 360,
         ),
-        needlePointer: [
-          NeedlePointer(
-            value: 30,
-          ),
+        shapePointer: [
+          RadialShapePointer(
+            color: Colors.red,
+            width: 40,
+            height: 40,
+            isInteractive: true,
+            onChanged: (v) {
+              setState(() {
+                value = v;
+              });
+            },
+            value: value,
+            shape: PointerShape.triangle,
+          )
         ],
       ),
     );
