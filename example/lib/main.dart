@@ -29,22 +29,8 @@ class _LinearGaugeExampleState extends State<LinearGaugeExample> {
     return Scaffold(
       body: Center(
         child: LinearGauge(
-          gaugeOrientation: GaugeOrientation.horizontal,
-          enableGaugeAnimation: true,
-          rulers: RulerStyle(
-            rulerPosition: RulerPosition.bottom,
-          ),
-          valueBar: [
-            ValueBar(
-              value: 20,
-              offset: 300,
-            )
-          ],
-          customLabels: [
-            CustomRulerLabel(text: "Hello One", value: value),
-            CustomRulerLabel(text: "Hello Two", value: 60),
-          ],
-          pointers: [],
+          gaugeOrientation: GaugeOrientation.vertical,
+          rulers: RulerStyle(rulerPosition: RulerPosition.left),
         ),
       ),
     );
@@ -63,39 +49,59 @@ class RadialGaugeExample extends StatefulWidget {
   State<RadialGaugeExample> createState() => _RadialGaugeExampleState();
 }
 
+// {
+//     "needlePointer": const NeedlePointer(
+//       value: 25,
+//       color: Colors.blueAccent,
+//     ),
+//     "xCordinate": 0.5,
+//     "yCordinate": 1.0,
+//     "radius": 0.5,
+//     "name": "radial-bottom-position-needle-pointer-value-25-radius-0.5",
+//     "Do":
+//         "Needle Pointer should be drawn on Radial Gauge at Bottom with Radius 0.5",
+//   },
 class _RadialGaugeExampleState extends State<RadialGaugeExample> {
-  double value = 20;
+  double value = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: RadialGauge(
-        track: RadialTrack(
-          trackStyle: TrackStyle(
-              labelStyle: TextStyle(color: Colors.white),
-              primaryRulerColor: Colors.blueAccent,
-              secondaryRulerColor: Colors.blueGrey),
-          color: Colors.white,
-          start: 0,
-          end: 100,
-          // startAngle: 0,
-          // endAngle: 360,
+      backgroundColor: Colors.white,
+      body: Container(
+        // height: 700,
+        // width: 400,
+        // alignment: Alignment.center,
+        color: Colors.red.withOpacity(0.4),
+        child: RadialGauge(
+          xCenterCoordinate: 0.5,
+          yCenterCoordinate: 0.5,
+          radiusFactor: 1.3,
+          track: RadialTrack(
+            trackStyle: TrackStyle(
+                labelStyle: TextStyle(color: Colors.black),
+                primaryRulerColor: Colors.blueAccent,
+                secondaryRulerColor: Colors.blueGrey),
+            color: Colors.black,
+            start: 0,
+            end: 100,
+            startAngle: 0,
+            endAngle: 360,
+          ),
+          needlePointer: [
+            NeedlePointer(
+              // needleHeight: 2500,
+              isInteractive: true,
+              onChanged: (value) {
+                setState(() {
+                  this.value = value;
+                });
+              },
+              color: Colors.blueAccent,
+              value: value,
+              needleStyle: NeedleStyle.gaugeNeedle,
+            )
+          ],
         ),
-        shapePointer: [
-          RadialShapePointer(
-            color: Colors.red,
-            width: 40,
-            height: 40,
-            isInteractive: true,
-            onChanged: (v) {
-              setState(() {
-                value = v;
-              });
-            },
-            value: value,
-            shape: PointerShape.triangle,
-          )
-        ],
       ),
     );
   }

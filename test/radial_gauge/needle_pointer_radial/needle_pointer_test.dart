@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
-import 'radial_position_test_cases.dart';
+import 'needle_pointer_test_cases.dart';
 
 void main() {
   group("Test the Radial Pointer Shapes", () {
-    final testCases = positionTests;
+    final testCases = needlePointerTestCases;
 
     for (final testCase in testCases) {
       testGoldens(testCase['Do'] as String, (tester) async {
@@ -15,9 +15,6 @@ void main() {
         await tester.pumpWidgetBuilder(
           MyPointerTestLinearGauge(
             needlePointer: testCase['needlePointer'] as NeedlePointer?,
-            x: testCase['xCordinate'] as double,
-            y: testCase['yCordinate'] as double,
-            radius: testCase['radius'] as double,
           ),
           surfaceSize: const Size(1200, 900),
         );
