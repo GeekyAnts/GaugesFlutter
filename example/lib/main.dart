@@ -75,7 +75,7 @@ class _RadialGaugeExampleState extends State<RadialGaugeExample> {
         child: RadialGauge(
           xCenterCoordinate: 0.5,
           yCenterCoordinate: 0.5,
-          radiusFactor: 1.3,
+          radiusFactor: 0.8,
           track: RadialTrack(
             trackStyle: TrackStyle(
                 labelStyle: TextStyle(color: Colors.black),

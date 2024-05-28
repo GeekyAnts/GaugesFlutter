@@ -184,9 +184,11 @@ class RenderNeedlePointer extends RenderBox {
     double startAngle = (_radialGauge!.track.startAngle - 180) * (pi / 180);
     double endAngle = (_radialGauge!.track.endAngle - 180) * (pi / 180);
 
-    final maxH = size.shortestSide / (2 * getRadialGauge.radiusFactor) -
-        (2 * getRadialGauge.track.thickness);
+    // final maxH = size.shortestSide / (2 * getRadialGauge.radiusFactor) -
+    //     (2 * getRadialGauge.track.thickness);
 
+    final maxH = (size.shortestSide / 2) * (getRadialGauge.radiusFactor) -
+        (getRadialGauge.track.thickness);
     final double needleMultiplier = _needleHeight.clamp(0, maxH);
 
     final double angle = startAngle + (value / 100) * (endAngle - startAngle);
