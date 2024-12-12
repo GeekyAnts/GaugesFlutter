@@ -40,6 +40,7 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
     this.animationDuration = 1000,
     this.animationType = Curves.ease,
     this.enableAnimation = true,
+    this.labelFormatter,
   }) : super(key: key);
 
   ///
@@ -140,6 +141,19 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
   /// default is to `true`
   ///
   final bool showLabel;
+
+  ///
+  /// `labelFormatter` formats a custom label for the pointer on the [Pointer]
+  ///
+  /// E.g., Value with %
+  /// ```dart
+  /// const LinearGauge(
+  ///  pointer: Pointer(
+  ///    labelFormatter: (double? value) => '$value%',
+  ///  ),
+  /// ),
+  /// ```
+  final String Function(double? value)? labelFormatter;
 
   ///
   /// `quarterTurns` Sets the rotation of the label of `pointer`
@@ -250,23 +264,25 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
   RenderObject createRenderObject(BuildContext context) {
     final LinearGaugeState linearGaugeScope = LinearGaugeState.of(context);
     return RenderLinearGaugeShapePointer(
-        value: value,
-        color: color,
-        width: width,
-        isInteractive: isInteractive,
-        height: height,
-        pointerPosition: pointerPosition,
-        shape: shape,
-        pointerAlignment: pointerAlignment,
-        animationDuration: animationDuration,
-        showLabel: showLabel,
-        animationType: animationType,
-        quarterTurns: quarterTurns,
-        enableAnimation: enableAnimation,
-        labelStyle: labelStyle,
-        onChanged: onChanged,
-        pointerAnimation: linearGaugeScope.animation!,
-        linearGauge: linearGaugeScope.lGauge);
+      value: value,
+      color: color,
+      width: width,
+      isInteractive: isInteractive,
+      height: height,
+      pointerPosition: pointerPosition,
+      shape: shape,
+      pointerAlignment: pointerAlignment,
+      animationDuration: animationDuration,
+      showLabel: showLabel,
+      animationType: animationType,
+      quarterTurns: quarterTurns,
+      enableAnimation: enableAnimation,
+      labelStyle: labelStyle,
+      onChanged: onChanged,
+      pointerAnimation: linearGaugeScope.animation!,
+      linearGauge: linearGaugeScope.lGauge,
+      labelFormatter: labelFormatter,
+    );
   }
 
   @override
@@ -289,7 +305,8 @@ class Pointer extends LeafRenderObjectWidget implements BasePointer {
       ..setLinearGAuge = linearGaugeScope.lGauge
       ..onChanged = onChanged
       ..setIsInteractive = isInteractive
-      ..setLabelStyle = labelStyle;
+      ..setLabelStyle = labelStyle
+      ..setLabelFormatter = labelFormatter;
 
     super.updateRenderObject(context, renderObject);
   }

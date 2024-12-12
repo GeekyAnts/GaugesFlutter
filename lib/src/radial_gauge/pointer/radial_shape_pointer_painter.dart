@@ -14,6 +14,8 @@ class RenderRadialShapePointer extends RenderBox {
     required bool isInteractive,
     required PointerShape shape,
     required RadialGauge radialGauge,
+    required Color? borderColor,
+    required double? borderWidth,
   })  : _value = value,
         _color = color,
         _height = height,
@@ -21,7 +23,9 @@ class RenderRadialShapePointer extends RenderBox {
         _isInteractive = isInteractive,
         _width = width,
         _shape = shape,
-        _radialGauge = radialGauge;
+        _radialGauge = radialGauge,
+        _borderColor = borderColor,
+        _borderWidth = borderWidth;
 
   double _value;
   Color _color;
@@ -29,6 +33,8 @@ class RenderRadialShapePointer extends RenderBox {
   double _width;
   PointerShape _shape;
   RadialGauge _radialGauge;
+  Color? _borderColor;
+  double? _borderWidth;
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
@@ -124,6 +130,22 @@ class RenderRadialShapePointer extends RenderBox {
     markNeedsPaint();
   }
 
+  set setBorderColor(Color? borderColor) {
+    if (_borderColor == borderColor) {
+      return;
+    }
+    _borderColor = borderColor;
+    markNeedsPaint();
+  }
+
+  set setBorderWidth(double? borderWidth) {
+    if (_borderWidth == borderWidth) {
+      return;
+    }
+    _borderWidth = borderWidth;
+    markNeedsPaint();
+  }
+
   late Rect pointerRect;
 
   @override
@@ -182,6 +204,16 @@ class RenderRadialShapePointer extends RenderBox {
         center: Offset(pointerEndX, pointerEndY), radius: _width);
 
     // canvas.drawRect(pointerRect, Paint()..color = _color);
+    if (_borderColor != null && _borderWidth != null) {
+      canvas.drawCircle(
+        Offset(circlePointerEndX, circlePointerEndY),
+        _width + (_borderWidth! / 2),
+        Paint()
+          ..color = _borderColor!
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = _borderWidth!,
+      );
+    }
     canvas.drawCircle(Offset(circlePointerEndX, circlePointerEndY), _width,
         Paint()..color = _color);
     // canvas.drawPath(pointerPath, Paint()..color = _color);

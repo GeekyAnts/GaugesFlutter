@@ -37,6 +37,8 @@ class RadialShapePointer extends LeafRenderObjectWidget {
     this.onChanged,
     this.isInteractive = false,
     this.shape = PointerShape.triangle,
+    this.borderColor,
+    this.borderWidth,
   });
 
   ///
@@ -83,6 +85,18 @@ class RadialShapePointer extends LeafRenderObjectWidget {
   ///
   final PointerShape shape;
 
+  ///
+  /// `borderColor` draws a border around the [RadialShapePointer] on the [RadialGauge]
+  ///  If null, no border is drawn
+  ///
+  final Color? borderColor;
+
+  ///
+  /// `borderWidth` draws a border around the [RadialShapePointer] on the [RadialGauge]
+  ///  If null, no border is drawn
+  ///
+  final double? borderWidth;
+
   @override
   RenderObject createRenderObject(BuildContext context) {
     final RadialGaugeState scope = RadialGaugeState.of(context);
@@ -96,6 +110,8 @@ class RadialShapePointer extends LeafRenderObjectWidget {
       onChanged: onChanged,
       shape: shape,
       radialGauge: scope.rGauge,
+      borderColor: borderColor,
+      borderWidth: borderWidth,
     );
   }
 
@@ -111,6 +127,8 @@ class RadialShapePointer extends LeafRenderObjectWidget {
       ..setWidth = width
       ..onChanged = onChanged
       ..setIsInteractive = isInteractive
-      ..setShape = shape;
+      ..setShape = shape
+      ..setBorderColor = borderColor
+      ..setBorderWidth = borderWidth;
   }
 }

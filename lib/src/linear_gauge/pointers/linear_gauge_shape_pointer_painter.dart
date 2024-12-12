@@ -27,6 +27,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     required bool isInteractive,
     required Animation<double> pointerAnimation,
     required LinearGauge linearGauge,
+    required String Function(double? value)? labelFormatter,
   })  : _value = value,
         _height = height,
         _onChanged = onChanged,
@@ -41,7 +42,8 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
         _linearGauge = linearGauge,
         _pointerAnimation = pointerAnimation,
         _isInteractive = isInteractive,
-        _enableAnimation = enableAnimation;
+        _enableAnimation = enableAnimation,
+        _labelFormatter = labelFormatter;
 
   double yAxisForGaugeContainer = 0, xAxisForGaugeContainer = 0;
   late LinearGaugeLabel linearGaugeLabel;
@@ -174,6 +176,20 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
     }
 
     _showLabel = value;
+    markNeedsPaint();
+  }
+
+  /// Gets the labelFormatter assigned to [RenderLinearGaugeShapePointer].
+  String Function(double? value)? get labelFormatter => _labelFormatter;
+  String Function(double? value)? _labelFormatter;
+
+  /// Sets the labelFormatter for [RenderLinearGaugeShapePointer].
+  set setLabelFormatter(String Function(double? value)? value) {
+    if (value == _labelFormatter) {
+      return;
+    }
+
+    _labelFormatter = value;
     markNeedsPaint();
   }
 
@@ -341,7 +357,7 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
         return;
     }
 
-    if (showLabel) {
+    if (showLabel || labelFormatter != null) {
       _drawLabel(canvas, offset, quarterTurns, rulerPosition, linearGauge);
     }
   }
@@ -356,11 +372,14 @@ class RenderLinearGaugeShapePointer extends RenderOpacity {
       textAlign: TextAlign.center,
     );
 
-    textPainter.text = TextSpan(
-        text: value == null ? linearGauge.value!.toString() : value.toString(),
-        style: labelStyle);
-    offset = applyAnimations(linearGauge, offset);
+    // Attempt to get the custom label value,
+    // if null fallback on the standard value.
+    final String pointerText = value != null
+        ? (labelFormatter?.call(value) ?? value.toString())
+        : linearGauge.value!.toString();
 
+    textPainter.text = TextSpan(text: pointerText, style: labelStyle);
+    offset = applyAnimations(linearGauge, offset);
     textPainter.layout();
     if (shape == PointerShape.circle) {
       if (gaugeOrientation == GaugeOrientation.horizontal) {
