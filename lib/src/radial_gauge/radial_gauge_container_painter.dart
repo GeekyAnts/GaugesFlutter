@@ -192,14 +192,14 @@ class RenderRadialGaugeContainer extends RenderBox {
     // double radialOffset = getRadialGauge.valueBar!.first.radialOffset;
 
     double partAngle = arcLength / numParts; // angle of each part in radians
-    double radius = (shortestSide / 2 - thickness) *
+    double radius = (shortestSide / 2.0 - thickness / 2.0) *
         getRadialGauge.radiusFactor; // radius of the arc
 
     final center = offset;
 
     final Paint containerPaint = Paint()
       ..color = getRadialGauge.track.color
-      ..strokeCap = StrokeCap.round
+      ..strokeCap = getRadialGauge.strokeCap
       ..strokeWidth = thickness
       ..style = PaintingStyle.stroke;
 

@@ -41,6 +41,7 @@ class RadialGauge extends StatefulWidget {
     this.shapePointer = const [],
     this.needlePointer = const [],
     this.widgetPointer = const [],
+    this.strokeCap = StrokeCap.round,
     // List<RadialTrack>? track,
   }) : super(key: key);
 
@@ -172,6 +173,13 @@ class RadialGauge extends StatefulWidget {
   /// ```
   ///
   final List<RadialValueBar>? valueBar;
+
+  ///
+  /// The stroke cap of the radial gauge container.
+  ///
+  /// Defaults to StrokeCap.round.
+  ///
+  final StrokeCap strokeCap;
 
   @override
   State<RadialGauge> createState() => _RadialGaugeState();

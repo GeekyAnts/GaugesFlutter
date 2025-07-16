@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/rendering.dart';
+
 import '../../../geekyants_flutter_gauges.dart';
 
 class RenderRadialValueBar extends RenderBox {
@@ -11,12 +13,14 @@ class RenderRadialValueBar extends RenderBox {
     required double valueBarThickness,
     required RadialGauge radialGauge,
     required double radialOffset,
+    required StrokeCap strokeCap,
   })  : _value = value,
         _color = color,
         _gradient = gradient!,
         _radialOffset = radialOffset,
         _radialGauge = radialGauge,
         _valueBarThickness = valueBarThickness,
+        _strokeCap = strokeCap,
         super();
 
   RadialGauge get getRadialGauge => _radialGauge!;
@@ -56,6 +60,14 @@ class RenderRadialValueBar extends RenderBox {
   set setValueBarThickness(double valueBarThickness) {
     if (_valueBarThickness == valueBarThickness) return;
     _valueBarThickness = valueBarThickness;
+    markNeedsPaint();
+  }
+
+  StrokeCap get getStrokeCap => _strokeCap;
+  StrokeCap _strokeCap;
+  set setStrokeCap(StrokeCap strokeCap) {
+    if (_strokeCap == strokeCap) return;
+    _strokeCap = strokeCap;
     markNeedsPaint();
   }
 
@@ -107,7 +119,7 @@ class RenderRadialValueBar extends RenderBox {
 
     final Paint containerPaint = Paint()
       ..color = _color
-      ..strokeCap = StrokeCap.round
+      ..strokeCap = _strokeCap
       ..strokeWidth = _valueBarThickness
       ..shader = gradient.createShader(
           Rect.fromCircle(center: center, radius: size.shortestSide / 2.0))
@@ -116,7 +128,7 @@ class RenderRadialValueBar extends RenderBox {
     double arcLength = endAngle - startAngle;
     double shortestSide = size.shortestSide;
     double radius = (shortestSide / 2.0 -
-            getRadialGauge.track.thickness -
+            getRadialGauge.track.thickness / 2.0 -
             getRadialOffset) *
         getRadialGauge.radiusFactor;
 

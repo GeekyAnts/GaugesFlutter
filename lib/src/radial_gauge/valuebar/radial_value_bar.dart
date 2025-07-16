@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:geekyants_flutter_gauges/src/radial_gauge/valuebar/radial_value_bar_painter.dart';
+
 import '../radial_gauge.dart';
 import '../radial_gauge_state.dart';
 
@@ -36,6 +37,7 @@ class RadialValueBar extends LeafRenderObjectWidget {
     this.valueBarThickness = 10,
     this.gradient,
     this.radialOffset = 0,
+    this.strokeCap = StrokeCap.round,
   }) : super(key: key);
 
   /// [value] denotes the value of the value bar.
@@ -123,6 +125,10 @@ class RadialValueBar extends LeafRenderObjectWidget {
   ///
   final LinearGradient? gradient;
 
+  /// [strokeCap] denotes the stroke cap of the value bar.
+  ///
+  final StrokeCap strokeCap;
+
   @override
   RenderObject createRenderObject(BuildContext context) {
     final RadialGaugeState scope = RadialGaugeState.of(context);
@@ -133,6 +139,7 @@ class RadialValueBar extends LeafRenderObjectWidget {
       gradient: gradient ?? LinearGradient(colors: [color, color]),
       radialOffset: radialOffset,
       valueBarThickness: valueBarThickness,
+      strokeCap: strokeCap,
       radialGauge: scope.rGauge,
     );
   }
@@ -147,6 +154,7 @@ class RadialValueBar extends LeafRenderObjectWidget {
       ..setRadialOffset = radialOffset
       ..setLinearGradient = gradient ?? LinearGradient(colors: [color, color])
       ..setValueBarThickness = valueBarThickness
-      ..setRadialGauge = scope.rGauge;
+      ..setRadialGauge = scope.rGauge
+      ..setStrokeCap = strokeCap;
   }
 }
