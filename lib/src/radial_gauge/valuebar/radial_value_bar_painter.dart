@@ -92,7 +92,11 @@ class RenderRadialValueBar extends RenderBox {
     double startAngle = (getRadialGauge.track.startAngle - 180) * (pi / 180);
     double endAngle = (getRadialGauge.track.endAngle - 180) * (pi / 180);
 
-    double value = (_value - getRadialGauge.track.start) /
+    final double clampedValue = _value.clamp(
+      min(getRadialGauge.track.start, getRadialGauge.track.end),
+      max(getRadialGauge.track.start, getRadialGauge.track.end),
+    );
+    double value = (clampedValue - getRadialGauge.track.start) /
         (getRadialGauge.track.end - getRadialGauge.track.start) *
         100;
 

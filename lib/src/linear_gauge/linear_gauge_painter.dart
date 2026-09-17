@@ -2178,7 +2178,7 @@ class RenderLinearGauge extends RenderBox
         _movableWidget.onChanged!(value);
       }
     } else if (_pointerType is RenderLinearGaugeShapePointer) {
-      if (_movablePointer.isInteractive) {
+      if (_movablePointer.isInteractive && _movablePointer.onChanged != null) {
         _movablePointer.onChanged!(value);
       }
     }

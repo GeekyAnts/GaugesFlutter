@@ -242,7 +242,12 @@ class RenderNeedlePointer extends RenderBox {
   }
 
   double calculateValueAngle(double value, double gaugeStart, double gaugeEnd) {
-    double newValue = (value - gaugeStart) / (gaugeEnd - gaugeStart) * 100;
+    final double clampedValue = value.clamp(
+      min(gaugeStart, gaugeEnd),
+      max(gaugeStart, gaugeEnd),
+    );
+    double newValue =
+        (clampedValue - gaugeStart) / (gaugeEnd - gaugeStart) * 100;
 
     return newValue;
   }

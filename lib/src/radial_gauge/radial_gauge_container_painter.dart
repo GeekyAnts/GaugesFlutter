@@ -143,9 +143,19 @@ class RenderRadialGaugeContainer extends RenderBox {
         continue; // Skip drawing the last label
       }
 
+      Offset userLabelOffset = Offset(
+        (getRadialGauge.track.trackStyle.labelOffset ?? 0.0) * cos(angle),
+        (getRadialGauge.track.trackStyle.labelOffset ?? 0.0) * sin(angle),
+      );
+
       final Offset labelOffset = Offset(
-          (labelEndPoint.dx + center.dx) - textPainter.width / 2,
-          (labelEndPoint.dy + center.dy) - textPainter.height / 2);
+        (labelEndPoint.dx + center.dx) -
+            textPainter.width / 2 +
+            userLabelOffset.dx,
+        (labelEndPoint.dy + center.dy) -
+            textPainter.height / 2 +
+            userLabelOffset.dy,
+      );
       if (getRadialGauge.track.trackStyle.showLabel!) {
         textPainter.paint(canvas, labelOffset);
       }
@@ -153,10 +163,10 @@ class RenderRadialGaugeContainer extends RenderBox {
   }
 
   int calculateNumOfDivisions(int steps, double start, double end) {
-    double range = end - start.toDouble();
-    int numOfDivisions = range ~/ steps;
-
-    return numOfDivisions;
+    // double range = end - start.toDouble();
+    // int numOfDivisions = (range / steps).ceil();
+    // return numOfDivisions;
+    return steps;
   }
 
   @override
@@ -183,12 +193,12 @@ class RenderRadialGaugeContainer extends RenderBox {
         getRadialGauge.track.trackStyle.primaryRulersHeight ?? 10;
     double arcLength = endAngle - startAngle; // length of the arc in radians
 
-    double numParts = calculateNumOfDivisions(
-      getRadialGauge.track.steps,
-      getRadialGauge.track.start,
-      getRadialGauge.track.end,
-    ).toDouble();
-
+    // double numParts = calculateNumOfDivisions(
+    //   getRadialGauge.track.steps,
+    //   getRadialGauge.track.start,
+    //   getRadialGauge.track.end,
+    // ).toDouble();
+    double numParts = getRadialGauge.track.steps.toDouble();
     // double radialOffset = getRadialGauge.valueBar!.first.radialOffset;
 
     double partAngle = arcLength / numParts; // angle of each part in radians
